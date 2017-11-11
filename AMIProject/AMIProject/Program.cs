@@ -11,6 +11,7 @@ namespace AMIProject
         static void Main(string[] args)
         {
             Console.WriteLine("Hello boys and girl!!!");
+
             Console.ReadKey();
         }
     }
