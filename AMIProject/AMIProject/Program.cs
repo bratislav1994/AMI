@@ -10,7 +10,7 @@ namespace AMIProject
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello boys and girl!!! Let's do this :)");
+            Console.WriteLine("Hello boys and girl!!! Let's do this :) :)");
 
             Console.ReadKey();
         }
