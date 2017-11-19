@@ -6,36 +6,36 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
 using FTN.Common;
-using FTN.Services.NetworkModelService.DataModel;
+/*using FTN.Services.NetworkModelService.DataModel;
 using FTN.Services.NetworkModelService.DataModel.Core;
-using FTN.Services.NetworkModelService.DataModel.Wires;
+using FTN.Services.NetworkModelService.DataModel.Wires;*/
 
 namespace FTN.Services.NetworkModelService
-{	
-	public class NetworkModel
-	{
-		/// <summary>
-		/// Dictionaru which contains all data: Key - DMSType, Value - Container
-		/// </summary>
-		private Dictionary<DMSType, Container> networkDataModel;		
+{
+    public class NetworkModel
+    {
+        /// <summary>
+        /// Dictionaru which contains all data: Key - DMSType, Value - Container
+        /// </summary>
+        private Dictionary<DMSType, Container> networkDataModel;
 
-		/// <summary>
-		/// ModelResourceDesc class contains metadata of the model
-		/// </summary>
-		private ModelResourcesDesc resourcesDescs;
-	
-		/// <summary>
-		/// Initializes a new instance of the Model class.
-		/// </summary>
-		public NetworkModel()
-		{
-			networkDataModel = new Dictionary<DMSType, Container>();
-			resourcesDescs = new ModelResourcesDesc();			
-			Initialize();
-		}
-	
-		#region Find
-		
+        /// <summary>
+        /// ModelResourceDesc class contains metadata of the model
+        /// </summary>
+        private ModelResourcesDesc resourcesDescs;
+
+        /// <summary>
+        /// Initializes a new instance of the Model class.
+        /// </summary>
+        public NetworkModel()
+        {
+            networkDataModel = new Dictionary<DMSType, Container>();
+            resourcesDescs = new ModelResourcesDesc();
+            //Initialize();
+        }
+        /*
+        #region Find
+        
 		public bool EntityExists(long globalId)
 		{
 			DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(globalId);
@@ -309,7 +309,7 @@ namespace FTN.Services.NetworkModelService
 
 			return updateResult;
 		}
-
+        
         /// <summary>
         /// Inserts entity into the network model.
         /// </summary>
@@ -686,7 +686,7 @@ namespace FTN.Services.NetworkModelService
 				}
 			}		
 		}
-
+        /*
 		private void SaveDelta(Delta delta)
 		{
 			bool fileExisted = false;
@@ -766,7 +766,7 @@ namespace FTN.Services.NetworkModelService
 
 			return result;
 		}
-
+        
 		private Dictionary<short, int> GetCounters()
 		{
 			Dictionary<short, int> typesCounters = new Dictionary<short, int>();
@@ -782,7 +782,7 @@ namespace FTN.Services.NetworkModelService
 			}
 
 			return typesCounters;
-		}
+		}*/
 
-	}
+    }
 }

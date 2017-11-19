@@ -120,7 +120,7 @@ namespace FTN.Services.NetworkModelService
                 foreach (long globalId in resultIDs)
                 {
                     propertyIds = class2PropertyIDs[(DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(globalId)];
-                    result.Add(networkModel.GetValues(globalId, propertyIds));
+                    //result.Add(networkModel.GetValues(globalId, propertyIds));
                 }
 
 				return result;
