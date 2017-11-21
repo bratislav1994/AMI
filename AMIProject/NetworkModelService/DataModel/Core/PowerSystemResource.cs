@@ -44,7 +44,7 @@ namespace TC57CIM.IEC61970.Core {
             if (base.Equals(obj))
             {
                 PowerSystemResource x = (PowerSystemResource)obj;
-                return (CompareHelper.CompareLists(x.measurements,this.measurements,true);
+                return (CompareHelper.CompareLists(x.measurements,this.measurements,true));
             }
             else
             {
