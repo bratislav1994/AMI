@@ -11,6 +11,7 @@ using System.Text;
 using System.IO;
 using TC57CIM.IEC61970.Wires;
 using FTN.Common;
+using TC57CIM.IEC61970.Core;
 
 namespace TC57CIM.IEC61970.Wires {
 	/// <summary>
