@@ -14,20 +14,16 @@ using System.IO;
 
 using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Wires;
+using FTN.Common;
+
 namespace TC57CIM.IEC61970.Core {
 	/// <summary>
 	/// A subset of a geographical region of a power system network model.
 	/// </summary>
 	public class SubGeographicalRegion : IdentifiedObject {
-
-		/// <summary>
-		/// The substations in this sub-geographical region.
-		/// </summary>
-		public TC57CIM.IEC61970.Core.Substation Substations;
-		/// <summary>
-		/// The lines within the sub-geographical region.
-		/// </summary>
-		public TC57CIM.IEC61970.Wires.Line Lines;
+        
+        private long geoRegion = 0;
+        private List<long> substations = new List<long>();
 
 		public SubGeographicalRegion(){
 
@@ -36,6 +32,147 @@ namespace TC57CIM.IEC61970.Core {
 		~SubGeographicalRegion(){
 
 		}
+
+        public SubGeographicalRegion(long globalId) : base(globalId)
+        {
+        }
+        
+        public long GeoRegion
+        {
+            get { return geoRegion; }
+            set { geoRegion = value; }
+        }
+
+        public List<long> Substations
+        {
+            get { return substations; }
+            set { substations = value; }
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(base.Equals(obj))
+            {
+                SubGeographicalRegion x = (SubGeographicalRegion)obj;
+                return (x.geoRegion == this.geoRegion &&
+                        CompareHelper.CompareLists(x.substations, this.substations));
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool HasProperty(ModelCode t)
+        {
+            switch (t)
+            {
+                case ModelCode.SUBGEOREGION_GEOREG:
+                case ModelCode.SUBGEOREGION_SUBS:
+                    return true;
+
+                default:
+                    return base.HasProperty(t);
+            }
+        }
+
+        public override void GetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.SUBGEOREGION_GEOREG:
+                    property.SetValue(geoRegion);
+                    break;
+
+                case ModelCode.SUBGEOREGION_SUBS:
+                    property.SetValue(substations);
+                    break;
+
+                default:
+                    base.GetProperty(property);
+                    break;
+            }
+        }
+
+        public override void SetProperty(Property property)
+        {
+            switch(property.Id)
+            {
+                case ModelCode.SUBGEOREGION_GEOREG:
+                    geoRegion = property.AsReference();
+                    break;
+
+                default:
+                    base.SetProperty(property);
+                    break;
+            }
+        }
+
+        public override bool IsReferenced
+        {
+            get
+            {
+                return substations.Count != 0 || base.IsReferenced;
+            }
+        }
+       
+        public override void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType)
+        {
+            if(geoRegion != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
+            {
+                references[ModelCode.SUBGEOREGION_GEOREG] = new List<long>();
+                references[ModelCode.SUBGEOREGION_GEOREG].Add(geoRegion);
+            }
+
+            if(substations != null && substations.Count != 0 && (refType == TypeOfReference.Target || refType == TypeOfReference.Both))
+            {
+                references[ModelCode.SUBGEOREGION_SUBS] = substations.GetRange(0, substations.Count);
+            }
+
+            base.GetReferences(references, refType);
+        }
+
+        public override void AddReference(ModelCode referenceId, long globalId)
+        {
+            switch (referenceId)
+            {
+                case ModelCode.SUBSTATION_SUBGEOREGION:
+                    substations.Add(globalId);
+                    break;
+
+                default:
+                    base.AddReference(referenceId, globalId);
+                    break;
+            }
+        }
+
+        public override void RemoveReference(ModelCode referenceId, long globalId)
+        {
+            switch (referenceId)
+            {
+                case ModelCode.SUBSTATION_SUBGEOREGION:
+
+                    if(substations.Contains(globalId))
+                    {
+                        substations.Remove(globalId);
+                    }
+                    else
+                    {
+                        CommonTrace.WriteTrace(CommonTrace.TraceWarning, "Entity (GID = 0x{0:x16}) doesn't contain reference 0x{1:x16}.", this.GlobalId, globalId);
+                    }
+
+                    break;
+
+                default:
+                    base.RemoveReference(referenceId, globalId);
+                    break;
+            }
+        }
 
 	}//end SubGeographicalRegion
 
