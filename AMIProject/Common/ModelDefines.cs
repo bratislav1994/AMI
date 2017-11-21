@@ -26,66 +26,124 @@ namespace FTN.Common
 		IDOBJ								= 0x1000000000000000,
 		IDOBJ_GID							= 0x1000000000000104,
 		IDOBJ_MRID							= 0x1000000000000207,
-        
-        CONTROL                             = 0x1100000000080000,
-        CONTROL_REGULCONDEQ                 = 0x1100000000080109,
+        IDOBJ_NAME                          = 0x00,
 
-        TERMINAL                            = 0x1200000000090000,
-        TERMINAL_CONDEQ                     = 0x1200000000090109,
+        MEASUREMENT                         = 0x00,
+        MEASUREMENT_UNITSYMBOL              = 0x00,
 
-		PSR									= 0x1300000000000000,
+        BASEVOLTAGE                         = 0x00,
+        BASEVOLTAGE_NOMINALVOL              = 0x00,
 
-        EQUIPMENT                           = 0x1310000000000000,
-        EQUIPMENT_AGGREGATE                 = 0x1310000000000101,
-        EQUIPMENT_NORMINSERVICE             = 0x1310000000000201,
+        TRANSFORMEREND                      = 0x00,
 
-        CONDEQ                              = 0x1311000000000000,
-        CONDEQ_TERMINALS                    = 0x1311000000000119,
+        PSR                                 = 0x00,
 
-        REGULCONDEQ                         = 0x1311100000000000,
-        REGULCONDEQ_CONTROLS                = 0x1311100000000119,
-        REGULCONDEQ_REGULCONTROL            = 0x1311100000000209,
+        SUBGEOREGION                        = 0x00,
 
-        ROTATINGMACHINE                     = 0x1311110000000000,
+        GEOREGION                           = 0x00,
 
-        SYNMACHINE                          = 0x1311111000040000,
-        SYNMACHINE_REACTCAPABCURVE          = 0x1311111000040109,
+        //------------------------------------------------
+        ANALOG                              = 0x00,
+        ANALOG_MAXVALUE                     = 0x00,
+        ANALOG_MINVALUE                     = 0x00,
+        ANALOG_NORMALVALUE                  = 0x00,
 
-        FREQCONVERTER                       = 0x1311120000050000,
+        DISCRETE                            = 0x00,
+        DISCRETE_MAXVALUE                   = 0x00,
+        DISCRETE_MINVALUE                   = 0x00,
+        DISCRETE_NORMALVALUE                = 0x00,
 
-        SHUNTCOMPENSATOR                    = 0x1311130000060000,
+        POWERTRANSEND                       = 0x00,
 
-        STATICVARCOMPENSATOR                = 0x1311140000070000,
+        EQUIPMENT                           = 0x00,
 
-        REGULCONTROL                        = 0x1320000000010000,
-        REGULCONTROL_DISCRETE               = 0x1320000000010101,
-        REGULCONTROL_MODE                   = 0x132000000001020a,
-        REGULCONTROL_MONITPHASE             = 0x132000000001030a,
-        REGULCONTROL_TARGETRANGE            = 0x1320000000010405,
-        REGULCONTROL_TARGETVALUE            = 0x1320000000010505,
-        REGULCONTROL_REGULCONDEQS           = 0x1320000000010619,
+        TAPCHANGER                          = 0x00,
+        TAPCHANGER_HIGHSTEP                 = 0x00,
+        TAPCHANGER_LOWSTEP                  = 0x00,
+        TAPCHANGER_NEUTRALSTEP              = 0x00,
+        TAPCHANGER_NORMALSTEP               = 0x00,
 
-        CURVE                               = 0x1400000000000000,
-        CURVE_CURVESTYLE                    = 0x140000000000010a,
-        CURVE_XMYLTIPLIER                   = 0x140000000000020a,
-        CURVE_XUNIT                         = 0x140000000000030a,
-        CURVE_Y1MULTIPLIER                  = 0x140000000000040a,
-        CURVE_Y1UNIT                        = 0x140000000000050a,
-        CURVE_Y2MULTIPLIER                  = 0x140000000000060a,
-        CURVE_Y2UNIT                        = 0x140000000000070a,
-        CURVE_Y3MULTIPLIER                  = 0x140000000000080a,
-        CURVE_Y3UNIT                        = 0x140000000000090a,
-        CURVE_CURVEDATAS                    = 0x1400000000000a19,
+        CONNODECONTAINER                    = 0x00,
 
-        REACTCAPABCURVE                     = 0x1410000000020000,
-        REACTCAPABCURVE_SYNMACHINES         = 0x1410000000020119,
+        //------------------------------------------------
+        CONDEQ                              = 0x00,
 
-        CURVEDATA                           = 0x1500000000030000,
-        CURVEDATA_XVALUE                    = 0x1500000000030105,
-        CURVEDATA_Y1VALUE                   = 0x1500000000030205,
-        CURVEDATA_Y2VALUE                   = 0x1500000000030305,
-        CURVEDATA_Y3VALUE                   = 0x1500000000030405,
-        CURVEDATA_CURVE                     = 0x1500000000030509,
+        EQCONTAINER                         = 0x00,
+
+        RATIOTAPCHANGER                     = 0x00,
+
+        //-------------------------------------------------
+        ENERGYCONS                          = 0x00,
+        ENERGYCONS_PFIXED                   = 0x00,
+        ENERGYCONS_QFIXED                   = 0x00,
+
+        POWERTRANSFORMER                    = 0x00,
+
+        VOLTAGELEVEL                        = 0x00,
+
+        SUBSTATION                          = 0x00,
+
+
+
+  //      CONTROL                             = 0x1100000000080000,
+  //      CONTROL_REGULCONDEQ                 = 0x1100000000080109,
+
+  //      TERMINAL                            = 0x1200000000090000,
+  //      TERMINAL_CONDEQ                     = 0x1200000000090109,
+
+		//PSR									= 0x1300000000000000,
+
+  //      EQUIPMENT                           = 0x1310000000000000,
+  //      EQUIPMENT_AGGREGATE                 = 0x1310000000000101,
+  //      EQUIPMENT_NORMINSERVICE             = 0x1310000000000201,
+
+  //      CONDEQ                              = 0x1311000000000000,
+  //      CONDEQ_TERMINALS                    = 0x1311000000000119,
+
+  //      REGULCONDEQ                         = 0x1311100000000000,
+  //      REGULCONDEQ_CONTROLS                = 0x1311100000000119,
+  //      REGULCONDEQ_REGULCONTROL            = 0x1311100000000209,
+
+  //      ROTATINGMACHINE                     = 0x1311110000000000,
+
+  //      SYNMACHINE                          = 0x1311111000040000,
+  //      SYNMACHINE_REACTCAPABCURVE          = 0x1311111000040109,
+
+  //      FREQCONVERTER                       = 0x1311120000050000,
+
+  //      SHUNTCOMPENSATOR                    = 0x1311130000060000,
+
+  //      STATICVARCOMPENSATOR                = 0x1311140000070000,
+
+  //      REGULCONTROL                        = 0x1320000000010000,
+  //      REGULCONTROL_DISCRETE               = 0x1320000000010101,
+  //      REGULCONTROL_MODE                   = 0x132000000001020a,
+  //      REGULCONTROL_MONITPHASE             = 0x132000000001030a,
+  //      REGULCONTROL_TARGETRANGE            = 0x1320000000010405,
+  //      REGULCONTROL_TARGETVALUE            = 0x1320000000010505,
+  //      REGULCONTROL_REGULCONDEQS           = 0x1320000000010619,
+
+  //      CURVE                               = 0x1400000000000000,
+  //      CURVE_CURVESTYLE                    = 0x140000000000010a,
+  //      CURVE_XMYLTIPLIER                   = 0x140000000000020a,
+  //      CURVE_XUNIT                         = 0x140000000000030a,
+  //      CURVE_Y1MULTIPLIER                  = 0x140000000000040a,
+  //      CURVE_Y1UNIT                        = 0x140000000000050a,
+  //      CURVE_Y2MULTIPLIER                  = 0x140000000000060a,
+  //      CURVE_Y2UNIT                        = 0x140000000000070a,
+  //      CURVE_Y3MULTIPLIER                  = 0x140000000000080a,
+  //      CURVE_Y3UNIT                        = 0x140000000000090a,
+  //      CURVE_CURVEDATAS                    = 0x1400000000000a19,
+
+  //      REACTCAPABCURVE                     = 0x1410000000020000,
+  //      REACTCAPABCURVE_SYNMACHINES         = 0x1410000000020119,
+
+  //      CURVEDATA                           = 0x1500000000030000,
+  //      CURVEDATA_XVALUE                    = 0x1500000000030105,
+  //      CURVEDATA_Y1VALUE                   = 0x1500000000030205,
+  //      CURVEDATA_Y2VALUE                   = 0x1500000000030305,
+  //      CURVEDATA_Y3VALUE                   = 0x1500000000030405,
+  //      CURVEDATA_CURVE                     = 0x1500000000030509,
 	}
 
     [Flags]
