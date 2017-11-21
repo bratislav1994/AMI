@@ -58,7 +58,7 @@ namespace TC57CIM.IEC61970.Meas {
             if (base.Equals(obj))
             {
                 Measurement x = (Measurement)obj;
-                return true;
+                return (x.unitSymbol == this.unitSymbol && x.powerSystemResource == this.powerSystemResource);
             }
             else
             {

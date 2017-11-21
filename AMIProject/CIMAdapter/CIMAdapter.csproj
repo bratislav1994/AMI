@@ -73,7 +73,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AMIProfileCIMProfile_AMIProfile">
-      <HintPath>..\AMIProfileCIMProfile_AMIProfile.dll</HintPath>
+      <HintPath>..\CommonFiles\AMIProfileCIMProfile_AMIProfile.dll</HintPath>
     </Reference>
     <Reference Include="PowerTransformerCIMProfile_Labs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
