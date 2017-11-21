@@ -45,18 +45,88 @@ namespace TC57CIM.IEC61970.Meas {
 		/// The unit of measure of the measured quantity.
 		/// </summary>
 		public UnitSymbol unitSymbol;
-		/// <summary>
-		/// One or more measurements may be associated with a terminal in the network.
-		/// </summary>
 
-		public Measurement(){
+        private long powerSystemResource = 0;
 
+		public Measurement(long globalId)
+            : base(globalId)
+        { 
 		}
 
-		~Measurement(){
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                Measurement x = (Measurement)obj;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
-		}
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
-	}//end Measurement
+        #region IAccess implementation
+
+        public override bool HasProperty(ModelCode property)
+        {
+            switch (property)
+            {
+                case ModelCode.MEASUREMENT_UNITSYMBOL:
+                    return true;
+                default:
+                    return base.HasProperty(property);
+            }
+        }
+
+        public override void GetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.MEASUREMENT_UNITSYMBOL:
+                    property.SetValue((int)unitSymbol);
+                    break;
+                default:
+                    base.GetProperty(property);
+                    break;
+            }
+        }
+
+        public override void SetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.MEASUREMENT_UNITSYMBOL:
+                    unitSymbol = (UnitSymbol)property.AsInt();
+                    break;
+                default:
+                    base.SetProperty(property);
+                    break;
+            }
+        }
+
+        #endregion IAccess implementation	
+
+        #region IReference implementation
+
+        public override void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType)
+        {
+            if (powerSystemResource != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
+            {
+                references[ModelCode.MEASUREMENT_PSR] = new List<long>();
+                references[ModelCode.MEASUREMENT_PSR].Add(powerSystemResource);
+            }
+
+            base.GetReferences(references, refType);
+        }
+
+        #endregion IReference implementation		
+
+    }//end Measurement
 
 }//end namespace Meas

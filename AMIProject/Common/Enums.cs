@@ -8,7 +8,7 @@ namespace FTN.Common
     public enum UnitSymbol : int
     {
 
-        P,
+        P = 0,
         Q,
         V
 

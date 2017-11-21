@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using TC57CIM.IEC61970.Meas;
+using FTN.Common;
+
 namespace TC57CIM.IEC61970.Meas {
 	/// <summary>
 	/// Discrete represents a discrete Measurement, i.e. a Measurement reprsenting
@@ -21,25 +23,120 @@ namespace TC57CIM.IEC61970.Meas {
 		/// Normal value range maximum for any of the MeasurementValue.values. Used for
 		/// scaling, e.g. in bar graphs or of telemetered raw values.
 		/// </summary>
-		public int maxValue;
+		public float maxValue;
 		/// <summary>
 		/// Normal value range minimum for any of the MeasurementValue.values. Used for
 		/// scaling, e.g. in bar graphs or of telemetered raw values.
 		/// </summary>
-		public int minValue;
+		public float minValue;
 		/// <summary>
 		/// Normal measurement value, e.g., used for percentage calculations.
 		/// </summary>
-		public int normalValue;
+		public float normalValue;
 
-		public Discrete(){
+		public Discrete(long globalId)
+        :base(globalId)
+        {
+        }
 
-		}
+        public float MaxValue
+        {
+            get { return maxValue; }
 
-		~Discrete(){
+            set { maxValue = value; }
+        }
 
-		}
+        public float MinValue
+        {
+            get { return minValue; }
 
-	}//end Discrete
+            set { minValue = value; }
+        }
+
+        public float NormalValue
+        {
+            get { return normalValue; }
+
+            set { normalValue = value; }
+        }
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                Discrete x = (Discrete)obj;
+                return (x.maxValue == this.maxValue && x.minValue == this.minValue && x.normalValue == this.normalValue);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        #region IAccess implementation
+
+        public override bool HasProperty(ModelCode t)
+        {
+            switch (t)
+            {
+                case ModelCode.DISCRETE_MAXVALUE:
+                case ModelCode.DISCRETE_MINVALUE:
+                case ModelCode.DISCRETE_NORMALVALUE:
+                    return true;
+
+                default:
+                    return base.HasProperty(t);
+
+            }
+        }
+
+        public override void GetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.DISCRETE_MAXVALUE:
+                    property.SetValue(maxValue);
+                    break;
+                case ModelCode.DISCRETE_MINVALUE:
+                    property.SetValue(minValue);
+                    break;
+                case ModelCode.DISCRETE_NORMALVALUE:
+                    property.SetValue(normalValue);
+                    break;
+
+                default:
+                    base.GetProperty(property);
+                    break;
+            }
+        }
+
+        public override void SetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.DISCRETE_MAXVALUE:
+
+                    maxValue = property.AsFloat();
+                    break;
+                case ModelCode.DISCRETE_MINVALUE:
+                    minValue = property.AsFloat();
+                    break;
+                case ModelCode.DISCRETE_NORMALVALUE:
+                    normalValue = property.AsFloat();
+                    break;
+
+                default:
+                    base.SetProperty(property);
+                    break;
+            }
+        }
+
+        #endregion IAccess implementation
+
+    }//end Discrete
 
 }//end namespace Meas

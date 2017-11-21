@@ -135,6 +135,7 @@ namespace TC57CIM.IEC61970.Core {
             {
                 case ModelCode.IDOBJ_GID:
                 case ModelCode.IDOBJ_MRID:
+                case ModelCode.IDOBJ_NAME:
                     return true;
 
                 default:
@@ -152,7 +153,9 @@ namespace TC57CIM.IEC61970.Core {
                 case ModelCode.IDOBJ_MRID:
                     property.SetValue(mRID);
                     break;
-
+                case ModelCode.IDOBJ_NAME:
+                    property.SetValue(name);
+                    break;
                 default:
                     string message = string.Format("Unknown property id = {0} for entity (GID = 0x{1:x16}).", property.Id.ToString(), this.GlobalId);
                     CommonTrace.WriteTrace(CommonTrace.TraceError, message);
@@ -167,7 +170,9 @@ namespace TC57CIM.IEC61970.Core {
                 case ModelCode.IDOBJ_MRID:
                     mRID = property.AsString();
                     break;
-
+                case ModelCode.IDOBJ_NAME:
+                    name = property.AsString();
+                    break;
                 default:
                     string message = string.Format("Unknown property id = {0} for entity (GID = 0x{1:x16}).", property.Id.ToString(), this.GlobalId);
                     CommonTrace.WriteTrace(CommonTrace.TraceError, message);

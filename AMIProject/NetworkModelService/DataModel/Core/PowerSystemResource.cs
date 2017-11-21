@@ -25,9 +25,18 @@ namespace TC57CIM.IEC61970.Core {
 	/// </summary>
 	public class PowerSystemResource : IdentifiedObject {
 
+        private List<long> measurements = new List<long>();
+
         public PowerSystemResource(long globalId)
             : base(globalId)
         {
+        }
+
+        public List<long> Measurements
+        {
+            get { return measurements; }
+
+            set { measurements = value; }
         }
 
         public override bool Equals(object obj)
@@ -35,7 +44,7 @@ namespace TC57CIM.IEC61970.Core {
             if (base.Equals(obj))
             {
                 PowerSystemResource x = (PowerSystemResource)obj;
-                return true;
+                return (CompareHelper.CompareLists(x.measurements,this.measurements,true);
             }
             else
             {
@@ -54,6 +63,9 @@ namespace TC57CIM.IEC61970.Core {
         {
             switch (property)
             {
+                case ModelCode.PSR_MEASUREMENTS:
+                    return true;
+              
                 default:
                     return base.HasProperty(property);
             }
@@ -63,6 +75,9 @@ namespace TC57CIM.IEC61970.Core {
         {
             switch (property.Id)
             {
+                case ModelCode.PSR_MEASUREMENTS:
+                    property.SetValue(measurements);
+                    break;
                 default:
                     base.GetProperty(property);
                     break;
@@ -81,6 +96,64 @@ namespace TC57CIM.IEC61970.Core {
 
         #endregion IAccess implementation
 
-	}//end PowerSystemResource
+        #region IReference implementation
+
+        public override bool IsReferenced
+        {
+            get
+            {
+                return (measurements.Count > 0) || base.IsReferenced;
+            }
+        }
+
+        public override void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType)
+        {
+            if (measurements != null && measurements.Count > 0 && (refType == TypeOfReference.Target || refType == TypeOfReference.Both))
+            {
+                references[ModelCode.PSR_MEASUREMENTS] = measurements.GetRange(0, measurements.Count);
+            }
+
+            base.GetReferences(references, refType);
+        }
+
+        public override void AddReference(ModelCode referenceId, long globalId)
+        {
+            switch (referenceId)
+            {
+                case ModelCode.PSR_MEASUREMENTS:
+                    measurements.Add(globalId);
+                    break;
+
+                default:
+                    base.AddReference(referenceId, globalId);
+                    break;
+            }
+        }
+
+        public override void RemoveReference(ModelCode referenceId, long globalId)
+        {
+            switch (referenceId)
+            {
+                case ModelCode.PSR_MEASUREMENTS:
+
+                    if (measurements.Contains(globalId))
+                    {
+                        measurements.Remove(globalId);
+                    }
+                    else
+                    {
+                        CommonTrace.WriteTrace(CommonTrace.TraceWarning, "Entity (GID = 0x{0:x16}) doesn't contain reference 0x{1:x16}.", this.GlobalId, globalId);
+                    }
+
+                    break;
+                default:
+                    base.RemoveReference(referenceId, globalId);
+                    break;
+            }
+        }
+
+        #endregion IReference implementation
+
+    }//end PowerSystemResource
 
 }//end namespace Core
