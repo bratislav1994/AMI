@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using TC57CIM.IEC61970.Wires;
+using FTN.Common;
 
 namespace TC57CIM.IEC61970.Wires {
 	/// <summary>
@@ -61,7 +62,7 @@ namespace TC57CIM.IEC61970.Wires {
         {
             switch (t)
             {
-                case ModelCode.RATIOTAPCH_TRANSEND:
+                case ModelCode.RATIOTAPCHANGER_TRANSEND:
                     return true;
 
                 default:
@@ -74,7 +75,7 @@ namespace TC57CIM.IEC61970.Wires {
         {
             switch (property.Id)
             {
-                case ModelCode.RATIOTAPCH_TRANSEND:
+                case ModelCode.RATIOTAPCHANGER_TRANSEND:
                     property.SetValue(transformerEnd);
                     break;
 
@@ -89,7 +90,7 @@ namespace TC57CIM.IEC61970.Wires {
             switch (property.Id)
             {
 
-                case ModelCode.RATIOTAPCH_TRANSEND:
+                case ModelCode.RATIOTAPCHANGER_TRANSEND:
                     transformerEnd = property.AsReference();
                     break;
 
@@ -107,8 +108,8 @@ namespace TC57CIM.IEC61970.Wires {
         {
             if (transformerEnd != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
             {
-                references[ModelCode.RATIOTAPCH_TRANSEND] = new List<long>();
-                references[ModelCode.RATIOTAPCH_TRANSEND].Add(transformerEnd);
+                references[ModelCode.RATIOTAPCHANGER_TRANSEND] = new List<long>();
+                references[ModelCode.RATIOTAPCHANGER_TRANSEND].Add(transformerEnd);
             }
 
             base.GetReferences(references, refType);

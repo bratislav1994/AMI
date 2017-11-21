@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using FTN.Common;
 
 namespace TC57CIM.IEC61970.Core {
 	/// <summary>
@@ -75,8 +76,8 @@ namespace TC57CIM.IEC61970.Core {
         {
             switch (t)
             {
-                case ModelCode.VOLLEVEL_BASEVOL:
-                case ModelCode.VOLLEVEL_SUBSTATION:
+                case ModelCode.VOLTAGELEVEL_BASEVOLTAGE:
+                case ModelCode.VOLTAGELEVEL_SUBSTATION:
                     return true;
 
                 default:
@@ -89,10 +90,10 @@ namespace TC57CIM.IEC61970.Core {
         {
             switch (property.Id)
             {
-                case ModelCode.VOLLEVEL_BASEVOL:
+                case ModelCode.VOLTAGELEVEL_BASEVOLTAGE:
                     property.SetValue(baseVoltage);
                     break;
-                case ModelCode.VOLLEVEL_SUBSTATION:
+                case ModelCode.VOLTAGELEVEL_SUBSTATION:
                     property.SetValue(substation);
                     break;
 
@@ -106,10 +107,10 @@ namespace TC57CIM.IEC61970.Core {
         {
             switch (property.Id)
             {
-                case ModelCode.VOLLEVEL_BASEVOL:
+                case ModelCode.VOLTAGELEVEL_BASEVOLTAGE:
                     baseVoltage = property.AsReference();
                     break;
-                case ModelCode.VOLLEVEL_SUBSTATION:
+                case ModelCode.VOLTAGELEVEL_SUBSTATION:
                     substation = property.AsReference();
                     break;
 
@@ -127,14 +128,14 @@ namespace TC57CIM.IEC61970.Core {
         {
             if (baseVoltage != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
             {
-                references[ModelCode.VOLLEVEL_BASEVOL] = new List<long>();
-                references[ModelCode.VOLLEVEL_BASEVOL].Add(baseVoltage);
+                references[ModelCode.VOLTAGELEVEL_BASEVOLTAGE] = new List<long>();
+                references[ModelCode.VOLTAGELEVEL_BASEVOLTAGE].Add(baseVoltage);
             }
 
             if (substation != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
             {
-                references[ModelCode.VOLLEVEL_SUBSTATION] = new List<long>();
-                references[ModelCode.VOLLEVEL_SUBSTATION].Add(substation);
+                references[ModelCode.VOLTAGELEVEL_SUBSTATION] = new List<long>();
+                references[ModelCode.VOLTAGELEVEL_SUBSTATION].Add(substation);
             }
 
             base.GetReferences(references, refType);
