@@ -11,6 +11,7 @@ using System.Text;
 using System.IO;
 using TC57CIM.IEC61970.Wires;
 using TC57CIM.IEC61970.Core;
+using FTN.Common;
 
 namespace TC57CIM.IEC61970.Wires {
 	/// <summary>
@@ -79,8 +80,8 @@ namespace TC57CIM.IEC61970.Wires {
         {
             switch (t)
             {
-                case ModelCode.TRANSEND_BASEVOL:
-                case ModelCode.TRANSEND_RATIOTAPCH:
+                case ModelCode.TRANSFORMEREND_BASEVOLT:
+                case ModelCode.TRANSFORMEREND_RATIOTAPCHANGER:
                     return true;
 
                 default:
@@ -93,10 +94,10 @@ namespace TC57CIM.IEC61970.Wires {
         {
             switch (property.Id)
             {
-                case ModelCode.TRANSEND_BASEVOL:
+                case ModelCode.TRANSFORMEREND_BASEVOLT:
                     property.SetValue(baseVoltage);
                     break;
-                case ModelCode.TRANSEND_RATIOTAPCH:
+                case ModelCode.TRANSFORMEREND_RATIOTAPCHANGER:
                     property.SetValue(ratioTapChanger);
                     break;
 
@@ -110,10 +111,10 @@ namespace TC57CIM.IEC61970.Wires {
         {
             switch (property.Id)
             {
-                case ModelCode.TRANSEND_BASEVOL:
+                case ModelCode.TRANSFORMEREND_BASEVOLT:
                     baseVoltage = property.AsReference();
                     break;
-                case ModelCode.TRANSEND_RATIOTAPCH:
+                case ModelCode.TRANSFORMEREND_RATIOTAPCHANGER:
                     ratioTapChanger = property.AsReference();
                     break;
 
@@ -131,14 +132,14 @@ namespace TC57CIM.IEC61970.Wires {
         {
             if (baseVoltage != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
             {
-                references[ModelCode.TRANSEND_BASEVOL] = new List<long>();
-                references[ModelCode.TRANSEND_BASEVOL].Add(baseVoltage);
+                references[ModelCode.TRANSFORMEREND_BASEVOLT] = new List<long>();
+                references[ModelCode.TRANSFORMEREND_BASEVOLT].Add(baseVoltage);
             }
 
             if (ratioTapChanger != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
             {
-                references[ModelCode.TRANSEND_RATIOTAPCH] = new List<long>();
-                references[ModelCode.TRANSEND_RATIOTAPCH].Add(ratioTapChanger);
+                references[ModelCode.TRANSFORMEREND_RATIOTAPCHANGER] = new List<long>();
+                references[ModelCode.TRANSFORMEREND_RATIOTAPCHANGER].Add(ratioTapChanger);
             }
 
             base.GetReferences(references, refType);
