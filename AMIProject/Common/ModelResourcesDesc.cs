@@ -865,16 +865,18 @@ namespace FTN.Common
 		# region Initialization of metadata
 
 		private void InitializeTypeIdsInInsertOrder()
-		{			
-			typeIdsInInsertOrder.Add(ModelCode.REGULCONTROL);
-			typeIdsInInsertOrder.Add(ModelCode.REACTCAPABCURVE);
-			typeIdsInInsertOrder.Add(ModelCode.CURVEDATA);
-			typeIdsInInsertOrder.Add(ModelCode.SYNMACHINE);
-            typeIdsInInsertOrder.Add(ModelCode.FREQCONVERTER);
-            typeIdsInInsertOrder.Add(ModelCode.SHUNTCOMPENSATOR);
-            typeIdsInInsertOrder.Add(ModelCode.STATICVARCOMPENSATOR);
-            typeIdsInInsertOrder.Add(ModelCode.CONTROL);
-            typeIdsInInsertOrder.Add(ModelCode.TERMINAL);
+		{
+            typeIdsInInsertOrder.Add(ModelCode.GEOREGION);
+            typeIdsInInsertOrder.Add(ModelCode.SUBGEOREGION);
+            typeIdsInInsertOrder.Add(ModelCode.BASEVOLTAGE);
+            typeIdsInInsertOrder.Add(ModelCode.SUBSTATION);
+            typeIdsInInsertOrder.Add(ModelCode.VOLTAGELEVEL);
+            typeIdsInInsertOrder.Add(ModelCode.ENERGYCONS);
+            typeIdsInInsertOrder.Add(ModelCode.POWERTRANSFORMER);
+            typeIdsInInsertOrder.Add(ModelCode.POWERTRANSEND);
+            typeIdsInInsertOrder.Add(ModelCode.RATIOTAPCHANGER);
+            typeIdsInInsertOrder.Add(ModelCode.ANALOG);
+            typeIdsInInsertOrder.Add(ModelCode.DISCRETE);
         }
 
 		private void InitializeNotSettablePropertyIds()

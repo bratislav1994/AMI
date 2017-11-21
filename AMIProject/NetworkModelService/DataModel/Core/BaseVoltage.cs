@@ -85,8 +85,8 @@ namespace TC57CIM.IEC61970.Core {
                 BaseVoltage x = (BaseVoltage)obj;
                 return ((x.NominalVoltage == this.NominalVoltage) &&
                         (CompareHelper.CompareLists(x.conductingEquipments, this.conductingEquipments)) &&
-                        CompareHelper.CompareLists(x.transformerEnds, this.transformerEnds)) &&
-                        CompareHelper.CompareLists(x.voltageLevels, this.voltageLevels)));
+                        (CompareHelper.CompareLists(x.transformerEnds, this.transformerEnds)) &&
+                        (CompareHelper.CompareLists(x.voltageLevels, this.voltageLevels)));
             }
             else
             {
@@ -179,7 +179,7 @@ namespace TC57CIM.IEC61970.Core {
             if (voltageLevels != null && voltageLevels.Count > 0 &&
                 (refType == TypeOfReference.Target || refType == TypeOfReference.Both))
             {
-                references[ModelCode.BASEVOLTAGE_VOLLEVELS] = voltageLevels.GetRange(0, voltageLevels.Count);
+                references[ModelCode.BASEVOLTAGE_VOLTLEVELS] = voltageLevels.GetRange(0, voltageLevels.Count);
             }
 
             base.GetReferences(references, refType);
