@@ -10,9 +10,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-
-
-using TC57CIM.IEC61970.Core;
 namespace TC57CIM.IEC61970.Core {
 	/// <summary>
 	/// A collection of equipment at one common system voltage forming a switchgear.
@@ -20,24 +17,131 @@ namespace TC57CIM.IEC61970.Core {
 	/// regulation and protection devices as well as assemblies of all these.
 	/// </summary>
 	public class VoltageLevel : EquipmentContainer {
+        
+		private long baseVoltage;
+        private long substation;
 
-		/// <summary>
-		/// The bays within this voltage level.
-		/// </summary>
-		public TC57CIM.IEC61970.Core.Bay Bays;
-		/// <summary>
-		/// The base voltage used for all equipment within the voltage level.
-		/// </summary>
-		public TC57CIM.IEC61970.Core.BaseVoltage BaseVoltage;
+		public VoltageLevel(long globalId) : base(globalId)
+        {
+        }
 
-		public VoltageLevel(){
+        public long BaseVoltage
+        {
+            get
+            {
+                return baseVoltage;
+            }
 
-		}
+            set
+            {
+                baseVoltage = value;
+            }
+        }
 
-		~VoltageLevel(){
+        public long Substation
+        {
+            get
+            {
+                return substation;
+            }
 
-		}
+            set
+            {
+                substation = value;
+            }
+        }
 
-	}//end VoltageLevel
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                VoltageLevel x = (VoltageLevel)obj;
+                return (x.baseVoltage == this.baseVoltage && x.substation == this.substation);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        #region IAccess implementation
+
+        public override bool HasProperty(ModelCode t)
+        {
+            switch (t)
+            {
+                case ModelCode.VOLLEVEL_BASEVOL:
+                case ModelCode.VOLLEVEL_SUBSTATION:
+                    return true;
+
+                default:
+                    return base.HasProperty(t);
+
+            }
+        }
+
+        public override void GetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.VOLLEVEL_BASEVOL:
+                    property.SetValue(baseVoltage);
+                    break;
+                case ModelCode.VOLLEVEL_SUBSTATION:
+                    property.SetValue(substation);
+                    break;
+
+                default:
+                    base.GetProperty(property);
+                    break;
+            }
+        }
+
+        public override void SetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.VOLLEVEL_BASEVOL:
+                    baseVoltage = property.AsReference();
+                    break;
+                case ModelCode.VOLLEVEL_SUBSTATION:
+                    substation = property.AsReference();
+                    break;
+
+                default:
+                    base.SetProperty(property);
+                    break;
+            }
+        }
+
+        #endregion IAccess implementation
+
+        #region IReference implementation
+
+        public override void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType)
+        {
+            if (baseVoltage != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
+            {
+                references[ModelCode.VOLLEVEL_BASEVOL] = new List<long>();
+                references[ModelCode.VOLLEVEL_BASEVOL].Add(baseVoltage);
+            }
+
+            if (substation != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
+            {
+                references[ModelCode.VOLLEVEL_SUBSTATION] = new List<long>();
+                references[ModelCode.VOLLEVEL_SUBSTATION].Add(substation);
+            }
+
+            base.GetReferences(references, refType);
+        }
+
+        #endregion IReference implementation	
+
+    }//end VoltageLevel
 
 }//end namespace Core

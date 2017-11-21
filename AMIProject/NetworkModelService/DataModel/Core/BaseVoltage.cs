@@ -10,35 +10,250 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-
-
-using TC57CIM.IEC61970.Domain;
-using TC57CIM.IEC61970.Core;
 namespace TC57CIM.IEC61970.Core {
 	/// <summary>
 	/// Defines a system base voltage which is referenced.
 	/// </summary>
 	public class BaseVoltage : IdentifiedObject {
 
-		/// <summary>
-		/// The power system resource's base voltage.
-		/// </summary>
-		public TC57CIM.IEC61970.Domain.Voltage nominalVoltage;
-		/// <summary>
-		/// All conducting equipment with this base voltage.  Use only when there is no
-		/// voltage level container used and only one base voltage applies.  For example,
-		/// not used for transformers.
-		/// </summary>
-		public TC57CIM.IEC61970.Core.ConductingEquipment ConductingEquipment;
+        private float nominalVoltage;
+        private List<long> conductingEquipments = new List<long>();
+        private List<long> transformerEnds = new List<long>();
+        private List<long> voltageLevels = new List<long>();
 
-		public BaseVoltage(){
+        public BaseVoltage(long globalId) : base(globalId)
+        {
+        }
 
-		}
+        public float NominalVoltage
+        {
+            get
+            {
+                return nominalVoltage;
+            }
 
-		~BaseVoltage(){
+            set
+            {
+                nominalVoltage = value;
+            }
+        }
+        
+        public List<long> ConductingEquipments
+        {
+            get
+            {
+                return conductingEquipments;
+            }
 
-		}
+            set
+            {
+                conductingEquipments = value;
+            }
+        }
 
-	}//end BaseVoltage
+        public List<long> TransformerEnds
+        {
+            get
+            {
+                return transformerEnds;
+            }
+
+            set
+            {
+                transformerEnds = value;
+            }
+        }
+
+        public List<long> VoltageLevels
+        {
+            get
+            {
+                return voltageLevels;
+            }
+
+            set
+            {
+                voltageLevels = value;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                BaseVoltage x = (BaseVoltage)obj;
+                return ((x.NominalVoltage == this.NominalVoltage) &&
+                        (CompareHelper.CompareLists(x.conductingEquipments, this.conductingEquipments)) &&
+                        CompareHelper(CompareLists(x.transformerEnds, this.transformerEnds)) &&
+                        CompareHelper(CompareLists(x.voltageLevels, this.voltageLevels)));
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        #region IAccess implementation
+
+        public override bool HasProperty(ModelCode t)
+        {
+            switch (t)
+            {
+                case ModelCode.BASEVOLTAGE_NOMINALVOLTAGE:
+                case ModelCode.BASEVOLTAGE_CONDEQS:
+                case ModelCode.BASEVOLTAGE_TRANSENDS:
+                case ModelCode.BASEVOLTAGE_VOLLEVELS:
+                    return true;
+
+                default:
+                    return base.HasProperty(t);
+            }
+        }
+
+        public override void GetProperty(Property prop)
+        {
+            switch (prop.Id)
+            {
+                case ModelCode.BASEVOLTAGE_NOMINALVOLTAGE:
+                    prop.SetValue(nominalVoltage);
+                    break;
+                case ModelCode.BASEVOLTAGE_CONDEQS:
+                    prop.SetValue(conductingEquipments);
+                    break;
+                case ModelCode.BASEVOLTAGE_TRANSENDS:
+                    prop.SetValue(transformerEnds);
+                    break;
+                case ModelCode.BASEVOLTAGE_VOLLEVELS:
+                    prop.SetValue(voltageLevels);
+                    break;
+            }
+        }
+
+        public override void SetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.BASEVOLTAGE_NOMINALVOLTAGE:
+                    nominalVoltage = property.AsFloat();
+                    break;
+
+                default:
+                    base.SetProperty(property);
+                    break;
+            }
+        }
+
+        #endregion IAccess implementation	
+
+        #region IReference implementation
+
+        public override bool IsReferenced
+        {
+            get
+            {
+                return conductingEquipments.Count > 0 || transformerEnds.Count > 0 ||
+                       voltageLevels.Count > 0 || base.IsReferenced;
+            }
+        }
+
+        public override void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType)
+        {
+            if (conductingEquipments != null && conductingEquipments.Count > 0 && 
+                (refType == TypeOfReference.Target || refType == TypeOfReference.Both))
+            {
+                references[ModelCode.BASEVOLTAGE_CONDEQS] = conductingEquipments.GetRange(0, conductingEquipments.Count);
+            }
+
+            if (transformerEnds != null && transformerEnds.Count > 0 &&
+                (refType == TypeOfReference.Target || refType == TypeOfReference.Both))
+            {
+                references[ModelCode.BASEVOLTAGE_TRANSENDS] = transformerEnds.GetRange(0, transformerEnds.Count);
+            }
+
+            if (voltageLevels != null && voltageLevels.Count > 0 &&
+                (refType == TypeOfReference.Target || refType == TypeOfReference.Both))
+            {
+                references[ModelCode.BASEVOLTAGE_VOLLEVELS] = voltageLevels.GetRange(0, voltageLevels.Count);
+            }
+
+            base.GetReferences(references, refType);
+        }
+
+        public override void AddReference(ModelCode referenceId, long globalId)
+        {
+            switch (referenceId)
+            {
+                case ModelCode.CONDEQ_BASVOLTAGE:
+                    conductingEquipments.Add(globalId);
+                    break;
+                case ModelCode.TRANSEND_BASVOLTAGE:
+                    transformerEnds.Add(globalId);
+                    break;
+                case ModelCode.VOLLEVEL_BASVOLTAGE:
+                    voltageLevels.Add(globalId);
+                    break;
+
+                default:
+                    base.AddReference(referenceId, globalId);
+                    break;
+            }
+        }
+
+        public override void RemoveReference(ModelCode referenceId, long globalId)
+        {
+            switch (referenceId)
+            {
+                case ModelCode.CONDEQ_BASVOLTAGE:
+
+                    if (conductingEquipments.Contains(globalId))
+                    {
+                        conductingEquipments.Remove(globalId);
+                    }
+                    else
+                    {
+                        CommonTrace.WriteTrace(CommonTrace.TraceWarning, "Entity (GID = 0x{0:x16}) doesn't contain reference 0x{1:x16}.", this.GlobalId, globalId);
+                    }
+
+                    break;
+                case ModelCode.TRANSEND_BASVOLTAGE:
+
+                    if (transformerEnds.Contains(globalId))
+                    {
+                        transformerEnds.Remove(globalId);
+                    }
+                    else
+                    {
+                        CommonTrace.WriteTrace(CommonTrace.TraceWarning, "Entity (GID = 0x{0:x16}) doesn't contain reference 0x{1:x16}.", this.GlobalId, globalId);
+                    }
+
+                    break;
+                case ModelCode.VOLLEVEL_BASVOLTAGE:
+
+                    if (voltageLevels.Contains(globalId))
+                    {
+                        voltageLevels.Remove(globalId);
+                    }
+                    else
+                    {
+                        CommonTrace.WriteTrace(CommonTrace.TraceWarning, "Entity (GID = 0x{0:x16}) doesn't contain reference 0x{1:x16}.", this.GlobalId, globalId);
+                    }
+
+                    break;
+
+
+                default:
+                    base.RemoveReference(referenceId, globalId);
+                    break;
+            }
+        }
+
+        #endregion IReference implementation	
+
+    }//end BaseVoltage
 
 }//end namespace Core

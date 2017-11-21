@@ -9,48 +9,160 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-
-
-
-using TC57CIM.IEC61970.Domain;
 using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Wires;
+
 namespace TC57CIM.IEC61970.Wires {
 	/// <summary>
 	/// Mechanism for changing transformer winding tap positions.
 	/// </summary>
 	public class TapChanger : PowerSystemResource {
+        
+		private int highStep;
+        private int lowStep;
+        private int neutralStep;
+        private int normalStep;
 
-		/// <summary>
-		/// Highest possible tap step position, advance from neutral
-		/// </summary>
-		public TC57CIM.IEC61970.Domain.Integer highStep;
-		/// <summary>
-		/// Lowest possible tap step position, retard from neutral
-		/// </summary>
-		public TC57CIM.IEC61970.Domain.Integer lowStep;
-		/// <summary>
-		/// The neutral tap step position for this winding.
-		/// </summary>
-		public TC57CIM.IEC61970.Domain.Integer neutralStep;
-		/// <summary>
-		/// The tap step position used in "normal" network operation for this winding. For
-		/// a "Fixed" tap changer indicates the current physical tap setting.
-		/// </summary>
-		public TC57CIM.IEC61970.Domain.Integer normalStep;
-		/// <summary>
-		/// The regulating control scheme in which this tap changer participates.
-		/// </summary>
-		public TC57CIM.IEC61970.Wires.TapChangerControl TapChangerControl;
-
-		public TapChanger(){
-
+		public TapChanger(long globalId) : base(globalId)
+        {
 		}
 
-		~TapChanger(){
+        public int HighStep
+        {
+            get
+            {
+                return highStep;
+            }
 
-		}
+            set
+            {
+                highStep = value;
+            }
+        }
 
-	}//end TapChanger
+        public int LowStep
+        {
+            get
+            {
+                return lowStep;
+            }
+
+            set
+            {
+                lowStep = value;
+            }
+        }
+
+        public int NeutralStep
+        {
+            get
+            {
+                return neutralStep;
+            }
+
+            set
+            {
+                neutralStep = value;
+            }
+        }
+
+        public int NormalStep
+        {
+            get
+            {
+                return normalStep;
+            }
+
+            set
+            {
+                normalStep = value;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                TapChanger x = (TapChanger)obj;
+                return (x.highStep == this.highStep && x.lowStep == this.lowStep && 
+                        x.neutralStep == this.neutralStep && x.normalStep == this.normalStep);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        #region IAccess implementation
+
+        public override bool HasProperty(ModelCode t)
+        {
+            switch (t)
+            {
+                case ModelCode.TAPCH_HIGHSTEP:
+                case ModelCode.TAPCH_LOWSTEP:
+                case ModelCode.TAPCH_NEUTRALSTEP:
+                case ModelCode.TAPCH_NORMALSTEP:
+                    return true;
+
+                default:
+                    return base.HasProperty(t);
+            }
+        }
+
+        public override void GetProperty(Property prop)
+        {
+            switch (prop.Id)
+            {
+                case ModelCode.TAPCH_HIGHSTEP:
+                    prop.SetValue(highStep);
+                    break;
+                case ModelCode.TAPCH_LOWSTEP:
+                    prop.SetValue(lowStep);
+                    break;
+                case ModelCode.TAPCH_NEUTRALSTEP:
+                    prop.SetValue(neutralStep);
+                    break;
+                case ModelCode.TAPCH_NORMALSTEP:
+                    prop.SetValue(normalStep);
+                    break;
+
+                default:
+                    base.GetProperty(prop);
+                    break;
+            }
+        }
+
+        public override void SetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.TAPCH_HIGHSTEP:
+                    highStep = property.AsInt();
+                    break;
+                case ModelCode.TAPCH_LOWSTEP:
+                    lowStep = property.AsInt();
+                    break;
+                case ModelCode.TAPCH_NEUTRALSTEP:
+                    neutralStep = property.AsInt();
+                    break;
+                case ModelCode.TAPCH_NORMALSTEP:
+                    normalStep = property.AsInt();
+                    break;
+
+                default:
+                    base.SetProperty(property);
+                    break;
+            }
+        }
+
+        #endregion IAccess implementation
+
+    }//end TapChanger
 
 }//end namespace Wires
