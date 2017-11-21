@@ -144,7 +144,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimBaseVoltage.ID, gid);
 
                 ////populate ResourceDescription
-                PowerTransformerConverter.PopulateBaseVoltageProperties(cimBaseVoltage, rd, importHelper, report);
+                Converter.PopulateBaseVoltageProperties(cimBaseVoltage, rd, importHelper, report);
             }
             return rd;
         }
@@ -183,7 +183,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimGeographicalRegion.ID, gid);
 
                 ////populate ResourceDescription
-                PowerTransformerConverter.PopulateGeographicalRegionProperties(cimGeographicalRegion, rd, importHelper, report);
+                Converter.PopulateGeographicalRegionProperties(cimGeographicalRegion, rd, importHelper, report);
             }
             return rd;
         }
@@ -222,7 +222,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimSubGeographicalRegion.ID, gid);
 
                 ////populate ResourceDescription
-                PowerTransformerConverter.PopulateSubGeographicalRegionProperties(cimSubGeographicalRegion, rd, importHelper, report);
+                Converter.PopulateSubGeographicalRegionProperties(cimSubGeographicalRegion, rd, importHelper, report);
             }
             return rd;
         }
@@ -261,7 +261,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimSubstation.ID, gid);
 
                 ////populate ResourceDescription
-                PowerTransformerConverter.PopulateSubstationProperties(cimSubstation, rd, importHelper, report);
+                Converter.PopulateSubstationProperties(cimSubstation, rd, importHelper, report);
             }
             return rd;
         }
@@ -300,7 +300,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimVoltageLevel.ID, gid);
 
                 ////populate ResourceDescription
-                PowerTransformerConverter.PopulateVoltageLevelProperties(cimVoltageLevel, rd, importHelper, report);
+                Converter.PopulateVoltageLevelProperties(cimVoltageLevel, rd, importHelper, report);
             }
             return rd;
         }
@@ -339,7 +339,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimPowerTransformer.ID, gid);
 
                 ////populate ResourceDescription
-                PowerTransformerConverter.PopulatePowerTransformerProperties(cimPowerTransformer, rd, importHelper, report);
+                Converter.PopulatePowerTransformerProperties(cimPowerTransformer, rd, importHelper, report);
             }
             return rd;
         }
@@ -378,7 +378,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimPowerTransformerEnd.ID, gid);
 
                 ////populate ResourceDescription
-                PowerTransformerConverter.PopulatePowerTransformerEndProperties(cimPowerTransformerEnd, rd, importHelper, report);
+                Converter.PopulatePowerTransformerEndProperties(cimPowerTransformerEnd, rd, importHelper, report);
             }
             return rd;
         }
@@ -417,7 +417,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimRatioTapChanger.ID, gid);
 
                 ////populate ResourceDescription
-                PowerTransformerConverter.PopulateRatioTapChangerProperties(cimRatioTapChanger, rd, importHelper, report);
+                Converter.PopulateRatioTapChangerProperties(cimRatioTapChanger, rd, importHelper, report);
             }
             return rd;
         }
@@ -456,7 +456,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimEnergyConsumer.ID, gid);
 
                 ////populate ResourceDescription
-                PowerTransformerConverter.PopulateEnergyConsumerProperties(cimEnergyConsumer, rd, importHelper, report);
+                Converter.PopulateEnergyConsumerProperties(cimEnergyConsumer, rd, importHelper, report);
             }
             return rd;
         }
@@ -495,7 +495,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimAnalog.ID, gid);
 
                 ////populate ResourceDescription
-                PowerTransformerConverter.PopulateAnalogProperties(cimAnalog, rd, importHelper, report);
+                Converter.PopulateAnalogProperties(cimAnalog, rd, importHelper, report);
             }
             return rd;
         }
@@ -534,7 +534,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimDiscrete.ID, gid);
 
                 ////populate ResourceDescription
-                PowerTransformerConverter.PopulateDiscreteProperties(cimDiscrete, rd, importHelper, report);
+                Converter.PopulateDiscreteProperties(cimDiscrete, rd, importHelper, report);
             }
             return rd;
         }
