@@ -9,10 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-
-
-
-using TC57CIM.IEC61970.Domain;
 using TC57CIM.IEC61970.Meas;
 namespace TC57CIM.IEC61970.Meas {
 	/// <summary>
@@ -25,24 +21,16 @@ namespace TC57CIM.IEC61970.Meas {
 		/// Normal value range maximum for any of the MeasurementValue.values. Used for
 		/// scaling, e.g. in bar graphs or of telemetered raw values.
 		/// </summary>
-		public TC57CIM.IEC61970.Domain.Integer maxValue;
+		public int maxValue;
 		/// <summary>
 		/// Normal value range minimum for any of the MeasurementValue.values. Used for
 		/// scaling, e.g. in bar graphs or of telemetered raw values.
 		/// </summary>
-		public TC57CIM.IEC61970.Domain.Integer minValue;
+		public int minValue;
 		/// <summary>
 		/// Normal measurement value, e.g., used for percentage calculations.
 		/// </summary>
-		public TC57CIM.IEC61970.Domain.Integer normalValue;
-		/// <summary>
-		/// The Control variable associated with the Measurement.
-		/// </summary>
-		public TC57CIM.IEC61970.Meas.Command Command;
-		/// <summary>
-		/// The values connected to this measurement.
-		/// </summary>
-		public TC57CIM.IEC61970.Meas.DiscreteValue DiscreteValues;
+		public int normalValue;
 
 		public Discrete(){
 

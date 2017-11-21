@@ -12,7 +12,7 @@ using System.IO;
 
 
 
-using TC57CIM.IEC61970.Domain;
+using FTN.Common;
 using TC57CIM.IEC61970.Core;
 namespace TC57CIM.IEC61970.Meas {
 	/// <summary>
@@ -44,11 +44,10 @@ namespace TC57CIM.IEC61970.Meas {
 		/// <summary>
 		/// The unit of measure of the measured quantity.
 		/// </summary>
-		public TC57CIM.IEC61970.Domain.UnitSymbol unitSymbol;
+		public UnitSymbol unitSymbol;
 		/// <summary>
 		/// One or more measurements may be associated with a terminal in the network.
 		/// </summary>
-		public TC57CIM.IEC61970.Core.Terminal Terminal;
 
 		public Measurement(){
 
