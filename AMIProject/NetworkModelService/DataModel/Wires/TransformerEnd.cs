@@ -9,11 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-
-
-
 using TC57CIM.IEC61970.Wires;
 using TC57CIM.IEC61970.Core;
+
 namespace TC57CIM.IEC61970.Wires {
 	/// <summary>
 	/// A conducting connection point of a power transformer. It corresponds to a
@@ -24,37 +22,130 @@ namespace TC57CIM.IEC61970.Wires {
 	/// </summary>
 	public class TransformerEnd : IdentifiedObject {
 
-		/// <summary>
-		/// Ratio tap changer associated with this transformer end.
-		/// </summary>
-		public TC57CIM.IEC61970.Wires.RatioTapChanger RatioTapChanger;
-		/// <summary>
-		/// Phase tap changer associated with this transformer end.
-		/// </summary>
-		public TC57CIM.IEC61970.Wires.PhaseTapChanger PhaseTapChanger;
-		/// <summary>
-		/// (accurate for 2- or 3-winding transformers only) Pi-model impedances of this
-		/// transformer end. By convention, for a two winding transformer, the full values
-		/// of the transformer should be entered on the high voltage end (endNumber=1).
-		/// </summary>
-		public TC57CIM.IEC61970.Wires.TransformerStarImpedance StarImpedance;
-		/// <summary>
-		/// Terminal of the power transformer to which this transformer end belongs.
-		/// </summary>
-		public TC57CIM.IEC61970.Core.Terminal Terminal;
-		/// <summary>
-		/// Base voltage of the transformer end.  This is essential for PU calculation.
-		/// </summary>
-		public TC57CIM.IEC61970.Core.BaseVoltage BaseVoltage;
+        private long baseVoltage = 0;
+        private long ratioTapChanger = 0;
 
-		public TransformerEnd(){
-
+        public TransformerEnd(long globalId) : base(globalId)
+        {
 		}
 
-		~TransformerEnd(){
+        public long BaseVoltage
+        {
+            get
+            {
+                return baseVoltage;
+            }
 
-		}
+            set
+            {
+                baseVoltage = value;
+            }
+        }
 
-	}//end TransformerEnd
+        public long RatioTapChanger
+        {
+            get
+            {
+                return ratioTapChanger;
+            }
+
+            set
+            {
+                ratioTapChanger = value;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                TransformerEnd x = (TransformerEnd)obj;
+                return (x.baseVoltage == this.baseVoltage && x.ratioTapChanger == this.ratioTapChanger);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        #region IAccess implementation
+
+        public override bool HasProperty(ModelCode t)
+        {
+            switch (t)
+            {
+                case ModelCode.TRANSEND_BASEVOL:
+                case ModelCode.TRANSEND_RATIOTAPCH:
+                    return true;
+
+                default:
+                    return base.HasProperty(t);
+
+            }
+        }
+
+        public override void GetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.TRANSEND_BASEVOL:
+                    property.SetValue(baseVoltage);
+                    break;
+                case ModelCode.TRANSEND_RATIOTAPCH:
+                    property.SetValue(ratioTapChanger);
+                    break;
+
+                default:
+                    base.GetProperty(property);
+                    break;
+            }
+        }
+
+        public override void SetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.TRANSEND_BASEVOL:
+                    baseVoltage = property.AsReference();
+                    break;
+                case ModelCode.TRANSEND_RATIOTAPCH:
+                    ratioTapChanger = property.AsReference();
+                    break;
+
+                default:
+                    base.SetProperty(property);
+                    break;
+            }
+        }
+
+        #endregion IAccess implementation
+
+        #region IReference implementation
+
+        public override void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType)
+        {
+            if (baseVoltage != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
+            {
+                references[ModelCode.TRANSEND_BASEVOL] = new List<long>();
+                references[ModelCode.TRANSEND_BASEVOL].Add(baseVoltage);
+            }
+
+            if (ratioTapChanger != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
+            {
+                references[ModelCode.TRANSEND_RATIOTAPCH] = new List<long>();
+                references[ModelCode.TRANSEND_RATIOTAPCH].Add(ratioTapChanger);
+            }
+
+            base.GetReferences(references, refType);
+        }
+
+        #endregion IReference implementation	
+
+    }//end TransformerEnd
 
 }//end namespace Wires

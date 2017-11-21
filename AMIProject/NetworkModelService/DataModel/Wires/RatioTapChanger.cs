@@ -9,10 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-
-
-
 using TC57CIM.IEC61970.Wires;
+
 namespace TC57CIM.IEC61970.Wires {
 	/// <summary>
 	/// A tap changer that changes the voltage ratio impacting the voltage magnitude
@@ -20,19 +18,104 @@ namespace TC57CIM.IEC61970.Wires {
 	/// </summary>
 	public class RatioTapChanger : TapChanger {
 
-		/// <summary>
-		/// The tap ratio table for this ratio  tap changer.
-		/// </summary>
-		public TC57CIM.IEC61970.Wires.RatioTapChangerTabular RatioTapChangerTabular;
+        private long transformerEnd = 0;
 
-		public RatioTapChanger(){
-
+        public RatioTapChanger(long globalId) : base(globalId)
+        {
 		}
 
-		~RatioTapChanger(){
+        public long TransformerEnd
+        {
+            get
+            {
+                return transformerEnd;
+            }
 
-		}
+            set
+            {
+                transformerEnd = value;
+            }
+        }
 
-	}//end RatioTapChanger
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                RatioTapChanger x = (RatioTapChanger)obj;
+                return (x.transformerEnd == this.transformerEnd);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        #region IAccess implementation
+
+        public override bool HasProperty(ModelCode t)
+        {
+            switch (t)
+            {
+                case ModelCode.RATIOTAPCH_TRANSEND:
+                    return true;
+
+                default:
+                    return base.HasProperty(t);
+
+            }
+        }
+
+        public override void GetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.RATIOTAPCH_TRANSEND:
+                    property.SetValue(transformerEnd);
+                    break;
+
+                default:
+                    base.GetProperty(property);
+                    break;
+            }
+        }
+
+        public override void SetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+
+                case ModelCode.RATIOTAPCH_TRANSEND:
+                    transformerEnd = property.AsReference();
+                    break;
+
+                default:
+                    base.SetProperty(property);
+                    break;
+            }
+        }
+
+        #endregion IAccess implementation
+
+        #region IReference implementation
+
+        public override void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType)
+        {
+            if (transformerEnd != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
+            {
+                references[ModelCode.RATIOTAPCH_TRANSEND] = new List<long>();
+                references[ModelCode.RATIOTAPCH_TRANSEND].Add(transformerEnd);
+            }
+
+            base.GetReferences(references, refType);
+        }
+
+        #endregion IReference implementation	
+
+    }//end RatioTapChanger
 
 }//end namespace Wires
