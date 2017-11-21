@@ -8,10 +8,13 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
 using FTN.Common;
-using FTN.Services.NetworkModelService.DataModel.Core;
-using FTN.Services.NetworkModelService.DataModel.Wires;
-using FTN.Services.NetworkModelService.DataModel;
-using FTN.Services.NetworkModelService.DataModel.Meas;
+//using FTN.Services.NetworkModelService.DataModel.Core;
+//using FTN.Services.NetworkModelService.DataModel.Wires;
+//using FTN.Services.NetworkModelService.DataModel;
+//using FTN.Services.NetworkModelService.DataModel.Meas;
+using TC57CIM.IEC61970.Core;
+using TC57CIM.IEC61970.Wires;
+using TC57CIM.IEC61970.Meas;
 
 namespace FTN.Services.NetworkModelService
 {		
@@ -122,32 +125,38 @@ namespace FTN.Services.NetworkModelService
 			IdentifiedObject io = null;			
 			switch ((DMSType)type)
 			{
-				case DMSType.REGULCONTROL:
-					io = new RegulatingControl(globalId);
+				case DMSType.GEOREGION:
+					io = new GeographicalRegion(globalId);
 					break;
-				case DMSType.REACTCAPABCURVE:
-					io = new ReactiveCapabilityCurve(globalId);
+				case DMSType.SUBGEOREGION:
+					io = new SubGeographicalRegion(globalId);
 					break;
-				case DMSType.CURVEDATA:
-					io = new CurveData(globalId);
+				case DMSType.BASEVOLTAGE:
+					io = new BaseVoltage(globalId);
 					break;
-				case DMSType.SYNMACHINE:
-					io = new SynchronousMachine(globalId);
+				case DMSType.SUBSTATION:
+					io = new Substation(globalId);
 					break;
-				case DMSType.FREQCONVERTER:
-					io = new FrequencyConverter(globalId);
+				case DMSType.VOLTAGELEVEL:
+					io = new VoltageLevel(globalId);
 					break;
-                case DMSType.SHUNTCOMPENSATOR:
-                    io = new ShuntCompensator(globalId);
+                case DMSType.ENERGYCONS:
+                    io = new EnergyConsumer(globalId);
                     break;
-                case DMSType.STATICVARCOMPENSATOR:
-                    io = new StaticVarCompensator(globalId);
+                case DMSType.POWERTRANSFORMER:
+                    io = new PowerTransformer(globalId);
                     break;
-                case DMSType.CONTROL:
-                    io = new Control(globalId);
+                case DMSType.POWERTRANSEND:
+                    io = new PowerTransformerEnd(globalId);
                     break;
-                case DMSType.TERMINAL:
-                    io = new Terminal(globalId);
+                case DMSType.RATIOTAPCHANGER:
+                    io = new RatioTapChanger(globalId);
+                    break;
+                case DMSType.ANALOG:
+                    io = new Analog(globalId);
+                    break;
+                case DMSType.DISCRETE:
+                    io = new Discrete(globalId);
                     break;
 
                 default:					

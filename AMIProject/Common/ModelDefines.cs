@@ -9,15 +9,17 @@ namespace FTN.Common
 	{		
 		MASK_TYPE							= unchecked((short)0xFFFF),
 
-        REGULCONTROL                        = 0x0001,
-        REACTCAPABCURVE                     = 0x0002,
-        CURVEDATA                           = 0x0003,
-        SYNMACHINE                          = 0x0004,
-        FREQCONVERTER                       = 0x0005,
-        SHUNTCOMPENSATOR                    = 0x0006,
-        STATICVARCOMPENSATOR                = 0x0007,
-        CONTROL                             = 0x0008,
-        TERMINAL                            = 0x0009,
+        GEOREGION                           = 0x0001,
+        SUBGEOREGION                        = 0x0002,
+        BASEVOLTAGE                         = 0x0003,
+        SUBSTATION                          = 0x0004,
+        VOLTAGELEVEL                        = 0x0005,
+        ENERGYCONS                          = 0x0006,
+        POWERTRANSFORMER                    = 0x0007,
+        POWERTRANSEND                       = 0x0008,
+        RATIOTAPCHANGER                     = 0x0009,
+        ANALOG                              = 0x000a,   
+        DISCRETE                            = 0x000b,   
 	}
 
     [Flags]
@@ -26,144 +28,82 @@ namespace FTN.Common
 		IDOBJ								= 0x1000000000000000,
 		IDOBJ_GID							= 0x1000000000000104,
 		IDOBJ_MRID							= 0x1000000000000207,
-        IDOBJ_NAME                          = 0x00,
+        IDOBJ_NAME                          = 0x1000000000000307,
 
-        MEASUREMENT                         = 0x00,
-        MEASUREMENT_UNITSYMBOL              = 0x00,
-        MEASUREMENT_PSR                     = 0x00,
+        MEASUREMENT                         = 0x1100000000000000,
+        MEASUREMENT_UNITSYMBOL              = 0x110000000000010a,
+        MEASUREMENT_PSR                     = 0x1100000000000209,
 
-        BASEVOLTAGE                         = 0x00,
-        BASEVOLTAGE_NOMINALVOL              = 0x00,
-        BASEVOLTAGE_CONDEQS                  = 0x00,
-        BASEVOLTAGE_TRANSENDS               = 0x00,
-        BASEVOLTAGE_VOLTLEVELS              = 0x00,
+        BASEVOLTAGE                         = 0x1200000000030000,
+        BASEVOLTAGE_NOMINALVOL              = 0x1200000000030105,
+        BASEVOLTAGE_CONDEQS                 = 0x1200000000030219,
+        BASEVOLTAGE_TRANSENDS               = 0x1200000000030319,
+        BASEVOLTAGE_VOLTLEVELS              = 0x1200000000030419,
 
-        TRANSFORMEREND                      = 0x00,
-        TRANSFORMEREND_BASEVOLT             = 0x00,
-        TRANSFORMEREND_RATIOTAPCHANGER      = 0x00,
+        TRANSFORMEREND                      = 0x1300000000000000,
+        TRANSFORMEREND_BASEVOLT             = 0x1300000000000109,
+        TRANSFORMEREND_RATIOTAPCHANGER      = 0x1300000000000209,
 
-        PSR                                 = 0x00,
-        PSR_MEASUREMENTS                    = 0x00,
+        PSR                                 = 0x1400000000000000,
+        PSR_MEASUREMENTS                    = 0x1400000000000119,
 
-        SUBGEOREGION                        = 0x00,
-        SUBGEOREGION_GEOREG                 = 0x00,
-        SUBGEOREGION_SUBS                   = 0x00,
+        SUBGEOREGION                        = 0x1500000000020000,
+        SUBGEOREGION_GEOREG                 = 0x1500000000020109,
+        SUBGEOREGION_SUBS                   = 0x1500000000020219,
 
-        GEOREGION                           = 0x00,
-        GEOREGION_SUBGEOREGIONS             = 0x00,
+        GEOREGION                           = 0x1600000000010000,
+        GEOREGION_SUBGEOREGIONS             = 0x1600000000010119,
+        
 
-        //------------------------------------------------
-        ANALOG                              = 0x00,
-        ANALOG_MAXVALUE                     = 0x00,
-        ANALOG_MINVALUE                     = 0x00,
-        ANALOG_NORMALVALUE                  = 0x00,
+        ANALOG                              = 0x11100000000a0000,
+        ANALOG_MAXVALUE                     = 0x11100000000a0105,
+        ANALOG_MINVALUE                     = 0x11100000000a0205,
+        ANALOG_NORMALVALUE                  = 0x11100000000a0305,
 
-        DISCRETE                            = 0x00,
-        DISCRETE_MAXVALUE                   = 0x00,
-        DISCRETE_MINVALUE                   = 0x00,
-        DISCRETE_NORMALVALUE                = 0x00,
+        DISCRETE                            = 0x11200000000b0000,
+        DISCRETE_MAXVALUE                   = 0x11200000000b0103,
+        DISCRETE_MINVALUE                   = 0x11200000000b0203,
+        DISCRETE_NORMALVALUE                = 0x11200000000b0303,
 
-        POWERTRANSEND                       = 0x00,
-        POWERTRANSEND_POWERTRANSF           = 0x00,
+        POWERTRANSEND                       = 0x1310000000080000,
+        POWERTRANSEND_POWERTRANSF           = 0x1310000000080109,
 
-        EQUIPMENT                           = 0x00,
-        EQUIPMENT_EQCONTAINER               = 0x00,
+        EQUIPMENT                           = 0x1410000000000000,
+        EQUIPMENT_EQCONTAINER               = 0x1410000000000109,
 
-        TAPCHANGER                          = 0x00,
-        TAPCHANGER_HIGHSTEP                 = 0x00,
-        TAPCHANGER_LOWSTEP                  = 0x00,
-        TAPCHANGER_NEUTRALSTEP              = 0x00,
-        TAPCHANGER_NORMALSTEP               = 0x00,
+        TAPCHANGER                          = 0x1420000000000000,
+        TAPCHANGER_HIGHSTEP                 = 0x1420000000000103,
+        TAPCHANGER_LOWSTEP                  = 0x1420000000000203,
+        TAPCHANGER_NEUTRALSTEP              = 0x1420000000000303,
+        TAPCHANGER_NORMALSTEP               = 0x1420000000000403,
 
-        CONNODECONTAINER                    = 0x00,
+        CONNODECONTAINER                    = 0x1430000000000000,
+        
 
-        //------------------------------------------------
-        CONDEQ                              = 0x00,
-        CONDEQ_BASEVOLTAGE                  = 0x00,
+        CONDEQ                              = 0x1411000000000000,
+        CONDEQ_BASEVOLTAGE                  = 0x1411000000000109,
 
-        EQCONTAINER                         = 0x00,
-        EQCONTAINER_EQUIPMENTS              = 0x00,
+        EQCONTAINER                         = 0x1431000000000000,
+        EQCONTAINER_EQUIPMENTS              = 0x1431000000000119,
 
-        RATIOTAPCHANGER                     = 0x00,
-        RATIOTAPCHANGER_TRANSEND            = 0x00,
+        RATIOTAPCHANGER                     = 0x1421000000090000,
+        RATIOTAPCHANGER_TRANSEND            = 0x1421000000090109,
+        
 
-        //-------------------------------------------------
-        ENERGYCONS                          = 0x00,
-        ENERGYCONS_PFIXED                   = 0x00,
-        ENERGYCONS_QFIXED                   = 0x00,
+        ENERGYCONS                          = 0x1411100000060000,
+        ENERGYCONS_PFIXED                   = 0x1411100000060105,
+        ENERGYCONS_QFIXED                   = 0x1411100000060205,
 
-        POWERTRANSFORMER                    = 0x00,
-        POWERTRANSFORMER_POWTRANSENDS       = 0x00,
+        POWERTRANSFORMER                    = 0x1411200000070000,
+        POWERTRANSFORMER_POWTRANSENDS       = 0x1411200000070119,
 
-        VOLTAGELEVEL                        = 0x00,
-        VOLTAGELEVEL_SUBSTATION             = 0x00,
-        VOLTAGELEVEL_BASEVOLTAGE            = 0x00,
+        VOLTAGELEVEL                        = 0x1431100000050000,
+        VOLTAGELEVEL_SUBSTATION             = 0x1431100000050109,
+        VOLTAGELEVEL_BASEVOLTAGE            = 0x1431100000050209,
 
-        SUBSTATION                          = 0x00,
-        SUBSTATION_SUBGEOREGION             = 0x00,
-        SUBSTATION_VOLTLEVELS               = 0x00,
-
-
-
-        //      CONTROL                             = 0x1100000000080000,
-        //      CONTROL_REGULCONDEQ                 = 0x1100000000080109,
-
-        //      TERMINAL                            = 0x1200000000090000,
-        //      TERMINAL_CONDEQ                     = 0x1200000000090109,
-
-        //PSR									= 0x1300000000000000,
-
-        //      EQUIPMENT                           = 0x1310000000000000,
-        //      EQUIPMENT_AGGREGATE                 = 0x1310000000000101,
-        //      EQUIPMENT_NORMINSERVICE             = 0x1310000000000201,
-
-        //      CONDEQ                              = 0x1311000000000000,
-        //      CONDEQ_TERMINALS                    = 0x1311000000000119,
-
-        //      REGULCONDEQ                         = 0x1311100000000000,
-        //      REGULCONDEQ_CONTROLS                = 0x1311100000000119,
-        //      REGULCONDEQ_REGULCONTROL            = 0x1311100000000209,
-
-        //      ROTATINGMACHINE                     = 0x1311110000000000,
-
-        //      SYNMACHINE                          = 0x1311111000040000,
-        //      SYNMACHINE_REACTCAPABCURVE          = 0x1311111000040109,
-
-        //      FREQCONVERTER                       = 0x1311120000050000,
-
-        //      SHUNTCOMPENSATOR                    = 0x1311130000060000,
-
-        //      STATICVARCOMPENSATOR                = 0x1311140000070000,
-
-        //      REGULCONTROL                        = 0x1320000000010000,
-        //      REGULCONTROL_DISCRETE               = 0x1320000000010101,
-        //      REGULCONTROL_MODE                   = 0x132000000001020a,
-        //      REGULCONTROL_MONITPHASE             = 0x132000000001030a,
-        //      REGULCONTROL_TARGETRANGE            = 0x1320000000010405,
-        //      REGULCONTROL_TARGETVALUE            = 0x1320000000010505,
-        //      REGULCONTROL_REGULCONDEQS           = 0x1320000000010619,
-
-        //      CURVE                               = 0x1400000000000000,
-        //      CURVE_CURVESTYLE                    = 0x140000000000010a,
-        //      CURVE_XMYLTIPLIER                   = 0x140000000000020a,
-        //      CURVE_XUNIT                         = 0x140000000000030a,
-        //      CURVE_Y1MULTIPLIER                  = 0x140000000000040a,
-        //      CURVE_Y1UNIT                        = 0x140000000000050a,
-        //      CURVE_Y2MULTIPLIER                  = 0x140000000000060a,
-        //      CURVE_Y2UNIT                        = 0x140000000000070a,
-        //      CURVE_Y3MULTIPLIER                  = 0x140000000000080a,
-        //      CURVE_Y3UNIT                        = 0x140000000000090a,
-        //      CURVE_CURVEDATAS                    = 0x1400000000000a19,
-
-        //      REACTCAPABCURVE                     = 0x1410000000020000,
-        //      REACTCAPABCURVE_SYNMACHINES         = 0x1410000000020119,
-
-        //      CURVEDATA                           = 0x1500000000030000,
-        //      CURVEDATA_XVALUE                    = 0x1500000000030105,
-        //      CURVEDATA_Y1VALUE                   = 0x1500000000030205,
-        //      CURVEDATA_Y2VALUE                   = 0x1500000000030305,
-        //      CURVEDATA_Y3VALUE                   = 0x1500000000030405,
-        //      CURVEDATA_CURVE                     = 0x1500000000030509,
+        SUBSTATION                          = 0x1431200000040000,
+        SUBSTATION_SUBGEOREGION             = 0x1431200000040109,
+        SUBSTATION_VOLTLEVELS               = 0x1431200000040219,
     }
 
     [Flags]
