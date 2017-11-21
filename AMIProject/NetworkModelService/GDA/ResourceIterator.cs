@@ -4,7 +4,6 @@ using System.Collections;
 using System.Text;
 using System.Diagnostics;
 using FTN.Common;
-using FTN.Services.NetworkModelService.DataModel.Core;
 
 namespace FTN.Services.NetworkModelService
 {	
