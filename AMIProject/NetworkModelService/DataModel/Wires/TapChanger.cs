@@ -11,6 +11,7 @@ using System.Text;
 using System.IO;
 using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Wires;
+using FTN.Common;
 
 namespace TC57CIM.IEC61970.Wires {
 	/// <summary>
@@ -104,10 +105,10 @@ namespace TC57CIM.IEC61970.Wires {
         {
             switch (t)
             {
-                case ModelCode.TAPCH_HIGHSTEP:
-                case ModelCode.TAPCH_LOWSTEP:
-                case ModelCode.TAPCH_NEUTRALSTEP:
-                case ModelCode.TAPCH_NORMALSTEP:
+                case ModelCode.TAPCHANGER_HIGHSTEP:
+                case ModelCode.TAPCHANGER_LOWSTEP:
+                case ModelCode.TAPCHANGER_NEUTRALSTEP:
+                case ModelCode.TAPCHANGER_NORMALSTEP:
                     return true;
 
                 default:
@@ -119,16 +120,16 @@ namespace TC57CIM.IEC61970.Wires {
         {
             switch (prop.Id)
             {
-                case ModelCode.TAPCH_HIGHSTEP:
+                case ModelCode.TAPCHANGER_HIGHSTEP:
                     prop.SetValue(highStep);
                     break;
-                case ModelCode.TAPCH_LOWSTEP:
+                case ModelCode.TAPCHANGER_LOWSTEP:
                     prop.SetValue(lowStep);
                     break;
-                case ModelCode.TAPCH_NEUTRALSTEP:
+                case ModelCode.TAPCHANGER_NEUTRALSTEP:
                     prop.SetValue(neutralStep);
                     break;
-                case ModelCode.TAPCH_NORMALSTEP:
+                case ModelCode.TAPCHANGER_NORMALSTEP:
                     prop.SetValue(normalStep);
                     break;
 
@@ -142,16 +143,16 @@ namespace TC57CIM.IEC61970.Wires {
         {
             switch (property.Id)
             {
-                case ModelCode.TAPCH_HIGHSTEP:
+                case ModelCode.TAPCHANGER_HIGHSTEP:
                     highStep = property.AsInt();
                     break;
-                case ModelCode.TAPCH_LOWSTEP:
+                case ModelCode.TAPCHANGER_LOWSTEP:
                     lowStep = property.AsInt();
                     break;
-                case ModelCode.TAPCH_NEUTRALSTEP:
+                case ModelCode.TAPCHANGER_NEUTRALSTEP:
                     neutralStep = property.AsInt();
                     break;
-                case ModelCode.TAPCH_NORMALSTEP:
+                case ModelCode.TAPCHANGER_NORMALSTEP:
                     normalStep = property.AsInt();
                     break;
 

@@ -880,11 +880,15 @@ namespace FTN.Common
 		private void InitializeNotSettablePropertyIds()
 		{			
 			notSettablePropertyIds.Add(ModelCode.IDOBJ_GID);
-			notSettablePropertyIds.Add(ModelCode.REGULCONDEQ_CONTROLS);
-			notSettablePropertyIds.Add(ModelCode.CONDEQ_TERMINALS);
-			notSettablePropertyIds.Add(ModelCode.REGULCONTROL_REGULCONDEQS);
-            notSettablePropertyIds.Add(ModelCode.REACTCAPABCURVE_SYNMACHINES);
-            notSettablePropertyIds.Add(ModelCode.CURVE_CURVEDATAS);
+			notSettablePropertyIds.Add(ModelCode.POWERTRANSFORMER_POWTRANSENDS);
+			notSettablePropertyIds.Add(ModelCode.BASEVOLTAGE_CONDEQS);
+			notSettablePropertyIds.Add(ModelCode.BASEVOLTAGE_TRANSENDS);
+            notSettablePropertyIds.Add(ModelCode.BASEVOLTAGE_VOLTLEVELS);
+            notSettablePropertyIds.Add(ModelCode.EQCONTAINER_EQUIPMENTS);
+            notSettablePropertyIds.Add(ModelCode.GEOREGION_SUBGEOREGIONS);
+            notSettablePropertyIds.Add(ModelCode.PSR_MEASUREMENTS);
+            notSettablePropertyIds.Add(ModelCode.SUBGEOREGION_SUBS);
+            notSettablePropertyIds.Add(ModelCode.SUBSTATION_VOLTLEVELS);
         }
 	
 		# endregion Initialization of metadata

@@ -11,17 +11,19 @@ namespace FTN.Common
 
 		public EnumDescs()
 		{
-            property2enumType.Add(ModelCode.REGULCONTROL_MODE, typeof(RegulatingControlModelKind));
-            property2enumType.Add(ModelCode.REGULCONTROL_MONITPHASE, typeof(PhaseCode));
-            property2enumType.Add(ModelCode.CURVE_CURVESTYLE, typeof(CurveStyle));
-            property2enumType.Add(ModelCode.CURVE_XMYLTIPLIER, typeof(UnitMultiplier));
-            property2enumType.Add(ModelCode.CURVE_XUNIT, typeof(UnitSymbol));
-            property2enumType.Add(ModelCode.CURVE_Y1MULTIPLIER, typeof(UnitMultiplier));
-            property2enumType.Add(ModelCode.CURVE_Y1UNIT, typeof(UnitSymbol));
-            property2enumType.Add(ModelCode.CURVE_Y2MULTIPLIER, typeof(UnitMultiplier));
-            property2enumType.Add(ModelCode.CURVE_Y2UNIT, typeof(UnitSymbol));
-            property2enumType.Add(ModelCode.CURVE_Y3MULTIPLIER, typeof(UnitMultiplier));
-            property2enumType.Add(ModelCode.CURVE_Y3UNIT, typeof(UnitSymbol));
+            property2enumType.Add(ModelCode.MEASUREMENT_UNITSYMBOL, typeof(UnitSymbol));
+
+            //property2enumType.Add(ModelCode.REGULCONTROL_MODE, typeof(RegulatingControlModelKind));
+            //property2enumType.Add(ModelCode.REGULCONTROL_MONITPHASE, typeof(PhaseCode));
+            //property2enumType.Add(ModelCode.CURVE_CURVESTYLE, typeof(CurveStyle));
+            //property2enumType.Add(ModelCode.CURVE_XMYLTIPLIER, typeof(UnitMultiplier));
+            //property2enumType.Add(ModelCode.CURVE_XUNIT, typeof(UnitSymbol));
+            //property2enumType.Add(ModelCode.CURVE_Y1MULTIPLIER, typeof(UnitMultiplier));
+            //property2enumType.Add(ModelCode.CURVE_Y1UNIT, typeof(UnitSymbol));
+            //property2enumType.Add(ModelCode.CURVE_Y2MULTIPLIER, typeof(UnitMultiplier));
+            //property2enumType.Add(ModelCode.CURVE_Y2UNIT, typeof(UnitSymbol));
+            //property2enumType.Add(ModelCode.CURVE_Y3MULTIPLIER, typeof(UnitMultiplier));
+            //property2enumType.Add(ModelCode.CURVE_Y3UNIT, typeof(UnitSymbol));
         }
 
 		public List<string> GetEnumList(ModelCode propertyId)

@@ -13,16 +13,15 @@ using System.IO;
 
 
 using TC57CIM.IEC61970.Core;
+using FTN.Common;
+
 namespace TC57CIM.IEC61970.Core {
 	/// <summary>
 	/// A geographical region of a power system network model.
 	/// </summary>
 	public class GeographicalRegion : IdentifiedObject {
 
-		/// <summary>
-		/// All sub-geograhpical regions within this geographical region.
-		/// </summary>
-		public TC57CIM.IEC61970.Core.SubGeographicalRegion Regions;
+        private List<long> subGeoRegions = new List<long>();
 
 		public GeographicalRegion(){
 
@@ -32,6 +31,125 @@ namespace TC57CIM.IEC61970.Core {
 
 		}
 
-	}//end GeographicalRegion
+        public GeographicalRegion(long globalId) : base(globalId)
+        {
+        }
+
+        public List<long> SubGeoRegions
+        {
+            get { return subGeoRegions; }
+            set { subGeoRegions = value; }
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                GeographicalRegion x = (GeographicalRegion)obj;
+                return (CompareHelper.CompareLists(x.subGeoRegions, this.subGeoRegions));
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool HasProperty(ModelCode t)
+        {
+            switch (t)
+            {
+                case ModelCode.GEOREGION_SUBGEOREGIONS:
+                    return true;
+
+                default:
+                    return base.HasProperty(t);
+            }
+        }
+
+        public override void GetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.GEOREGION_SUBGEOREGIONS:
+                    property.SetValue(subGeoRegions);
+                    break;
+
+                default:
+                    base.GetProperty(property);
+                    break;
+            }
+        }
+
+        public override void SetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                default:
+                    base.SetProperty(property);
+                    break;
+            }
+        }
+
+        public override bool IsReferenced
+        {
+            get
+            {
+                return subGeoRegions.Count != 0 || base.IsReferenced;
+            }
+        }
+
+        public override void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType)
+        {
+            if (subGeoRegions != null && subGeoRegions.Count != 0 && (refType == TypeOfReference.Target || refType == TypeOfReference.Both))
+            {
+                references[ModelCode.GEOREGION_SUBGEOREGIONS] = subGeoRegions.GetRange(0, subGeoRegions.Count);
+            }
+
+            base.GetReferences(references, refType);
+        }
+
+        public override void AddReference(ModelCode referenceId, long globalId)
+        {
+            switch (referenceId)
+            {
+                case ModelCode.SUBGEOREGION_GEOREG:
+                    subGeoRegions.Add(globalId);
+                    break;
+
+                default:
+                    base.AddReference(referenceId, globalId);
+                    break;
+            }
+        }
+
+        public override void RemoveReference(ModelCode referenceId, long globalId)
+        {
+            switch (referenceId)
+            {
+                case ModelCode.SUBGEOREGION_GEOREG:
+
+                    if (subGeoRegions.Contains(globalId))
+                    {
+                        subGeoRegions.Remove(globalId);
+                    }
+                    else
+                    {
+                        CommonTrace.WriteTrace(CommonTrace.TraceWarning, "Entity (GID = 0x{0:x16}) doesn't contain reference 0x{1:x16}.", this.GlobalId, globalId);
+                    }
+
+                    break;
+
+                default:
+                    base.RemoveReference(referenceId, globalId);
+                    break;
+            }
+        }
+
+    }//end GeographicalRegion
 
 }//end namespace Core
