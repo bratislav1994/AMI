@@ -11,45 +11,106 @@ using System.Text;
 using System.IO;
 
 
-
-using TC57CIM.IEC61970.Domain;
 using TC57CIM.IEC61970.Core;
-using TC57CIM.IEC61970.LoadModel;
 using TC57CIM.IEC61970.Wires;
+using FTN.Common;
+
 namespace TC57CIM.IEC61970.Wires {
 	/// <summary>
 	/// Generic user of energy - a  point of consumption on the power system model.
 	/// </summary>
 	public class EnergyConsumer : ConductingEquipment {
 
-		/// <summary>
-		/// Active power of the load that is a fixed quantity. Load sign convention is used,
-		/// i.e. positive sign means flow out from a node.
-		/// </summary>
-		public TC57CIM.IEC61970.Domain.ActivePower pfixed;
-		/// <summary>
-		/// Reactive power of the load that is a fixed quantity. Load sign convention is
-		/// used, i.e. positive sign means flow out from a node.
-		/// </summary>
-		public TC57CIM.IEC61970.Domain.ReactivePower qfixed;
-		/// <summary>
-		/// The load response characteristic of this load.  If missing, this load is
-		/// assumed to be constant power.
-		/// </summary>
-		public TC57CIM.IEC61970.LoadModel.LoadResponseCharacteristic LoadResponse;
-		/// <summary>
-		/// The individual phase models for this energy consumer.
-		/// </summary>
-		public TC57CIM.IEC61970.Wires.EnergyConsumerPhase EnergyConsumerPhase;
+        private float pfixed;
+        private float qfixed;
 
-		public EnergyConsumer(){
+        public EnergyConsumer(long globalId) : base(globalId)
+        {
+        }
 
-		}
+        public float Pfixed
+        {
+            get { return pfixed; }
+            set { pfixed = value; }
+        }
 
-		~EnergyConsumer(){
+        public float Qfixed
+        {
+            get { return qfixed; }
+            set { qfixed = value; }
+        }
 
-		}
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
-	}//end EnergyConsumer
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                EnergyConsumer x = (EnergyConsumer)obj;
+                return (x.pfixed == this.pfixed &&
+                        x.qfixed == this.qfixed);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        #region IAccess implementation
+
+        public override bool HasProperty(ModelCode t)
+        {
+            switch (t)
+            {
+                case ModelCode.ENERGYCONS_PFIXED:
+                case ModelCode.ENERGYCONS_QFIXED:
+                    return true;
+
+                default:
+                    return base.HasProperty(t);
+            }
+        }
+
+        public override void GetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.ENERGYCONS_PFIXED:
+                    property.SetValue(pfixed);
+                    break;
+
+                case ModelCode.ENERGYCONS_QFIXED:
+                    property.SetValue(qfixed);
+                    break;
+
+                default:
+                    base.GetProperty(property);
+                    break;
+            }
+        }
+
+        public override void SetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.ENERGYCONS_PFIXED:
+                    pfixed = property.AsFloat();
+                    break;
+                case ModelCode.ENERGYCONS_QFIXED:
+                    qfixed = property.AsFloat();
+                    break;
+
+                default:
+                    base.SetProperty(property);
+                    break;
+            }
+        }
+
+        #endregion IAccess implementation
+
+    }//end EnergyConsumer
 
 }//end namespace Wires

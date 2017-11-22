@@ -21,15 +21,7 @@ namespace TC57CIM.IEC61970.Core {
 	/// nodes.
 	/// </summary>
 	public class ConnectivityNodeContainer : PowerSystemResource {
-
-		public ConnectivityNodeContainer(){
-
-		}
-
-		~ConnectivityNodeContainer(){
-
-		}
-
+        
         public ConnectivityNodeContainer(long globalId) : base(globalId)
         {
         }
@@ -38,6 +30,8 @@ namespace TC57CIM.IEC61970.Core {
         {
             return base.GetHashCode();
         }
+
+        #region IAccess implementation
 
         public override bool HasProperty(ModelCode t)
         {
@@ -67,6 +61,8 @@ namespace TC57CIM.IEC61970.Core {
                     break;
             }
         }
+
+        #endregion IAccess implementation
 
     }//end ConnectivityNodeContainer
 

@@ -26,14 +26,6 @@ namespace TC57CIM.IEC61970.Core {
         private long subGeoRegion = 0;
         private List<long> voltageLevels = new List<long>();
 
-		public Substation(){
-
-		}
-
-		~Substation(){
-
-		}
-
         public Substation(long globalId) : base(globalId)
         {
         }
@@ -68,6 +60,8 @@ namespace TC57CIM.IEC61970.Core {
                 return false;
             }
         }
+
+        #region IAccess implementation
 
         public override bool HasProperty(ModelCode t)
         {
@@ -113,6 +107,10 @@ namespace TC57CIM.IEC61970.Core {
                     break;
             }
         }
+
+        #endregion IAccess implementation
+
+        #region IReference implementation
 
         public override bool IsReferenced
         {
@@ -174,6 +172,8 @@ namespace TC57CIM.IEC61970.Core {
                     break;
             }
         }
+
+        #endregion IReference implementation
 
     }//end Substation
 

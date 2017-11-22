@@ -23,14 +23,6 @@ namespace TC57CIM.IEC61970.Core {
         
         private List<long> equipments = new List<long>();
 
-		public EquipmentContainer(){
-
-		}
-
-		~EquipmentContainer(){
-
-		}
-
         public EquipmentContainer(long globalId) : base(globalId)
         {
         }
@@ -58,6 +50,8 @@ namespace TC57CIM.IEC61970.Core {
                 return false;
             }
         }
+
+        #region IAccess implementation
 
         public override bool HasProperty(ModelCode t)
         {
@@ -94,6 +88,10 @@ namespace TC57CIM.IEC61970.Core {
                     break;
             }
         }
+
+        #endregion IAccess implementation
+
+        #region IReference implementation
 
         public override bool IsReferenced
         {
@@ -149,6 +147,8 @@ namespace TC57CIM.IEC61970.Core {
                     break;
             }
         }
+
+        #endregion IReference implementation
 
     }//end EquipmentContainer
 

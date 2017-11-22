@@ -14,6 +14,8 @@ using System.IO;
 
 using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Wires;
+using FTN.Common;
+
 namespace TC57CIM.IEC61970.Wires {
 	/// <summary>
 	/// An electrical device consisting of  two or more coupled windings, with or
@@ -29,19 +31,136 @@ namespace TC57CIM.IEC61970.Wires {
 	/// </summary>
 	public class PowerTransformer : ConductingEquipment {
 
-		/// <summary>
-		/// The ends of this power transformer.
-		/// </summary>
-		public TC57CIM.IEC61970.Wires.PowerTransformerEnd PowerTransformerEnd;
+        private List<long> powerTransEnds = new List<long>();
 
-		public PowerTransformer(){
+        public PowerTransformer(long globalId) : base(globalId)
+        {
+        }
 
-		}
+        public List<long> PowerTransEnds
+        {
+            get { return powerTransEnds; }
+            set { powerTransEnds = value; }
+        }
 
-		~PowerTransformer(){
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
-		}
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                PowerTransformer x = (PowerTransformer)obj;
+                return (CompareHelper.CompareLists(x.powerTransEnds, this.powerTransEnds));
+            }
+            else
+            {
+                return false;
+            }
+        }
 
-	}//end PowerTransformer
+
+        #region IAccess implementation
+
+        public override bool HasProperty(ModelCode t)
+        {
+            switch (t)
+            {
+                case ModelCode.POWERTRANSFORMER_POWTRANSENDS:
+                    return true;
+
+                default:
+                    return base.HasProperty(t);
+            }
+        }
+
+        public override void GetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.POWERTRANSFORMER_POWTRANSENDS:
+                    property.SetValue(powerTransEnds);
+                    break;
+
+                default:
+                    base.GetProperty(property);
+                    break;
+            }
+        }
+
+        public override void SetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                default:
+                    base.SetProperty(property);
+                    break;
+            }
+        }
+
+        #endregion IAccess implementation
+
+        #region IReference implementation
+
+        public override bool IsReferenced
+        {
+            get
+            {
+                return powerTransEnds.Count != 0 || base.IsReferenced;
+            }
+        }
+
+        public override void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType)
+        {
+            if (powerTransEnds != null && powerTransEnds.Count != 0 && (refType == TypeOfReference.Target || refType == TypeOfReference.Both))
+            {
+                references[ModelCode.POWERTRANSFORMER_POWTRANSENDS] = powerTransEnds.GetRange(0, powerTransEnds.Count);
+            }
+
+            base.GetReferences(references, refType);
+        }
+
+        public override void AddReference(ModelCode referenceId, long globalId)
+        {
+            switch (referenceId)
+            {
+                case ModelCode.POWERTRANSEND_POWERTRANSF:
+                    powerTransEnds.Add(globalId);
+                    break;
+
+                default:
+                    base.AddReference(referenceId, globalId);
+                    break;
+            }
+        }
+
+        public override void RemoveReference(ModelCode referenceId, long globalId)
+        {
+            switch (referenceId)
+            {
+                case ModelCode.POWERTRANSEND_POWERTRANSF:
+
+                    if (powerTransEnds.Contains(globalId))
+                    {
+                        powerTransEnds.Remove(globalId);
+                    }
+                    else
+                    {
+                        CommonTrace.WriteTrace(CommonTrace.TraceWarning, "Entity (GID = 0x{0:x16}) doesn't contain reference 0x{1:x16}.", this.GlobalId, globalId);
+                    }
+
+                    break;
+
+                default:
+                    base.RemoveReference(referenceId, globalId);
+                    break;
+            }
+        }
+
+        #endregion IReference implementation
+
+    }//end PowerTransformer
 
 }//end namespace Wires

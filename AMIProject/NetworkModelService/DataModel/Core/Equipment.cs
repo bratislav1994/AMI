@@ -13,6 +13,8 @@ using System.IO;
 
 
 using TC57CIM.IEC61970.Core;
+using FTN.Common;
+
 namespace TC57CIM.IEC61970.Core {
 	/// <summary>
 	/// The parts of a power system that are physical devices, electronic or mechanical.
@@ -20,14 +22,95 @@ namespace TC57CIM.IEC61970.Core {
 	/// </summary>
 	public class Equipment : PowerSystemResource {
 
-		public Equipment(){
+        private long eqContainer = 0;
 
-		}
+        public Equipment(long globalId) : base(globalId)
+        {
+        }
 
-		~Equipment(){
+        public long EqContainer
+        {
+            get { return eqContainer; }
+            set { eqContainer = value; }
+        }
 
-		}
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
-	}//end Equipment
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                Equipment x = (Equipment)obj;
+                return (x.eqContainer == this.eqContainer);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        #region IAccess implementation
+
+        public override bool HasProperty(ModelCode t)
+        {
+            switch (t)
+            {
+                case ModelCode.EQUIPMENT_EQCONTAINER:
+                    return true;
+
+                default:
+                    return base.HasProperty(t);
+            }
+        }
+
+        public override void GetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.EQUIPMENT_EQCONTAINER:
+                    property.SetValue(eqContainer);
+                    break;
+
+                default:
+                    base.GetProperty(property);
+                    break;
+            }
+        }
+
+        public override void SetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.EQUIPMENT_EQCONTAINER:
+                    eqContainer = property.AsReference();
+                    break;
+
+                default:
+                    base.SetProperty(property);
+                    break;
+            }
+        }
+
+        #endregion IAccess implementation
+
+        #region IReference implementation
+
+        public override void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType)
+        {
+            if (eqContainer != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
+            {
+                references[ModelCode.EQUIPMENT_EQCONTAINER] = new List<long>();
+                references[ModelCode.EQUIPMENT_EQCONTAINER].Add(eqContainer);
+            }
+
+            base.GetReferences(references, refType);
+        }
+
+        #endregion IReference implementation
+
+    }//end Equipment
 
 }//end namespace Core

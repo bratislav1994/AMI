@@ -25,14 +25,6 @@ namespace TC57CIM.IEC61970.Core {
         private long geoRegion = 0;
         private List<long> substations = new List<long>();
 
-		public SubGeographicalRegion(){
-
-		}
-
-		~SubGeographicalRegion(){
-
-		}
-
         public SubGeographicalRegion(long globalId) : base(globalId)
         {
         }
@@ -67,6 +59,8 @@ namespace TC57CIM.IEC61970.Core {
                 return false;
             }
         }
+
+        #region IAccess implementation
 
         public override bool HasProperty(ModelCode t)
         {
@@ -112,6 +106,10 @@ namespace TC57CIM.IEC61970.Core {
                     break;
             }
         }
+
+        #endregion IAccess implementation
+
+        #region IReference implementation
 
         public override bool IsReferenced
         {
@@ -174,6 +172,8 @@ namespace TC57CIM.IEC61970.Core {
             }
         }
 
-	}//end SubGeographicalRegion
+        #endregion IReference implementation
+
+    }//end SubGeographicalRegion
 
 }//end namespace Core

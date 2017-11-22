@@ -14,6 +14,9 @@ using System.IO;
 
 
 using TC57CIM.IEC61970.Wires;
+using FTN.Common;
+using TC57CIM.IEC61970.Core;
+
 namespace TC57CIM.IEC61970.Wires {
 	/// <summary>
 	/// A PowerTransformerEnd is associated with each Terminal of a PowerTransformer.
@@ -32,14 +35,95 @@ namespace TC57CIM.IEC61970.Wires {
 	/// </summary>
 	public class PowerTransformerEnd : TransformerEnd {
 
-		public PowerTransformerEnd(){
+        private long powerTrans = 0;
 
-		}
+        public PowerTransformerEnd(long globalId) : base(globalId)
+        {
+        }
 
-		~PowerTransformerEnd(){
+        public long PowerTrans
+        {
+            get { return powerTrans; }
+            set { powerTrans = value; }
+        }
 
-		}
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
-	}//end PowerTransformerEnd
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                PowerTransformerEnd x = (PowerTransformerEnd)obj;
+                return (x.powerTrans == this.powerTrans);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        #region IAccess implementation
+
+        public override bool HasProperty(ModelCode t)
+        {
+            switch (t)
+            {
+                case ModelCode.POWERTRANSEND_POWERTRANSF:
+                    return true;
+
+                default:
+                    return base.HasProperty(t);
+            }
+        }
+
+        public override void GetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.POWERTRANSEND_POWERTRANSF:
+                    property.SetValue(powerTrans);
+                    break;
+                    
+                default:
+                    base.GetProperty(property);
+                    break;
+            }
+        }
+
+        public override void SetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.POWERTRANSEND_POWERTRANSF:
+                    powerTrans = property.AsReference();
+                    break;
+
+                default:
+                    base.SetProperty(property);
+                    break;
+            }
+        }
+
+        #endregion IAccess implementation
+
+        #region IReference implementation
+
+        public override void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType)
+        {
+            if (powerTrans != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
+            {
+                references[ModelCode.POWERTRANSEND_POWERTRANSF] = new List<long>();
+                references[ModelCode.POWERTRANSEND_POWERTRANSF].Add(powerTrans);
+            }
+
+            base.GetReferences(references, refType);
+        }
+
+        #endregion IReference implementation
+
+    }//end PowerTransformerEnd
 
 }//end namespace Wires

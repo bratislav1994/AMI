@@ -13,6 +13,8 @@ using System.IO;
 
 
 using TC57CIM.IEC61970.Core;
+using FTN.Common;
+
 namespace TC57CIM.IEC61970.Core {
 	/// <summary>
 	/// The parts of the power system that are designed to carry current or that are
@@ -20,14 +22,95 @@ namespace TC57CIM.IEC61970.Core {
 	/// </summary>
 	public class ConductingEquipment : Equipment {
 
-		public ConductingEquipment(){
+        private long baseVoltage = 0;
 
-		}
+        public ConductingEquipment(long globalId) : base(globalId)
+        {
+        }
 
-		~ConductingEquipment(){
+        public long BaseVoltage
+        {
+            get { return baseVoltage; }
+            set { baseVoltage = value; }
+        }
 
-		}
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
-	}//end ConductingEquipment
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                ConductingEquipment x = (ConductingEquipment)obj;
+                return (x.baseVoltage == this.baseVoltage);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        #region IAccess implementation
+
+        public override bool HasProperty(ModelCode t)
+        {
+            switch (t)
+            {
+                case ModelCode.CONDEQ_BASEVOLTAGE:
+                    return true;
+
+                default:
+                    return base.HasProperty(t);
+            }
+        }
+
+        public override void GetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.CONDEQ_BASEVOLTAGE:
+                    property.SetValue(baseVoltage);
+                    break;
+                    
+                default:
+                    base.GetProperty(property);
+                    break;
+            }
+        }
+
+        public override void SetProperty(Property property)
+        {
+            switch (property.Id)
+            {
+                case ModelCode.CONDEQ_BASEVOLTAGE:
+                    baseVoltage = property.AsReference();
+                    break;
+
+                default:
+                    base.SetProperty(property);
+                    break;
+            }
+        }
+
+        #endregion IAccess implementation
+
+        #region IReference implementation
+
+        public override void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType)
+        {
+            if (baseVoltage != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
+            {
+                references[ModelCode.CONDEQ_BASEVOLTAGE] = new List<long>();
+                references[ModelCode.CONDEQ_BASEVOLTAGE].Add(baseVoltage);
+            }
+
+            base.GetReferences(references, refType);
+        }
+
+        #endregion IReference implementation
+
+    }//end ConductingEquipment
 
 }//end namespace Core
