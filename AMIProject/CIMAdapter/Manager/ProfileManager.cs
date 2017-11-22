@@ -5,12 +5,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Manager
 {
 	public enum SupportedProfiles : byte
 	{
-		PowerTransformer = 0,
-		VoltageRegulator,
-		SwitchingEquipment,
-		OverheadLines,
-		UndergroundCables,
-		ProtectionDevices
+		AMIProfile = 0
 	};
 
 
@@ -19,7 +14,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Manager
 	/// </summary>
 	public static class ProfileManager
 	{
-		public const string Namespace = "FTN";
+		public const string Namespace = "AMIProfile";
 
 		/// <summary>
 		/// Method returns the name of CIM profile based on the defined enumeration.
