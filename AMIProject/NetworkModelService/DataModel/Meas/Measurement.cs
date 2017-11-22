@@ -78,6 +78,7 @@ namespace TC57CIM.IEC61970.Meas {
             switch (property)
             {
                 case ModelCode.MEASUREMENT_UNITSYMBOL:
+                case ModelCode.MEASUREMENT_PSR:
                     return true;
                 default:
                     return base.HasProperty(property);
@@ -91,6 +92,10 @@ namespace TC57CIM.IEC61970.Meas {
                 case ModelCode.MEASUREMENT_UNITSYMBOL:
                     property.SetValue((int)unitSymbol);
                     break;
+                case ModelCode.MEASUREMENT_PSR:
+                    property.SetValue(powerSystemResource);
+                    break;
+
                 default:
                     base.GetProperty(property);
                     break;
@@ -104,6 +109,10 @@ namespace TC57CIM.IEC61970.Meas {
                 case ModelCode.MEASUREMENT_UNITSYMBOL:
                     unitSymbol = (UnitSymbol)property.AsInt();
                     break;
+                case ModelCode.MEASUREMENT_PSR:
+                    powerSystemResource = property.AsReference();
+                    break;
+
                 default:
                     base.SetProperty(property);
                     break;

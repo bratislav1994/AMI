@@ -93,42 +93,36 @@
 	<cim:PowerTransformerEnd rdf:ID="PTE_1_1">
 		<cim:PowerTransformerEnd.PowerTransformer rdf:resource="#PT_1"/>
 		<cim:TransformerEnd.BaseVoltage rdf:resource="#BV_2"/>
-		<cim:TransformerEnd.RatioTapChanger rdf:resource=""/>
 		<cim:IdentifiedObject.mRID>PTE_1_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>PTransformerEnd_1_1</cim:IdentifiedObject.name>
 	</cim:PowerTransformerEnd>
 	<cim:PowerTransformerEnd rdf:ID="PTE_1_2">
 		<cim:PowerTransformerEnd.PowerTransformer rdf:resource="#PT_1"/>
 		<cim:TransformerEnd.BaseVoltage rdf:resource="#BV_1"/>
-		<cim:TransformerEnd.RatioTapChanger rdf:resource=""/>
 		<cim:IdentifiedObject.mRID>PTE_1_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>PTransformerEnd_1_2</cim:IdentifiedObject.name>
 	</cim:PowerTransformerEnd>
 	<cim:PowerTransformerEnd rdf:ID="PTE_2_1">
 		<cim:PowerTransformerEnd.PowerTransformer rdf:resource="#PT_2"/>
 		<cim:TransformerEnd.BaseVoltage rdf:resource="#BV_2"/>
-		<cim:TransformerEnd.RatioTapChanger rdf:resource=""/>
 		<cim:IdentifiedObject.mRID>PTE_2_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>PTransformerEnd_2_1</cim:IdentifiedObject.name>
 	</cim:PowerTransformerEnd>
 	<cim:PowerTransformerEnd rdf:ID="PTE_2_2">
 		<cim:PowerTransformerEnd.PowerTransformer rdf:resource="#PT_2"/>
 		<cim:TransformerEnd.BaseVoltage rdf:resource="#BV_1"/>
-		<cim:TransformerEnd.RatioTapChanger rdf:resource=""/>
 		<cim:IdentifiedObject.mRID>PTE_2_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>PTransformerEnd_2_2</cim:IdentifiedObject.name>
 	</cim:PowerTransformerEnd>
 	<cim:PowerTransformerEnd rdf:ID="PTE_3_1">
 		<cim:PowerTransformerEnd.PowerTransformer rdf:resource="#PT_3"/>
 		<cim:TransformerEnd.BaseVoltage rdf:resource="#BV_2"/>
-		<cim:TransformerEnd.RatioTapChanger rdf:resource=""/>
 		<cim:IdentifiedObject.mRID>PTE_3_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>PTransformerEnd_3_1</cim:IdentifiedObject.name>
 	</cim:PowerTransformerEnd>
 	<cim:PowerTransformerEnd rdf:ID="PTE_3_2">
 		<cim:PowerTransformerEnd.PowerTransformer rdf:resource="#PT_3"/>
 		<cim:TransformerEnd.BaseVoltage rdf:resource="#BV_1"/>
-		<cim:TransformerEnd.RatioTapChanger rdf:resource=""/>
 		<cim:IdentifiedObject.mRID>PTE_3_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>PTransformerEnd_3_2</cim:IdentifiedObject.name>
 	</cim:PowerTransformerEnd>

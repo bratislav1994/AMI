@@ -196,18 +196,6 @@
 
                     rd.AddProperty(new Property(ModelCode.TRANSFORMEREND_BASEVOLT, gid));
                 }
-
-                if (cimTransEnd.RatioTapChangerHasValue)
-                {
-                    long gid = importHelper.GetMappedGID(cimTransEnd.RatioTapChanger.ID);
-                    if (gid < 0)
-                    {
-                        report.Report.Append("WARNING: Convert ").Append(cimTransEnd.GetType().ToString()).Append(" rdfID = \"").Append(cimTransEnd.ID);
-                        report.Report.Append("\" - Failed to set reference to RatioTapChanger: rdfID \"").Append(cimTransEnd.RatioTapChanger.ID).AppendLine(" \" is not mapped to GID!");
-                    }
-
-                    rd.AddProperty(new Property(ModelCode.TRANSFORMEREND_RATIOTAPCHANGER, gid));
-                }
             }
         }
 

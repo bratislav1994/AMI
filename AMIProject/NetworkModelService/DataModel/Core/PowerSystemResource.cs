@@ -120,7 +120,7 @@ namespace TC57CIM.IEC61970.Core {
         {
             switch (referenceId)
             {
-                case ModelCode.PSR_MEASUREMENTS:
+                case ModelCode.MEASUREMENT_PSR:
                     measurements.Add(globalId);
                     break;
 
@@ -134,7 +134,7 @@ namespace TC57CIM.IEC61970.Core {
         {
             switch (referenceId)
             {
-                case ModelCode.PSR_MEASUREMENTS:
+                case ModelCode.MEASUREMENT_PSR:
 
                     if (measurements.Contains(globalId))
                     {

@@ -24,7 +24,7 @@ namespace TC57CIM.IEC61970.Wires {
 	public class TransformerEnd : IdentifiedObject {
 
         private long baseVoltage = 0;
-        private long ratioTapChanger = 0;
+        private List<long> ratioTapChanger = new List<long>();
 
         public TransformerEnd(long globalId) : base(globalId)
         {
@@ -43,7 +43,7 @@ namespace TC57CIM.IEC61970.Wires {
             }
         }
 
-        public long RatioTapChanger
+        public List<long> RatioTapChanger
         {
             get
             {
@@ -61,7 +61,8 @@ namespace TC57CIM.IEC61970.Wires {
             if (base.Equals(obj))
             {
                 TransformerEnd x = (TransformerEnd)obj;
-                return (x.baseVoltage == this.baseVoltage && x.ratioTapChanger == this.ratioTapChanger);
+                return (x.baseVoltage == this.baseVoltage && 
+                       (CompareHelper.CompareLists(x.ratioTapChanger, this.ratioTapChanger)));
             }
             else
             {
@@ -114,9 +115,6 @@ namespace TC57CIM.IEC61970.Wires {
                 case ModelCode.TRANSFORMEREND_BASEVOLT:
                     baseVoltage = property.AsReference();
                     break;
-                case ModelCode.TRANSFORMEREND_RATIOTAPCHANGER:
-                    ratioTapChanger = property.AsReference();
-                    break;
 
                 default:
                     base.SetProperty(property);
@@ -128,6 +126,14 @@ namespace TC57CIM.IEC61970.Wires {
 
         #region IReference implementation
 
+        public override bool IsReferenced
+        {
+            get
+            {
+                return ratioTapChanger.Count > 0 || base.IsReferenced;
+            }
+        }
+
         public override void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType)
         {
             if (baseVoltage != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
@@ -136,13 +142,50 @@ namespace TC57CIM.IEC61970.Wires {
                 references[ModelCode.TRANSFORMEREND_BASEVOLT].Add(baseVoltage);
             }
 
-            if (ratioTapChanger != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
+            if (ratioTapChanger != null && ratioTapChanger.Count > 0 &&
+                (refType == TypeOfReference.Target || refType == TypeOfReference.Both))
             {
-                references[ModelCode.TRANSFORMEREND_RATIOTAPCHANGER] = new List<long>();
-                references[ModelCode.TRANSFORMEREND_RATIOTAPCHANGER].Add(ratioTapChanger);
+                references[ModelCode.TRANSFORMEREND_RATIOTAPCHANGER] = ratioTapChanger.GetRange(0, ratioTapChanger.Count);
             }
 
             base.GetReferences(references, refType);
+        }
+
+        public override void AddReference(ModelCode referenceId, long globalId)
+        {
+            switch (referenceId)
+            {
+                case ModelCode.RATIOTAPCHANGER_TRANSEND:
+                    ratioTapChanger.Add(globalId);
+                    break;
+
+                default:
+                    base.AddReference(referenceId, globalId);
+                    break;
+            }
+        }
+
+        public override void RemoveReference(ModelCode referenceId, long globalId)
+        {
+            switch (referenceId)
+            {
+                case ModelCode.RATIOTAPCHANGER_TRANSEND:
+
+                    if (ratioTapChanger.Contains(globalId))
+                    {
+                        ratioTapChanger.Remove(globalId);
+                    }
+                    else
+                    {
+                        CommonTrace.WriteTrace(CommonTrace.TraceWarning, "Entity (GID = 0x{0:x16}) doesn't contain reference 0x{1:x16}.", this.GlobalId, globalId);
+                    }
+
+                    break;
+                
+                default:
+                    base.RemoveReference(referenceId, globalId);
+                    break;
+            }
         }
 
         #endregion IReference implementation	
