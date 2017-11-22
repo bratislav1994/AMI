@@ -6,9 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
 using FTN.Common;
-/*using FTN.Services.NetworkModelService.DataModel;
-using FTN.Services.NetworkModelService.DataModel.Core;
-using FTN.Services.NetworkModelService.DataModel.Wires;*/
+using TC57CIM.IEC61970.Core;
 
 namespace FTN.Services.NetworkModelService
 {
@@ -33,7 +31,7 @@ namespace FTN.Services.NetworkModelService
             resourcesDescs = new ModelResourcesDesc();
             //Initialize();
         }
-        /*
+        
         #region Find
         
 		public bool EntityExists(long globalId)
@@ -686,7 +684,7 @@ namespace FTN.Services.NetworkModelService
 				}
 			}		
 		}
-        /*
+        
 		private void SaveDelta(Delta delta)
 		{
 			bool fileExisted = false;
@@ -782,7 +780,7 @@ namespace FTN.Services.NetworkModelService
 			}
 
 			return typesCounters;
-		}*/
+		}
 
     }
 }
