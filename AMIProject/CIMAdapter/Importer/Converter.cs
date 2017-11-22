@@ -1,13 +1,13 @@
 ﻿namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
 {
-	using FTN.Common;
+    using FTN.Common;
     using AMIProfile;
 
-	/// <summary>
-	/// PowerTransformerConverter has methods for populating
-	/// ResourceDescription objects using PowerTransformerCIMProfile_Labs objects.
-	/// </summary>
-	public static class Converter
+    /// <summary>
+    /// PowerTransformerConverter has methods for populating
+    /// ResourceDescription objects using PowerTransformerCIMProfile_Labs objects.
+    /// </summary>
+    public static class Converter
 	{
 		#region Populate ResourceDescription
 		public static void PopulateIdentifiedObjectProperties(IdentifiedObject cimIdentifiedObject, ResourceDescription rd)
@@ -307,7 +307,7 @@
         {
             if ((cimRation != null) && (rd != null))
             {
-                Converter.PopulateRatioTapChangerProperties(cimRation, rd, importHelper, report);
+                Converter.PopulateTapChangerProperties(cimRation, rd, importHelper, report);
 
                 if (cimRation.TransformerEndHasValue)
                 {
@@ -359,7 +359,7 @@
         {
             if ((cimPowerTransEnd != null) && (rd != null))
             {
-                Converter.PopulatePowerTransformerEndProperties(cimPowerTransEnd, rd, importHelper, report);
+                Converter.PopulateTransformerEndProperties(cimPowerTransEnd, rd, importHelper, report);
 
                 if (cimPowerTransEnd.PowerTransformerHasValue)
                 {
