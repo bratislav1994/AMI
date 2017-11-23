@@ -245,6 +245,7 @@
 		<cim:Analog.normalValue> </cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.direction>WRITE</cim:Measurement.direction>
 		<cim:IdentifiedObject.mRID>ANALOG_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -254,6 +255,7 @@
 		<cim:Analog.normalValue> </cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.direction>WRITE</cim:Measurement.direction>
 		<cim:IdentifiedObject.mRID>ANALOG_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -263,6 +265,7 @@
 		<cim:Analog.normalValue> </cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.direction>WRITE</cim:Measurement.direction>
 		<cim:IdentifiedObject.mRID>ANALOG_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_3</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -272,6 +275,7 @@
 		<cim:Analog.normalValue> </cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_4"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.direction>WRITE</cim:Measurement.direction>
 		<cim:IdentifiedObject.mRID>ANALOG_4</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_4</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -281,6 +285,7 @@
 		<cim:Analog.normalValue> </cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_5"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.direction>WRITE</cim:Measurement.direction>
 		<cim:IdentifiedObject.mRID>ANALOG_5</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_5</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -290,6 +295,7 @@
 		<cim:Analog.normalValue> </cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_6"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.direction>WRITE</cim:Measurement.direction>
 		<cim:IdentifiedObject.mRID>ANALOG_6</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_6</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -299,6 +305,7 @@
 		<cim:Analog.normalValue> </cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_7"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.direction>WRITE</cim:Measurement.direction>
 		<cim:IdentifiedObject.mRID>ANALOG_7</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_7</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -308,6 +315,7 @@
 		<cim:Analog.normalValue> </cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_8"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.direction>WRITE</cim:Measurement.direction>
 		<cim:IdentifiedObject.mRID>ANALOG_8</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_8</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -317,6 +325,7 @@
 		<cim:Analog.normalValue> </cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_9"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.direction>WRITE</cim:Measurement.direction>
 		<cim:IdentifiedObject.mRID>ANALOG_9</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_9</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -326,6 +335,7 @@
 		<cim:Analog.normalValue> </cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_10"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.direction>WRITE</cim:Measurement.direction>
 		<cim:IdentifiedObject.mRID>ANALOG_10</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_10</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -337,6 +347,7 @@
 		<cim:Discrete.normalValue> </cim:Discrete.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#"/>
 		<cim:Measurement.unitSymbol> P Q V </cim:Measurement.unitSymbol>
+		<cim:Measurement.direction> WRITE READWRITE READ </cim:Measurement.direction>
 		<cim:IdentifiedObject.mRID> </cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name> </cim:IdentifiedObject.name>
 	</cim:Discrete-->
