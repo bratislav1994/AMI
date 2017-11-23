@@ -13,4 +13,11 @@ namespace FTN.Common
         V
 
     }//end UnitSymbol
+
+    public enum Direction : int
+    {
+        WRITE = 0,
+        READWRITE,
+        READ
+    }//end Direction
 }

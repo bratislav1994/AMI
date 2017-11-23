@@ -23,37 +23,37 @@ namespace TC57CIM.IEC61970.Meas {
 		/// Normal value range maximum for any of the MeasurementValue.values. Used for
 		/// scaling, e.g. in bar graphs or of telemetered raw values.
 		/// </summary>
-		public float maxValue;
+		public int maxValue;
 		/// <summary>
 		/// Normal value range minimum for any of the MeasurementValue.values. Used for
 		/// scaling, e.g. in bar graphs or of telemetered raw values.
 		/// </summary>
-		public float minValue;
+		public int minValue;
 		/// <summary>
 		/// Normal measurement value, e.g., used for percentage calculations.
 		/// </summary>
-		public float normalValue;
+		public int normalValue;
 
 		public Discrete(long globalId)
         :base(globalId)
         {
         }
 
-        public float MaxValue
+        public int MaxValue
         {
             get { return maxValue; }
 
             set { maxValue = value; }
         }
 
-        public float MinValue
+        public int MinValue
         {
             get { return minValue; }
 
             set { minValue = value; }
         }
 
-        public float NormalValue
+        public int NormalValue
         {
             get { return normalValue; }
 
@@ -120,13 +120,13 @@ namespace TC57CIM.IEC61970.Meas {
             {
                 case ModelCode.DISCRETE_MAXVALUE:
 
-                    maxValue = property.AsFloat();
+                    maxValue = property.AsInt();
                     break;
                 case ModelCode.DISCRETE_MINVALUE:
-                    minValue = property.AsFloat();
+                    minValue = property.AsInt();
                     break;
                 case ModelCode.DISCRETE_NORMALVALUE:
-                    normalValue = property.AsFloat();
+                    normalValue = property.AsInt();
                     break;
 
                 default:

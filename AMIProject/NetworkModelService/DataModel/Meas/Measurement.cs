@@ -45,6 +45,7 @@ namespace TC57CIM.IEC61970.Meas {
 		/// The unit of measure of the measured quantity.
 		/// </summary>
 		public UnitSymbol unitSymbol;
+        public Direction direction;
 
         private long powerSystemResource = 0;
 
@@ -58,7 +59,7 @@ namespace TC57CIM.IEC61970.Meas {
             if (base.Equals(obj))
             {
                 Measurement x = (Measurement)obj;
-                return (x.unitSymbol == this.unitSymbol && x.powerSystemResource == this.powerSystemResource);
+                return (x.unitSymbol == this.unitSymbol && x.direction == this.direction && x.powerSystemResource == this.powerSystemResource);
             }
             else
             {
@@ -78,6 +79,7 @@ namespace TC57CIM.IEC61970.Meas {
             switch (property)
             {
                 case ModelCode.MEASUREMENT_UNITSYMBOL:
+                case ModelCode.MEASUREMENT_DIRECTION:
                 case ModelCode.MEASUREMENT_PSR:
                     return true;
                 default:
@@ -91,6 +93,9 @@ namespace TC57CIM.IEC61970.Meas {
             {
                 case ModelCode.MEASUREMENT_UNITSYMBOL:
                     property.SetValue((int)unitSymbol);
+                    break;
+                case ModelCode.MEASUREMENT_DIRECTION:
+                    property.SetValue((int)direction);
                     break;
                 case ModelCode.MEASUREMENT_PSR:
                     property.SetValue(powerSystemResource);
@@ -108,6 +113,9 @@ namespace TC57CIM.IEC61970.Meas {
             {
                 case ModelCode.MEASUREMENT_UNITSYMBOL:
                     unitSymbol = (UnitSymbol)property.AsInt();
+                    break;
+                case ModelCode.MEASUREMENT_DIRECTION:
+                    direction = (Direction)property.AsInt();
                     break;
                 case ModelCode.MEASUREMENT_PSR:
                     powerSystemResource = property.AsReference();
