@@ -38,12 +38,12 @@ namespace TC57CIM.IEC61970.Core {
 		/// For CIMXML data files in RDF syntax, the mRID is mapped to rdf:ID or rdf:about
 		/// attributes that identify CIM object elements.
 		/// </summary>
-		public String mRID;
-		/// <summary>
-		/// The name is any free human readable and possibly non unique text naming the
-		/// object.
-		/// </summary>
-		public String name;
+		private string mRID;
+        /// <summary>
+        /// The name is any free human readable and possibly non unique text naming the
+        /// object.
+        /// </summary>
+        private string name;
 
         /// <summary>
         /// Initializes a new instance of the IdentifiedObject class.
@@ -85,6 +85,19 @@ namespace TC57CIM.IEC61970.Core {
         {
             get { return mRID; }
             set { mRID = value; }
+        }
+
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+
+            set
+            {
+                name = value;
+            }
         }
 
         public static bool operator ==(IdentifiedObject x, IdentifiedObject y)
@@ -154,7 +167,7 @@ namespace TC57CIM.IEC61970.Core {
                     property.SetValue(mRID);
                     break;
                 case ModelCode.IDOBJ_NAME:
-                    property.SetValue(name);
+                    property.SetValue(Name);
                     break;
                 default:
                     string message = string.Format("Unknown property id = {0} for entity (GID = 0x{1:x16}).", property.Id.ToString(), this.GlobalId);
@@ -171,7 +184,7 @@ namespace TC57CIM.IEC61970.Core {
                     mRID = property.AsString();
                     break;
                 case ModelCode.IDOBJ_NAME:
-                    name = property.AsString();
+                    Name = property.AsString();
                     break;
                 default:
                     string message = string.Format("Unknown property id = {0} for entity (GID = 0x{1:x16}).", property.Id.ToString(), this.GlobalId);
@@ -191,7 +204,7 @@ namespace TC57CIM.IEC61970.Core {
                 return false;
             }
         }
-
+        
         public virtual void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType)
         {
             return;

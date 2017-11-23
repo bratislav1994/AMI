@@ -5,8 +5,151 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AMIClient"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="550" Width="715.909">
     <Grid>
-        
+        <TabControl Height="519" Width="700" TabStripPlacement="Left" x:Name="tabControl" HorizontalAlignment="Left" Margin="5,0,-13,0" VerticalAlignment="Top">
+            <TabControl.Background>
+                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
+            </TabControl.Background>
+
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Border Name="Border" BorderThickness="1,1,1,0" BorderBrush="Gainsboro" CornerRadius="4,4,0,0" Margin="2,0">
+                                    <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="LightSkyBlue" />
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter TargetName="Border" Property="Background" Value="GhostWhite" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
+
+            <TabItem Name="tab1" Header="Geographical Region" Height="50" VerticalAlignment="Top" Margin="0,0,0,0">
+                <TabItem.DataContext>
+                    <local:GeoRegionViewModel/>
+                </TabItem.DataContext>
+                <Grid Background="#FF5B6570" Margin="0,0,0,0">
+                    <DataGrid SelectionMode="Single" GridLinesVisibility="None" BorderBrush="Transparent" Foreground="White" Background="Transparent" RowBackground="Transparent" ItemsSource="{Binding GeoRegions, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" Margin="0,30,0,21" >
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="Background" Value="Orange" />
+                            </Style>
+                        </DataGrid.Resources>
+
+                        <DataGrid.Columns>
+
+                            <DataGridTextColumn Width="100" Header="mRID" Binding="{Binding Mrid}"/>
+                            <DataGridTextColumn Width="100" Header="Name" Binding="{Binding Name}"/>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button x:Name="button1" Content="Get elements" HorizontalAlignment="Left" Margin="423,5,0,0" VerticalAlignment="Top" Width="83" Command="{Binding GetElementsCommand}"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Name="tab2" Header="Geographical Subregion" Height="50" VerticalAlignment="Bottom" Margin="0,0,0,0">
+                <TabItem.DataContext>
+                    <local:GeoSubRegionViewModel/>
+                </TabItem.DataContext>
+                <Grid Background="#FF5B6570" Margin="0,0,0,0">
+                    <Label x:Name="label1" Content="Geographical region" Margin="0,0,418,488"/>
+                    <ComboBox x:Name="combo_box1" HorizontalAlignment="Left" ItemsSource="{Binding GeoRegions, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding GeoRegion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="120,5,0,0" VerticalAlignment="Top" Height="20" Width="170"/>
+                    <DataGrid SelectionMode="Single" GridLinesVisibility="None" BorderBrush="Transparent" Foreground="White" Background="Transparent" RowBackground="Transparent" ItemsSource="{Binding SubRegions, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" Margin="0,30,0,21" >
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="Background" Value="Orange" />
+                            </Style>
+                        </DataGrid.Resources>
+
+                        <DataGrid.Columns>
+
+                            <DataGridTextColumn Width="100" Header="mRID" Binding="{Binding Mrid}"/>
+                            <DataGridTextColumn Width="100" Header="Name" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Width="*" Header="Geographical region ID" Binding="{Binding GeoRegion}"/>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button x:Name="button" Content="Get elements" HorizontalAlignment="Left" Margin="423,5,0,0" VerticalAlignment="Top" Width="83" Command="{Binding GetElementsCommand}"/>
+                </Grid>
+            </TabItem>
+            <TabItem Name="tab3" Header="Substaion" Height="50" VerticalAlignment="Top" Margin="0,0,0,0">
+                <TabItem.DataContext>
+                    <local:SubstationViewModel/>
+                </TabItem.DataContext>
+                <Grid Background="#FF5B6570" Margin="0,0,0,0">
+                    <Grid Background="#FF5B6570" Margin="0,0,0,0">
+                        <Label x:Name="label2" Content="Geographical Region" Margin="0,0,409,488"/>
+                        <ComboBox x:Name="combo_box2" HorizontalAlignment="Left" Margin="145,5,0,0" SelectedItem="{Binding GeoRegion}" ItemsSource="{Binding GeoRegions, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Height="20" Width="170"/>
+                        <Label x:Name="label3" Content="Geographical Subregion" Margin="0,25,398,463"/>
+                        <ComboBox x:Name="combo_box3" HorizontalAlignment="Left" Margin="145,30,0,0" SelectedItem="{Binding SubGeoRegion}" ItemsSource="{Binding SubGeoRegions, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Height="20" Width="170"/>
+                        <DataGrid SelectionMode="Single" GridLinesVisibility="None" BorderBrush="Transparent" Foreground="White" Background="Transparent" RowBackground="Transparent" ItemsSource="{Binding Substations, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" Margin="0,55,0,21" >
+                            <DataGrid.Resources>
+                                <Style TargetType="{x:Type DataGridColumnHeader}">
+                                    <Setter Property="Background" Value="Orange" />
+                                </Style>
+                            </DataGrid.Resources>
+
+                            <DataGrid.Columns>
+
+                                <DataGridTextColumn Width="100" Header="mRID" Binding="{Binding Mrid}"/>
+                                <DataGridTextColumn Width="100" Header="Name" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Width="*" Header="Subgeographical region ID" Binding="{Binding SubGeoRegion}"/>
+
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Button x:Name="button2" Content="Get elements" HorizontalAlignment="Left" Margin="423,5,0,0" VerticalAlignment="Top" Width="83" Command="{Binding GetElementsCommand}"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Name="tab4" Header="AMIs" Height="50" VerticalAlignment="Top" Margin="0,0,0,0">
+                <TabItem.DataContext>
+                    <local:AMIsViewModel/>
+                </TabItem.DataContext>
+                <Grid Background="#FF5B6570" Margin="0,0,0,0">
+                    <Grid Background="#FF5B6570" Margin="0,0,0,0">
+                        <Label x:Name="label4" Content="Geographical Region" Margin="10,10,398,480"/>
+                        <Label x:Name="label5" Content="Geographical Subregion" Margin="10,35,398,453"/>
+                        <Label x:Name="label6" Content="Substation" Margin="10,63,398,418"/>
+                        <ComboBox x:Name="combo_box4" HorizontalAlignment="Left" Margin="145,10,0,0" SelectedItem="{Binding GeoRegion}" ItemsSource="{Binding GeoRegions, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Height="20" Width="170" />
+                        <ComboBox x:Name="combo_box5" HorizontalAlignment="Left" Margin="145,38,0,0" SelectedItem="{Binding SubGeoRegion}" ItemsSource="{Binding SubGeoRegions, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Height="20" Width="170" />
+                        <ComboBox x:Name="combo_box6" HorizontalAlignment="Left" Margin="145,65,0,0" SelectedItem="{Binding Substation}" ItemsSource="{Binding Substations, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Height="20" Width="170"/>
+                        <DataGrid SelectionMode="Single" GridLinesVisibility="None" BorderBrush="Transparent" Foreground="White" Background="Transparent" RowBackground="Transparent" ItemsSource="{Binding Amis, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" Margin="0,90,0,21" >
+                            <DataGrid.Resources>
+                                <Style TargetType="{x:Type DataGridColumnHeader}">
+                                    <Setter Property="Background" Value="Orange" />
+                                </Style>
+                            </DataGrid.Resources>
+
+                            <DataGrid.Columns>
+
+                                <DataGridTextColumn Width="100" Header="mRID" Binding="{Binding Mrid}"/>
+                                <DataGridTextColumn Width="100" Header="Name" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Width="*" Header="Subgeographical region ID" Binding="{Binding EqContainer}"/>
+
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Button x:Name="button3" Content="Get elements" HorizontalAlignment="Left" Margin="423,5,0,0" VerticalAlignment="Top" Width="83" Command="{Binding GetElementsCommand}"/>
+
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+
     </Grid>
 </Window>
