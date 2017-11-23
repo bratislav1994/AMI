@@ -57,7 +57,7 @@
 
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button x:Name="button1" Content="Get elements" HorizontalAlignment="Left" Margin="423,5,0,0" VerticalAlignment="Top" Width="83" Command="{Binding GetElementsCommand}"/>
+                    <Button x:Name="button1" Content="Get elements" HorizontalAlignment="Left" Margin="423,5,0,0" VerticalAlignment="Top" Width="83" Command="{Binding Path=GetElementsCommand}"/>
                 </Grid>
             </TabItem>
 

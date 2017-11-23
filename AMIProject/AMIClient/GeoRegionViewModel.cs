@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using FTN.Common;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -50,6 +51,8 @@ namespace AMIClient
 
         private void GetElementsCommandAction()
         {
+            TestGDA tgda = new TestGDA();
+            tgda.GetExtentValues(ModelCode.GEOREGION);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
