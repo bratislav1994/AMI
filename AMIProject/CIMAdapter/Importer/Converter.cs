@@ -376,9 +376,24 @@
                 case AMIProfile.UnitSymbol.Q:
                     return FTN.Common.UnitSymbol.Q;
                 case AMIProfile.UnitSymbol.V:
-                    return FTN.Common.UnitSymbol.Q;
+                    return FTN.Common.UnitSymbol.V;
                 
                 default: return FTN.Common.UnitSymbol.V;
+            }
+        }
+
+        public static FTN.Common.Direction GetDMSDirection(AMIProfile.Direction unit)
+        {
+            switch (unit)
+            {
+                case AMIProfile.Direction.WRITE:
+                    return FTN.Common.Direction.WRITE;
+                case AMIProfile.Direction.READWRITE:
+                    return FTN.Common.Direction.READWRITE;
+                case AMIProfile.Direction.READ:
+                    return FTN.Common.Direction.READ;
+
+                default: return FTN.Common.Direction.READ;
             }
         }
 

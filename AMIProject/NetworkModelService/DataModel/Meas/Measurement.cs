@@ -44,7 +44,8 @@ namespace TC57CIM.IEC61970.Meas {
 		/// <summary>
 		/// The unit of measure of the measured quantity.
 		/// </summary>
-		public UnitSymbol unitSymbol;
+		private UnitSymbol unitSymbol;
+        private Direction signalDirection;
 
         private long powerSystemResource = 0;
 
@@ -53,12 +54,24 @@ namespace TC57CIM.IEC61970.Meas {
         { 
 		}
 
+        public UnitSymbol UnitSymbol
+        {
+            get { return unitSymbol; }
+            set { unitSymbol = value; }
+        }
+
+        public Direction SignalDirection
+        {
+            get { return signalDirection; }
+            set { signalDirection = value; }
+        }
+
         public override bool Equals(object obj)
         {
             if (base.Equals(obj))
             {
                 Measurement x = (Measurement)obj;
-                return (x.unitSymbol == this.unitSymbol && x.powerSystemResource == this.powerSystemResource);
+                return (x.unitSymbol == this.unitSymbol && x.signalDirection == this.signalDirection && x.powerSystemResource == this.powerSystemResource);
             }
             else
             {
@@ -78,6 +91,7 @@ namespace TC57CIM.IEC61970.Meas {
             switch (property)
             {
                 case ModelCode.MEASUREMENT_UNITSYMBOL:
+                case ModelCode.MEASUREMENT_DIRECTION:
                 case ModelCode.MEASUREMENT_PSR:
                     return true;
                 default:
@@ -91,6 +105,9 @@ namespace TC57CIM.IEC61970.Meas {
             {
                 case ModelCode.MEASUREMENT_UNITSYMBOL:
                     property.SetValue((int)unitSymbol);
+                    break;
+                case ModelCode.MEASUREMENT_DIRECTION:
+                    property.SetValue((int)signalDirection);
                     break;
                 case ModelCode.MEASUREMENT_PSR:
                     property.SetValue(powerSystemResource);
@@ -108,6 +125,9 @@ namespace TC57CIM.IEC61970.Meas {
             {
                 case ModelCode.MEASUREMENT_UNITSYMBOL:
                     unitSymbol = (UnitSymbol)property.AsInt();
+                    break;
+                case ModelCode.MEASUREMENT_DIRECTION:
+                    signalDirection = (Direction)property.AsInt();
                     break;
                 case ModelCode.MEASUREMENT_PSR:
                     powerSystemResource = property.AsReference();

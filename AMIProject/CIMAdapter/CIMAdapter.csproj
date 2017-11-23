@@ -72,8 +72,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AMIProfileCIMProfile_Labs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="AMIProfileCIMProfile_Labs">
       <HintPath>..\CommonFiles\AMIProfileCIMProfile_Labs.dll</HintPath>
     </Reference>
     <Reference Include="System" />
