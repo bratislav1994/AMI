@@ -52,7 +52,7 @@
 
                         <DataGrid.Columns>
 
-                            <DataGridTextColumn Width="100" Header="mRID" Binding="{Binding Mrid}"/>
+                            <DataGridTextColumn Width="100" Header="mRID" Binding="{Binding MRID}"/>
                             <DataGridTextColumn Width="100" Header="Name" Binding="{Binding Name}"/>
 
                         </DataGrid.Columns>

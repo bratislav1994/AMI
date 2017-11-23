@@ -1,12 +1,15 @@
-﻿using FTN.Common;
+﻿using AMIClient.ClassesForTable;
+using FTN.Common;
 using FTN.ServiceContracts;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Xml;
+using TC57CIM.IEC61970.Core;
 
 namespace AMIClient
 {
@@ -108,7 +111,7 @@ namespace AMIClient
             return GdaQueryProxy.GetGlobalIds();
         }
 
-        public List<ResourceDescription> GetExtentValues(ModelCode modelCode)
+        public ObservableCollection<GeoRegionForTable> GetExtentValues(ModelCode modelCode)
         {
             string message = "Getting extent values method started.";
             Console.WriteLine(message);
@@ -117,7 +120,7 @@ namespace AMIClient
             XmlTextWriter xmlWriter = null;
             int iteratorId = 0;
             List<long> ids = new List<long>();
-            List<ResourceDescription> ret = new List<ResourceDescription>(100);
+            ObservableCollection<GeoRegionForTable> ret = new ObservableCollection<GeoRegionForTable>();
 
             try
             {
@@ -136,10 +139,12 @@ namespace AMIClient
                 while (resourcesLeft > 0)
                 {
                     List<ResourceDescription> rds = GdaQueryProxy.IteratorNext(numberOfResources, iteratorId);
-                    ret.AddRange(rds);
+                    //ret.AddRange(rds);
+                    
 
                     for (int i = 0; i < rds.Count; i++)
                     {
+                        ret.Add((GeoRegionForTable)ConvertToClass(rds[i]));
                         ids.Add(rds[i].Id);
                         textBox.AppendText(rds[i].ExportToTextBox());        ///////////////                
                         rds[i].ExportToXml(xmlWriter);
@@ -171,6 +176,37 @@ namespace AMIClient
             }
 
             return ret;
+        }
+
+        private object ConvertToClass(ResourceDescription resDesc)
+        {
+            GeoRegionForTable geoRegion = new GeoRegionForTable();
+            DMSType code = (DMSType)(resDesc.Id >> 32);// ExtractTypeFromGlobalId(resDesc.Id);
+
+            switch (code)
+            {
+                case DMSType.GEOREGION:
+                    
+                    foreach (Property p in resDesc.Properties)
+                    {
+                        switch (p.Id)
+                        {
+                            case ModelCode.IDOBJ_MRID:
+                                geoRegion.MRID = p.PropertyValue.StringValue;
+                                break;
+                            case ModelCode.IDOBJ_NAME:
+                                geoRegion.Name = p.PropertyValue.StringValue;
+                                break;
+                        }
+                    }
+                    
+                    break;
+
+                default:
+                    break;
+            }
+
+            return geoRegion;
         }
 
         public ModelCode GetModelCodeFromDmsType(DMSType type)

@@ -95,6 +95,7 @@
     </ApplicationDefinition>
     <Compile Include="AMIsViewModel.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="ClassesForTable\GeoRegionForTable.cs" />
     <Compile Include="SubstationViewModel.cs" />
     <Compile Include="TestGDA.cs" />
     <Page Include="MainWindow.xaml">

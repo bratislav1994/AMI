@@ -1,4 +1,5 @@
-﻿using FTN.Common;
+﻿using AMIClient.ClassesForTable;
+using FTN.Common;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -13,14 +14,14 @@ namespace AMIClient
 {
     public class GeoRegionViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<GeographicalRegion> geoRegions;
+        private ObservableCollection<GeoRegionForTable> geoRegions;
 
         public GeoRegionViewModel()
         {
-            geoRegions = new ObservableCollection<GeographicalRegion>();
+            geoRegions = new ObservableCollection<GeoRegionForTable>();
         }
         
-        public ObservableCollection<GeographicalRegion> GeoRegions
+        public ObservableCollection<GeoRegionForTable> GeoRegions
         {
             get
             {
@@ -30,7 +31,7 @@ namespace AMIClient
             set
             {
                 geoRegions = value;
-                RaisePropertyChanged("GeoRegion");
+                RaisePropertyChanged("GeoRegions");
             }
         }
 
@@ -52,7 +53,7 @@ namespace AMIClient
         private void GetElementsCommandAction()
         {
             TestGDA tgda = new TestGDA();
-            tgda.GetExtentValues(ModelCode.GEOREGION);
+            GeoRegions = tgda.GetExtentValues(ModelCode.GEOREGION);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
