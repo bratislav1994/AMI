@@ -109,7 +109,6 @@
       <Name>NetworkModelGDAContract</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Lib\AMIProfileCIMProfile_Labs.dll" />
   </ItemGroup>
