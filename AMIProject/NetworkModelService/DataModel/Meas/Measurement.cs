@@ -44,8 +44,8 @@ namespace TC57CIM.IEC61970.Meas {
 		/// <summary>
 		/// The unit of measure of the measured quantity.
 		/// </summary>
-		public UnitSymbol unitSymbol;
-        public Direction direction;
+		private UnitSymbol unitSymbol;
+        private Direction signalDirection;
 
         private long powerSystemResource = 0;
 
@@ -54,12 +54,24 @@ namespace TC57CIM.IEC61970.Meas {
         { 
 		}
 
+        public UnitSymbol UnitSymbol
+        {
+            get { return unitSymbol; }
+            set { unitSymbol = value; }
+        }
+
+        public Direction SignalDirection
+        {
+            get { return signalDirection; }
+            set { signalDirection = value; }
+        }
+
         public override bool Equals(object obj)
         {
             if (base.Equals(obj))
             {
                 Measurement x = (Measurement)obj;
-                return (x.unitSymbol == this.unitSymbol && x.direction == this.direction && x.powerSystemResource == this.powerSystemResource);
+                return (x.unitSymbol == this.unitSymbol && x.signalDirection == this.signalDirection && x.powerSystemResource == this.powerSystemResource);
             }
             else
             {
@@ -95,7 +107,7 @@ namespace TC57CIM.IEC61970.Meas {
                     property.SetValue((int)unitSymbol);
                     break;
                 case ModelCode.MEASUREMENT_DIRECTION:
-                    property.SetValue((int)direction);
+                    property.SetValue((int)signalDirection);
                     break;
                 case ModelCode.MEASUREMENT_PSR:
                     property.SetValue(powerSystemResource);
@@ -115,7 +127,7 @@ namespace TC57CIM.IEC61970.Meas {
                     unitSymbol = (UnitSymbol)property.AsInt();
                     break;
                 case ModelCode.MEASUREMENT_DIRECTION:
-                    direction = (Direction)property.AsInt();
+                    signalDirection = (Direction)property.AsInt();
                     break;
                 case ModelCode.MEASUREMENT_PSR:
                     powerSystemResource = property.AsReference();
