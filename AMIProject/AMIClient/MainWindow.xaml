@@ -67,7 +67,7 @@
                 </TabItem.DataContext>
                 <Grid Background="#FF5B6570" Margin="0,0,0,0">
                     <Label x:Name="label1" Content="Geographical region" Margin="0,0,418,488"/>
-                    <ComboBox x:Name="combo_box1" HorizontalAlignment="Left" ItemsSource="{Binding GeoRegions, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding GeoRegion, UpdateSourceTrigger=PropertyChanged}" Margin="120,5,0,0" VerticalAlignment="Top" Height="20" Width="170"/>
+                    <ComboBox x:Name="combo_box1" HorizontalAlignment="Left" ItemsSource="{Binding GeoRegions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding GeoRegion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="120,5,0,0" VerticalAlignment="Top" Height="20" Width="170"/>
                     <DataGrid SelectionMode="Single" GridLinesVisibility="None" BorderBrush="Transparent" Foreground="White" Background="Transparent" RowBackground="Transparent" ItemsSource="{Binding SubRegions, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" Margin="0,30,0,21" >
                         <DataGrid.Resources>
                             <Style TargetType="{x:Type DataGridColumnHeader}">

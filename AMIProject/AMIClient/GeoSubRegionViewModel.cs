@@ -13,17 +13,19 @@ namespace AMIClient
     public class GeoSubRegionViewModel : INotifyPropertyChanged
     {
         private ObservableCollection<SubGeographicalRegion> subRegions;
-        private ObservableCollection<GeographicalRegion> geoRegions;
+        private ObservableCollection<object> geoRegions;
         private object geoRegion;
 
         public GeoSubRegionViewModel()
         {
             subRegions = new ObservableCollection<SubGeographicalRegion>();
-            geoRegions = new ObservableCollection<GeographicalRegion>();
+            geoRegions = new ObservableCollection<object>() { "All" };
+            GeoRegion = GeoRegions[0];
             geoRegions.AddRange(TestGDA.Instance.GetAllRegions());
+            subRegions.AddRange(TestGDA.Instance.GetAllSubRegions());
         }
         
-        public ObservableCollection<GeographicalRegion> GeoRegions
+        public ObservableCollection<object> GeoRegions
         {
             get
             {
@@ -46,7 +48,15 @@ namespace AMIClient
 
             set
             {
-                geoRegion = value;
+                try
+                {
+                    geoRegion = (GeographicalRegion)value;
+                }
+                catch
+                {
+                    geoRegion = GeoRegions[0];
+                }
+                
                 RaisePropertyChanged("GeoRegion");
             }
         }
@@ -79,17 +89,17 @@ namespace AMIClient
             }
         }
         
-
         private void GetElementsCommandAction()
         {
             subRegions.Clear();
-            if (GeoRegion == null)
-            {
-                subRegions.AddRange(TestGDA.Instance.GetAllSubRegions());
-            }
-            else
+
+            try
             {
                 subRegions.AddRange(TestGDA.Instance.GetSomeSubregions(((GeographicalRegion)GeoRegion).GlobalId));
+            }
+            catch
+            {
+                subRegions.AddRange(TestGDA.Instance.GetAllSubRegions());
             }
         }
 
@@ -100,10 +110,6 @@ namespace AMIClient
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propName));
-                if(propName.Equals("GeoRegion"))
-                {
-
-                }
             }
         }
     }

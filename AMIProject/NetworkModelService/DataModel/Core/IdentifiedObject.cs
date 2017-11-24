@@ -130,6 +130,8 @@ namespace TC57CIM.IEC61970.Core {
             }
             else
             {
+                if (x == null || !(x is IdentifiedObject))
+                    return false;
                 IdentifiedObject io = (IdentifiedObject)x;
                 return ((io.GlobalId == this.GlobalId) && (io.mRID == this.mRID));
             }
