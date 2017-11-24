@@ -1,0 +1,425 @@
+﻿<delta id="0">
+  <operations>
+    <operation type="insert">
+      <ResourceDescriptions count="43">
+        <ResourceDescription>
+          <id gid="0x00000003ffffffff" type="BASEVOLTAGE" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="BV_1" />
+            <Property id="IDOBJ_NAME" value="BV_1" />
+            <Property id="BASEVOLTAGE_NOMINALVOL" value="12500" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000003fffffffe" type="BASEVOLTAGE" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="BV_2" />
+            <Property id="IDOBJ_NAME" value="BV_2" />
+            <Property id="BASEVOLTAGE_NOMINALVOL" value="15000" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000001ffffffff" type="GEOREGION" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="GEOREGION_1" />
+            <Property id="IDOBJ_NAME" value="Vojvodina" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000002ffffffff" type="SUBGEOREGION" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="SUBGEOREGION_1" />
+            <Property id="IDOBJ_NAME" value="Srem" />
+            <Property id="SUBGEOREGION_GEOREG" value="0x00000001ffffffff" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000002fffffffe" type="SUBGEOREGION" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="SUBGEOREGION_2" />
+            <Property id="IDOBJ_NAME" value="Backa" />
+            <Property id="SUBGEOREGION_GEOREG" value="0x00000001ffffffff" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000004ffffffff" type="SUBSTATION" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="SUB_1" />
+            <Property id="IDOBJ_NAME" value="TrafostanicaSrem_1" />
+            <Property id="SUBSTATION_SUBGEOREGION" value="0x00000002ffffffff" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000004fffffffe" type="SUBSTATION" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="SUB_2" />
+            <Property id="IDOBJ_NAME" value="TrafostanicaSrem_2" />
+            <Property id="SUBSTATION_SUBGEOREGION" value="0x00000002ffffffff" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000004fffffffd" type="SUBSTATION" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="SUB_3" />
+            <Property id="IDOBJ_NAME" value="TrafostanicaBanat_1" />
+            <Property id="SUBSTATION_SUBGEOREGION" value="0x00000002fffffffe" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000005ffffffff" type="VOLTAGELEVEL" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="VOLT_1" />
+            <Property id="IDOBJ_NAME" value="VoltageLevel_1" />
+            <Property id="VOLTAGELEVEL_BASEVOLTAGE" value="0x00000003ffffffff" />
+            <Property id="VOLTAGELEVEL_SUBSTATION" value="0x00000004ffffffff" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000005fffffffe" type="VOLTAGELEVEL" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="VOLT_2" />
+            <Property id="IDOBJ_NAME" value="VoltageLevel_2" />
+            <Property id="VOLTAGELEVEL_BASEVOLTAGE" value="0x00000003ffffffff" />
+            <Property id="VOLTAGELEVEL_SUBSTATION" value="0x00000004fffffffe" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000005fffffffd" type="VOLTAGELEVEL" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="VOLT_3" />
+            <Property id="IDOBJ_NAME" value="VoltageLevel_3" />
+            <Property id="VOLTAGELEVEL_BASEVOLTAGE" value="0x00000003fffffffe" />
+            <Property id="VOLTAGELEVEL_SUBSTATION" value="0x00000004fffffffd" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000007ffffffff" type="POWERTRANSFORMER" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="PT_1" />
+            <Property id="IDOBJ_NAME" value="PTransformer_1" />
+            <Property id="EQUIPMENT_EQCONTAINER" value="0x00000004ffffffff" />
+            <Property id="CONDEQ_BASEVOLTAGE" value="0x00000003ffffffff" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000007fffffffe" type="POWERTRANSFORMER" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="PT_2" />
+            <Property id="IDOBJ_NAME" value="PTransformer_2" />
+            <Property id="EQUIPMENT_EQCONTAINER" value="0x00000004fffffffe" />
+            <Property id="CONDEQ_BASEVOLTAGE" value="0x00000003ffffffff" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000007fffffffd" type="POWERTRANSFORMER" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="PT_3" />
+            <Property id="IDOBJ_NAME" value="PTransformer_3" />
+            <Property id="EQUIPMENT_EQCONTAINER" value="0x00000004fffffffd" />
+            <Property id="CONDEQ_BASEVOLTAGE" value="0x00000003fffffffe" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000008ffffffff" type="POWERTRANSEND" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="PTE_1_1" />
+            <Property id="IDOBJ_NAME" value="PTransformerEnd_1_1" />
+            <Property id="TRANSFORMEREND_BASEVOLT" value="0x00000003fffffffe" />
+            <Property id="POWERTRANSEND_POWERTRANSF" value="0x00000007ffffffff" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000008fffffffe" type="POWERTRANSEND" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="PTE_1_2" />
+            <Property id="IDOBJ_NAME" value="PTransformerEnd_1_2" />
+            <Property id="TRANSFORMEREND_BASEVOLT" value="0x00000003ffffffff" />
+            <Property id="POWERTRANSEND_POWERTRANSF" value="0x00000007ffffffff" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000008fffffffd" type="POWERTRANSEND" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="PTE_2_1" />
+            <Property id="IDOBJ_NAME" value="PTransformerEnd_2_1" />
+            <Property id="TRANSFORMEREND_BASEVOLT" value="0x00000003fffffffe" />
+            <Property id="POWERTRANSEND_POWERTRANSF" value="0x00000007fffffffe" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000008fffffffc" type="POWERTRANSEND" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="PTE_2_2" />
+            <Property id="IDOBJ_NAME" value="PTransformerEnd_2_2" />
+            <Property id="TRANSFORMEREND_BASEVOLT" value="0x00000003ffffffff" />
+            <Property id="POWERTRANSEND_POWERTRANSF" value="0x00000007fffffffe" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000008fffffffb" type="POWERTRANSEND" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="PTE_3_1" />
+            <Property id="IDOBJ_NAME" value="PTransformerEnd_3_1" />
+            <Property id="TRANSFORMEREND_BASEVOLT" value="0x00000003fffffffe" />
+            <Property id="POWERTRANSEND_POWERTRANSF" value="0x00000007fffffffd" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000008fffffffa" type="POWERTRANSEND" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="PTE_3_2" />
+            <Property id="IDOBJ_NAME" value="PTransformerEnd_3_2" />
+            <Property id="TRANSFORMEREND_BASEVOLT" value="0x00000003ffffffff" />
+            <Property id="POWERTRANSEND_POWERTRANSF" value="0x00000007fffffffd" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000009ffffffff" type="RATIOTAPCHANGER" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="RTC_1" />
+            <Property id="IDOBJ_NAME" value="RatioTapChanger_1" />
+            <Property id="TAPCHANGER_HIGHSTEP" value="15" />
+            <Property id="TAPCHANGER_LOWSTEP" value="-15" />
+            <Property id="TAPCHANGER_NEUTRALSTEP" value="0" />
+            <Property id="TAPCHANGER_NORMALSTEP" value="0" />
+            <Property id="RATIOTAPCHANGER_TRANSEND" value="0x00000008fffffffe" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000009fffffffe" type="RATIOTAPCHANGER" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="RTC_2" />
+            <Property id="IDOBJ_NAME" value="RatioTapChanger_2" />
+            <Property id="TAPCHANGER_HIGHSTEP" value="15" />
+            <Property id="TAPCHANGER_LOWSTEP" value="-15" />
+            <Property id="TAPCHANGER_NEUTRALSTEP" value="0" />
+            <Property id="TAPCHANGER_NORMALSTEP" value="0" />
+            <Property id="RATIOTAPCHANGER_TRANSEND" value="0x00000008fffffffc" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000009fffffffd" type="RATIOTAPCHANGER" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="RTC_3" />
+            <Property id="IDOBJ_NAME" value="RatioTapChanger_3" />
+            <Property id="TAPCHANGER_HIGHSTEP" value="15" />
+            <Property id="TAPCHANGER_LOWSTEP" value="-15" />
+            <Property id="TAPCHANGER_NEUTRALSTEP" value="0" />
+            <Property id="TAPCHANGER_NORMALSTEP" value="0" />
+            <Property id="RATIOTAPCHANGER_TRANSEND" value="0x00000008fffffffa" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000006ffffffff" type="ENERGYCONS" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="EC_1" />
+            <Property id="IDOBJ_NAME" value="EnergyConsumer_1" />
+            <Property id="EQUIPMENT_EQCONTAINER" value="0x00000004ffffffff" />
+            <Property id="CONDEQ_BASEVOLTAGE" value="0x00000003ffffffff" />
+            <Property id="ENERGYCONS_PFIXED" value="0" />
+            <Property id="ENERGYCONS_QFIXED" value="0" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000006fffffffe" type="ENERGYCONS" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="EC_10" />
+            <Property id="IDOBJ_NAME" value="EnergyConsumer_10" />
+            <Property id="EQUIPMENT_EQCONTAINER" value="0x00000004fffffffd" />
+            <Property id="CONDEQ_BASEVOLTAGE" value="0x00000003ffffffff" />
+            <Property id="ENERGYCONS_PFIXED" value="0" />
+            <Property id="ENERGYCONS_QFIXED" value="0" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000006fffffffd" type="ENERGYCONS" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="EC_2" />
+            <Property id="IDOBJ_NAME" value="EnergyConsumer_2" />
+            <Property id="EQUIPMENT_EQCONTAINER" value="0x00000004ffffffff" />
+            <Property id="CONDEQ_BASEVOLTAGE" value="0x00000003ffffffff" />
+            <Property id="ENERGYCONS_PFIXED" value="0" />
+            <Property id="ENERGYCONS_QFIXED" value="0" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000006fffffffc" type="ENERGYCONS" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="EC_3" />
+            <Property id="IDOBJ_NAME" value="EnergyConsumer_3" />
+            <Property id="EQUIPMENT_EQCONTAINER" value="0x00000004ffffffff" />
+            <Property id="CONDEQ_BASEVOLTAGE" value="0x00000003ffffffff" />
+            <Property id="ENERGYCONS_PFIXED" value="0" />
+            <Property id="ENERGYCONS_QFIXED" value="0" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000006fffffffb" type="ENERGYCONS" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="EC_4" />
+            <Property id="IDOBJ_NAME" value="EnergyConsumer_4" />
+            <Property id="EQUIPMENT_EQCONTAINER" value="0x00000004fffffffe" />
+            <Property id="CONDEQ_BASEVOLTAGE" value="0x00000003ffffffff" />
+            <Property id="ENERGYCONS_PFIXED" value="0" />
+            <Property id="ENERGYCONS_QFIXED" value="0" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000006fffffffa" type="ENERGYCONS" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="EC_5" />
+            <Property id="IDOBJ_NAME" value="EnergyConsumer_5" />
+            <Property id="EQUIPMENT_EQCONTAINER" value="0x00000004fffffffe" />
+            <Property id="CONDEQ_BASEVOLTAGE" value="0x00000003ffffffff" />
+            <Property id="ENERGYCONS_PFIXED" value="0" />
+            <Property id="ENERGYCONS_QFIXED" value="0" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000006fffffff9" type="ENERGYCONS" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="EC_6" />
+            <Property id="IDOBJ_NAME" value="EnergyConsumer_6" />
+            <Property id="EQUIPMENT_EQCONTAINER" value="0x00000004fffffffe" />
+            <Property id="CONDEQ_BASEVOLTAGE" value="0x00000003ffffffff" />
+            <Property id="ENERGYCONS_PFIXED" value="0" />
+            <Property id="ENERGYCONS_QFIXED" value="0" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000006fffffff8" type="ENERGYCONS" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="EC_7" />
+            <Property id="IDOBJ_NAME" value="EnergyConsumer_7" />
+            <Property id="EQUIPMENT_EQCONTAINER" value="0x00000004fffffffd" />
+            <Property id="CONDEQ_BASEVOLTAGE" value="0x00000003ffffffff" />
+            <Property id="ENERGYCONS_PFIXED" value="0" />
+            <Property id="ENERGYCONS_QFIXED" value="0" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000006fffffff7" type="ENERGYCONS" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="EC_8" />
+            <Property id="IDOBJ_NAME" value="EnergyConsumer_8" />
+            <Property id="EQUIPMENT_EQCONTAINER" value="0x00000004fffffffd" />
+            <Property id="CONDEQ_BASEVOLTAGE" value="0x00000003ffffffff" />
+            <Property id="ENERGYCONS_PFIXED" value="0" />
+            <Property id="ENERGYCONS_QFIXED" value="0" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x00000006fffffff6" type="ENERGYCONS" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="EC_9" />
+            <Property id="IDOBJ_NAME" value="EnergyConsumer_9" />
+            <Property id="EQUIPMENT_EQCONTAINER" value="0x00000004fffffffd" />
+            <Property id="CONDEQ_BASEVOLTAGE" value="0x00000003ffffffff" />
+            <Property id="ENERGYCONS_PFIXED" value="0" />
+            <Property id="ENERGYCONS_QFIXED" value="0" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x0000000affffffff" type="ANALOG" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="ANALOG_1" />
+            <Property id="IDOBJ_NAME" value="ANALOG_1" />
+            <Property id="MEASUREMENT_PSR" value="0x00000006ffffffff" />
+            <Property id="ANALOG_MAXVALUE" value="100" />
+            <Property id="ANALOG_MINVALUE" value="7" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x0000000afffffffe" type="ANALOG" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="ANALOG_10" />
+            <Property id="IDOBJ_NAME" value="ANALOG_10" />
+            <Property id="MEASUREMENT_PSR" value="0x00000006fffffffe" />
+            <Property id="ANALOG_MAXVALUE" value="100" />
+            <Property id="ANALOG_MINVALUE" value="7" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x0000000afffffffd" type="ANALOG" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="ANALOG_2" />
+            <Property id="IDOBJ_NAME" value="ANALOG_2" />
+            <Property id="MEASUREMENT_PSR" value="0x00000006fffffffd" />
+            <Property id="ANALOG_MAXVALUE" value="100" />
+            <Property id="ANALOG_MINVALUE" value="7" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x0000000afffffffc" type="ANALOG" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="ANALOG_3" />
+            <Property id="IDOBJ_NAME" value="ANALOG_3" />
+            <Property id="MEASUREMENT_PSR" value="0x00000006fffffffc" />
+            <Property id="ANALOG_MAXVALUE" value="100" />
+            <Property id="ANALOG_MINVALUE" value="7" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x0000000afffffffb" type="ANALOG" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="ANALOG_4" />
+            <Property id="IDOBJ_NAME" value="ANALOG_4" />
+            <Property id="MEASUREMENT_PSR" value="0x00000006fffffffb" />
+            <Property id="ANALOG_MAXVALUE" value="100" />
+            <Property id="ANALOG_MINVALUE" value="7" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x0000000afffffffa" type="ANALOG" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="ANALOG_5" />
+            <Property id="IDOBJ_NAME" value="ANALOG_5" />
+            <Property id="MEASUREMENT_PSR" value="0x00000006fffffffa" />
+            <Property id="ANALOG_MAXVALUE" value="100" />
+            <Property id="ANALOG_MINVALUE" value="7" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x0000000afffffff9" type="ANALOG" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="ANALOG_6" />
+            <Property id="IDOBJ_NAME" value="ANALOG_6" />
+            <Property id="MEASUREMENT_PSR" value="0x00000006fffffff9" />
+            <Property id="ANALOG_MAXVALUE" value="100" />
+            <Property id="ANALOG_MINVALUE" value="7" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x0000000afffffff8" type="ANALOG" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="ANALOG_7" />
+            <Property id="IDOBJ_NAME" value="ANALOG_7" />
+            <Property id="MEASUREMENT_PSR" value="0x00000006fffffff8" />
+            <Property id="ANALOG_MAXVALUE" value="100" />
+            <Property id="ANALOG_MINVALUE" value="7" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x0000000afffffff7" type="ANALOG" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="ANALOG_8" />
+            <Property id="IDOBJ_NAME" value="ANALOG_8" />
+            <Property id="MEASUREMENT_PSR" value="0x00000006fffffff7" />
+            <Property id="ANALOG_MAXVALUE" value="100" />
+            <Property id="ANALOG_MINVALUE" value="7" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
+          <id gid="0x0000000afffffff6" type="ANALOG" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="ANALOG_9" />
+            <Property id="IDOBJ_NAME" value="ANALOG_9" />
+            <Property id="MEASUREMENT_PSR" value="0x00000006fffffff6" />
+            <Property id="ANALOG_MAXVALUE" value="100" />
+            <Property id="ANALOG_MINVALUE" value="7" />
+          </Properties>
+        </ResourceDescription>
+      </ResourceDescriptions>
+    </operation>
+  </operations>
+</delta>

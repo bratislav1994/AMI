@@ -180,6 +180,9 @@ namespace TC57CIM.IEC61970.Core {
         {
             switch (property.Id)
             {
+                case ModelCode.IDOBJ_GID:
+                    globalId = property.AsLong();
+                    break;
                 case ModelCode.IDOBJ_MRID:
                     mRID = property.AsString();
                     break;

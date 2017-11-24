@@ -111,7 +111,7 @@ namespace AMIClient
             return GdaQueryProxy.GetGlobalIds();
         }
 
-        public ObservableCollection<GeoRegionForTable> GetExtentValues(ModelCode modelCode)
+        public ObservableCollection<GeographicalRegion> GetExtentValues(ModelCode modelCode)
         {
             string message = "Getting extent values method started.";
             Console.WriteLine(message);
@@ -120,7 +120,7 @@ namespace AMIClient
             XmlTextWriter xmlWriter = null;
             int iteratorId = 0;
             List<long> ids = new List<long>();
-            ObservableCollection<GeoRegionForTable> ret = new ObservableCollection<GeoRegionForTable>();
+            ObservableCollection<GeographicalRegion> ret = new ObservableCollection<GeographicalRegion>();
 
             try
             {
@@ -144,9 +144,10 @@ namespace AMIClient
 
                     for (int i = 0; i < rds.Count; i++)
                     {
-                        ret.Add((GeoRegionForTable)ConvertToClass(rds[i]));
-                        ids.Add(rds[i].Id);
-                        textBox.AppendText(rds[i].ExportToTextBox());        ///////////////                
+                        GeographicalRegion gr = new GeographicalRegion();
+                        gr.RD2Class(rds[i]);
+                        ret.Add(gr);
+                        ids.Add(rds[i].Id);               
                         rds[i].ExportToXml(xmlWriter);
                         xmlWriter.Flush();
                     }

@@ -14,14 +14,14 @@ namespace AMIClient
 {
     public class GeoRegionViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<GeoRegionForTable> geoRegions;
+        private ObservableCollection<GeographicalRegion> geoRegions;
 
         public GeoRegionViewModel()
         {
-            geoRegions = new ObservableCollection<GeoRegionForTable>();
+            geoRegions = new ObservableCollection<GeographicalRegion>();
         }
         
-        public ObservableCollection<GeoRegionForTable> GeoRegions
+        public ObservableCollection<GeographicalRegion> GeoRegions
         {
             get
             {

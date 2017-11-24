@@ -23,6 +23,11 @@ namespace TC57CIM.IEC61970.Core {
 
         private List<long> subGeoRegions = new List<long>();
 
+        public GeographicalRegion()
+        {
+
+        }
+
         public GeographicalRegion(long globalId) : base(globalId)
         {
         }
@@ -149,6 +154,24 @@ namespace TC57CIM.IEC61970.Core {
         }
 
         #endregion IReference implementation
+
+        public void RD2Class(ResourceDescription rd)
+        {
+            foreach(Property p in rd.Properties)
+            {
+                if (p.Id == ModelCode.GEOREGION_SUBGEOREGIONS)
+                {
+                    foreach (long l in p.PropertyValue.LongValues)
+                    {
+                        this.AddReference(ModelCode.SUBGEOREGION_GEOREG, l);
+                    }
+                }
+                else
+                {
+                    SetProperty(p);
+                }
+            }
+        }
 
     }//end GeographicalRegion
 
