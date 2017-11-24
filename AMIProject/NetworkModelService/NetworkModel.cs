@@ -29,7 +29,7 @@ namespace FTN.Services.NetworkModelService
         {
             networkDataModel = new Dictionary<DMSType, Container>();
             resourcesDescs = new ModelResourcesDesc();
-            //Initialize();
+            Initialize();
         }
         
         #region Find
