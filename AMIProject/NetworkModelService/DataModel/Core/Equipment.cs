@@ -24,6 +24,11 @@ namespace TC57CIM.IEC61970.Core {
 
         private long eqContainer = 0;
 
+        public Equipment()
+        {
+
+        }
+
         public Equipment(long globalId) : base(globalId)
         {
         }

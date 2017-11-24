@@ -24,6 +24,11 @@ namespace TC57CIM.IEC61970.Wires {
         private float pfixed;
         private float qfixed;
 
+        public EnergyConsumer()
+        {
+
+        }
+
         public EnergyConsumer(long globalId) : base(globalId)
         {
         }
@@ -57,6 +62,11 @@ namespace TC57CIM.IEC61970.Wires {
             {
                 return false;
             }
+        }
+
+        public override string ToString()
+        {
+            return this.Mrid + "\n" + this.Name;
         }
 
         #region IAccess implementation
@@ -110,6 +120,24 @@ namespace TC57CIM.IEC61970.Wires {
         }
 
         #endregion IAccess implementation
+
+        public void RD2Class(ResourceDescription rd)
+        {
+            foreach (Property p in rd.Properties)
+            {
+                if (p.Id == ModelCode.PSR_MEASUREMENTS)
+                {
+                    foreach (long l in p.PropertyValue.LongValues)
+                    {
+                        this.AddReference(ModelCode.MEASUREMENT_PSR, l);
+                    }
+                }
+                else
+                {
+                    SetProperty(p);
+                }
+            }
+        }
 
     }//end EnergyConsumer
 

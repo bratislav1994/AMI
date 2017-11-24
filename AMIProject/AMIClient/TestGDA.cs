@@ -152,7 +152,14 @@ namespace AMIClient
             GetExtentValues(ModelCode.SUBSTATION);
             return substations;
         }
-        
+
+        public ObservableCollection<EnergyConsumer> GetAllAmis()
+        {
+            amis.Clear();
+            GetExtentValues(ModelCode.ENERGYCONS);
+            return amis;
+        }
+
         private void GetExtentValues(ModelCode modelCode)
         {
             substations.Clear();
@@ -204,6 +211,11 @@ namespace AMIClient
                                 Substation ss = new Substation();
                                 ss.RD2Class(rds[i]);
                                 substations.Add(ss);
+                                break;
+                            case ModelCode.ENERGYCONS:
+                                EnergyConsumer ec = new EnergyConsumer();
+                                ec.RD2Class(rds[i]);
+                                amis.Add(ec);
                                 break;
 
                             default:
@@ -387,6 +399,18 @@ namespace AMIClient
             return substations;
         }
 
+        public ObservableCollection<EnergyConsumer> GetSomeAmis(long substationId)
+        {
+            amis.Clear();
+            List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.ENERGYCONS);
+            Association associtaion = new Association();
+            associtaion.PropertyId = ModelCode.EQCONTAINER_EQUIPMENTS;
+            associtaion.Type = ModelCode.ENERGYCONS;
+            GetRelatedValues(substationId, properties, associtaion, ModelCode.ENERGYCONS);
+
+            return amis;
+        }
+
         private void GetRelatedValues(long source, List<ModelCode> propIds, Association association, ModelCode modelCode)
         {
             int iteratorId = GdaQueryProxy.GetRelatedValues(source, propIds, association);
@@ -418,6 +442,14 @@ namespace AMIClient
                         Substation ss = new Substation();
                         ss.RD2Class(rd);
                         substations.Add(ss);
+                    }
+                    break;
+                case ModelCode.ENERGYCONS:
+                    foreach (ResourceDescription rd in results)
+                    {
+                        EnergyConsumer ec = new EnergyConsumer();
+                        ec.RD2Class(rd);
+                        amis.Add(ec);
                     }
                     break;
 

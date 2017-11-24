@@ -66,6 +66,11 @@ namespace TC57CIM.IEC61970.Core {
             }
         }
 
+        public override string ToString()
+        {
+            return this.Mrid + "\n" + this.Name;
+        }
+
         #region IAccess implementation
 
         public override bool HasProperty(ModelCode t)

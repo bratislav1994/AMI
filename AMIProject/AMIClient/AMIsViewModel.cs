@@ -14,14 +14,29 @@ namespace AMIClient
 {
     public class AMIsViewModel : INotifyPropertyChanged
     {
-        private Substation substation;
-        private SubGeographicalRegion subGeoRegion;
-        private GeographicalRegion geoRegion;
+        private object substation;
+        private object subGeoRegion;
+        private object geoRegion;
         private ObservableCollection<EnergyConsumer> amis;
-        private ObservableCollection<GeographicalRegion> geoRegions;
-        private ObservableCollection<SubGeographicalRegion> subGeoRegions;
+        private ObservableCollection<object> geoRegions;
+        private ObservableCollection<object> subGeoRegions;
+        private ObservableCollection<object> substations;
 
-        public Substation Substation
+        public AMIsViewModel()
+        {
+            Amis = new ObservableCollection<EnergyConsumer>();
+            Substations = new ObservableCollection<object>() { "All" };
+            GeoRegions = new ObservableCollection<object>() { "All" };
+            SubGeoRegions = new ObservableCollection<object>() { "All" };
+            GeoRegion = GeoRegions[0];
+            SubGeoRegion = SubGeoRegions[0];
+            GeoRegions.AddRange(TestGDA.Instance.GetAllRegions());
+            SubGeoRegions.AddRange(TestGDA.Instance.GetAllSubRegions());
+            Substations.AddRange(TestGDA.Instance.GetAllSubstations());
+            Substation = Substations[0];
+        }
+
+        public object Substation
         {
             get
             {
@@ -35,7 +50,7 @@ namespace AMIClient
             }
         }
 
-        public SubGeographicalRegion SubGeoRegion
+        public object SubGeoRegion
         {
             get
             {
@@ -49,7 +64,7 @@ namespace AMIClient
             }
         }
 
-        public GeographicalRegion GeoRegion
+        public object GeoRegion
         {
             get
             {
@@ -77,7 +92,7 @@ namespace AMIClient
             }
         }
 
-        public ObservableCollection<GeographicalRegion> GeoRegions
+        public ObservableCollection<object> GeoRegions
         {
             get
             {
@@ -87,10 +102,11 @@ namespace AMIClient
             set
             {
                 geoRegions = value;
+                RaisePropertyChanged("GeoRegions");
             }
         }
 
-        public ObservableCollection<SubGeographicalRegion> SubGeoRegions
+        public ObservableCollection<object> SubGeoRegions
         {
             get
             {
@@ -100,6 +116,21 @@ namespace AMIClient
             set
             {
                 subGeoRegions = value;
+                RaisePropertyChanged("SubGeoRegions");
+            }
+        }
+
+        public ObservableCollection<object> Substations
+        {
+            get
+            {
+                return substations;
+            }
+
+            set
+            {
+                substations = value;
+                RaisePropertyChanged("Substations");
             }
         }
 
@@ -119,7 +150,30 @@ namespace AMIClient
 
         private void GetElementsCommandAction()
         {
-            
+            Amis.Clear();
+
+            if (!substation.Equals("All"))
+            {
+                Amis.AddRange(TestGDA.Instance.GetSomeAmis(((Substation)Substation).GlobalId));
+            }
+            else if (Substation.Equals("All") && !SubGeoRegion.Equals("All"))
+            {
+                for (int i = 1; i < Substations.Count; i++)
+                {
+                    Amis.AddRange(TestGDA.Instance.GetSomeAmis(((Substation)Substations[i]).GlobalId));
+                }
+            }
+            else if (Substation.Equals("All") && SubGeoRegion.Equals("All") && !GeoRegion.Equals("All"))
+            {
+                for (int i = 1; i < Substations.Count; i++)
+                {
+                    Amis.AddRange(TestGDA.Instance.GetSomeAmis(((Substation)Substations[i]).GlobalId));
+                }
+            }
+            else
+            {
+                Amis.AddRange(TestGDA.Instance.GetAllAmis());
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -129,6 +183,45 @@ namespace AMIClient
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propName));
+
+                if (propName.Equals("GeoRegion"))
+                {
+                    SubGeoRegions = new ObservableCollection<object>() { subGeoRegions.First() };
+                    SubGeoRegion = subGeoRegions[0];
+                    Substations = new ObservableCollection<object>() { substations.First() };
+                    Substation = substations[0];
+
+                    if (GeoRegion.Equals("All"))
+                    {
+                        SubGeoRegions.AddRange(TestGDA.Instance.GetAllSubRegions());
+                        Substations.AddRange(TestGDA.Instance.GetAllSubstations());
+                    }
+                    else
+                    {
+                        SubGeoRegions.AddRange(TestGDA.Instance.GetSomeSubregions(((GeographicalRegion)geoRegion).GlobalId));
+                        for (int i = 1; i < SubGeoRegions.Count; i++)
+                        {
+                            Substations.AddRange(TestGDA.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegions[i]).GlobalId));
+                        }
+                    }
+                }
+                else if (propName.Equals("SubGeoRegion"))
+                {
+                    Substations = new ObservableCollection<object>() { substations.First() };
+                    Substation = substations[0];
+
+                    if (SubGeoRegion.Equals("All"))
+                    {
+                        for (int i = 1; i < SubGeoRegions.Count; i++)
+                        {
+                            Substations.AddRange(TestGDA.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegions[i]).GlobalId));
+                        }
+                    }
+                    else
+                    {
+                        Substations.AddRange(TestGDA.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegion).GlobalId));
+                    }
+                }
             }
         }
     }

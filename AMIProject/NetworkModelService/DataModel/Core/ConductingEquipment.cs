@@ -24,6 +24,11 @@ namespace TC57CIM.IEC61970.Core {
 
         private long baseVoltage = 0;
 
+        public ConductingEquipment()
+        {
+
+        }
+
         public ConductingEquipment(long globalId) : base(globalId)
         {
         }
