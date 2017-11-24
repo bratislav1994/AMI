@@ -20,6 +20,11 @@
 		<cim:IdentifiedObject.name>Vojvodina</cim:IdentifiedObject.name>
 	</cim:GeographicalRegion>
 	
+	<cim:GeographicalRegion rdf:ID="GEOREGION_2">
+		<cim:IdentifiedObject.mRID>GEOREGION_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>Juzna Srbija</cim:IdentifiedObject.name>
+	</cim:GeographicalRegion>
+	
 	
 	<cim:SubGeographicalRegion rdf:ID="SUBGEOREGION_1">
 		<cim:SubGeographicalRegion.Region rdf:resource="#GEOREGION_1"/>
@@ -27,9 +32,9 @@
 		<cim:IdentifiedObject.name>Srem</cim:IdentifiedObject.name>
 	</cim:SubGeographicalRegion>
 	<cim:SubGeographicalRegion rdf:ID="SUBGEOREGION_2">
-		<cim:SubGeographicalRegion.Region rdf:resource="#GEOREGION_1"/>
+		<cim:SubGeographicalRegion.Region rdf:resource="#GEOREGION_2"/>
 		<cim:IdentifiedObject.mRID>SUBGEOREGION_2</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>Backa</cim:IdentifiedObject.name>
+		<cim:IdentifiedObject.name>Sumadija</cim:IdentifiedObject.name>
 	</cim:SubGeographicalRegion>
 	
 	

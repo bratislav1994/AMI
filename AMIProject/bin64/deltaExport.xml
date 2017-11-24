@@ -1,7 +1,7 @@
 ﻿<delta id="0">
   <operations>
     <operation type="insert">
-      <ResourceDescriptions count="43">
+      <ResourceDescriptions count="44">
         <ResourceDescription>
           <id gid="0x00000003ffffffff" type="BASEVOLTAGE" />
           <Properties>
@@ -26,6 +26,13 @@
           </Properties>
         </ResourceDescription>
         <ResourceDescription>
+          <id gid="0x00000001fffffffe" type="GEOREGION" />
+          <Properties>
+            <Property id="IDOBJ_MRID" value="GEOREGION_2" />
+            <Property id="IDOBJ_NAME" value="Juzna Srbija" />
+          </Properties>
+        </ResourceDescription>
+        <ResourceDescription>
           <id gid="0x00000002ffffffff" type="SUBGEOREGION" />
           <Properties>
             <Property id="IDOBJ_MRID" value="SUBGEOREGION_1" />
@@ -37,8 +44,8 @@
           <id gid="0x00000002fffffffe" type="SUBGEOREGION" />
           <Properties>
             <Property id="IDOBJ_MRID" value="SUBGEOREGION_2" />
-            <Property id="IDOBJ_NAME" value="Backa" />
-            <Property id="SUBGEOREGION_GEOREG" value="0x00000001ffffffff" />
+            <Property id="IDOBJ_NAME" value="Sumadija" />
+            <Property id="SUBGEOREGION_GEOREG" value="0x00000001fffffffe" />
           </Properties>
         </ResourceDescription>
         <ResourceDescription>

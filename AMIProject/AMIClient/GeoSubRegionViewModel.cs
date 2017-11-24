@@ -14,12 +14,13 @@ namespace AMIClient
     {
         private ObservableCollection<SubGeographicalRegion> subRegions;
         private ObservableCollection<GeographicalRegion> geoRegions;
-        private GeographicalRegion geoRegion;
+        private object geoRegion;
 
         public GeoSubRegionViewModel()
         {
             subRegions = new ObservableCollection<SubGeographicalRegion>();
             geoRegions = new ObservableCollection<GeographicalRegion>();
+            geoRegions.AddRange(TestGDA.Instance.GetAllRegions());
         }
         
         public ObservableCollection<GeographicalRegion> GeoRegions
@@ -32,11 +33,11 @@ namespace AMIClient
             set
             {
                 geoRegions = value;
-                RaisePropertyChanged("GeoRegion");
+                RaisePropertyChanged("GeoRegions");
             }
         }
 
-        public GeographicalRegion GeoRegion
+        public object GeoRegion
         {
             get
             {
@@ -46,6 +47,7 @@ namespace AMIClient
             set
             {
                 geoRegion = value;
+                RaisePropertyChanged("GeoRegion");
             }
         }
 
@@ -80,6 +82,15 @@ namespace AMIClient
 
         private void GetElementsCommandAction()
         {
+            subRegions.Clear();
+            if (GeoRegion == null)
+            {
+                subRegions.AddRange(TestGDA.Instance.GetAllSubRegions());
+            }
+            else
+            {
+                subRegions.AddRange(TestGDA.Instance.GetSomeSubregions(((GeographicalRegion)GeoRegion).GlobalId));
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -89,6 +100,10 @@ namespace AMIClient
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propName));
+                if(propName.Equals("GeoRegion"))
+                {
+
+                }
             }
         }
     }

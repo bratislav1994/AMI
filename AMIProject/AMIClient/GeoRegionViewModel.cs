@@ -52,8 +52,8 @@ namespace AMIClient
 
         private void GetElementsCommandAction()
         {
-            TestGDA tgda = new TestGDA();
-            GeoRegions = tgda.GetExtentValues(ModelCode.GEOREGION);
+            geoRegions.Clear();
+            geoRegions.AddRange(TestGDA.Instance.GetAllRegions());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

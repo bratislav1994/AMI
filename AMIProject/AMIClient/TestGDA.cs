@@ -10,16 +10,36 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Xml;
 using TC57CIM.IEC61970.Core;
+using TC57CIM.IEC61970.Wires;
 
 namespace AMIClient
 {
     public class TestGDA : IDisposable
     {
         private ModelResourcesDesc modelResourcesDesc = new ModelResourcesDesc();
+        private ObservableCollection<GeographicalRegion> geoRegions = new ObservableCollection<GeographicalRegion>();
+        private ObservableCollection<SubGeographicalRegion> subGeoRegions = new ObservableCollection<SubGeographicalRegion>();
+        private ObservableCollection<Substation> substations = new ObservableCollection<Substation>();
+        private ObservableCollection<EnergyConsumer> amis = new ObservableCollection<EnergyConsumer>();
 
         private NetworkModelGDAProxy gdaQueryProxy = null;
         private TextBox textBox = null;
         private Dictionary<long, List<ModelCode>> assocProperties = new Dictionary<long, List<ModelCode>>();
+
+        private static TestGDA instance;
+
+        public static TestGDA Instance
+        {
+            get
+            {
+                if(instance == null)
+                {
+                    instance = new TestGDA();
+                }
+                return instance;
+            }
+        }
+
         private NetworkModelGDAProxy GdaQueryProxy
         {
             get
@@ -111,8 +131,25 @@ namespace AMIClient
             return GdaQueryProxy.GetGlobalIds();
         }
 
-        public ObservableCollection<GeographicalRegion> GetExtentValues(ModelCode modelCode)
+
+        public ObservableCollection<GeographicalRegion> GetAllRegions()
         {
+            geoRegions.Clear();
+            GetExtentValues(ModelCode.GEOREGION);
+            return geoRegions;
+        }
+
+        public ObservableCollection<SubGeographicalRegion> GetAllSubRegions()
+        {
+            subGeoRegions.Clear();
+            GetExtentValues(ModelCode.SUBGEOREGION);
+            return subGeoRegions;
+        }
+        
+        private void GetExtentValues(ModelCode modelCode)
+        {
+            substations.Clear();
+            amis.Clear();
             string message = "Getting extent values method started.";
             Console.WriteLine(message);
             CommonTrace.WriteTrace(CommonTrace.TraceError, message);
@@ -120,7 +157,7 @@ namespace AMIClient
             XmlTextWriter xmlWriter = null;
             int iteratorId = 0;
             List<long> ids = new List<long>();
-            ObservableCollection<GeographicalRegion> ret = new ObservableCollection<GeographicalRegion>();
+            
 
             try
             {
@@ -144,9 +181,23 @@ namespace AMIClient
 
                     for (int i = 0; i < rds.Count; i++)
                     {
-                        GeographicalRegion gr = new GeographicalRegion();
-                        gr.RD2Class(rds[i]);
-                        ret.Add(gr);
+                        switch(modelCode)
+                        {
+                            case ModelCode.GEOREGION:
+                                GeographicalRegion gr = new GeographicalRegion();
+                                gr.RD2Class(rds[i]);
+                                geoRegions.Add(gr);
+                                break;
+                            case ModelCode.SUBGEOREGION:
+                                SubGeographicalRegion sgr = new SubGeographicalRegion();
+                                sgr.RD2Class(rds[i]);
+                                subGeoRegions.Add(sgr);
+                                break;
+
+                            default:
+                                break;
+                        }
+                        
                         ids.Add(rds[i].Id);               
                         rds[i].ExportToXml(xmlWriter);
                         xmlWriter.Flush();
@@ -175,8 +226,6 @@ namespace AMIClient
                     xmlWriter.Close();
                 }
             }
-
-            return ret;
         }
 
         private object ConvertToClass(ResourceDescription resDesc)
@@ -332,29 +381,48 @@ namespace AMIClient
             return modelCodes;
         }
 
-        public List<long> GetRelatedValues(ModelCode associationType)
+        public ObservableCollection<SubGeographicalRegion> GetSomeSubregions(long regionId)
         {
-            List<long> resultIds = new List<long>();
+            subGeoRegions.Clear();
 
-            foreach (KeyValuePair<long, List<ModelCode>> gidProperties in assocProperties)
+            List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.SUBGEOREGION);
+            Association associtaion = new Association();
+            associtaion.PropertyId = ModelCode.GEOREGION_SUBGEOREGIONS;
+            associtaion.Type = ModelCode.SUBGEOREGION;
+            GetRelatedValues(regionId, properties, associtaion, ModelCode.SUBGEOREGION);
+
+            return subGeoRegions;
+        }
+
+        private void GetRelatedValues(long source, List<ModelCode> propIds, Association association, ModelCode modelCode)
+        {
+            int iteratorId = GdaQueryProxy.GetRelatedValues(source, propIds, association);
+            int resourcesLeft = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
+
+            int numberOfResources = 10;
+            List<ResourceDescription> results = new List<ResourceDescription>();
+
+            while(resourcesLeft > 0)
             {
-                if (associationType == 0)
-                {
-                    PrintAllProperties(gidProperties);
-                }
-                else
-                {
-                    DMSType gidDmsType = (DMSType)(gidProperties.Key >> 32);
-                    DMSType n = GetDmsTypeFromModelCode(associationType);
-
-                    if (gidDmsType == n)
-                    {
-                        PrintAllProperties(gidProperties);
-                    }
-                }
+                List<ResourceDescription> rds = GdaQueryProxy.IteratorNext(numberOfResources, iteratorId);
+                results.AddRange(rds);
+                resourcesLeft = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
             }
 
-            return resultIds;
+            switch(modelCode)
+            {
+                case ModelCode.SUBGEOREGION:
+                    foreach(ResourceDescription rd in results)
+                    {
+                        SubGeographicalRegion sgr = new SubGeographicalRegion();
+                        sgr.RD2Class(rd);
+                        subGeoRegions.Add(sgr);
+                    }
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         private void PrintAllProperties(KeyValuePair<long, List<ModelCode>> gidProperties)
