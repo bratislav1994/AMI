@@ -382,7 +382,7 @@ namespace AMIClient
             Association associtaion = new Association();
             associtaion.PropertyId = ModelCode.SUBGEOREGION_SUBS;
             associtaion.Type = ModelCode.SUBSTATION;
-            GetRelatedValues(subRegionId, properties, associtaion, ModelCode.SUBGEOREGION);
+            GetRelatedValues(subRegionId, properties, associtaion, ModelCode.SUBSTATION);
 
             return substations;
         }

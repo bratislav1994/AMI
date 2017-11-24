@@ -45,6 +45,11 @@ namespace TC57CIM.IEC61970.Core {
         /// </summary>
         private string name;
 
+        public IdentifiedObject()
+        {
+
+        }
+
         /// <summary>
         /// Initializes a new instance of the IdentifiedObject class.
         /// </summary>		
@@ -53,11 +58,7 @@ namespace TC57CIM.IEC61970.Core {
         {
             this.globalId = globalId;
         }
-
-        public IdentifiedObject(){
-
-		}
-
+        
 		~IdentifiedObject(){
 
 		}

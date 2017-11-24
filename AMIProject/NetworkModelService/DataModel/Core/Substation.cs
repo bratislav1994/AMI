@@ -191,7 +191,7 @@ namespace TC57CIM.IEC61970.Core {
                         this.AddReference(ModelCode.VOLTAGELEVEL_SUBSTATION, l);
                     }
                 }
-                else
+                else if (p.Id != ModelCode.PSR_MEASUREMENTS && p.Id != ModelCode.EQCONTAINER_EQUIPMENTS)
                 {
                     SetProperty(p);
                 }

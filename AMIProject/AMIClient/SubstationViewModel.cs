@@ -119,13 +119,13 @@ namespace AMIClient
 
             if ((geoRegion.Equals("All") && !subGeoRegion.Equals("All")) || (!geoRegion.Equals("All") && !subGeoRegion.Equals("All")))
             {
-                substations.AddRange(TestGDA.Instance.GetSomeSubstations(((Substation)SubGeoRegion).GlobalId));
+                substations.AddRange(TestGDA.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegion).GlobalId));
             }
             else if(!geoRegion.Equals("All") && subGeoRegion.Equals("All"))
             {
-                foreach(object o in subGeoRegions)
+                for(int i = 1; i < SubGeoRegions.Count; i++)
                 {
-                    substations.AddRange(TestGDA.Instance.GetSomeSubstations(((Substation)o).GlobalId));
+                    substations.AddRange(TestGDA.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegions[i]).GlobalId));
                 }
             }
             else
@@ -144,8 +144,17 @@ namespace AMIClient
                 PropertyChanged(this, new PropertyChangedEventArgs(propName));
                 if (propName.Equals("GeoRegion"))
                 {
-                    subGeoRegions = new ObservableCollection<object>() { subGeoRegions.First() };
-                    subGeoRegions.AddRange(TestGDA.Instance.GetSomeSubregions(((GeographicalRegion)geoRegion).GlobalId));
+                    SubGeoRegions = new ObservableCollection<object>() { subGeoRegions.First() };
+                    SubGeoRegion = subGeoRegions[0];
+
+                    if (GeoRegion.Equals("All"))
+                    {
+                        SubGeoRegions.AddRange(TestGDA.Instance.GetAllSubRegions());
+                    }
+                    else
+                    {
+                        SubGeoRegions.AddRange(TestGDA.Instance.GetSomeSubregions(((GeographicalRegion)geoRegion).GlobalId));
+                    }
                 }
             }
         }
