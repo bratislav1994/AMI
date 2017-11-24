@@ -26,6 +26,11 @@ namespace TC57CIM.IEC61970.Core {
         private long subGeoRegion = 0;
         private List<long> voltageLevels = new List<long>();
 
+        public Substation()
+        {
+
+        }
+
         public Substation(long globalId) : base(globalId)
         {
         }
@@ -174,6 +179,24 @@ namespace TC57CIM.IEC61970.Core {
         }
 
         #endregion IReference implementation
+
+        public void RD2Class(ResourceDescription rd)
+        {
+            foreach (Property p in rd.Properties)
+            {
+                if (p.Id == ModelCode.SUBSTATION_VOLTLEVELS)
+                {
+                    foreach (long l in p.PropertyValue.LongValues)
+                    {
+                        this.AddReference(ModelCode.VOLTAGELEVEL_SUBSTATION, l);
+                    }
+                }
+                else
+                {
+                    SetProperty(p);
+                }
+            }
+        }
 
     }//end Substation
 

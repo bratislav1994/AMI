@@ -23,6 +23,11 @@ namespace TC57CIM.IEC61970.Core {
         
         private List<long> equipments = new List<long>();
 
+        public EquipmentContainer()
+        {
+
+        }
+
         public EquipmentContainer(long globalId) : base(globalId)
         {
         }

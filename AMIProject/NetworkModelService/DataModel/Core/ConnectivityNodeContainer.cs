@@ -22,6 +22,11 @@ namespace TC57CIM.IEC61970.Core {
 	/// </summary>
 	public class ConnectivityNodeContainer : PowerSystemResource {
         
+        public ConnectivityNodeContainer()
+        {
+
+        }
+
         public ConnectivityNodeContainer(long globalId) : base(globalId)
         {
         }

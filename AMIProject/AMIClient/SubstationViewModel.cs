@@ -12,15 +12,21 @@ namespace AMIClient
 {
     public class SubstationViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<GeographicalRegion> geoRegions;
-        private ObservableCollection<SubGeographicalRegion> subGeoRegions;
+        private ObservableCollection<object> geoRegions;
+        private ObservableCollection<object> subGeoRegions;
         private ObservableCollection<Substation> substations;
-        private GeographicalRegion geoRegion;
-        private SubGeographicalRegion subGeoRegion;
+        private object geoRegion;
+        private object subGeoRegion;
 
         public SubstationViewModel()
         {
             Substations = new ObservableCollection<Substation>();
+            geoRegions = new ObservableCollection<object>() { "All" };
+            subGeoRegions = new ObservableCollection<object>() { "All" };
+            GeoRegion = GeoRegions[0];
+            SubGeoRegion = SubGeoRegions[0];
+            geoRegions.AddRange(TestGDA.Instance.GetAllRegions());
+            subGeoRegions.AddRange(TestGDA.Instance.GetAllSubRegions());
         }
 
         public ObservableCollection<Substation> Substations
@@ -37,7 +43,7 @@ namespace AMIClient
             }
         }
         
-        public GeographicalRegion GeoRegion
+        public object GeoRegion
         {
             get
             {
@@ -51,7 +57,7 @@ namespace AMIClient
             }
         }
 
-        public SubGeographicalRegion SubGeoRegion
+        public object SubGeoRegion
         {
             get
             {
@@ -65,7 +71,7 @@ namespace AMIClient
             }
         }
 
-        public ObservableCollection<GeographicalRegion> GeoRegions
+        public ObservableCollection<object> GeoRegions
         {
             get
             {
@@ -79,7 +85,7 @@ namespace AMIClient
             }
         }
 
-        public ObservableCollection<SubGeographicalRegion> SubGeoRegions
+        public ObservableCollection<object> SubGeoRegions
         {
             get
             {
@@ -109,6 +115,24 @@ namespace AMIClient
 
         private void GetElementsCommandAction()
         {
+            substations.Clear();
+
+            if ((geoRegion.Equals("All") && !subGeoRegion.Equals("All")) || (!geoRegion.Equals("All") && !subGeoRegion.Equals("All")))
+            {
+                substations.AddRange(TestGDA.Instance.GetSomeSubstations(((Substation)SubGeoRegion).GlobalId));
+            }
+            else if(!geoRegion.Equals("All") && subGeoRegion.Equals("All"))
+            {
+                foreach(object o in subGeoRegions)
+                {
+                    substations.AddRange(TestGDA.Instance.GetSomeSubstations(((Substation)o).GlobalId));
+                }
+            }
+            else
+            {
+                substations.AddRange(TestGDA.Instance.GetAllSubstations());
+            }
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -118,6 +142,11 @@ namespace AMIClient
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propName));
+                if (propName.Equals("GeoRegion"))
+                {
+                    subGeoRegions = new ObservableCollection<object>() { subGeoRegions.First() };
+                    subGeoRegions.AddRange(TestGDA.Instance.GetSomeSubregions(((GeographicalRegion)geoRegion).GlobalId));
+                }
             }
         }
     }

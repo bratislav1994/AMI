@@ -145,6 +145,13 @@ namespace AMIClient
             GetExtentValues(ModelCode.SUBGEOREGION);
             return subGeoRegions;
         }
+
+        public ObservableCollection<Substation> GetAllSubstations()
+        {
+            substations.Clear();
+            GetExtentValues(ModelCode.SUBSTATION);
+            return substations;
+        }
         
         private void GetExtentValues(ModelCode modelCode)
         {
@@ -193,6 +200,11 @@ namespace AMIClient
                                 sgr.RD2Class(rds[i]);
                                 subGeoRegions.Add(sgr);
                                 break;
+                            case ModelCode.SUBSTATION:
+                                Substation ss = new Substation();
+                                ss.RD2Class(rds[i]);
+                                substations.Add(ss);
+                                break;
 
                             default:
                                 break;
@@ -226,37 +238,6 @@ namespace AMIClient
                     xmlWriter.Close();
                 }
             }
-        }
-
-        private object ConvertToClass(ResourceDescription resDesc)
-        {
-            GeoRegionForTable geoRegion = new GeoRegionForTable();
-            DMSType code = (DMSType)(resDesc.Id >> 32);// ExtractTypeFromGlobalId(resDesc.Id);
-
-            switch (code)
-            {
-                case DMSType.GEOREGION:
-                    
-                    foreach (Property p in resDesc.Properties)
-                    {
-                        switch (p.Id)
-                        {
-                            case ModelCode.IDOBJ_MRID:
-                                geoRegion.MRID = p.PropertyValue.StringValue;
-                                break;
-                            case ModelCode.IDOBJ_NAME:
-                                geoRegion.Name = p.PropertyValue.StringValue;
-                                break;
-                        }
-                    }
-                    
-                    break;
-
-                default:
-                    break;
-            }
-
-            return geoRegion;
         }
 
         public ModelCode GetModelCodeFromDmsType(DMSType type)
@@ -394,6 +375,18 @@ namespace AMIClient
             return subGeoRegions;
         }
 
+        public ObservableCollection<Substation> GetSomeSubstations(long subRegionId)
+        {
+            substations.Clear();
+            List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.SUBSTATION);
+            Association associtaion = new Association();
+            associtaion.PropertyId = ModelCode.SUBGEOREGION_SUBS;
+            associtaion.Type = ModelCode.SUBSTATION;
+            GetRelatedValues(subRegionId, properties, associtaion, ModelCode.SUBGEOREGION);
+
+            return substations;
+        }
+
         private void GetRelatedValues(long source, List<ModelCode> propIds, Association association, ModelCode modelCode)
         {
             int iteratorId = GdaQueryProxy.GetRelatedValues(source, propIds, association);
@@ -417,6 +410,14 @@ namespace AMIClient
                         SubGeographicalRegion sgr = new SubGeographicalRegion();
                         sgr.RD2Class(rd);
                         subGeoRegions.Add(sgr);
+                    }
+                    break;
+                case ModelCode.SUBSTATION:
+                    foreach(ResourceDescription rd in results)
+                    {
+                        Substation ss = new Substation();
+                        ss.RD2Class(rd);
+                        substations.Add(ss);
                     }
                     break;
 

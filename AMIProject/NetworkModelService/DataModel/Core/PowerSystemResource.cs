@@ -27,6 +27,11 @@ namespace TC57CIM.IEC61970.Core {
 
         private List<long> measurements = new List<long>();
 
+        public PowerSystemResource()
+        {
+
+        }
+
         public PowerSystemResource(long globalId)
             : base(globalId)
         {
