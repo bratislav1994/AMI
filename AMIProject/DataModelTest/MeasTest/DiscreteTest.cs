@@ -63,6 +63,7 @@ namespace DataModelTest.MeasTest
             Assert.AreEqual(normalValue, discrete.NormalValue);
         }
 
+        [Test]
         public void EqualsTestCorrect()
         {
             object obj = this.discrete;

@@ -1,5 +1,4 @@
-﻿using AMIClient.ClassesForTable;
-using FTN.Common;
+﻿using FTN.Common;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -19,6 +18,7 @@ namespace AMIClient
         public GeoRegionViewModel()
         {
             geoRegions = new ObservableCollection<GeographicalRegion>();
+            GeoRegions.AddRange(TestGDA.Instance.GetAllRegions());
         }
         
         public ObservableCollection<GeographicalRegion> GeoRegions

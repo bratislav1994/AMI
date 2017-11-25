@@ -36,6 +36,11 @@ namespace TC57CIM.IEC61970.Wires {
 	public class PowerTransformerEnd : TransformerEnd {
 
         private long powerTrans = 0;
+        
+        public PowerTransformerEnd()
+        {
+        }
+        
 
         public PowerTransformerEnd(long globalId) : base(globalId)
         {

@@ -63,6 +63,7 @@ namespace DataModelTest.MeasTest
             Assert.AreEqual(normalValue, analog.NormalValue);
         }
 
+        [Test]
         public void EqualsTestCorrect()
         {
             object obj = this.analog;

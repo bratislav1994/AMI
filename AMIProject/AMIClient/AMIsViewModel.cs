@@ -34,6 +34,7 @@ namespace AMIClient
             SubGeoRegions.AddRange(TestGDA.Instance.GetAllSubRegions());
             Substations.AddRange(TestGDA.Instance.GetAllSubstations());
             Substation = Substations[0];
+            Amis.AddRange(TestGDA.Instance.GetAllAmis());
         }
 
         public object Substation

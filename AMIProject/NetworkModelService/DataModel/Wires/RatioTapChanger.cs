@@ -22,6 +22,11 @@ namespace TC57CIM.IEC61970.Wires {
 
         private long transformerEnd = 0;
 
+        public RatioTapChanger()
+        {
+
+        }
+
         public RatioTapChanger(long globalId) : base(globalId)
         {
 		}

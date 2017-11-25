@@ -24,6 +24,11 @@ namespace TC57CIM.IEC61970.Wires {
         private int neutralStep;
         private int normalStep;
 
+        public TapChanger()
+        {
+
+        }
+
 		public TapChanger(long globalId) : base(globalId)
         {
 		}
