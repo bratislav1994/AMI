@@ -27,6 +27,7 @@ namespace AMIClient
             SubGeoRegion = SubGeoRegions[0];
             GeoRegions.AddRange(TestGDA.Instance.GetAllRegions());
             SubGeoRegions.AddRange(TestGDA.Instance.GetAllSubRegions());
+            Substations.AddRange(TestGDA.Instance.GetAllSubstations());
         }
 
         public ObservableCollection<Substation> Substations

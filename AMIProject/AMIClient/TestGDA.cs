@@ -1,5 +1,4 @@
-﻿using AMIClient.ClassesForTable;
-using FTN.Common;
+﻿using FTN.Common;
 using FTN.ServiceContracts;
 using System;
 using System.Collections.Generic;

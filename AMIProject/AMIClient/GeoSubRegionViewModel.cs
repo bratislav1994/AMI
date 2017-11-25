@@ -21,8 +21,8 @@ namespace AMIClient
             subRegions = new ObservableCollection<SubGeographicalRegion>();
             geoRegions = new ObservableCollection<object>() { "All" };
             GeoRegion = GeoRegions[0];
-            geoRegions.AddRange(TestGDA.Instance.GetAllRegions());
-            subRegions.AddRange(TestGDA.Instance.GetAllSubRegions());
+            GeoRegions.AddRange(TestGDA.Instance.GetAllRegions());
+            SubRegions.AddRange(TestGDA.Instance.GetAllSubRegions());
         }
         
         public ObservableCollection<object> GeoRegions
