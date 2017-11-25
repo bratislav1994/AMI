@@ -47,7 +47,15 @@ namespace TC57CIM.IEC61970.Meas {
 		private UnitSymbol unitSymbol;
         private Direction signalDirection;
 
-        private long powerSystemResource = 0;
+        private long powerSystemResource;
+
+        public Measurement()
+        {
+            this.unitSymbol = UnitSymbol.P;
+            this.signalDirection = Direction.WRITE;
+
+            this.powerSystemResource = 0;
+        }
 
 		public Measurement(long globalId)
             : base(globalId)
@@ -64,6 +72,12 @@ namespace TC57CIM.IEC61970.Meas {
         {
             get { return signalDirection; }
             set { signalDirection = value; }
+        }
+
+        public long PowerSystemResourceRef
+        {
+            get { return powerSystemResource; }
+            set { powerSystemResource = value; }
         }
 
         public override bool Equals(object obj)
