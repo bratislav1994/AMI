@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:AMIClient"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <!-- Resources scoped at the Application level should be defined here. -->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ResourceDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
