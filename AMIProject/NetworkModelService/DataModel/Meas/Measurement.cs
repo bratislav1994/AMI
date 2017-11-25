@@ -47,14 +47,10 @@ namespace TC57CIM.IEC61970.Meas {
 		private UnitSymbol unitSymbol;
         private Direction signalDirection;
 
-        private long powerSystemResource;
+        private long powerSystemResource = 0;
 
         public Measurement()
         {
-            this.unitSymbol = UnitSymbol.P;
-            this.signalDirection = Direction.WRITE;
-
-            this.powerSystemResource = 0;
         }
 
 		public Measurement(long globalId)

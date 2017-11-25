@@ -33,6 +33,11 @@ namespace TC57CIM.IEC61970.Meas {
         /// </summary>
         private float normalValue;
 
+        public Analog()
+        {
+
+        }
+
         public Analog(long globalId)
             :base(globalId)            
         {

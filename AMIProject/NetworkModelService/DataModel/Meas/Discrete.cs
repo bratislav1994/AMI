@@ -34,6 +34,11 @@ namespace TC57CIM.IEC61970.Meas {
 		/// </summary>
 		public int normalValue;
 
+        public Discrete()
+        {
+
+        }
+
 		public Discrete(long globalId)
         :base(globalId)
         {

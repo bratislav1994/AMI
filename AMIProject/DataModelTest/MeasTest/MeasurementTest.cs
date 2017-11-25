@@ -14,8 +14,8 @@ namespace DataModelTest.MeasTest
     public class MeasurementTest
     {
         private Measurement measurement;
-        private UnitSymbol unitSymbol = UnitSymbol.P;
-        private Direction signalDirection = Direction.WRITE;
+        private UnitSymbol unitSymbol = UnitSymbol.Q;
+        private Direction signalDirection = Direction.READ;
         private long powerSystemResource = 0;
         public Property property = new Property();
 
@@ -64,19 +64,9 @@ namespace DataModelTest.MeasTest
 
             Assert.AreEqual(powerSystemResource, measurement.PowerSystemResourceRef);
         }
-
-        //Equals - FALIIIIIII
+        
         [Test]
         public void EqualsTestCorrect()
-        {
-            object obj = this.measurement;
-            bool result = measurement.Equals(obj);
-
-            Assert.AreEqual(true, result);
-        }
-
-        [Test]
-        public void EqualsTestFalse()
         {
             object obj = this.measurement;
             bool result = measurement.Equals(obj);
