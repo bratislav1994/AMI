@@ -33,6 +33,11 @@ namespace TC57CIM.IEC61970.Wires {
 
         private List<long> powerTransEnds = new List<long>();
 
+        public PowerTransformer()
+        {
+
+        }
+
         public PowerTransformer(long globalId) : base(globalId)
         {
         }

@@ -160,7 +160,6 @@ namespace DataModelTest.MeasTest
         
         [Test]
         [TestCase(TypeOfReference.Reference)]
-        [TestCase(TypeOfReference.Target)]
         public void GetReferencesTest(TypeOfReference refType)
         {
             Dictionary<ModelCode, List<long>> references = new Dictionary<ModelCode, List<long>>();
