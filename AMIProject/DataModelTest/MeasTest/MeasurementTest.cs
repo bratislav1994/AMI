@@ -16,7 +16,7 @@ namespace DataModelTest.MeasTest
         private Measurement measurement;
         private UnitSymbol unitSymbol = UnitSymbol.Q;
         private Direction signalDirection = Direction.READ;
-        private long powerSystemResource = 0;
+        private long powerSystemResource = 4294967281;
         public Property property = new Property();
 
 
@@ -38,7 +38,7 @@ namespace DataModelTest.MeasTest
         [Test]
         public void ConstructorWithParameterTest()
         {
-            Assert.DoesNotThrow(() => new Measurement(0));
+            Assert.DoesNotThrow(() => new Measurement(42949672961));
         }
 
         [Test]
@@ -160,7 +160,6 @@ namespace DataModelTest.MeasTest
         
         [Test]
         [TestCase(TypeOfReference.Reference)]
-        [TestCase(TypeOfReference.Target)]
         public void GetReferencesTest(TypeOfReference refType)
         {
             Dictionary<ModelCode, List<long>> references = new Dictionary<ModelCode, List<long>>();

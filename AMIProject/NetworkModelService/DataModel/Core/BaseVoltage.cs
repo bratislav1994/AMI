@@ -12,15 +12,20 @@ using System.IO;
 using FTN.Common;
 
 namespace TC57CIM.IEC61970.Core {
-	/// <summary>
-	/// Defines a system base voltage which is referenced.
-	/// </summary>
-	public class BaseVoltage : IdentifiedObject {
+    /// <summary>
+    /// Defines a system base voltage which is referenced.
+    /// </summary>
+    public class BaseVoltage : IdentifiedObject {
 
         private float nominalVoltage;
         private List<long> conductingEquipments = new List<long>();
         private List<long> transformerEnds = new List<long>();
         private List<long> voltageLevels = new List<long>();
+
+        public BaseVoltage()
+        {
+
+        }
 
         public BaseVoltage(long globalId) : base(globalId)
         {
@@ -131,6 +136,10 @@ namespace TC57CIM.IEC61970.Core {
                     break;
                 case ModelCode.BASEVOLTAGE_VOLTLEVELS:
                     prop.SetValue(voltageLevels);
+                    break;
+
+                default:
+                    base.GetProperty(prop);
                     break;
             }
         }

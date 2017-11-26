@@ -6,59 +6,69 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TC57CIM.IEC61970.Core;
-using TC57CIM.IEC61970.Wires;
 
-namespace DataModelTest.WiresTest
+namespace DataModelTest.CoreTest
 {
     [TestFixture]
-    public class PowerTransformerEndTest
+    public class VoltageLevelTest
     {
-        private PowerTransformerEnd powerTransformerEnd;
-        private long powerTrans = 42949672142;
+        private VoltageLevel voltageLevel;
+        private long baseVoltage = 42949672153;
+        private long substation = 42949672163;
         public Property property = new Property();
 
         [OneTimeSetUp]
         public void SetupTest()
         {
-            this.powerTransformerEnd = new PowerTransformerEnd();
-            this.powerTransformerEnd.PowerTrans = powerTrans;
+            this.voltageLevel = new VoltageLevel();
+            this.voltageLevel.BaseVoltage = baseVoltage;
+            this.voltageLevel.Substation = substation;
         }
 
         [Test]
         public void ConstructorTest()
         {
-            Assert.DoesNotThrow(() => new PowerTransformerEnd());
+            Assert.DoesNotThrow(() => new VoltageLevel());
         }
 
         [Test]
         public void ConstructorWithParameterTest()
         {
-            Assert.DoesNotThrow(() => new PowerTransformerEnd(42949672122));
+            Assert.DoesNotThrow(() => new VoltageLevel(42949672123));
         }
 
         [Test]
-        public void TransformerEndTest()
+        public void BaseVoltageTest()
         {
-            powerTransformerEnd.PowerTrans = powerTrans;
+            voltageLevel.BaseVoltage = baseVoltage;
 
-            Assert.AreEqual(powerTrans, powerTransformerEnd.PowerTrans);
+            Assert.AreEqual(baseVoltage, voltageLevel.BaseVoltage);
+        }
+
+        [Test]
+        public void SubstationTest()
+        {
+            voltageLevel.Substation = substation;
+
+            Assert.AreEqual(substation, voltageLevel.Substation);
         }
 
         [Test]
         public void EqualsTestCorrect()
         {
-            object obj = this.powerTransformerEnd;
-            bool result = powerTransformerEnd.Equals(obj);
+            object obj = this.voltageLevel;
+            bool result = voltageLevel.Equals(obj);
 
             Assert.AreEqual(true, result);
         }
 
         [Test]
-        [TestCase(ModelCode.POWERTRANSEND_POWERTRANSF)]
+        [TestCase(ModelCode.VOLTAGELEVEL_BASEVOLTAGE)]
+        [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void HasPropertyTestTrue(ModelCode t)
         {
-            bool result = powerTransformerEnd.HasProperty(t);
+            bool result = voltageLevel.HasProperty(t);
 
             Assert.AreEqual(true, result);
         }
@@ -67,20 +77,21 @@ namespace DataModelTest.WiresTest
         [TestCase(ModelCode.BASEVOLTAGE_NOMINALVOL)]
         public void HasPropertyTestFalse(ModelCode t)
         {
-            bool result = powerTransformerEnd.HasProperty(t);
+            bool result = voltageLevel.HasProperty(t);
 
             Assert.AreEqual(false, result);
         }
 
         [Test]
-        [TestCase(ModelCode.POWERTRANSEND_POWERTRANSF)]
+        [TestCase(ModelCode.VOLTAGELEVEL_BASEVOLTAGE)]
+        [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void GetPropertyTestCorrect(ModelCode t)
         {
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.DoesNotThrow(() => powerTransformerEnd.GetProperty(property));
+            Assert.DoesNotThrow(() => voltageLevel.GetProperty(property));
         }
 
         [Test]
@@ -90,11 +101,12 @@ namespace DataModelTest.WiresTest
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.Throws<Exception>(() => powerTransformerEnd.GetProperty(property));
+            Assert.Throws<Exception>(() => voltageLevel.GetProperty(property));
         }
 
         [Test]
-        [TestCase(ModelCode.POWERTRANSEND_POWERTRANSF)]
+        [TestCase(ModelCode.VOLTAGELEVEL_BASEVOLTAGE)]
+        [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void SetPropertyTestCorrects(ModelCode t)
         {
@@ -103,15 +115,18 @@ namespace DataModelTest.WiresTest
 
             switch (property.Id)
             {
-                case ModelCode.POWERTRANSEND_POWERTRANSF:
-                    property.SetValue(powerTrans);
+                case ModelCode.VOLTAGELEVEL_BASEVOLTAGE:
+                    property.SetValue(baseVoltage);
+                    break;
+                case ModelCode.VOLTAGELEVEL_SUBSTATION:
+                    property.SetValue(substation);
                     break;
                 case ModelCode.IDOBJ_NAME:
-                    property.SetValue("PowerTransformerEnd_1");
+                    property.SetValue("VoltageLevel_1");
                     break;
             }
 
-            Assert.DoesNotThrow(() => powerTransformerEnd.SetProperty(property));
+            Assert.DoesNotThrow(() => voltageLevel.SetProperty(property));
         }
 
         [Test]
@@ -122,7 +137,7 @@ namespace DataModelTest.WiresTest
             property.PropertyValue = new PropertyValue();
             property.SetValue(value);
 
-            Assert.Throws<Exception>(() => powerTransformerEnd.SetProperty(property));
+            Assert.Throws<Exception>(() => voltageLevel.SetProperty(property));
         }
 
         [Test]
@@ -132,7 +147,7 @@ namespace DataModelTest.WiresTest
         {
             Dictionary<ModelCode, List<long>> references = new Dictionary<ModelCode, List<long>>();
 
-            Assert.DoesNotThrow(() => powerTransformerEnd.GetReferences(references, refType));
+            Assert.DoesNotThrow(() => voltageLevel.GetReferences(references, refType));
         }
     }
 }

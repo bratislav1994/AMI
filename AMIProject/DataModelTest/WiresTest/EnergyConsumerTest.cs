@@ -5,60 +5,82 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Wires;
 
 namespace DataModelTest.WiresTest
 {
     [TestFixture]
-    public class PowerTransformerEndTest
+    public class EnergyConsumerTest
     {
-        private PowerTransformerEnd powerTransformerEnd;
-        private long powerTrans = 42949672142;
+        private EnergyConsumer consumer;
+        private float pfixed = 0;
+        private float qfixed = 0;
         public Property property = new Property();
 
         [OneTimeSetUp]
         public void SetupTest()
         {
-            this.powerTransformerEnd = new PowerTransformerEnd();
-            this.powerTransformerEnd.PowerTrans = powerTrans;
+            this.consumer = new EnergyConsumer();
+            this.consumer.Pfixed = pfixed;
+            this.consumer.Qfixed = qfixed;
         }
 
         [Test]
         public void ConstructorTest()
         {
-            Assert.DoesNotThrow(() => new PowerTransformerEnd());
+            Assert.DoesNotThrow(() => new EnergyConsumer());
         }
 
         [Test]
         public void ConstructorWithParameterTest()
         {
-            Assert.DoesNotThrow(() => new PowerTransformerEnd(42949672122));
+            Assert.DoesNotThrow(() => new EnergyConsumer(42949682361));
         }
 
         [Test]
-        public void TransformerEndTest()
+        public void PfixedTest()
         {
-            powerTransformerEnd.PowerTrans = powerTrans;
+            consumer.Pfixed = pfixed;
 
-            Assert.AreEqual(powerTrans, powerTransformerEnd.PowerTrans);
+            Assert.AreEqual(pfixed, consumer.Pfixed);
+        }
+
+        [Test]
+        public void QfixedTest()
+        {
+            consumer.Qfixed = qfixed;
+
+            Assert.AreEqual(qfixed, consumer.Qfixed);
         }
 
         [Test]
         public void EqualsTestCorrect()
         {
-            object obj = this.powerTransformerEnd;
-            bool result = powerTransformerEnd.Equals(obj);
+            object obj = this.consumer;
+            bool result = consumer.Equals(obj);
 
             Assert.AreEqual(true, result);
         }
 
         [Test]
-        [TestCase(ModelCode.POWERTRANSEND_POWERTRANSF)]
+        public void ToStringTest()
+        {
+            consumer.Mrid = "CONSUMER_1";
+            consumer.Name = "Consumer_1";
+            string region = string.Format(consumer.Mrid + "\n" + consumer.Name);
+
+            string result = consumer.ToString();
+
+            Assert.AreEqual(region, result);
+        }
+
+        [Test]
+        [TestCase(ModelCode.ENERGYCONS_PFIXED)]
+        [TestCase(ModelCode.ENERGYCONS_QFIXED)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void HasPropertyTestTrue(ModelCode t)
         {
-            bool result = powerTransformerEnd.HasProperty(t);
+            bool result = consumer.HasProperty(t);
 
             Assert.AreEqual(true, result);
         }
@@ -67,20 +89,21 @@ namespace DataModelTest.WiresTest
         [TestCase(ModelCode.BASEVOLTAGE_NOMINALVOL)]
         public void HasPropertyTestFalse(ModelCode t)
         {
-            bool result = powerTransformerEnd.HasProperty(t);
+            bool result = consumer.HasProperty(t);
 
             Assert.AreEqual(false, result);
         }
 
         [Test]
-        [TestCase(ModelCode.POWERTRANSEND_POWERTRANSF)]
+        [TestCase(ModelCode.ENERGYCONS_PFIXED)]
+        [TestCase(ModelCode.ENERGYCONS_QFIXED)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void GetPropertyTestCorrect(ModelCode t)
         {
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.DoesNotThrow(() => powerTransformerEnd.GetProperty(property));
+            Assert.DoesNotThrow(() => consumer.GetProperty(property));
         }
 
         [Test]
@@ -90,11 +113,12 @@ namespace DataModelTest.WiresTest
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.Throws<Exception>(() => powerTransformerEnd.GetProperty(property));
+            Assert.Throws<Exception>(() => consumer.GetProperty(property));
         }
 
         [Test]
-        [TestCase(ModelCode.POWERTRANSEND_POWERTRANSF)]
+        [TestCase(ModelCode.ENERGYCONS_PFIXED)]
+        [TestCase(ModelCode.ENERGYCONS_QFIXED)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void SetPropertyTestCorrects(ModelCode t)
         {
@@ -103,15 +127,19 @@ namespace DataModelTest.WiresTest
 
             switch (property.Id)
             {
-                case ModelCode.POWERTRANSEND_POWERTRANSF:
-                    property.SetValue(powerTrans);
+                case ModelCode.ENERGYCONS_PFIXED:
+                    property.SetValue(pfixed);
+                    break;
+
+                case ModelCode.ENERGYCONS_QFIXED:
+                    property.SetValue(qfixed);
                     break;
                 case ModelCode.IDOBJ_NAME:
-                    property.SetValue("PowerTransformerEnd_1");
+                    property.SetValue("Consumer_1");
                     break;
             }
 
-            Assert.DoesNotThrow(() => powerTransformerEnd.SetProperty(property));
+            Assert.DoesNotThrow(() => consumer.SetProperty(property));
         }
 
         [Test]
@@ -122,17 +150,7 @@ namespace DataModelTest.WiresTest
             property.PropertyValue = new PropertyValue();
             property.SetValue(value);
 
-            Assert.Throws<Exception>(() => powerTransformerEnd.SetProperty(property));
-        }
-
-        [Test]
-        [TestCase(TypeOfReference.Reference)]
-        [TestCase(TypeOfReference.Target)]
-        public void GetReferencesTest(TypeOfReference refType)
-        {
-            Dictionary<ModelCode, List<long>> references = new Dictionary<ModelCode, List<long>>();
-
-            Assert.DoesNotThrow(() => powerTransformerEnd.GetReferences(references, refType));
+            Assert.Throws<Exception>(() => consumer.SetProperty(property));
         }
     }
 }

@@ -38,7 +38,7 @@ namespace DataModelTest.WiresTest
         [Test]
         public void ConstructorWithParameterTest()
         {
-            Assert.DoesNotThrow(() => new TapChanger(0));
+            Assert.DoesNotThrow(() => new TapChanger(42949672111));
         }
 
         [Test]
