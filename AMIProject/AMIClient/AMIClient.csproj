@@ -72,6 +72,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -94,6 +95,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddCimXmlViewModel.cs" />
     <Compile Include="AMIsViewModel.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="SubstationViewModel.cs" />
@@ -146,6 +148,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CIMAdapter\CIMAdapter.csproj">
+      <Project>{f680d34f-c148-4314-8914-b2df3e7b17af}</Project>
+      <Name>CIMAdapter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{892cbe15-9ed7-4540-81fa-0eaaba592138}</Project>
       <Name>Common</Name>

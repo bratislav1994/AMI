@@ -62,10 +62,14 @@
                 </TabItem.DataContext>
 
                 <Grid Background="#777777" Margin="0,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.5*"></RowDefinition>
+                        <RowDefinition Height="9.5*"></RowDefinition>
+                    </Grid.RowDefinitions>
 
-                    <Button Content="Get elements" HorizontalAlignment="Left" VerticalAlignment="Top" Width="83" Command="{Binding Path=GetElementsCommand}"/>
+                    <Button Grid.Row="0" Content="Get elements" VerticalAlignment="Center" HorizontalAlignment="Left" Width="83" Command="{Binding Path=GetElementsCommand}"/>
 
-                    <DataGrid SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding GeoRegions, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" Margin="0,30,0,21" >
+                    <DataGrid Grid.Row="1" SelectionMode="Single"  GridLinesVisibility="None" ItemsSource="{Binding GeoRegions, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
 
                         <DataGrid.Columns>
 
@@ -93,10 +97,10 @@
                         <ColumnDefinition Width="7*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" Content="Geographical region" />
-                    <ComboBox Grid.Column="1" HorizontalAlignment="Left" ItemsSource="{Binding GeoRegions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding GeoRegion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Height="20" Width="170"/>
+                    <Label Grid.Column="0" Content="Geographical region" VerticalAlignment="Center"/>
+                    <ComboBox Grid.Column="1" HorizontalAlignment="Left" ItemsSource="{Binding GeoRegions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding GeoRegion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="170"/>
 
-                    <Button Grid.Row="1" Content="Get elements" HorizontalAlignment="Left" VerticalAlignment="Top" Width="83" Command="{Binding GetElementsCommand}"/>
+                    <Button Grid.Row="1" Content="Get elements" HorizontalAlignment="Left" VerticalAlignment="Center" Width="83" Command="{Binding GetElementsCommand}"/>
 
                     <DataGrid Grid.Row="2" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding SubRegions, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
 
@@ -129,13 +133,13 @@
                         <ColumnDefinition Width="7*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" Content="Geographical Region" />
-                    <ComboBox Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding GeoRegion}" ItemsSource="{Binding GeoRegions, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Height="20" Width="170"/>
+                    <Label Grid.Column="0" Content="Geographical Region" VerticalAlignment="Center"/>
+                    <ComboBox Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding GeoRegion}" ItemsSource="{Binding GeoRegions, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="170"/>
 
-                    <Label Grid.Row="1" Grid.Column="0" Content="Geographical Subregion"/>
-                    <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding SubGeoRegion}" ItemsSource="{Binding SubGeoRegions, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Height="20" Width="170"/>
+                    <Label Grid.Row="1" Grid.Column="0" Content="Geographical Subregion" VerticalAlignment="Center"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding SubGeoRegion}" ItemsSource="{Binding SubGeoRegions, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="170"/>
 
-                    <Button Grid.Row="2" Content="Get elements" HorizontalAlignment="Left" VerticalAlignment="Top" Width="83" Command="{Binding GetElementsCommand}"/>
+                    <Button Grid.Row="2" Content="Get elements" HorizontalAlignment="Left" VerticalAlignment="Center" Width="83" Command="{Binding GetElementsCommand}"/>
 
                     <DataGrid Grid.Row="3" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Substations, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
 
@@ -169,16 +173,16 @@
                         <ColumnDefinition Width="7*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" Content="Geographical Region" />
-                    <ComboBox Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding GeoRegion}" ItemsSource="{Binding GeoRegions, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Height="20" Width="170" />
+                    <Label Grid.Column="0" Content="Geographical Region" VerticalAlignment="Center"/>
+                    <ComboBox Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding GeoRegion}" ItemsSource="{Binding GeoRegions, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="170" />
 
-                    <Label Grid.Row="1" Grid.Column="0" Content="Geographical Subregion" />
-                    <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding SubGeoRegion}" ItemsSource="{Binding SubGeoRegions, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Height="20" Width="170" />
+                    <Label Grid.Row="1" Grid.Column="0" Content="Geographical Subregion" VerticalAlignment="Center"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding SubGeoRegion}" ItemsSource="{Binding SubGeoRegions, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="170" />
 
-                    <Label Grid.Row="2" Grid.Column="0" Content="Substation" />
-                    <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding Substation}" ItemsSource="{Binding Substations, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Height="20" Width="170"/>
+                    <Label Grid.Row="2" Grid.Column="0" Content="Substation" VerticalAlignment="Center"/>
+                    <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding Substation}" ItemsSource="{Binding Substations, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="170"/>
 
-                    <Button Grid.Row="3" Content="Get elements" HorizontalAlignment="Left" VerticalAlignment="Top" Width="83" Command="{Binding GetElementsCommand}"/>
+                    <Button Grid.Row="3" Content="Get elements" HorizontalAlignment="Left" VerticalAlignment="Center" Width="83" Command="{Binding GetElementsCommand}"/>
 
                     <DataGrid Grid.Row="4" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Amis, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
 
@@ -190,6 +194,45 @@
 
                         </DataGrid.Columns>
                     </DataGrid>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Add CIM/XML" Height="50" VerticalAlignment="Top" Margin="0,0,0,0">
+                <TabItem.DataContext>
+                    <local:AddCimXmlViewModel/>
+                </TabItem.DataContext>
+
+                <Grid Background="#777777" Margin="0,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.5*"></RowDefinition>
+                        <RowDefinition Height="0.5*"></RowDefinition>
+                        <RowDefinition Height="0.5*"></RowDefinition>
+                        <RowDefinition Height="6*"></RowDefinition>
+                        <RowDefinition Height="0.5*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                        <ColumnDefinition Width="6*"></ColumnDefinition>
+                        <ColumnDefinition Width="1.7*"></ColumnDefinition>
+                        <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Label x:Name="label" Grid.Column="0" Content="CIM/XML file: " HorizontalAlignment="Left" VerticalAlignment="Center" Height="29" Width="95"/>
+                    <TextBox HorizontalAlignment="Left" Grid.Column="1" Text="{Binding XMLPath, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="326" Grid.ColumnSpan="2"/>
+                    <Button x:Name="button" Grid.Column="2" HorizontalAlignment="Right" Content="Browse" Command="{Binding BrowseCommand}" VerticalAlignment="Center" Width="83"/>
+
+                    <Label Grid.Row="1" Grid.Column="0" Content="CIM profile:"  VerticalAlignment="Center"/>
+                    <ComboBox Grid.Row="1" HorizontalAlignment="Left" Grid.Column="1" SelectedItem="{Binding CIMProfile}" ItemsSource="{Binding CIMProfiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="326" Grid.ColumnSpan="2" />
+
+                    <Button Grid.Row="2" Content="Convert" HorizontalAlignment="Left" Command="{Binding ConvertCommand}" VerticalAlignment="Center" Width="83"/>
+                    <Button x:Name="button1" Content="Apply Delta" Command="{Binding ApplyDeltaCommand}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="2" Width="83"/>
+
+                    <Label x:Name="label1" Content="Report: " HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Top"/>
+                    <ScrollViewer Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalScrollBarVisibility="Visible">
+                        <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Report, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Background="White" >
+
+                        </TextBlock>
+                    </ScrollViewer>
 
                 </Grid>
             </TabItem>
