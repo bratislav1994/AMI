@@ -62,6 +62,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoreTest\ConductingEquipmentTest.cs" />
+    <Compile Include="CoreTest\ConnectivityNodeContainerTest.cs" />
+    <Compile Include="CoreTest\EquipmentTest.cs" />
+    <Compile Include="CoreTest\VoltageLevelTest.cs" />
     <Compile Include="MeasTest\AnalogTest.cs" />
     <Compile Include="MeasTest\DiscreteTest.cs" />
     <Compile Include="MeasTest\MeasurementTest.cs" />

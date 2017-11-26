@@ -36,7 +36,7 @@ namespace DataModelTest.MeasTest
         [Test]
         public void ConstructorWithParameterTest()
         {
-            Assert.DoesNotThrow(() => new Analog(0));
+            Assert.DoesNotThrow(() => new Analog(4294967212));
         }
 
         [Test]

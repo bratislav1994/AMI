@@ -22,6 +22,11 @@ namespace TC57CIM.IEC61970.Core {
 		private long baseVoltage;
         private long substation;
 
+        public VoltageLevel()
+        {
+
+        }
+
 		public VoltageLevel(long globalId) : base(globalId)
         {
         }

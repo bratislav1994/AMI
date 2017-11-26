@@ -36,7 +36,7 @@ namespace DataModelTest.MeasTest
         [Test]
         public void ConstructorWithParameterTest()
         {
-            Assert.DoesNotThrow(() => new Discrete(0));
+            Assert.DoesNotThrow(() => new Discrete(4294967211));
         }
 
         [Test]

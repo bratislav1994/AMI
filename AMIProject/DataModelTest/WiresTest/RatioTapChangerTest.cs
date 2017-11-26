@@ -14,7 +14,7 @@ namespace DataModelTest.WiresTest
     public class RatioTapChangerTest
     {
         private RatioTapChanger ratioTapChanger;
-        private long transformerEnd = 0;
+        private long transformerEnd = 42949672142;
         public Property property = new Property();
 
         [OneTimeSetUp]
@@ -33,7 +33,7 @@ namespace DataModelTest.WiresTest
         [Test]
         public void ConstructorWithParameterTest()
         {
-            Assert.DoesNotThrow(() => new RatioTapChanger(0));
+            Assert.DoesNotThrow(() => new RatioTapChanger(42949672121));
         }
 
         [Test]
