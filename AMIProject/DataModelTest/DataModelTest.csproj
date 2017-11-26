@@ -67,12 +67,16 @@
     <Compile Include="CoreTest\ConnectivityNodeContainerTest.cs" />
     <Compile Include="CoreTest\EquipmentContainerTest.cs" />
     <Compile Include="CoreTest\EquipmentTest.cs" />
+    <Compile Include="CoreTest\GeographicalRegionTest.cs" />
     <Compile Include="CoreTest\PowerSystemResourceTest.cs" />
+    <Compile Include="CoreTest\SubGeographicalRegionTest.cs" />
+    <Compile Include="CoreTest\SubstationTest.cs" />
     <Compile Include="CoreTest\VoltageLevelTest.cs" />
     <Compile Include="MeasTest\AnalogTest.cs" />
     <Compile Include="MeasTest\DiscreteTest.cs" />
     <Compile Include="MeasTest\MeasurementTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WiresTest\EnergyConsumerTest.cs" />
     <Compile Include="WiresTest\PowerTransformerEndTest.cs" />
     <Compile Include="WiresTest\PowerTransformerTest.cs" />
     <Compile Include="WiresTest\RatioTapChangerTest.cs" />
