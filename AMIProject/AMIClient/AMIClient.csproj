@@ -95,22 +95,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddCimXmlViewModel.cs" />
-    <Compile Include="AMIsViewModel.cs" />
+    <Compile Include="ViewModels\AddCimXmlViewModel.cs" />
+    <Compile Include="ViewModels\AMIsViewModel.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="SubstationViewModel.cs" />
-    <Compile Include="TestGDA.cs" />
-    <Page Include="MainWindow.xaml">
+    <Compile Include="ViewModels\SubstationViewModel.cs" />
+    <Compile Include="Model\Model.cs" />
+    <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="GeoRegionViewModel.cs" />
+    <Compile Include="ViewModels\GeoRegionViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GeoSubRegionViewModel.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="ViewModels\GeoSubRegionViewModel.cs" />
+    <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

@@ -1,7 +1,6 @@
 ﻿using FTN.Common;
 using FTN.ESI.SIMES.CIM.CIMAdapter;
 using FTN.ESI.SIMES.CIM.CIMAdapter.Importer;
-using NSubstitute;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

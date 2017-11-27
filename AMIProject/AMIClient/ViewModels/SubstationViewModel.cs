@@ -25,9 +25,9 @@ namespace AMIClient
             SubGeoRegions = new ObservableCollection<object>() { "All" };
             GeoRegion = GeoRegions[0];
             SubGeoRegion = SubGeoRegions[0];
-            GeoRegions.AddRange(TestGDA.Instance.GetAllRegions());
-            SubGeoRegions.AddRange(TestGDA.Instance.GetAllSubRegions());
-            Substations.AddRange(TestGDA.Instance.GetAllSubstations());
+            GeoRegions.AddRange(Model.Instance.GetAllRegions());
+            SubGeoRegions.AddRange(Model.Instance.GetAllSubRegions());
+            Substations.AddRange(Model.Instance.GetAllSubstations());
         }
 
         public ObservableCollection<Substation> Substations
@@ -120,18 +120,18 @@ namespace AMIClient
 
             if ((geoRegion.Equals("All") && !subGeoRegion.Equals("All")) || (!geoRegion.Equals("All") && !subGeoRegion.Equals("All")))
             {
-                substations.AddRange(TestGDA.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegion).GlobalId));
+                substations.AddRange(Model.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegion).GlobalId));
             }
             else if(!geoRegion.Equals("All") && subGeoRegion.Equals("All"))
             {
                 for(int i = 1; i < SubGeoRegions.Count; i++)
                 {
-                    substations.AddRange(TestGDA.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegions[i]).GlobalId));
+                    substations.AddRange(Model.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegions[i]).GlobalId));
                 }
             }
             else
             {
-                substations.AddRange(TestGDA.Instance.GetAllSubstations());
+                substations.AddRange(Model.Instance.GetAllSubstations());
             }
         }
 
@@ -149,11 +149,11 @@ namespace AMIClient
 
                     if (GeoRegion.Equals("All"))
                     {
-                        SubGeoRegions.AddRange(TestGDA.Instance.GetAllSubRegions());
+                        SubGeoRegions.AddRange(Model.Instance.GetAllSubRegions());
                     }
                     else
                     {
-                        SubGeoRegions.AddRange(TestGDA.Instance.GetSomeSubregions(((GeographicalRegion)geoRegion).GlobalId));
+                        SubGeoRegions.AddRange(Model.Instance.GetSomeSubregions(((GeographicalRegion)geoRegion).GlobalId));
                     }
                 }
             }

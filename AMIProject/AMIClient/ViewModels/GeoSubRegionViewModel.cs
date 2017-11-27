@@ -21,8 +21,8 @@ namespace AMIClient
             subRegions = new ObservableCollection<SubGeographicalRegion>();
             geoRegions = new ObservableCollection<object>() { "All" };
             GeoRegion = GeoRegions[0];
-            GeoRegions.AddRange(TestGDA.Instance.GetAllRegions());
-            SubRegions.AddRange(TestGDA.Instance.GetAllSubRegions());
+            GeoRegions.AddRange(Model.Instance.GetAllRegions());
+            SubRegions.AddRange(Model.Instance.GetAllSubRegions());
         }
         
         public ObservableCollection<object> GeoRegions
@@ -95,11 +95,11 @@ namespace AMIClient
 
             try
             {
-                subRegions.AddRange(TestGDA.Instance.GetSomeSubregions(((GeographicalRegion)GeoRegion).GlobalId));
+                subRegions.AddRange(Model.Instance.GetSomeSubregions(((GeographicalRegion)GeoRegion).GlobalId));
             }
             catch
             {
-                subRegions.AddRange(TestGDA.Instance.GetAllSubRegions());
+                subRegions.AddRange(Model.Instance.GetAllSubRegions());
             }
         }
 

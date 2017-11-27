@@ -18,7 +18,7 @@ namespace AMIClient
         public GeoRegionViewModel()
         {
             geoRegions = new ObservableCollection<GeographicalRegion>();
-            GeoRegions.AddRange(TestGDA.Instance.GetAllRegions());
+            GeoRegions.AddRange(Model.Instance.GetAllRegions());
         }
         
         public ObservableCollection<GeographicalRegion> GeoRegions
@@ -53,7 +53,7 @@ namespace AMIClient
         private void GetElementsCommandAction()
         {
             geoRegions.Clear();
-            geoRegions.AddRange(TestGDA.Instance.GetAllRegions());
+            geoRegions.AddRange(Model.Instance.GetAllRegions());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

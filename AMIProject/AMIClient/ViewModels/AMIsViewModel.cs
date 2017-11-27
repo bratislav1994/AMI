@@ -30,11 +30,11 @@ namespace AMIClient
             SubGeoRegions = new ObservableCollection<object>() { "All" };
             GeoRegion = GeoRegions[0];
             SubGeoRegion = SubGeoRegions[0];
-            GeoRegions.AddRange(TestGDA.Instance.GetAllRegions());
-            SubGeoRegions.AddRange(TestGDA.Instance.GetAllSubRegions());
-            Substations.AddRange(TestGDA.Instance.GetAllSubstations());
+            GeoRegions.AddRange(Model.Instance.GetAllRegions());
+            SubGeoRegions.AddRange(Model.Instance.GetAllSubRegions());
+            Substations.AddRange(Model.Instance.GetAllSubstations());
             Substation = Substations[0];
-            Amis.AddRange(TestGDA.Instance.GetAllAmis());
+            Amis.AddRange(Model.Instance.GetAllAmis());
         }
 
         public object Substation
@@ -155,25 +155,25 @@ namespace AMIClient
 
             if (!substation.Equals("All"))
             {
-                Amis.AddRange(TestGDA.Instance.GetSomeAmis(((Substation)Substation).GlobalId));
+                Amis.AddRange(Model.Instance.GetSomeAmis(((Substation)Substation).GlobalId));
             }
             else if (Substation.Equals("All") && !SubGeoRegion.Equals("All"))
             {
                 for (int i = 1; i < Substations.Count; i++)
                 {
-                    Amis.AddRange(TestGDA.Instance.GetSomeAmis(((Substation)Substations[i]).GlobalId));
+                    Amis.AddRange(Model.Instance.GetSomeAmis(((Substation)Substations[i]).GlobalId));
                 }
             }
             else if (Substation.Equals("All") && SubGeoRegion.Equals("All") && !GeoRegion.Equals("All"))
             {
                 for (int i = 1; i < Substations.Count; i++)
                 {
-                    Amis.AddRange(TestGDA.Instance.GetSomeAmis(((Substation)Substations[i]).GlobalId));
+                    Amis.AddRange(Model.Instance.GetSomeAmis(((Substation)Substations[i]).GlobalId));
                 }
             }
             else
             {
-                Amis.AddRange(TestGDA.Instance.GetAllAmis());
+                Amis.AddRange(Model.Instance.GetAllAmis());
             }
         }
 
@@ -194,15 +194,15 @@ namespace AMIClient
 
                     if (GeoRegion.Equals("All"))
                     {
-                        SubGeoRegions.AddRange(TestGDA.Instance.GetAllSubRegions());
-                        Substations.AddRange(TestGDA.Instance.GetAllSubstations());
+                        SubGeoRegions.AddRange(Model.Instance.GetAllSubRegions());
+                        Substations.AddRange(Model.Instance.GetAllSubstations());
                     }
                     else
                     {
-                        SubGeoRegions.AddRange(TestGDA.Instance.GetSomeSubregions(((GeographicalRegion)geoRegion).GlobalId));
+                        SubGeoRegions.AddRange(Model.Instance.GetSomeSubregions(((GeographicalRegion)geoRegion).GlobalId));
                         for (int i = 1; i < SubGeoRegions.Count; i++)
                         {
-                            Substations.AddRange(TestGDA.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegions[i]).GlobalId));
+                            Substations.AddRange(Model.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegions[i]).GlobalId));
                         }
                     }
                 }
@@ -217,12 +217,12 @@ namespace AMIClient
                         {
                             for (int i = 1; i < SubGeoRegions.Count; i++)
                             {
-                                Substations.AddRange(TestGDA.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegions[i]).GlobalId));
+                                Substations.AddRange(Model.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegions[i]).GlobalId));
                             }
                         }
                         else
                         {
-                            Substations.AddRange(TestGDA.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegion).GlobalId));
+                            Substations.AddRange(Model.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegion).GlobalId));
                         }
                     }
                 }

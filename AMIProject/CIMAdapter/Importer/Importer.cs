@@ -49,25 +49,51 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
 				return delta;
 			}
 		}
-		#endregion Properties
+
+        public ConcreteModel ConcreteModel
+        {
+            get
+            {
+                return concreteModel;
+            }
+
+            set
+            {
+                concreteModel = value;
+            }
+        }
+
+        public TransformAndLoadReport Report
+        {
+            get
+            {
+                return report;
+            }
+
+            set
+            {
+                report = value;
+            }
+        }
+        #endregion Properties
 
 
-		public void Reset()
+        public void Reset()
 		{
-			concreteModel = null;
+			ConcreteModel = null;
 			delta = new Delta();
 			importHelper = new ImportHelper();
-			report = null;
+			Report = null;
 		}
 
 		public TransformAndLoadReport CreateNMSDelta(ConcreteModel cimConcreteModel)
 		{
 			LogManager.Log("Importing PowerTransformer Elements...", LogLevel.Info);
-			report = new TransformAndLoadReport();
-			concreteModel = cimConcreteModel;
+			Report = new TransformAndLoadReport();
+			ConcreteModel = cimConcreteModel;
 			delta.ClearDeltaOperations();
 
-			if ((concreteModel != null) && (concreteModel.ModelMap != null))
+			if ((ConcreteModel != null) && (ConcreteModel.ModelMap != null))
 			{
 				try
 				{
@@ -78,12 +104,12 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
 				{
 					string message = string.Format("{0} - ERROR in data import - {1}", DateTime.Now, ex.Message);
 					LogManager.Log(message);
-					report.Report.AppendLine(ex.Message);
-					report.Success = false;
+					Report.Report.AppendLine(ex.Message);
+					Report.Success = false;
 				}
 			}
 			LogManager.Log("Importing PowerTransformer Elements - END.", LogLevel.Info);
-			return report;
+			return Report;
 		}
 
 		/// <summary>
@@ -110,9 +136,9 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
 		}
 
         #region Import
-        private void ImportBaseVoltage()
+        public void ImportBaseVoltage()
         {
-            SortedDictionary<string, object> cimBaseVoltages = concreteModel.GetAllObjectsOfType("AMIProfile.BaseVoltage");
+            SortedDictionary<string, object> cimBaseVoltages = ConcreteModel.GetAllObjectsOfType("AMIProfile.BaseVoltage");
             if (cimBaseVoltages != null)
             {
                 foreach (KeyValuePair<string, object> cimBaseVoltagesPair in cimBaseVoltages)
@@ -123,18 +149,18 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                     if (rd != null)
                     {
                         delta.AddDeltaOperation(DeltaOpType.Insert, rd, true);
-                        report.Report.Append("BaseVoltage ID = ").Append(cimBaseVoltage.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
+                        Report.Report.Append("BaseVoltage ID = ").Append(cimBaseVoltage.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
                     }
                     else
                     {
-                        report.Report.Append("BaseVoltage ID = ").Append(cimBaseVoltage.ID).AppendLine(" FAILED to be converted");
+                        Report.Report.Append("BaseVoltage ID = ").Append(cimBaseVoltage.ID).AppendLine(" FAILED to be converted");
                     }
                 }
-                report.Report.AppendLine();
+                Report.Report.AppendLine();
             }
         }
 
-        private ResourceDescription CreateBaseVoltageResourceDescription(BaseVoltage cimBaseVoltage)
+        public ResourceDescription CreateBaseVoltageResourceDescription(BaseVoltage cimBaseVoltage)
         {
             ResourceDescription rd = null;
             if (cimBaseVoltage != null)
@@ -144,14 +170,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimBaseVoltage.ID, gid);
 
                 ////populate ResourceDescription
-                Converter.PopulateBaseVoltageProperties(cimBaseVoltage, rd, importHelper, report);
+                Converter.PopulateBaseVoltageProperties(cimBaseVoltage, rd, importHelper, Report);
             }
             return rd;
         }
 
         private void ImportGeographicalRegion()
         {
-            SortedDictionary<string, object> cimGeographicalRegions = concreteModel.GetAllObjectsOfType("AMIProfile.GeographicalRegion");
+            SortedDictionary<string, object> cimGeographicalRegions = ConcreteModel.GetAllObjectsOfType("AMIProfile.GeographicalRegion");
             if (cimGeographicalRegions != null)
             {
                 foreach (KeyValuePair<string, object> cimGeographicalRegionPair in cimGeographicalRegions)
@@ -162,14 +188,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                     if (rd != null)
                     {
                         delta.AddDeltaOperation(DeltaOpType.Insert, rd, true);
-                        report.Report.Append("GeographicalRegion ID = ").Append(cimGeographicalRegion.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
+                        Report.Report.Append("GeographicalRegion ID = ").Append(cimGeographicalRegion.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
                     }
                     else
                     {
-                        report.Report.Append("GeographicalRegion ID = ").Append(cimGeographicalRegion.ID).AppendLine(" FAILED to be converted");
+                        Report.Report.Append("GeographicalRegion ID = ").Append(cimGeographicalRegion.ID).AppendLine(" FAILED to be converted");
                     }
                 }
-                report.Report.AppendLine();
+                Report.Report.AppendLine();
             }
         }
 
@@ -183,14 +209,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimGeographicalRegion.ID, gid);
 
                 ////populate ResourceDescription
-                Converter.PopulateGeographicalRegionProperties(cimGeographicalRegion, rd, importHelper, report);
+                Converter.PopulateGeographicalRegionProperties(cimGeographicalRegion, rd, importHelper, Report);
             }
             return rd;
         }
 
         private void ImportSubGeographicalRegion()
         {
-            SortedDictionary<string, object> cimSubGeographicalRegions = concreteModel.GetAllObjectsOfType("AMIProfile.SubGeographicalRegion");
+            SortedDictionary<string, object> cimSubGeographicalRegions = ConcreteModel.GetAllObjectsOfType("AMIProfile.SubGeographicalRegion");
             if (cimSubGeographicalRegions != null)
             {
                 foreach (KeyValuePair<string, object> cimSubGeographicalRegionPair in cimSubGeographicalRegions)
@@ -201,14 +227,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                     if (rd != null)
                     {
                         delta.AddDeltaOperation(DeltaOpType.Insert, rd, true);
-                        report.Report.Append("SubGeographicalRegion ID = ").Append(cimSubGeographicalRegion.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
+                        Report.Report.Append("SubGeographicalRegion ID = ").Append(cimSubGeographicalRegion.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
                     }
                     else
                     {
-                        report.Report.Append("SubGeographicalRegion ID = ").Append(cimSubGeographicalRegion.ID).AppendLine(" FAILED to be converted");
+                        Report.Report.Append("SubGeographicalRegion ID = ").Append(cimSubGeographicalRegion.ID).AppendLine(" FAILED to be converted");
                     }
                 }
-                report.Report.AppendLine();
+                Report.Report.AppendLine();
             }
         }
 
@@ -222,14 +248,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimSubGeographicalRegion.ID, gid);
 
                 ////populate ResourceDescription
-                Converter.PopulateSubGeographicalRegionProperties(cimSubGeographicalRegion, rd, importHelper, report);
+                Converter.PopulateSubGeographicalRegionProperties(cimSubGeographicalRegion, rd, importHelper, Report);
             }
             return rd;
         }
 
         private void ImportSubstation()
         {
-            SortedDictionary<string, object> cimSubstations = concreteModel.GetAllObjectsOfType("AMIProfile.Substation");
+            SortedDictionary<string, object> cimSubstations = ConcreteModel.GetAllObjectsOfType("AMIProfile.Substation");
             if (cimSubstations != null)
             {
                 foreach (KeyValuePair<string, object> cimSubstationPair in cimSubstations)
@@ -240,14 +266,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                     if (rd != null)
                     {
                         delta.AddDeltaOperation(DeltaOpType.Insert, rd, true);
-                        report.Report.Append("Substation ID = ").Append(cimSubstation.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
+                        Report.Report.Append("Substation ID = ").Append(cimSubstation.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
                     }
                     else
                     {
-                        report.Report.Append("Substation ID = ").Append(cimSubstation.ID).AppendLine(" FAILED to be converted");
+                        Report.Report.Append("Substation ID = ").Append(cimSubstation.ID).AppendLine(" FAILED to be converted");
                     }
                 }
-                report.Report.AppendLine();
+                Report.Report.AppendLine();
             }
         }
 
@@ -261,14 +287,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimSubstation.ID, gid);
 
                 ////populate ResourceDescription
-                Converter.PopulateSubstationProperties(cimSubstation, rd, importHelper, report);
+                Converter.PopulateSubstationProperties(cimSubstation, rd, importHelper, Report);
             }
             return rd;
         }
 
         private void ImportVoltageLevel()
         {
-            SortedDictionary<string, object> cimVoltageLevels = concreteModel.GetAllObjectsOfType("AMIProfile.VoltageLevel");
+            SortedDictionary<string, object> cimVoltageLevels = ConcreteModel.GetAllObjectsOfType("AMIProfile.VoltageLevel");
             if (cimVoltageLevels != null)
             {
                 foreach (KeyValuePair<string, object> cimVoltageLevelPair in cimVoltageLevels)
@@ -279,14 +305,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                     if (rd != null)
                     {
                         delta.AddDeltaOperation(DeltaOpType.Insert, rd, true);
-                        report.Report.Append("VoltageLevel ID = ").Append(cimVoltageLevel.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
+                        Report.Report.Append("VoltageLevel ID = ").Append(cimVoltageLevel.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
                     }
                     else
                     {
-                        report.Report.Append("VoltageLevel ID = ").Append(cimVoltageLevel.ID).AppendLine(" FAILED to be converted");
+                        Report.Report.Append("VoltageLevel ID = ").Append(cimVoltageLevel.ID).AppendLine(" FAILED to be converted");
                     }
                 }
-                report.Report.AppendLine();
+                Report.Report.AppendLine();
             }
         }
 
@@ -300,14 +326,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimVoltageLevel.ID, gid);
 
                 ////populate ResourceDescription
-                Converter.PopulateVoltageLevelProperties(cimVoltageLevel, rd, importHelper, report);
+                Converter.PopulateVoltageLevelProperties(cimVoltageLevel, rd, importHelper, Report);
             }
             return rd;
         }
 
         private void ImportPowerTransformer()
         {
-            SortedDictionary<string, object> cimPowerTransformers = concreteModel.GetAllObjectsOfType("AMIProfile.PowerTransformer");
+            SortedDictionary<string, object> cimPowerTransformers = ConcreteModel.GetAllObjectsOfType("AMIProfile.PowerTransformer");
             if (cimPowerTransformers != null)
             {
                 foreach (KeyValuePair<string, object> cimPowerTransformerPair in cimPowerTransformers)
@@ -318,14 +344,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                     if (rd != null)
                     {
                         delta.AddDeltaOperation(DeltaOpType.Insert, rd, true);
-                        report.Report.Append("PowerTransformer ID = ").Append(cimPowerTransformer.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
+                        Report.Report.Append("PowerTransformer ID = ").Append(cimPowerTransformer.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
                     }
                     else
                     {
-                        report.Report.Append("PowerTransformer ID = ").Append(cimPowerTransformer.ID).AppendLine(" FAILED to be converted");
+                        Report.Report.Append("PowerTransformer ID = ").Append(cimPowerTransformer.ID).AppendLine(" FAILED to be converted");
                     }
                 }
-                report.Report.AppendLine();
+                Report.Report.AppendLine();
             }
         }
 
@@ -339,14 +365,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimPowerTransformer.ID, gid);
 
                 ////populate ResourceDescription
-                Converter.PopulatePowerTransformerProperties(cimPowerTransformer, rd, importHelper, report);
+                Converter.PopulatePowerTransformerProperties(cimPowerTransformer, rd, importHelper, Report);
             }
             return rd;
         }
 
         private void ImportPowerTransformerEnd()
         {
-            SortedDictionary<string, object> cimPowerTransformerEnds = concreteModel.GetAllObjectsOfType("AMIProfile.PowerTransformerEnd");
+            SortedDictionary<string, object> cimPowerTransformerEnds = ConcreteModel.GetAllObjectsOfType("AMIProfile.PowerTransformerEnd");
             if (cimPowerTransformerEnds != null)
             {
                 foreach (KeyValuePair<string, object> cimPowerTransformerEndPair in cimPowerTransformerEnds)
@@ -357,14 +383,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                     if (rd != null)
                     {
                         delta.AddDeltaOperation(DeltaOpType.Insert, rd, true);
-                        report.Report.Append("PowerTransformerEnd ID = ").Append(cimPowerTransformerEnd.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
+                        Report.Report.Append("PowerTransformerEnd ID = ").Append(cimPowerTransformerEnd.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
                     }
                     else
                     {
-                        report.Report.Append("PowerTransformerEnd ID = ").Append(cimPowerTransformerEnd.ID).AppendLine(" FAILED to be converted");
+                        Report.Report.Append("PowerTransformerEnd ID = ").Append(cimPowerTransformerEnd.ID).AppendLine(" FAILED to be converted");
                     }
                 }
-                report.Report.AppendLine();
+                Report.Report.AppendLine();
             }
         }
 
@@ -378,14 +404,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimPowerTransformerEnd.ID, gid);
 
                 ////populate ResourceDescription
-                Converter.PopulatePowerTransformerEndProperties(cimPowerTransformerEnd, rd, importHelper, report);
+                Converter.PopulatePowerTransformerEndProperties(cimPowerTransformerEnd, rd, importHelper, Report);
             }
             return rd;
         }
 
         private void ImportRatioTapChanger()
         {
-            SortedDictionary<string, object> cimRatioTapChangers = concreteModel.GetAllObjectsOfType("AMIProfile.RatioTapChanger");
+            SortedDictionary<string, object> cimRatioTapChangers = ConcreteModel.GetAllObjectsOfType("AMIProfile.RatioTapChanger");
             if (cimRatioTapChangers != null)
             {
                 foreach (KeyValuePair<string, object> cimRatioTapChangerPair in cimRatioTapChangers)
@@ -396,14 +422,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                     if (rd != null)
                     {
                         delta.AddDeltaOperation(DeltaOpType.Insert, rd, true);
-                        report.Report.Append("RatioTapChanger ID = ").Append(cimRatioTapChanger.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
+                        Report.Report.Append("RatioTapChanger ID = ").Append(cimRatioTapChanger.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
                     }
                     else
                     {
-                        report.Report.Append("RatioTapChanger ID = ").Append(cimRatioTapChanger.ID).AppendLine(" FAILED to be converted");
+                        Report.Report.Append("RatioTapChanger ID = ").Append(cimRatioTapChanger.ID).AppendLine(" FAILED to be converted");
                     }
                 }
-                report.Report.AppendLine();
+                Report.Report.AppendLine();
             }
         }
 
@@ -417,14 +443,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimRatioTapChanger.ID, gid);
 
                 ////populate ResourceDescription
-                Converter.PopulateRatioTapChangerProperties(cimRatioTapChanger, rd, importHelper, report);
+                Converter.PopulateRatioTapChangerProperties(cimRatioTapChanger, rd, importHelper, Report);
             }
             return rd;
         }
 
         private void ImportEnergyConsumer()
         {
-            SortedDictionary<string, object> cimEnergyConsumers = concreteModel.GetAllObjectsOfType("AMIProfile.EnergyConsumer");
+            SortedDictionary<string, object> cimEnergyConsumers = ConcreteModel.GetAllObjectsOfType("AMIProfile.EnergyConsumer");
             if (cimEnergyConsumers != null)
             {
                 foreach (KeyValuePair<string, object> cimEnergyConsumerPair in cimEnergyConsumers)
@@ -435,14 +461,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                     if (rd != null)
                     {
                         delta.AddDeltaOperation(DeltaOpType.Insert, rd, true);
-                        report.Report.Append("EnergyConsumer ID = ").Append(cimEnergyConsumer.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
+                        Report.Report.Append("EnergyConsumer ID = ").Append(cimEnergyConsumer.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
                     }
                     else
                     {
-                        report.Report.Append("EnergyConsumer ID = ").Append(cimEnergyConsumer.ID).AppendLine(" FAILED to be converted");
+                        Report.Report.Append("EnergyConsumer ID = ").Append(cimEnergyConsumer.ID).AppendLine(" FAILED to be converted");
                     }
                 }
-                report.Report.AppendLine();
+                Report.Report.AppendLine();
             }
         }
 
@@ -456,14 +482,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimEnergyConsumer.ID, gid);
 
                 ////populate ResourceDescription
-                Converter.PopulateEnergyConsumerProperties(cimEnergyConsumer, rd, importHelper, report);
+                Converter.PopulateEnergyConsumerProperties(cimEnergyConsumer, rd, importHelper, Report);
             }
             return rd;
         }
 
         private void ImportAnalogMeasurement()
         {
-            SortedDictionary<string, object> cimAnalogs = concreteModel.GetAllObjectsOfType("AMIProfile.Analog");
+            SortedDictionary<string, object> cimAnalogs = ConcreteModel.GetAllObjectsOfType("AMIProfile.Analog");
             if (cimAnalogs != null)
             {
                 foreach (KeyValuePair<string, object> cimAnalogPair in cimAnalogs)
@@ -474,14 +500,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                     if (rd != null)
                     {
                         delta.AddDeltaOperation(DeltaOpType.Insert, rd, true);
-                        report.Report.Append("Analog ID = ").Append(cimAnalog.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
+                        Report.Report.Append("Analog ID = ").Append(cimAnalog.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
                     }
                     else
                     {
-                        report.Report.Append("Analog ID = ").Append(cimAnalog.ID).AppendLine(" FAILED to be converted");
+                        Report.Report.Append("Analog ID = ").Append(cimAnalog.ID).AppendLine(" FAILED to be converted");
                     }
                 }
-                report.Report.AppendLine();
+                Report.Report.AppendLine();
             }
         }
 
@@ -495,14 +521,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimAnalog.ID, gid);
 
                 ////populate ResourceDescription
-                Converter.PopulateAnalogProperties(cimAnalog, rd, importHelper, report);
+                Converter.PopulateAnalogProperties(cimAnalog, rd, importHelper, Report);
             }
             return rd;
         }
 
         private void ImportDiscreteMeasurement()
         {
-            SortedDictionary<string, object> cimDiscretes = concreteModel.GetAllObjectsOfType("AMIProfile.Discrete");
+            SortedDictionary<string, object> cimDiscretes = ConcreteModel.GetAllObjectsOfType("AMIProfile.Discrete");
             if (cimDiscretes != null)
             {
                 foreach (KeyValuePair<string, object> cimDiscretePair in cimDiscretes)
@@ -513,14 +539,14 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                     if (rd != null)
                     {
                         delta.AddDeltaOperation(DeltaOpType.Insert, rd, true);
-                        report.Report.Append("Discrete ID = ").Append(cimDiscrete.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
+                        Report.Report.Append("Discrete ID = ").Append(cimDiscrete.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
                     }
                     else
                     {
-                        report.Report.Append("Discrete ID = ").Append(cimDiscrete.ID).AppendLine(" FAILED to be converted");
+                        Report.Report.Append("Discrete ID = ").Append(cimDiscrete.ID).AppendLine(" FAILED to be converted");
                     }
                 }
-                report.Report.AppendLine();
+                Report.Report.AppendLine();
             }
         }
 
@@ -534,7 +560,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimDiscrete.ID, gid);
 
                 ////populate ResourceDescription
-                Converter.PopulateDiscreteProperties(cimDiscrete, rd, importHelper, report);
+                Converter.PopulateDiscreteProperties(cimDiscrete, rd, importHelper, Report);
             }
             return rd;
         }
