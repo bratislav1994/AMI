@@ -211,16 +211,19 @@ namespace AMIClient
                     Substations = new ObservableCollection<object>() { substations.First() };
                     Substation = substations[0];
 
-                    if (SubGeoRegion.Equals("All"))
+                    if (SubGeoRegion != null)
                     {
-                        for (int i = 1; i < SubGeoRegions.Count; i++)
+                        if (SubGeoRegion.Equals("All"))
                         {
-                            Substations.AddRange(TestGDA.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegions[i]).GlobalId));
+                            for (int i = 1; i < SubGeoRegions.Count; i++)
+                            {
+                                Substations.AddRange(TestGDA.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegions[i]).GlobalId));
+                            }
                         }
-                    }
-                    else
-                    {
-                        Substations.AddRange(TestGDA.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegion).GlobalId));
+                        else
+                        {
+                            Substations.AddRange(TestGDA.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegion).GlobalId));
+                        }
                     }
                 }
             }
