@@ -147,6 +147,10 @@ namespace AMIClient
 
                 return getElementsCommand;
             }
+            set
+            {
+                getElementsCommand = value;
+            }
         }
 
         private void GetElementsCommandAction()

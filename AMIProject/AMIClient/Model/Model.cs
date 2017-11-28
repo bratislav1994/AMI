@@ -14,7 +14,7 @@ using TC57CIM.IEC61970.Wires;
 
 namespace AMIClient
 {
-    public class Model : IDisposable
+    public class Model : IDisposable, IModel
     {
         private ModelResourcesDesc modelResourcesDesc = new ModelResourcesDesc();
         private ObservableCollection<GeographicalRegion> geoRegions = new ObservableCollection<GeographicalRegion>();
