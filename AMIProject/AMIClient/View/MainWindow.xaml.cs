@@ -20,9 +20,82 @@ namespace AMIClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        private GeoRegionViewModel grvm = new GeoRegionViewModel(Model.Instance);
+        private GeoSubRegionViewModel gsrvm = new GeoSubRegionViewModel(Model.Instance);
+        private SubstationViewModel ssvm = new SubstationViewModel(Model.Instance);
+        private AMIsViewModel avm = new AMIsViewModel(Model.Instance);
+        private AddCimXmlViewModel xmlvm = new AddCimXmlViewModel();
+
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = this;
+
+        }
+
+        public GeoRegionViewModel Grvm
+        {
+            get
+            {
+                return grvm;
+            }
+
+            set
+            {
+                grvm = value;
+            }
+        }
+
+        public GeoSubRegionViewModel Gsrvm
+        {
+            get
+            {
+                return gsrvm;
+            }
+
+            set
+            {
+                gsrvm = value;
+            }
+        }
+
+        public SubstationViewModel Ssvm
+        {
+            get
+            {
+                return ssvm;
+            }
+
+            set
+            {
+                ssvm = value;
+            }
+        }
+
+        public AMIsViewModel Avm
+        {
+            get
+            {
+                return avm;
+            }
+
+            set
+            {
+                avm = value;
+            }
+        }
+
+        public AddCimXmlViewModel Xmlvm
+        {
+            get
+            {
+                return xmlvm;
+            }
+
+            set
+            {
+                xmlvm = value;
+            }
         }
     }
 }

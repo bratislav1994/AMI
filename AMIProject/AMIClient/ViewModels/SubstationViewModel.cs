@@ -17,17 +17,20 @@ namespace AMIClient
         private ObservableCollection<Substation> substations;
         private object geoRegion;
         private object subGeoRegion;
+        private IModel model;
 
-        public SubstationViewModel()
+        public SubstationViewModel(IModel model)
         {
+            this.model = model;
             Substations = new ObservableCollection<Substation>();
             GeoRegions = new ObservableCollection<object>() { "All" };
             SubGeoRegions = new ObservableCollection<object>() { "All" };
             GeoRegion = GeoRegions[0];
             SubGeoRegion = SubGeoRegions[0];
-            GeoRegions.AddRange(Model.Instance.GetAllRegions());
-            SubGeoRegions.AddRange(Model.Instance.GetAllSubRegions());
-            Substations.AddRange(Model.Instance.GetAllSubstations());
+            GeoRegions.AddRange(this.model.GetAllRegions());
+            SubGeoRegions.AddRange(this.model.GetAllSubRegions());
+            Substations.AddRange(this.model.GetAllSubstations());
+            
         }
 
         public ObservableCollection<Substation> Substations
@@ -55,6 +58,18 @@ namespace AMIClient
             {
                 geoRegion = value;
                 RaisePropertyChanged("GeoRegion");
+
+                SubGeoRegions = new ObservableCollection<object>() { subGeoRegions.First() };
+                SubGeoRegion = subGeoRegions[0];
+
+                if (GeoRegion.Equals("All"))
+                {
+                    SubGeoRegions.AddRange(this.model.GetAllSubRegions());
+                }
+                else
+                {
+                    SubGeoRegions.AddRange(this.model.GetSomeSubregions(((GeographicalRegion)geoRegion).GlobalId));
+                }
             }
         }
 
@@ -124,18 +139,18 @@ namespace AMIClient
 
             if ((geoRegion.Equals("All") && !subGeoRegion.Equals("All")) || (!geoRegion.Equals("All") && !subGeoRegion.Equals("All")))
             {
-                substations.AddRange(Model.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegion).GlobalId));
+                substations.AddRange(this.model.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegion).GlobalId));
             }
             else if(!geoRegion.Equals("All") && subGeoRegion.Equals("All"))
             {
                 for(int i = 1; i < SubGeoRegions.Count; i++)
                 {
-                    substations.AddRange(Model.Instance.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegions[i]).GlobalId));
+                    substations.AddRange(this.model.GetSomeSubstations(((SubGeographicalRegion)SubGeoRegions[i]).GlobalId));
                 }
             }
             else
             {
-                substations.AddRange(Model.Instance.GetAllSubstations());
+                substations.AddRange(this.model.GetAllSubstations());
             }
         }
 
@@ -146,20 +161,6 @@ namespace AMIClient
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propName));
-                if (propName.Equals("GeoRegion"))
-                {
-                    SubGeoRegions = new ObservableCollection<object>() { subGeoRegions.First() };
-                    SubGeoRegion = subGeoRegions[0];
-
-                    if (GeoRegion.Equals("All"))
-                    {
-                        SubGeoRegions.AddRange(Model.Instance.GetAllSubRegions());
-                    }
-                    else
-                    {
-                        SubGeoRegions.AddRange(Model.Instance.GetSomeSubregions(((GeographicalRegion)geoRegion).GlobalId));
-                    }
-                }
             }
         }
     }

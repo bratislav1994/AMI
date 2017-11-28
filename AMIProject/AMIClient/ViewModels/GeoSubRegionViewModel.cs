@@ -15,14 +15,17 @@ namespace AMIClient
         private ObservableCollection<SubGeographicalRegion> subRegions;
         private ObservableCollection<object> geoRegions;
         private object geoRegion;
+        private IModel model;
 
-        public GeoSubRegionViewModel()
+        public GeoSubRegionViewModel(IModel model)
         {
+            this.model = model;
             subRegions = new ObservableCollection<SubGeographicalRegion>();
             geoRegions = new ObservableCollection<object>() { "All" };
             GeoRegion = GeoRegions[0];
-            GeoRegions.AddRange(Model.Instance.GetAllRegions());
-            SubRegions.AddRange(Model.Instance.GetAllSubRegions());
+            GeoRegions.AddRange(this.model.GetAllRegions());
+            SubRegions.AddRange(this.model.GetAllSubRegions());
+            
         }
         
         public ObservableCollection<object> GeoRegions
@@ -99,11 +102,11 @@ namespace AMIClient
 
             try
             {
-                subRegions.AddRange(Model.Instance.GetSomeSubregions(((GeographicalRegion)GeoRegion).GlobalId));
+                subRegions.AddRange(this.model.GetSomeSubregions(((GeographicalRegion)GeoRegion).GlobalId));
             }
             catch
             {
-                subRegions.AddRange(Model.Instance.GetAllSubRegions());
+                subRegions.AddRange(this.model.GetAllSubRegions());
             }
         }
 

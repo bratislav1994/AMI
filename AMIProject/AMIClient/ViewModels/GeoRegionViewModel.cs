@@ -14,11 +14,13 @@ namespace AMIClient
     public class GeoRegionViewModel : INotifyPropertyChanged
     {
         private ObservableCollection<GeographicalRegion> geoRegions;
+        private IModel model;
 
-        public GeoRegionViewModel()
+        public GeoRegionViewModel(IModel model)
         {
+            this.model = model;
             geoRegions = new ObservableCollection<GeographicalRegion>();
-            GeoRegions.AddRange(Model.Instance.GetAllRegions());
+            GeoRegions.AddRange(this.model.GetAllRegions());
         }
         
         public ObservableCollection<GeographicalRegion> GeoRegions
@@ -57,7 +59,7 @@ namespace AMIClient
         private void GetElementsCommandAction()
         {
             geoRegions.Clear();
-            geoRegions.AddRange(Model.Instance.GetAllRegions());
+            geoRegions.AddRange(this.model.GetAllRegions());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
