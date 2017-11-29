@@ -53,6 +53,15 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
+        public void EqualsTestFalse()
+        {
+            object obj = null;
+            bool result = conductingEquipment.Equals(obj);
+
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
         [TestCase(ModelCode.CONDEQ_BASEVOLTAGE)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void HasPropertyTestTrue(ModelCode t)

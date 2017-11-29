@@ -64,6 +64,15 @@ namespace DataModelTest.WiresTest
         }
 
         [Test]
+        public void EqualsTestFalse()
+        {
+            object obj = null;
+            bool result = transformerEnd.Equals(obj);
+
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
         [TestCase(ModelCode.TRANSFORMEREND_BASEVOLT)]
         [TestCase(ModelCode.TRANSFORMEREND_RATIOTAPCHANGER)]
         [TestCase(ModelCode.IDOBJ_NAME)]

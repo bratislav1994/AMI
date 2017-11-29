@@ -54,6 +54,15 @@ namespace DataModelTest.WiresTest
         }
 
         [Test]
+        public void EqualsTestFalse()
+        {
+            object obj = null;
+            bool result = powerTransformerEnd.Equals(obj);
+
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
         [TestCase(ModelCode.POWERTRANSEND_POWERTRANSF)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void HasPropertyTestTrue(ModelCode t)

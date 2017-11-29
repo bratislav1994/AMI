@@ -54,6 +54,15 @@ namespace DataModelTest.WiresTest
         }
 
         [Test]
+        public void EqualsTestFalse()
+        {
+            object obj = null;
+            bool result = ratioTapChanger.Equals(obj);
+
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
         [TestCase(ModelCode.RATIOTAPCHANGER_TRANSEND)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void HasPropertyTestTrue(ModelCode t)

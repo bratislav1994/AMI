@@ -53,6 +53,15 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
+        public void EqualsTestFalse()
+        {
+            object obj = null;
+            bool result = eqContainer.Equals(obj);
+
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
         [TestCase(ModelCode.EQCONTAINER_EQUIPMENTS)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void HasPropertyTestTrue(ModelCode t)

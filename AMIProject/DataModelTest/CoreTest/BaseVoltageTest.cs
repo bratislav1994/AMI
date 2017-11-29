@@ -84,6 +84,15 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
+        public void EqualsTestFalse()
+        {
+            object obj = null;
+            bool result = baseVoltage.Equals(obj);
+
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
         [TestCase(ModelCode.BASEVOLTAGE_NOMINALVOL)]
         [TestCase(ModelCode.BASEVOLTAGE_CONDEQS)]
         [TestCase(ModelCode.BASEVOLTAGE_TRANSENDS)]

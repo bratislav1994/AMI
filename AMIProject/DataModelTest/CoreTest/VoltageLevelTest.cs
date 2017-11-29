@@ -63,6 +63,15 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
+        public void EqualsTestFalse()
+        {
+            object obj = null;
+            bool result = voltageLevel.Equals(obj);
+
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
         [TestCase(ModelCode.VOLTAGELEVEL_BASEVOLTAGE)]
         [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION)]
         [TestCase(ModelCode.IDOBJ_NAME)]

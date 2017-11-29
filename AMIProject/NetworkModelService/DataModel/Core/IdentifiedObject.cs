@@ -252,6 +252,11 @@ namespace TC57CIM.IEC61970.Core {
             {
                 props = resourcesDescs.GetAllPropertyIdsForEntityId(globalId);
             }
+            
+            for(int i=0; i<props.Count; i++)
+            {
+                rd.AddProperty(new Property(props[i]));
+            }
 
             return rd;
         }

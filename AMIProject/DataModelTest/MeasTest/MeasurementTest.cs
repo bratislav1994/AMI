@@ -75,6 +75,15 @@ namespace DataModelTest.MeasTest
         }
 
         [Test]
+        public void EqualsTestFalse()
+        {
+            object obj = null;
+            bool result = measurement.Equals(obj);
+
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
         [TestCase(ModelCode.MEASUREMENT_UNITSYMBOL)]
         [TestCase(ModelCode.MEASUREMENT_DIRECTION)]
         [TestCase(ModelCode.MEASUREMENT_PSR)]

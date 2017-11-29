@@ -13,6 +13,7 @@ namespace DataModelTest.CoreTest
     public class GeographicalRegionTest
     {
         private GeographicalRegion geoRegion;
+        private long globalID = 42949682331;
         private List<long> subGeoRegions = new List<long>() { 42949682332, 42949682333 };
         public Property property = new Property();
 
@@ -32,7 +33,7 @@ namespace DataModelTest.CoreTest
         [Test]
         public void ConstructorWithParameterTest()
         {
-            Assert.DoesNotThrow(() => new GeographicalRegion(42949682331));
+            Assert.DoesNotThrow(() => new GeographicalRegion(globalID));
         }
 
         [Test]
@@ -50,6 +51,15 @@ namespace DataModelTest.CoreTest
             bool result = geoRegion.Equals(obj);
 
             Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void EqualsTestFalse()
+        {
+            object obj = null;
+            bool result = geoRegion.Equals(obj);
+
+            Assert.AreEqual(false, result);
         }
 
         [Test]
@@ -168,6 +178,22 @@ namespace DataModelTest.CoreTest
         public void RemoveReferenceTestFalse(ModelCode referenceId, long globalId)
         {
             Assert.Throws<ModelException>(() => geoRegion.RemoveReference(referenceId, globalId));
+        }
+
+        [Test]
+        public void RD2ClassTest()
+        {
+            ResourceDescription rd = new ResourceDescription(globalID);
+
+            ModelResourcesDesc modelResourcesDesc = new ModelResourcesDesc();
+            List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.GEOREGION);
+
+            for (int i = 0; i < properties.Count; i++)
+            {
+                rd.AddProperty(new Property(properties[i]));
+            }
+
+            Assert.DoesNotThrow(() => geoRegion.RD2Class(rd));
         }
     }
 }

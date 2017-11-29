@@ -68,6 +68,7 @@
     <Compile Include="CoreTest\EquipmentContainerTest.cs" />
     <Compile Include="CoreTest\EquipmentTest.cs" />
     <Compile Include="CoreTest\GeographicalRegionTest.cs" />
+    <Compile Include="CoreTest\IdentifiedObjectTest.cs" />
     <Compile Include="CoreTest\PowerSystemResourceTest.cs" />
     <Compile Include="CoreTest\SubGeographicalRegionTest.cs" />
     <Compile Include="CoreTest\SubstationTest.cs" />

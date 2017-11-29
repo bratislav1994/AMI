@@ -83,6 +83,15 @@ namespace DataModelTest.WiresTest
         }
 
         [Test]
+        public void EqualsTestFalse()
+        {
+            object obj = null;
+            bool result = tapChanger.Equals(obj);
+
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
         [TestCase(ModelCode.TAPCHANGER_HIGHSTEP)]
         [TestCase(ModelCode.TAPCHANGER_LOWSTEP)]
         [TestCase(ModelCode.TAPCHANGER_NEUTRALSTEP)]

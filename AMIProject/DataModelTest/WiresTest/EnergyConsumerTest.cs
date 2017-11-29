@@ -13,6 +13,7 @@ namespace DataModelTest.WiresTest
     public class EnergyConsumerTest
     {
         private EnergyConsumer consumer;
+        private long globalID = 42949682361;
         private float pfixed = 0;
         private float qfixed = 0;
         public Property property = new Property();
@@ -34,7 +35,7 @@ namespace DataModelTest.WiresTest
         [Test]
         public void ConstructorWithParameterTest()
         {
-            Assert.DoesNotThrow(() => new EnergyConsumer(42949682361));
+            Assert.DoesNotThrow(() => new EnergyConsumer(globalID));
         }
 
         [Test]
@@ -60,6 +61,15 @@ namespace DataModelTest.WiresTest
             bool result = consumer.Equals(obj);
 
             Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void EqualsTestFalse()
+        {
+            object obj = null;
+            bool result = consumer.Equals(obj);
+
+            Assert.AreEqual(false, result);
         }
 
         [Test]
@@ -151,6 +161,22 @@ namespace DataModelTest.WiresTest
             property.SetValue(value);
 
             Assert.Throws<Exception>(() => consumer.SetProperty(property));
+        }
+
+        [Test]
+        public void RD2ClassTest()
+        {
+            ResourceDescription rd = new ResourceDescription(globalID);
+
+            ModelResourcesDesc modelResourcesDesc = new ModelResourcesDesc();
+            List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.ENERGYCONS);
+
+            for (int i = 0; i < properties.Count; i++)
+            {
+                rd.AddProperty(new Property(properties[i]));
+            }
+
+            Assert.DoesNotThrow(() => consumer.RD2Class(rd));
         }
     }
 }

@@ -73,6 +73,15 @@ namespace DataModelTest.MeasTest
         }
 
         [Test]
+        public void EqualsTestFalse()
+        {
+            object obj = null;
+            bool result = analog.Equals(obj);
+
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
         [TestCase(ModelCode.ANALOG_MAXVALUE)]
         [TestCase(ModelCode.ANALOG_MINVALUE)]
         [TestCase(ModelCode.ANALOG_NORMALVALUE)]

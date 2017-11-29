@@ -73,6 +73,15 @@ namespace DataModelTest.MeasTest
         }
 
         [Test]
+        public void EqualsTestFalse()
+        {
+            object obj = null;
+            bool result = discrete.Equals(obj);
+
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
         [TestCase(ModelCode.DISCRETE_MAXVALUE)]
         [TestCase(ModelCode.DISCRETE_MINVALUE)]
         [TestCase(ModelCode.DISCRETE_NORMALVALUE)]
