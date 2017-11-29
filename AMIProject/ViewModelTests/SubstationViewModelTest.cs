@@ -5,6 +5,7 @@ using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -142,6 +143,21 @@ namespace ViewModelTests
             Assert.AreEqual(2, svm.Substations.Count);
             Assert.AreEqual(123, svm.Substations[0].GlobalId);
             Assert.AreEqual(456, svm.Substations[1].GlobalId);
+        }
+
+        [Test]
+        public void RaisePropertyChangedTest()
+        {
+            string receivedEvents = null;
+
+            this.svm.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                receivedEvents = e.PropertyName;
+            };
+
+            this.svm.GeoRegions = new ObservableCollection<object>();
+            Assert.IsNotNull(receivedEvents);
+            Assert.AreEqual("GeoRegions", receivedEvents);
         }
     }
 }

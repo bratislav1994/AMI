@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using TC57CIM.IEC61970.Wires;
 using Prism.Commands;
 using NSubstitute;
+using System.ComponentModel;
 
 namespace ViewModelTests
 {
@@ -182,6 +183,29 @@ namespace ViewModelTests
             Assert.AreEqual(2, avm.Amis.Count);
             Assert.AreEqual(123, avm.Amis[0].GlobalId);
             Assert.AreEqual(456, avm.Amis[1].GlobalId);
+        }
+
+        [Test]
+        public void RaisePropertyChangedTest()
+        {
+            string receivedEvents = null;
+
+            this.avm.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                receivedEvents = e.PropertyName;
+            };
+
+            this.avm.GeoRegions = new ObservableCollection<object>();
+            Assert.IsNotNull(receivedEvents);
+            Assert.AreEqual("GeoRegions", receivedEvents);
+        }
+
+        [Test]
+        public void SubGeoRegionIsNull()
+        {
+            Init();
+            this.avm.SubGeoRegion = null;
+            Assert.IsNull(this.avm.SubGeoRegion);
         }
     }
 }

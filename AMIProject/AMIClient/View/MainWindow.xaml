@@ -173,7 +173,6 @@
                     <Button Grid.Row="3" Content="Get elements" HorizontalAlignment="Left" VerticalAlignment="Center" Width="83" Command="{Binding Avm.GetElementsCommand}"/>
 
                     <DataGrid Grid.Row="4" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Avm.Amis, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
-
                         <DataGrid.Columns>
 
                             <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Mrid}"/>
