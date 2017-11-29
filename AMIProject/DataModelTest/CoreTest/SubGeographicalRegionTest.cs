@@ -162,6 +162,10 @@ namespace DataModelTest.CoreTest
         public void IsReferencedTest()
         {
             Assert.AreEqual(true, subGeoRegion.IsReferenced);
+            SubGeographicalRegion gr = new SubGeographicalRegion();
+            Assert.AreEqual(false, gr.IsReferenced);
+            gr.Substations = substations;
+            Assert.AreEqual(true, gr.IsReferenced);
         }
 
         [Test]
@@ -216,7 +220,21 @@ namespace DataModelTest.CoreTest
                 rd.AddProperty(new Property(properties[i]));
             }
 
+            //rd.AddProperty(new Property() { Id = ModelCode.SUBSTATION_VOLTLEVELS, PropertyValue = new PropertyValue() { LongValue = 324 } });
+            rd.Properties.First().PropertyValue.LongValue = 424;
             Assert.DoesNotThrow(() => subGeoRegion.RD2Class(rd));
+        }
+
+        [Test]
+        public void GetHashCodeTest()
+        {
+            SubGeographicalRegion gr = new SubGeographicalRegion() { Name = "geo" };
+            int hashCode = gr.GetHashCode();
+            SubGeographicalRegion gr2 = new SubGeographicalRegion() { Name = "geo" };
+            int hashCodeBv = gr2.GetHashCode();
+            Assert.AreNotEqual(hashCode, hashCodeBv);
+            gr = gr2;
+            Assert.AreEqual(gr.GetHashCode(), gr2.GetHashCode());
         }
     }
 }

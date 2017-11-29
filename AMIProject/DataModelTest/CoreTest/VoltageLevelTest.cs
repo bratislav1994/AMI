@@ -158,5 +158,17 @@ namespace DataModelTest.CoreTest
 
             Assert.DoesNotThrow(() => voltageLevel.GetReferences(references, refType));
         }
+
+        [Test]
+        public void GetHashCodeTest()
+        {
+            VoltageLevel vl = new VoltageLevel() { Name = "vl" };
+            int hashCode = vl.GetHashCode();
+            VoltageLevel vl2 = new VoltageLevel() { Name = "vl" };
+            int hashCodeBv = vl2.GetHashCode();
+            Assert.AreNotEqual(hashCode, hashCodeBv);
+            vl = vl2;
+            Assert.AreEqual(vl.GetHashCode(), vl2.GetHashCode());
+        }
     }
 }

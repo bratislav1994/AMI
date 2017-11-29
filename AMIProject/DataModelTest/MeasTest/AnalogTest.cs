@@ -164,5 +164,17 @@ namespace DataModelTest.MeasTest
 
             Assert.Throws<Exception>(() => analog.SetProperty(property));
         }
+
+        [Test]
+        public void GetHashCodeTest()
+        {
+            Analog a = new Analog() { Name = "analog" };
+            int hashCode = a.GetHashCode();
+            Analog a2 = new Analog() { Name = "analog" };
+            int hashCodeBv = a2.GetHashCode();
+            Assert.AreNotEqual(hashCode, hashCodeBv);
+            a = a2;
+            Assert.AreEqual(a.GetHashCode(), a2.GetHashCode());
+        }
     }
 }

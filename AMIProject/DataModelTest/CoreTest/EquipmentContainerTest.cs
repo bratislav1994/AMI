@@ -127,6 +127,10 @@ namespace DataModelTest.CoreTest
         public void IsReferencedTest()
         {
             Assert.AreEqual(true, eqContainer.IsReferenced);
+            EquipmentContainer ec = new EquipmentContainer();
+            Assert.AreEqual(false, ec.IsReferenced);
+            ec.Equipments = equipments;
+            Assert.AreEqual(true, ec.IsReferenced);
         }
 
         [Test]
@@ -165,6 +169,18 @@ namespace DataModelTest.CoreTest
         public void RemoveReferenceTestFalse(ModelCode referenceId, long globalId)
         {
             Assert.Throws<ModelException>(() => eqContainer.RemoveReference(referenceId, globalId));
+        }
+
+        [Test]
+        public void GetHashCodeTest()
+        {
+            EquipmentContainer ec = new EquipmentContainer() { Name = "ec" };
+            int hashCode = ec.GetHashCode();
+            EquipmentContainer ec2 = new EquipmentContainer() { Name = "ec" };
+            int hashCodeBv = ec2.GetHashCode();
+            Assert.AreNotEqual(hashCode, hashCodeBv);
+            ec = ec2;
+            Assert.AreEqual(ec.GetHashCode(), ec2.GetHashCode());
         }
     }
 }

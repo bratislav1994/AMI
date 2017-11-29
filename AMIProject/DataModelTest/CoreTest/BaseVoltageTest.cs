@@ -174,6 +174,16 @@ namespace DataModelTest.CoreTest
         public void IsReferencedTest()
         {
             Assert.AreEqual(true, baseVoltage.IsReferenced);
+            BaseVoltage bv = new BaseVoltage();
+            Assert.AreEqual(false, bv.IsReferenced);
+            bv.ConductingEquipments = conductingEquipments;
+            Assert.AreEqual(true, bv.IsReferenced);
+            bv = new BaseVoltage();
+            bv.TransformerEnds = transformerEnds;
+            Assert.AreEqual(true, bv.IsReferenced);
+            bv = new BaseVoltage();
+            bv.VoltageLevels = voltageLevels;
+            Assert.AreEqual(true, bv.IsReferenced);
         }
 
         [Test]
@@ -183,6 +193,14 @@ namespace DataModelTest.CoreTest
             Dictionary<ModelCode, List<long>> references = new Dictionary<ModelCode, List<long>>();
 
             Assert.DoesNotThrow(() => baseVoltage.GetReferences(references, refType));
+            Assert.DoesNotThrow(() => baseVoltage.GetReferences(references, TypeOfReference.Both));
+
+            BaseVoltage bv = new BaseVoltage() { ConductingEquipments = null};
+            Assert.DoesNotThrow(() => baseVoltage.GetReferences(references, refType));
+            bv.ConductingEquipments = new List<long>();
+            Assert.DoesNotThrow(() => baseVoltage.GetReferences(references, refType));
+            bv.ConductingEquipments = conductingEquipments;
+            Assert.DoesNotThrow(() => baseVoltage.GetReferences(references, TypeOfReference.Reference));
         }
 
         [Test]
@@ -218,6 +236,18 @@ namespace DataModelTest.CoreTest
         public void RemoveReferenceTestFalse(ModelCode referenceId, long globalId)
         {
             Assert.Throws<ModelException>(() => baseVoltage.RemoveReference(referenceId, globalId));
+        }
+
+        [Test]
+        public void GetHashCodeTest()
+        {
+            BaseVoltage bv = new BaseVoltage() { NominalVoltage = 100 };
+            int hashCode = bv.GetHashCode();
+            BaseVoltage bv2 = new BaseVoltage() { NominalVoltage = 100 };
+            int hashCodeBv = bv2.GetHashCode();
+            Assert.AreNotEqual(hashCode, hashCodeBv);
+            bv = bv2;
+            Assert.AreEqual(bv.GetHashCode(), bv2.GetHashCode());
         }
     }
 }

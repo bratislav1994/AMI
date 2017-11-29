@@ -142,5 +142,17 @@ namespace DataModelTest.CoreTest
 
             Assert.DoesNotThrow(() => conductingEquipment.GetReferences(references, refType));
         }
+
+        [Test]
+        public void GetHashCodeTest()
+        {
+            ConductingEquipment ce = new ConductingEquipment() { Name = "condEq" };
+            int hashCode = ce.GetHashCode();
+            ConductingEquipment ce2 = new ConductingEquipment() { Name = "condEq" };
+            int hashCodeBv = ce2.GetHashCode();
+            Assert.AreNotEqual(hashCode, hashCodeBv);
+            ce = ce2;
+            Assert.AreEqual(ce.GetHashCode(), ce2.GetHashCode());
+        }
     }
 }

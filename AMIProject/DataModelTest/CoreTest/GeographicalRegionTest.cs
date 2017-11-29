@@ -140,6 +140,10 @@ namespace DataModelTest.CoreTest
         public void IsReferencedTest()
         {
             Assert.AreEqual(true, geoRegion.IsReferenced);
+            GeographicalRegion gr = new GeographicalRegion();
+            Assert.AreEqual(false, gr.IsReferenced);
+            gr.SubGeoRegions = subGeoRegions;
+            Assert.AreEqual(true, gr.IsReferenced);
         }
 
         [Test]
@@ -149,6 +153,14 @@ namespace DataModelTest.CoreTest
             Dictionary<ModelCode, List<long>> references = new Dictionary<ModelCode, List<long>>();
 
             Assert.DoesNotThrow(() => geoRegion.GetReferences(references, refType));
+            Assert.DoesNotThrow(() => geoRegion.GetReferences(references, TypeOfReference.Both));
+
+            GeographicalRegion gr = new GeographicalRegion() { SubGeoRegions = null };
+            Assert.DoesNotThrow(() => gr.GetReferences(references, refType));
+            gr.SubGeoRegions = new List<long>();
+            Assert.DoesNotThrow(() => gr.GetReferences(references, refType));
+            gr.SubGeoRegions = subGeoRegions;
+            Assert.DoesNotThrow(() => gr.GetReferences(references, TypeOfReference.Reference));
         }
 
         [Test]
@@ -193,7 +205,20 @@ namespace DataModelTest.CoreTest
                 rd.AddProperty(new Property(properties[i]));
             }
 
+            rd.Properties.First().PropertyValue.LongValue = 4245;
             Assert.DoesNotThrow(() => geoRegion.RD2Class(rd));
+        }
+
+        [Test]
+        public void GetHashCodeTest()
+        {
+            GeographicalRegion gr = new GeographicalRegion() { Name = "geo" };
+            int hashCode = gr.GetHashCode();
+            GeographicalRegion gr2 = new GeographicalRegion() { Name = "geo" };
+            int hashCodeBv = gr2.GetHashCode();
+            Assert.AreNotEqual(hashCode, hashCodeBv);
+            gr = gr2;
+            Assert.AreEqual(gr.GetHashCode(), gr2.GetHashCode());
         }
     }
 }

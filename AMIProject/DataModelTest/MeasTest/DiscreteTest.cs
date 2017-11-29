@@ -164,5 +164,17 @@ namespace DataModelTest.MeasTest
 
             Assert.Throws<Exception>(() => discrete.SetProperty(property));
         }
+
+        [Test]
+        public void GetHashCodeTest()
+        {
+            Discrete d = new Discrete() { Name = "discrete" };
+            int hashCode = d.GetHashCode();
+            Discrete d2 = new Discrete() { Name = "discrete" };
+            int hashCodeBv = d2.GetHashCode();
+            Assert.AreNotEqual(hashCode, hashCodeBv);
+            d = d2;
+            Assert.AreEqual(d.GetHashCode(), d2.GetHashCode());
+        }
     }
 }

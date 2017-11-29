@@ -162,6 +162,10 @@ namespace DataModelTest.CoreTest
         public void IsReferencedTest()
         {
             Assert.AreEqual(true, substation.IsReferenced);
+            Substation s = new Substation();
+            Assert.AreEqual(false, s.IsReferenced);
+            s.VoltageLevels = voltageLevels;
+            Assert.AreEqual(true, s.IsReferenced);
         }
 
         [Test]
@@ -216,7 +220,21 @@ namespace DataModelTest.CoreTest
                 rd.AddProperty(new Property(properties[i]));
             }
 
+            rd.AddProperty(new Property() { Id = ModelCode.SUBSTATION_SUBGEOREGION, PropertyValue = new PropertyValue() { LongValue = 7890 } });
+            //rd.Properties.First().PropertyValue.LongValue = 6378;
             Assert.DoesNotThrow(() => substation.RD2Class(rd));
+        }
+
+        [Test]
+        public void GetHashCodeTest()
+        {
+            Substation s = new Substation() { Name = "sub" };
+            int hashCode = s.GetHashCode();
+            Substation s2 = new Substation() { Name = "sub" };
+            int hashCodeBv = s2.GetHashCode();
+            Assert.AreNotEqual(hashCode, hashCodeBv);
+            s = s2;
+            Assert.AreEqual(s.GetHashCode(), s2.GetHashCode());
         }
     }
 }

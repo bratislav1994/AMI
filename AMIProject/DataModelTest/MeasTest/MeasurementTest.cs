@@ -174,6 +174,26 @@ namespace DataModelTest.MeasTest
             Dictionary<ModelCode, List<long>> references = new Dictionary<ModelCode, List<long>>();
 
             Assert.DoesNotThrow(() => measurement.GetReferences(references, refType));
+            Assert.DoesNotThrow(() => measurement.GetReferences(references, TypeOfReference.Target));
+
+            Measurement meas = new Measurement() { PowerSystemResourceRef = 0 };
+            Assert.DoesNotThrow(() => measurement.GetReferences(references, refType));
+            meas.PowerSystemResourceRef = 1;
+            Assert.DoesNotThrow(() => measurement.GetReferences(references, refType));
+            meas.PowerSystemResourceRef = powerSystemResource;
+            Assert.DoesNotThrow(() => measurement.GetReferences(references, TypeOfReference.Reference));
+        }
+
+        [Test]
+        public void GetHashCodeTest()
+        {
+            Measurement m = new Measurement() { Name = "meas" };
+            int hashCode = m.GetHashCode();
+            Measurement m2 = new Measurement() { Name = "meas" };
+            int hashCodeBv = m2.GetHashCode();
+            Assert.AreNotEqual(hashCode, hashCodeBv);
+            m = m2;
+            Assert.AreEqual(m.GetHashCode(), m2.GetHashCode());
         }
     }
 }

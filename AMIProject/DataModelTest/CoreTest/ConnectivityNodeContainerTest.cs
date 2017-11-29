@@ -92,5 +92,17 @@ namespace DataModelTest.CoreTest
 
             Assert.Throws<Exception>(() => conNodeContainer.SetProperty(property));
         }
+
+        [Test]
+        public void GetHashCodeTest()
+        {
+            ConnectivityNodeContainer cnc = new ConnectivityNodeContainer() { Name = "cnc" };
+            int hashCode = cnc.GetHashCode();
+            ConnectivityNodeContainer cnc2 = new ConnectivityNodeContainer() { Name = "cnc" };
+            int hashCodeBv = cnc2.GetHashCode();
+            Assert.AreNotEqual(hashCode, hashCodeBv);
+            cnc = cnc2;
+            Assert.AreEqual(cnc.GetHashCode(), cnc.GetHashCode());
+        }
     }
 }
