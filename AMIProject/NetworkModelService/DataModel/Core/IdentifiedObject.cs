@@ -131,7 +131,7 @@ namespace TC57CIM.IEC61970.Core {
             }
             else
             {
-                if (x == null || !(x is IdentifiedObject))
+                if (!(x is IdentifiedObject))
                     return false;
                 IdentifiedObject io = (IdentifiedObject)x;
                 return ((io.GlobalId == this.GlobalId) && (io.mRID == this.mRID));
@@ -239,27 +239,22 @@ namespace TC57CIM.IEC61970.Core {
             GetReferences(references, TypeOfReference.Target | TypeOfReference.Reference);
         }
 
-        public ResourceDescription GetAsResourceDescription(bool onlySettableAttributes)
-        {
-            ResourceDescription rd = new ResourceDescription(globalId);
-            List<ModelCode> props = new List<ModelCode>();
+        //public ResourceDescription GetAsResourceDescription(bool onlySettableAttributes)
+        //{
+        //    ResourceDescription rd = new ResourceDescription(globalId);
+        //    List<ModelCode> props = new List<ModelCode>();
 
-            if (onlySettableAttributes == true)
-            {
-                props = resourcesDescs.GetAllSettablePropertyIdsForEntityId(globalId);
-            }
-            else
-            {
-                props = resourcesDescs.GetAllPropertyIdsForEntityId(globalId);
-            }
-            
-            for(int i=0; i<props.Count; i++)
-            {
-                rd.AddProperty(new Property(props[i]));
-            }
+        //    if (onlySettableAttributes == true)
+        //    {
+        //        props = resourcesDescs.GetAllSettablePropertyIdsForEntityId(globalId);
+        //    }
+        //    else
+        //    {
+        //        props = resourcesDescs.GetAllPropertyIdsForEntityId(globalId);
+        //    }
 
-            return rd;
-        }
+        //    return rd;
+        //}
 
         public ResourceDescription GetAsResourceDescription(List<ModelCode> propIds)
         {
@@ -280,34 +275,34 @@ namespace TC57CIM.IEC61970.Core {
             return property;
         }
 
-        public void GetDifferentProperties(IdentifiedObject compared, out List<Property> valuesInOriginal, out List<Property> valuesInCompared)
-        {
-            valuesInCompared = new List<Property>();
-            valuesInOriginal = new List<Property>();
+        //public void GetDifferentProperties(IdentifiedObject compared, out List<Property> valuesInOriginal, out List<Property> valuesInCompared)
+        //{
+        //    valuesInCompared = new List<Property>();
+        //    valuesInOriginal = new List<Property>();
 
-            ResourceDescription rd = this.GetAsResourceDescription(false);
+        //    ResourceDescription rd = this.GetAsResourceDescription(false);
 
-            if (compared != null)
-            {
-                ResourceDescription rdCompared = compared.GetAsResourceDescription(false);
+        //    if (compared != null)
+        //    {
+        //        ResourceDescription rdCompared = compared.GetAsResourceDescription(false);
 
-                for (int i = 0; i < rd.Properties.Count; i++)
-                {
-                    if (rd.Properties[i] != rdCompared.Properties[i])
-                    {
-                        valuesInOriginal.Add(rd.Properties[i]);
-                        valuesInCompared.Add(rdCompared.Properties[i]);
-                    }
-                }
-            }
-            else
-            {
-                for (int i = 0; i < rd.Properties.Count; i++)
-                {
-                    valuesInOriginal.Add(rd.Properties[i]);
-                }
-            }
-        }
+        //        for (int i = 0; i < rd.Properties.Count; i++)
+        //        {
+        //            if (rd.Properties[i] != rdCompared.Properties[i])
+        //            {
+        //                valuesInOriginal.Add(rd.Properties[i]);
+        //                valuesInCompared.Add(rdCompared.Properties[i]);
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        for (int i = 0; i < rd.Properties.Count; i++)
+        //        {
+        //            valuesInOriginal.Add(rd.Properties[i]);
+        //        }
+        //    }
+        //}
 
         #endregion utility methods
 

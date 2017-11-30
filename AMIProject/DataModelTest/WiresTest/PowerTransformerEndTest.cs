@@ -31,6 +31,17 @@ namespace DataModelTest.WiresTest
         }
 
         [Test]
+        public void IsReferencedTest()
+        {
+            Assert.AreEqual(true, powerTransformerEnd.IsReferenced);
+            PowerTransformerEnd pt = new PowerTransformerEnd();
+            Assert.AreEqual(false, pt.IsReferenced);
+            pt.PowerTrans = powerTrans;
+            Assert.AreEqual(true, pt.IsReferenced);
+        }
+
+
+        [Test]
         public void ConstructorWithParameterTest()
         {
             Assert.DoesNotThrow(() => new PowerTransformerEnd(42949672122));
@@ -142,6 +153,18 @@ namespace DataModelTest.WiresTest
             Dictionary<ModelCode, List<long>> references = new Dictionary<ModelCode, List<long>>();
 
             Assert.DoesNotThrow(() => powerTransformerEnd.GetReferences(references, refType));
+        }
+
+        [Test]
+        public void GetHashCodeTest()
+        {
+            PowerTransformerEnd pt = new PowerTransformerEnd() { Name = "pte" };
+            int hashCode = pt.GetHashCode();
+            PowerTransformerEnd pt2 = new PowerTransformerEnd() { Name = "pte" };
+            int hashCodeBv = pt2.GetHashCode();
+            Assert.AreNotEqual(hashCode, hashCodeBv);
+            pt = pt2;
+            Assert.AreEqual(pt.GetHashCode(), pt2.GetHashCode());
         }
     }
 }

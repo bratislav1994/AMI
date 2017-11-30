@@ -213,7 +213,7 @@ namespace DataModelTest.CoreTest
             ResourceDescription rd = new ResourceDescription(globalID);
 
             ModelResourcesDesc modelResourcesDesc = new ModelResourcesDesc();
-            List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.SUBSTATION);
+            List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.SUBSTATION_VOLTLEVELS);
 
             for(int i=0; i<properties.Count; i++)
             {
