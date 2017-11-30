@@ -143,5 +143,17 @@ namespace DataModelTest.WiresTest
 
             Assert.DoesNotThrow(() => powerTransformerEnd.GetReferences(references, refType));
         }
+
+        [Test]
+        public void GetHashCodeTest()
+        {
+            PowerTransformerEnd pt = new PowerTransformerEnd() { Name = "pte" };
+            int hashCode = pt.GetHashCode();
+            PowerTransformerEnd pt2 = new PowerTransformerEnd() { Name = "pte" };
+            int hashCodeBv = pt2.GetHashCode();
+            Assert.AreNotEqual(hashCode, hashCodeBv);
+            pt = pt2;
+            Assert.AreEqual(pt.GetHashCode(), pt2.GetHashCode());
+        }
     }
 }

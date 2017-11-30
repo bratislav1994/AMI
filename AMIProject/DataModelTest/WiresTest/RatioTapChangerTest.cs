@@ -143,5 +143,17 @@ namespace DataModelTest.WiresTest
 
             Assert.DoesNotThrow(() => ratioTapChanger.GetReferences(references, refType));
         }
+
+        [Test]
+        public void GetHashCodeTest()
+        {
+            RatioTapChanger r = new RatioTapChanger() { Name = "ratio" };
+            int hashCode = r.GetHashCode();
+            RatioTapChanger r2 = new RatioTapChanger() { Name = "ratio" };
+            int hashCodeBv = r2.GetHashCode();
+            Assert.AreNotEqual(hashCode, hashCodeBv);
+            r = r2;
+            Assert.AreEqual(r.GetHashCode(), r2.GetHashCode());
+        }
     }
 }

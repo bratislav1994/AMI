@@ -128,6 +128,10 @@ namespace DataModelTest.WiresTest
         public void IsReferencedTest()
         {
             Assert.AreEqual(true, powerTransformer.IsReferenced);
+            PowerTransformer pt = new PowerTransformer();
+            Assert.AreEqual(false, pt.IsReferenced);
+            pt.PowerTransEnds = powerTransEnds;
+            Assert.AreEqual(true, pt.IsReferenced);
         }
 
         [Test]
@@ -137,6 +141,14 @@ namespace DataModelTest.WiresTest
             Dictionary<ModelCode, List<long>> references = new Dictionary<ModelCode, List<long>>();
 
             Assert.DoesNotThrow(() => powerTransformer.GetReferences(references, refType));
+            Assert.DoesNotThrow(() => powerTransformer.GetReferences(references, TypeOfReference.Both));
+
+            BaseVoltage bv = new BaseVoltage() { ConductingEquipments = null };
+            Assert.DoesNotThrow(() => powerTransformer.GetReferences(references, refType));
+            bv.TransformerEnds = new List<long>();
+            Assert.DoesNotThrow(() => powerTransformer.GetReferences(references, refType));
+            bv.TransformerEnds = powerTransEnds;
+            Assert.DoesNotThrow(() => powerTransformer.GetReferences(references, TypeOfReference.Reference));
         }
 
         [Test]
@@ -166,6 +178,18 @@ namespace DataModelTest.WiresTest
         public void RemoveReferenceTestFalse(ModelCode referenceId, long globalId)
         {
             Assert.Throws<ModelException>(() => powerTransformer.RemoveReference(referenceId, globalId));
+        }
+
+        [Test]
+        public void GetHashCodeTest()
+        {
+            PowerTransformer pt = new PowerTransformer() { Name = "pt" };
+            int hashCode = pt.GetHashCode();
+            PowerTransformer pt2 = new PowerTransformer() { Name = "pt" };
+            int hashCodeBv = pt2.GetHashCode();
+            Assert.AreNotEqual(hashCode, hashCodeBv);
+            pt = pt2;
+            Assert.AreEqual(pt.GetHashCode(), pt2.GetHashCode());
         }
     }
 }

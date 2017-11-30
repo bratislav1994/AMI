@@ -169,14 +169,27 @@ namespace DataModelTest.WiresTest
             ResourceDescription rd = new ResourceDescription(globalID);
 
             ModelResourcesDesc modelResourcesDesc = new ModelResourcesDesc();
-            List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.ENERGYCONS);
+            List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.PSR_MEASUREMENTS);
 
             for (int i = 0; i < properties.Count; i++)
             {
                 rd.AddProperty(new Property(properties[i]));
             }
 
+            rd.Properties.First().PropertyValue.LongValue = 1246;
             Assert.DoesNotThrow(() => consumer.RD2Class(rd));
+        }
+
+        [Test]
+        public void GetHashCodeTest()
+        {
+            EnergyConsumer ec = new EnergyConsumer() { Name = "ec" };
+            int hashCode = ec.GetHashCode();
+            EnergyConsumer ec2 = new EnergyConsumer() { Name = "ec" };
+            int hashCodeBv = ec2.GetHashCode();
+            Assert.AreNotEqual(hashCode, hashCodeBv);
+            ec = ec2;
+            Assert.AreEqual(ec.GetHashCode(), ec2.GetHashCode());
         }
     }
 }
