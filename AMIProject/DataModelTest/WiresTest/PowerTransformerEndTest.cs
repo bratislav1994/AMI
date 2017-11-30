@@ -31,17 +31,6 @@ namespace DataModelTest.WiresTest
         }
 
         [Test]
-        public void IsReferencedTest()
-        {
-            Assert.AreEqual(true, powerTransformerEnd.IsReferenced);
-            PowerTransformerEnd pt = new PowerTransformerEnd();
-            Assert.AreEqual(false, pt.IsReferenced);
-            pt.PowerTrans = powerTrans;
-            Assert.AreEqual(true, pt.IsReferenced);
-        }
-
-
-        [Test]
         public void ConstructorWithParameterTest()
         {
             Assert.DoesNotThrow(() => new PowerTransformerEnd(42949672122));
