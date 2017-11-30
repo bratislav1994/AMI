@@ -150,6 +150,10 @@ namespace DataModelTest.WiresTest
         public void IsReferencedTest()
         {
             Assert.AreEqual(true, transformerEnd.IsReferenced);
+            TransformerEnd pt = new TransformerEnd();
+            Assert.AreEqual(false, pt.IsReferenced);
+            pt.RatioTapChanger = ratioTapChanger;
+            Assert.AreEqual(true, pt.IsReferenced);
         }
 
         [Test]
