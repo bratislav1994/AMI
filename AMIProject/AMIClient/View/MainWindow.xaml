@@ -25,7 +25,7 @@
     </Window.Resources>
 
     <Grid>
-        <TabControl Height="519" Width="700" TabStripPlacement="Left" x:Name="tabControl" HorizontalAlignment="Left" Margin="5,0,-13,0" VerticalAlignment="Top">
+        <TabControl Height="519" Width="700" TabStripPlacement="Top" x:Name="tabControl" HorizontalAlignment="Left" Margin="5,0,-13,0" VerticalAlignment="Top">
             <TabControl.Background>
                 <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
             </TabControl.Background>
@@ -220,6 +220,67 @@
 
                 </Grid>
             </TabItem>
+            <TabItem Header="Test Tab" Height="50" VerticalAlignment="Top" Margin="0,0,0,0">
+
+                <Grid Background="#777777" Margin="0,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.5*"></ColumnDefinition>
+                        <ColumnDefinition Width="7.5*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <TreeView Grid.Column="0" ItemsSource="{Binding Tvm.GeoRegions}">
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="{x:Type TreeViewItem}">
+                                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                                <Setter Property="FontWeight" Value="Normal" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+
+                        <TreeView.Resources>
+                            <HierarchicalDataTemplate 
+                                DataType="{x:Type local:GeoRegionForTree}" 
+                                ItemsSource="{Binding Children}">
+                                
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                            
+                            <HierarchicalDataTemplate 
+                                DataType="{x:Type local:SubGeoRegionForTree}" 
+                                ItemsSource="{Binding Children}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+
+                            <DataTemplate 
+                                DataType="{x:Type local:SubstationForTree}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </DataTemplate>
+
+                        </TreeView.Resources>
+                    </TreeView>
+                    <DataGrid Grid.Column="1" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Tvm.Amis, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
+                        <DataGrid.Columns>
+
+                            <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Mrid}"/>
+                            <DataGridTextColumn MinWidth="100" Width="100" Header="Name" Binding="{Binding Name}"/>
+                            <DataGridTextColumn MinWidth="100" Width="*" Header="Subgeographical region ID" Binding="{Binding EqContainer}"/>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
 
         </TabControl>
 

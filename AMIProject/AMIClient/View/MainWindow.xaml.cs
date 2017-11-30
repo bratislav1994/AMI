@@ -24,13 +24,14 @@ namespace AMIClient
         private GeoSubRegionViewModel gsrvm = new GeoSubRegionViewModel(Model.Instance);
         private SubstationViewModel ssvm = new SubstationViewModel(Model.Instance);
         private AMIsViewModel avm = new AMIsViewModel(Model.Instance);
+        private TestViewModel tvm = new TestViewModel(Model.Instance);
         private AddCimXmlViewModel xmlvm = new AddCimXmlViewModel();
 
         public MainWindow()
         {
             InitializeComponent();
             DataContext = this;
-
+            Closing += tvm.AbortThread;
         }
 
         public GeoRegionViewModel Grvm
@@ -95,6 +96,19 @@ namespace AMIClient
             set
             {
                 xmlvm = value;
+            }
+        }
+
+        public TestViewModel Tvm
+        {
+            get
+            {
+                return tvm;
+            }
+
+            set
+            {
+                tvm = value;
             }
         }
     }
