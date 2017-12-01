@@ -4,3 +4,6 @@
 -pub sub, da se klijent osvezi
 -All u test tabu
 -izbrisati ostale tabove
+-cim xml dodati jos 2 primera
+-master view model (videcemo za posle)
+-testiranje TreeView-a

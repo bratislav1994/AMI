@@ -114,20 +114,16 @@
     <Compile Include="Classes\TreeClasses.cs" />
     <Compile Include="Model\IModel.cs" />
     <Compile Include="ViewModels\AddCimXmlViewModel.cs" />
-    <Compile Include="ViewModels\AMIsViewModel.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="ViewModels\SubstationViewModel.cs" />
     <Compile Include="Model\Model.cs" />
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="ViewModels\GeoRegionViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModels\GeoSubRegionViewModel.cs" />
     <Compile Include="ViewModels\TestViewModel.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AMIClient"
         mc:Ignorable="d"
-        Title="AMI" Height="550" Width="715.909">
+        Title="AMI" Height="550" Width="715" MinHeight="550" MinWidth="715">
 
     <Window.Resources>
         <!--<Style TargetType="{x:Type DataGrid}">
@@ -24,8 +24,8 @@
     </Style>-->
     </Window.Resources>
 
-    <Grid>
-        <TabControl Height="519" Width="700" TabStripPlacement="Top" x:Name="tabControl" HorizontalAlignment="Left" Margin="5,0,-13,0" VerticalAlignment="Top">
+    <Grid Background="#777777">
+        <TabControl MinHeight="515" Height="auto" Width="auto" TabStripPlacement="Top" HorizontalAlignment="Stretch" Margin="5,0,-13,0" VerticalAlignment="Stretch">
             <TabControl.Background>
                 <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
             </TabControl.Background>
@@ -56,123 +56,65 @@
                 </Style>
             </TabControl.Resources>
 
-            <TabItem Header="Geographical Region" Height="50" VerticalAlignment="Top" Margin="0,0,0,0">
+            <TabItem Header="Network preview" Height="50" VerticalAlignment="Top" Margin="0,0,0,0">
 
-                <Grid Background="#777777" Margin="0,0,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0.5*"></RowDefinition>
-                        <RowDefinition Height="9.5*"></RowDefinition>
-                    </Grid.RowDefinitions>
-
-                    <Button Grid.Row="0" Content="Get elements" VerticalAlignment="Center" HorizontalAlignment="Left" Width="83" Command="{Binding Grvm.GetElementsCommand}"/>
-
-                    <DataGrid Grid.Row="1" SelectionMode="Single"  GridLinesVisibility="None" ItemsSource="{Binding Grvm.GeoRegions, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
-
-                        <DataGrid.Columns>
-
-                            <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Mrid}"/>
-                            <DataGridTextColumn MinWidth="100" Width="100" Header="Name" Binding="{Binding Name}"/>
-
-                        </DataGrid.Columns>
-                    </DataGrid>
-
-                </Grid>
-            </TabItem>
-
-            <TabItem Header="Geographical Subregion" Height="50" VerticalAlignment="Bottom" Margin="0,0,0,0">
-                <Grid Background="#777777" Margin="0,0,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0.5*"></RowDefinition>
-                        <RowDefinition Height="0.5*"></RowDefinition>
-                        <RowDefinition Height="5*"></RowDefinition>
-                    </Grid.RowDefinitions>
+                <Grid Margin="0,0,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*"></ColumnDefinition>
-                        <ColumnDefinition Width="7*"></ColumnDefinition>
+                        <ColumnDefinition Width="auto" MinWidth="200"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" Content="Geographical region" VerticalAlignment="Center"/>
-                    <ComboBox Grid.Column="1" HorizontalAlignment="Left" ItemsSource="{Binding Gsrvm.GeoRegions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Gsrvm.GeoRegion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="170"/>
+                    <TreeView Grid.Column="0" ItemsSource="{Binding Tvm.RootElements}">
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="{x:Type TreeViewItem}">
+                                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                                <Setter Property="FontWeight" Value="Normal" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
 
-                    <Button Grid.Row="1" Content="Get elements" HorizontalAlignment="Left" VerticalAlignment="Center" Width="83" Command="{Binding Gsrvm.GetElementsCommand}"/>
+                        <TreeView.Resources>
+                            <HierarchicalDataTemplate 
+                                DataType="{x:Type local:RootElement}" 
+                                ItemsSource="{Binding Children}">
 
-                    <DataGrid Grid.Row="2" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Gsrvm.SubRegions, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
 
-                        <DataGrid.Columns>
+                            <HierarchicalDataTemplate 
+                                DataType="{x:Type local:GeoRegionForTree}" 
+                                ItemsSource="{Binding Children}">
 
-                            <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Mrid}"/>
-                            <DataGridTextColumn MinWidth="100" Width="100" Header="Name" Binding="{Binding Name}"/>
-                            <DataGridTextColumn MinWidth="100" Width="*" Header="Geographical region ID" Binding="{Binding GeoRegion}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
 
-                        </DataGrid.Columns>
-                    </DataGrid>
+                            <HierarchicalDataTemplate 
+                                DataType="{x:Type local:SubGeoRegionForTree}" 
+                                ItemsSource="{Binding Children}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
 
-                </Grid>
-            </TabItem>
+                            <DataTemplate 
+                                DataType="{x:Type local:SubstationForTree}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </DataTemplate>
 
-            <TabItem Header="Substaion" Height="50" VerticalAlignment="Top" Margin="0,0,0,0">
-
-                <Grid Background="#777777" Margin="0,0,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0.5*"></RowDefinition>
-                        <RowDefinition Height="0.5*"></RowDefinition>
-                        <RowDefinition Height="0.5*"></RowDefinition>
-                        <RowDefinition Height="5*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*"></ColumnDefinition>
-                        <ColumnDefinition Width="7*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-
-                    <Label Grid.Column="0" Content="Geographical Region" VerticalAlignment="Center"/>
-                    <ComboBox Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding Ssvm.GeoRegion}" ItemsSource="{Binding Ssvm.GeoRegions, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="170"/>
-
-                    <Label Grid.Row="1" Grid.Column="0" Content="Geographical Subregion" VerticalAlignment="Center"/>
-                    <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding Ssvm.SubGeoRegion}" ItemsSource="{Binding Ssvm.SubGeoRegions, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="170"/>
-
-                    <Button Grid.Row="2" Content="Get elements" HorizontalAlignment="Left" VerticalAlignment="Center" Width="83" Command="{Binding Ssvm.GetElementsCommand}"/>
-
-                    <DataGrid Grid.Row="3" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Ssvm.Substations, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
-
-                        <DataGrid.Columns>
-
-                            <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Mrid}"/>
-                            <DataGridTextColumn MinWidth="100" Width="100" Header="Name" Binding="{Binding Name}"/>
-                            <DataGridTextColumn MinWidth="100" Width="*" Header="Subgeographical region ID" Binding="{Binding SubGeoRegion}"/>
-
-                        </DataGrid.Columns>
-                    </DataGrid>
-
-                </Grid>
-            </TabItem>
-
-            <TabItem Header="AMIs" Height="50" VerticalAlignment="Top" Margin="0,0,0,0">
-                <Grid Background="#777777" Margin="0,0,0,0">
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0.5*"></RowDefinition>
-                        <RowDefinition Height="0.5*"></RowDefinition>
-                        <RowDefinition Height="0.5*"></RowDefinition>
-                        <RowDefinition Height="0.5*"></RowDefinition>
-                        <RowDefinition Height="5*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*"></ColumnDefinition>
-                        <ColumnDefinition Width="7*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-
-                    <Label Grid.Column="0" Content="Geographical Region" VerticalAlignment="Center"/>
-                    <ComboBox Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding Avm.GeoRegion}" ItemsSource="{Binding Avm.GeoRegions, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="170" />
-
-                    <Label Grid.Row="1" Grid.Column="0" Content="Geographical Subregion" VerticalAlignment="Center"/>
-                    <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding Avm.SubGeoRegion}" ItemsSource="{Binding Avm.SubGeoRegions, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="170" />
-
-                    <Label Grid.Row="2" Grid.Column="0" Content="Substation" VerticalAlignment="Center"/>
-                    <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding Avm.Substation}" ItemsSource="{Binding Avm.Substations, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="170"/>
-
-                    <Button Grid.Row="3" Content="Get elements" HorizontalAlignment="Left" VerticalAlignment="Center" Width="83" Command="{Binding Avm.GetElementsCommand}"/>
-
-                    <DataGrid Grid.Row="4" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Avm.Amis, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
+                        </TreeView.Resources>
+                    </TreeView>
+                    <DataGrid Grid.Column="1" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Tvm.Amis, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
                         <DataGrid.Columns>
 
                             <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Mrid}"/>
@@ -181,12 +123,12 @@
 
                         </DataGrid.Columns>
                     </DataGrid>
-
                 </Grid>
             </TabItem>
+
             <TabItem Header="Add CIM/XML" Height="50" VerticalAlignment="Top" Margin="0,0,0,0">
 
-                <Grid Background="#777777" Margin="0,0,0,0">
+                <Grid Margin="0,0,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="0.5*"></RowDefinition>
                         <RowDefinition Height="0.5*"></RowDefinition>
@@ -220,77 +162,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="Test Tab" Height="50" VerticalAlignment="Top" Margin="0,0,0,0">
-
-                <Grid Background="#777777" Margin="0,0,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2.5*"></ColumnDefinition>
-                        <ColumnDefinition Width="7.5*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-
-                    <TreeView Grid.Column="0" ItemsSource="{Binding Tvm.RootElements}">
-                        <TreeView.ItemContainerStyle>
-                            <Style TargetType="{x:Type TreeViewItem}">
-                                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-                                <Setter Property="FontWeight" Value="Normal" />
-                                <Style.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="FontWeight" Value="Bold" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TreeView.ItemContainerStyle>
-
-                        <TreeView.Resources>
-                            <HierarchicalDataTemplate 
-                                DataType="{x:Type local:RootElement}" 
-                                ItemsSource="{Binding Children}">
-
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Name}" />
-                                </StackPanel>
-                            </HierarchicalDataTemplate>
-
-                            <HierarchicalDataTemplate 
-                                DataType="{x:Type local:GeoRegionForTree}" 
-                                ItemsSource="{Binding Children}">
-                                
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Name}" />
-                                </StackPanel>
-                            </HierarchicalDataTemplate>
-                            
-                            <HierarchicalDataTemplate 
-                                DataType="{x:Type local:SubGeoRegionForTree}" 
-                                ItemsSource="{Binding Children}">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Name}" />
-                                </StackPanel>
-                            </HierarchicalDataTemplate>
-
-                            <DataTemplate 
-                                DataType="{x:Type local:SubstationForTree}">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Name}" />
-                                </StackPanel>
-                            </DataTemplate>
-
-                        </TreeView.Resources>
-                    </TreeView>
-                    <DataGrid Grid.Column="1" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Tvm.Amis, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
-                        <DataGrid.Columns>
-
-                            <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Mrid}"/>
-                            <DataGridTextColumn MinWidth="100" Width="100" Header="Name" Binding="{Binding Name}"/>
-                            <DataGridTextColumn MinWidth="100" Width="*" Header="Subgeographical region ID" Binding="{Binding EqContainer}"/>
-
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
-            </TabItem>
-
-
+            
         </TabControl>
 
     </Grid>
