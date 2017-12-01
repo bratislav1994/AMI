@@ -13,14 +13,14 @@ namespace AMIClient
     {
         private Substation substation;
         private ObservableCollection<EnergyConsumer> amis;
-        private object lockObject;
+        private DateTime newChange;
 
-        public SubstationForTree(Substation substation, SubGeoRegionForTree parent, IModel model, ref ObservableCollection<EnergyConsumer> amis, ref object lockObject)
+        public SubstationForTree(Substation substation, SubGeoRegionForTree parent, IModel model, ref ObservableCollection<EnergyConsumer> amis, ref DateTime newChange)
             : base(parent, model)
         {
             this.substation = substation;
             this.amis = amis;
-            this.lockObject = lockObject;
+            this.newChange = newChange;
             this.IsExpanded = false;
         }
 
@@ -70,10 +70,8 @@ namespace AMIClient
                 {
                     base.isSelected = value;
                     this.amis.Clear();
-                    lock (lockObject)
-                    {
-                        this.amis.AddRange(base.Model.GetSomeAmis(this.substation.GlobalId));
-                    }
+                    this.amis.AddRange(base.Model.GetSomeAmis(this.substation.GlobalId));
+                    this.newChange = DateTime.Now;
                     this.OnPropertyChanged("IsSelected");
                 }
             }

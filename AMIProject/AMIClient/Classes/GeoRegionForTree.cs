@@ -13,14 +13,14 @@ namespace AMIClient
     {
         private GeographicalRegion geoRegion;
         private ObservableCollection<EnergyConsumer> amis;
-        private object lockObject;
+        private DateTime newChange;
 
-        public GeoRegionForTree(GeographicalRegion geoRegion, IModel model, ref ObservableCollection<EnergyConsumer> amis, ref object lockObject)
+        public GeoRegionForTree(GeographicalRegion geoRegion, IModel model, ref ObservableCollection<EnergyConsumer> amis, ref DateTime newChange)
             :base(null, model)
         {
             this.geoRegion = geoRegion;
             this.amis = amis;
-            this.lockObject = lockObject;
+            this.newChange = newChange;
             this.IsExpanded = false;
         }
 
@@ -77,14 +77,12 @@ namespace AMIClient
                     {
                         ssTemp.AddRange(base.Model.GetSomeSubstations(sgr.GlobalId));
                     }
-                    lock (lockObject)
+                    this.amis.Clear();
+                    foreach (Substation ss in ssTemp)
                     {
-                        this.amis.Clear();
-                        foreach (Substation ss in ssTemp)
-                        {
-                            this.amis.AddRange(base.Model.GetSomeAmis(ss.GlobalId));
-                        }
+                        this.amis.AddRange(base.Model.GetSomeAmis(ss.GlobalId));
                     }
+                    this.newChange = DateTime.Now;
                     this.OnPropertyChanged("IsSelected");
                 }
             }
@@ -95,7 +93,7 @@ namespace AMIClient
             ObservableCollection<SubGeographicalRegion> temp = this.Model.GetSomeSubregions(geoRegion.GlobalId);
             foreach(SubGeographicalRegion sgr in temp)
             {
-                base.Children.Add(new SubGeoRegionForTree(sgr, this, this.Model, ref this.amis, ref this.lockObject));
+                base.Children.Add(new SubGeoRegionForTree(sgr, this, this.Model, ref this.amis, ref this.newChange));
             }
         }
     }

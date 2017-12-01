@@ -13,14 +13,14 @@ namespace AMIClient
     {
         private SubGeographicalRegion subGeoRegion;
         private ObservableCollection<EnergyConsumer> amis;
-        private object lockObject;
+        private DateTime newChange;
 
-        public SubGeoRegionForTree(SubGeographicalRegion subGeoRegion, GeoRegionForTree parent, IModel model, ref ObservableCollection<EnergyConsumer> amis, ref object lockObject)
+        public SubGeoRegionForTree(SubGeographicalRegion subGeoRegion, GeoRegionForTree parent, IModel model, ref ObservableCollection<EnergyConsumer> amis, ref DateTime newChange)
             : base(parent, model)
         {
             this.subGeoRegion = subGeoRegion;
             this.amis = amis;
-            this.lockObject = lockObject;
+            this.newChange = newChange;
             this.IsExpanded = false;
         }
 
@@ -78,14 +78,12 @@ namespace AMIClient
                     base.isSelected = value;
                     ObservableCollection<Substation> ssTemp = new ObservableCollection<Substation>();
                     ssTemp.AddRange(base.Model.GetSomeSubstations(this.subGeoRegion.GlobalId));
-                    lock (lockObject)
+                    this.amis.Clear();
+                    foreach (Substation ss in ssTemp)
                     {
-                        this.amis.Clear();
-                        foreach (Substation ss in ssTemp)
-                        {
-                            this.amis.AddRange(base.Model.GetSomeAmis(ss.GlobalId));
-                        }
+                        this.amis.AddRange(base.Model.GetSomeAmis(ss.GlobalId));
                     }
+                    this.newChange = DateTime.Now;
                     this.OnPropertyChanged("IsSelected");
                 }
             }
@@ -96,7 +94,7 @@ namespace AMIClient
             ObservableCollection<Substation> temp = base.Model.GetSomeSubstations(this.subGeoRegion.GlobalId);
             foreach(Substation ss in temp)
             {
-                base.Children.Add(new SubstationForTree(ss, this, this.Model, ref this.amis, ref this.lockObject));
+                base.Children.Add(new SubstationForTree(ss, this, this.Model, ref this.amis, ref this.newChange));
             }
         }
     }

@@ -16,7 +16,8 @@ namespace AMIClient
         IModel model;
         private ObservableCollection<GeoRegionForTree> geoRegions;
         private ObservableCollection<EnergyConsumer> amis = new ObservableCollection<EnergyConsumer>();
-        private ObservableCollection<EnergyConsumer> oldAmis = new ObservableCollection<EnergyConsumer>();
+        private DateTime newChange;
+        private DateTime oldCahnge;
         Thread CheckLists;
         private object lockObject;
 
@@ -28,8 +29,10 @@ namespace AMIClient
             lockObject = new object();
             foreach (GeographicalRegion gr in temp)
             {
-                GeoRegions.Add(new GeoRegionForTree(gr, model, ref amis, ref lockObject));
+                GeoRegions.Add(new GeoRegionForTree(gr, model, ref amis, ref newChange));
             }
+            newChange = DateTime.Now;
+            oldCahnge = DateTime.Now;
             CheckLists = new Thread(() => ThreadFunction());
             CheckLists.IsBackground = true;
             CheckLists.Start();
@@ -78,36 +81,15 @@ namespace AMIClient
         {
             while(true)
             {
-                lock (lockObject)
+                if(this.newChange > this.oldCahnge)
                 {
-                    if (!CompareLists(amis, oldAmis))
-                    {
-                        oldAmis.Clear();
-                        oldAmis.AddRange(amis);
-                        RaisePropertyChanged("Amis");
-                    }
+                    RaisePropertyChanged("Amis");
+                    this.oldCahnge = this.newChange;
                 }
                 Thread.Sleep(200);
             }
         }
-
-        private bool CompareLists(ObservableCollection<EnergyConsumer> current, ObservableCollection<EnergyConsumer> old)
-        {
-            if(current.Count != old.Count)
-            {
-                return false;
-            }
-            for(int i=0; i<current.Count;i++)
-            {
-                if(current[i].GlobalId != old[i].GlobalId)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
+        
         public void AbortThread(object sender, CancelEventArgs e)
         {
             this.CheckLists.Abort();
