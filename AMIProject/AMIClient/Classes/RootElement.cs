@@ -9,26 +9,26 @@ using TC57CIM.IEC61970.Wires;
 
 namespace AMIClient
 {
-    public class GeoRegionForTree : TreeClasses
+    public class RootElement : TreeClasses
     {
-        private GeographicalRegion geoRegion;
         private ObservableCollection<EnergyConsumer> amis;
         private DateTime newChange;
+        private string name;
 
-        public GeoRegionForTree(TreeClasses parent, GeographicalRegion geoRegion, IModel model, ref ObservableCollection<EnergyConsumer> amis, ref DateTime newChange)
-            :base(parent, model)
+        public RootElement(IModel model, ref ObservableCollection<EnergyConsumer> amis, ref DateTime newChange)
+            :base(null, model)
         {
-            this.geoRegion = geoRegion;
             this.amis = amis;
             this.newChange = newChange;
             this.IsExpanded = false;
+            this.name = "All";
         }
 
         public string Name
         {
             get
             {
-                return this.geoRegion.Name;
+                return this.name;
             }
         }
         public bool IsExpanded
@@ -46,12 +46,12 @@ namespace AMIClient
                     this.OnPropertyChanged("IsExpanded");
                 }
 
-                if(value == false)
+                if (value == false)
                 {
                     Children.Clear();
                 }
 
-                if(Children.Count == 0)
+                if (Children.Count == 0)
                 {
                     LoadChildren();
                 }
@@ -70,18 +70,9 @@ namespace AMIClient
             {
                 if (value != base.isSelected)
                 {
-                    base.isSelected = value;
-                    ObservableCollection<SubGeographicalRegion> sgrTemp = base.Model.GetSomeSubregions(this.geoRegion.GlobalId);
-                    ObservableCollection<Substation> ssTemp = new ObservableCollection<Substation>();
-                    foreach(SubGeographicalRegion sgr in sgrTemp)
-                    {
-                        ssTemp.AddRange(base.Model.GetSomeSubstations(sgr.GlobalId));
-                    }
                     this.amis.Clear();
-                    foreach (Substation ss in ssTemp)
-                    {
-                        this.amis.AddRange(base.Model.GetSomeAmis(ss.GlobalId));
-                    }
+                    base.isSelected = value;
+                    this.amis.AddRange(base.Model.GetAllAmis());
                     this.newChange = DateTime.Now;
                     this.OnPropertyChanged("IsSelected");
                 }
@@ -90,11 +81,12 @@ namespace AMIClient
 
         protected override void LoadChildren()
         {
-            ObservableCollection<SubGeographicalRegion> temp = this.Model.GetSomeSubregions(geoRegion.GlobalId);
-            foreach(SubGeographicalRegion sgr in temp)
+            ObservableCollection<GeographicalRegion> temp = this.Model.GetAllRegions();
+            foreach (GeographicalRegion gr in temp)
             {
-                base.Children.Add(new SubGeoRegionForTree(sgr, this, this.Model, ref this.amis, ref this.newChange));
+                base.Children.Add(new GeoRegionForTree(this, gr, this.Model, ref this.amis, ref this.newChange));
             }
         }
+
     }
 }

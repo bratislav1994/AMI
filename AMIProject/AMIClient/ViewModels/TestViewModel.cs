@@ -14,7 +14,7 @@ namespace AMIClient
     public class TestViewModel : INotifyPropertyChanged
     {
         IModel model;
-        private ObservableCollection<GeoRegionForTree> geoRegions;
+        private ObservableCollection<RootElement> rootElements;
         private ObservableCollection<EnergyConsumer> amis = new ObservableCollection<EnergyConsumer>();
         private DateTime newChange;
         private DateTime oldCahnge;
@@ -24,13 +24,8 @@ namespace AMIClient
         public TestViewModel(IModel model)
         {
             this.model = model;
-            ObservableCollection<GeographicalRegion> temp = this.model.GetAllRegions();
-            geoRegions = new ObservableCollection<GeoRegionForTree>();
-            lockObject = new object();
-            foreach (GeographicalRegion gr in temp)
-            {
-                GeoRegions.Add(new GeoRegionForTree(gr, model, ref amis, ref newChange));
-            }
+            rootElements = new ObservableCollection<RootElement>();
+            RootElements.Add(new RootElement(model, ref amis, ref newChange));
             newChange = DateTime.Now;
             oldCahnge = DateTime.Now;
             CheckLists = new Thread(() => ThreadFunction());
@@ -39,16 +34,16 @@ namespace AMIClient
 
         }
 
-        public ObservableCollection<GeoRegionForTree> GeoRegions
+        public ObservableCollection<RootElement> RootElements
         {
             get
             {
-                return geoRegions;
+                return rootElements;
             }
 
             set
             {
-                geoRegions = value;
+                rootElements = value;
             }
         }
 

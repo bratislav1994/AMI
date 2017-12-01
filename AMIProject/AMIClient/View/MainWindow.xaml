@@ -228,7 +228,7 @@
                         <ColumnDefinition Width="7.5*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <TreeView Grid.Column="0" ItemsSource="{Binding Tvm.GeoRegions}">
+                    <TreeView Grid.Column="0" ItemsSource="{Binding Tvm.RootElements}">
                         <TreeView.ItemContainerStyle>
                             <Style TargetType="{x:Type TreeViewItem}">
                                 <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
@@ -243,6 +243,15 @@
                         </TreeView.ItemContainerStyle>
 
                         <TreeView.Resources>
+                            <HierarchicalDataTemplate 
+                                DataType="{x:Type local:RootElement}" 
+                                ItemsSource="{Binding Children}">
+
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+
                             <HierarchicalDataTemplate 
                                 DataType="{x:Type local:GeoRegionForTree}" 
                                 ItemsSource="{Binding Children}">
