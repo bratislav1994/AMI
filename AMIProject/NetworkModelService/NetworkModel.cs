@@ -7,6 +7,9 @@ using System.Text;
 using System.Xml;
 using FTN.Common;
 using TC57CIM.IEC61970.Core;
+using FTN.ServiceContracts;
+using System.ServiceModel;
+using System.Threading;
 
 namespace FTN.Services.NetworkModelService
 {
@@ -22,14 +25,30 @@ namespace FTN.Services.NetworkModelService
         /// </summary>
         private ModelResourcesDesc resourcesDescs;
 
+        private List<IModelForDuplex> clients;
+        private List<IModelForDuplex> clientsForDeleting;
+        private Thread updateThread;
+        private bool needsToUpdate = false;
+        private object lockObject;
+
         /// <summary>
         /// Initializes a new instance of the Model class.
         /// </summary>
         public NetworkModel()
         {
+            lockObject = new object();
             networkDataModel = new Dictionary<DMSType, Container>();
             resourcesDescs = new ModelResourcesDesc();
+            clients = new List<IModelForDuplex>();
+            clientsForDeleting = new List<IModelForDuplex>();
+            updateThread = new Thread(() => InformClients());
+            updateThread.Start();
             Initialize();
+        }
+
+        public void Connect()
+        {
+            this.clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
         }
         
         #region Find
@@ -302,11 +321,43 @@ namespace FTN.Services.NetworkModelService
 					string mesage = "Applying delta to network model successfully finished.";
 					CommonTrace.WriteTrace(CommonTrace.TraceInfo, mesage);
 					updateResult.Message = mesage;
+                    needsToUpdate = true;
 				}				
 			}
 
 			return updateResult;
 		}
+
+        private void InformClients()
+        {
+            while (true)
+            {
+                lock (lockObject)
+                {
+                    if (needsToUpdate)
+                    {
+                        clientsForDeleting.Clear();
+                        foreach (IModelForDuplex client in clients)
+                        {
+                            try
+                            {
+                                client.NewDeltaApplied();
+                            }
+                            catch
+                            {
+                                clientsForDeleting.Add(client);
+                            }
+                        }
+                        foreach (IModelForDuplex client in clientsForDeleting)
+                        {
+                            clients.Remove(client);
+                        }
+                        needsToUpdate = false;
+                    }
+                }
+                Thread.Sleep(200);
+            }
+        }
         
         /// <summary>
         /// Inserts entity into the network model.

@@ -8,6 +8,7 @@ using System.ServiceModel;
 using FTN.Services.NetworkModelService;
 using System.ServiceModel.Description;
 using FTN.Common;
+using FTN.ServiceContracts;
 
 namespace FTN.Services.NetworkModelService
 {
@@ -15,23 +16,39 @@ namespace FTN.Services.NetworkModelService
 	{				
 		private NetworkModel nm = null;
 		private List<ServiceHost> hosts = null;
+        private ServiceHost svcDuplex = null;
+        private ServiceHost svc = null;
 
-		public NetworkModelService()
+        public NetworkModelService()
 		{			
 			nm = new NetworkModel();			
 			GenericDataAccess.NetworkModel = nm;
             ResourceIterator.NetworkModel = nm;
-			InitializeHosts();
-		}
+            svcDuplex = new ServiceHost(typeof(GenericDataAccess));
+            svcDuplex.AddServiceEndpoint(typeof(INetworkModelGDAContractDuplex), 
+                                    new NetTcpBinding(),
+                                    new Uri("net.tcp://localhost:10000/NetworkModelService/GDADuplex"));
+
+            svc = new ServiceHost(typeof(GenericDataAccess));
+            svc.AddServiceEndpoint(typeof(INetworkModelGDAContract),
+                                    new NetTcpBinding(),
+                                    new Uri("net.tcp://localhost:10001/NetworkModelService/GDA"));
+            //InitializeHosts();
+        }
 	
 		public void Start()
 		{
-			StartHosts();			
+            svcDuplex.Open();
+            svc.Open();
+            Console.WriteLine("WCF services opened and ready");
+			//StartHosts();			
 		}
 
 		public void Dispose()
 		{
-			CloseHosts();
+            //CloseHosts();
+            svc.Close();
+            svcDuplex.Close();
 			GC.SuppressFinalize(this);
 		}
 
@@ -99,6 +116,6 @@ namespace FTN.Services.NetworkModelService
 			string message = "The Network Model Service is closed.";
 			CommonTrace.WriteTrace(CommonTrace.TraceInfo, message);
 			Console.WriteLine("\n\n{0}", message);
-		}		
+		}	
 	}
 }

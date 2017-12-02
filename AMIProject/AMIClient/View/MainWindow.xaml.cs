@@ -20,11 +20,13 @@ namespace AMIClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        private TestViewModel tvm = new TestViewModel(Model.Instance);
-        private AddCimXmlViewModel xmlvm = new AddCimXmlViewModel();
+        private TestViewModel tvm;
+        private AddCimXmlViewModel xmlvm;
 
         public MainWindow()
         {
+            tvm = new TestViewModel(Model.Instance);
+            xmlvm = new AddCimXmlViewModel();
             InitializeComponent();
             DataContext = this;
             Closing += tvm.AbortThread;

@@ -12,7 +12,7 @@ using FTN.ServiceContracts;
 
 namespace FTN.Services.NetworkModelService
 {
-	public class GenericDataAccess : INetworkModelGDAContract
+	public class GenericDataAccess : INetworkModelGDAContract, INetworkModelGDAContractDuplex
 	{
 		private static Dictionary<int, ResourceIterator> resourceItMap = new Dictionary<int, ResourceIterator>();
 		private static int resourceItId = 0;
@@ -29,6 +29,11 @@ namespace FTN.Services.NetworkModelService
 				nm = value;
 			}
 		}
+
+        public void Connect()
+        {
+            nm.Connect();
+        }
 
 		public UpdateResult ApplyUpdate(Delta delta)
 		{

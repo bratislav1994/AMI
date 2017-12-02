@@ -8,29 +8,31 @@ using FTN.Common;
 using FTN.ESI.SIMES.CIM.CIMAdapter.Importer;
 using FTN.ESI.SIMES.CIM.CIMAdapter.Manager;
 using FTN.ServiceContracts;
+using System.ServiceModel;
 
 namespace FTN.ESI.SIMES.CIM.CIMAdapter
 {
 	public class CIMAdapter
 	{
-        private NetworkModelGDAProxy gdaQueryProxy = null;
+        private INetworkModelGDAContract gdaQueryProxy = null;
+        private bool firstContact = true;
        
 		public CIMAdapter()
 		{
 		}
 
-        private NetworkModelGDAProxy GdaQueryProxy
+        private INetworkModelGDAContract GdaQueryProxy
         {
             get
             {
-                if (gdaQueryProxy != null)
+                if(firstContact)
                 {
-                    gdaQueryProxy.Abort();
-                    gdaQueryProxy = null;
+                    ChannelFactory<INetworkModelGDAContract> factory = new ChannelFactory<INetworkModelGDAContract>(
+                        new NetTcpBinding(),
+                        new EndpointAddress("net.tcp://localhost:10001/NetworkModelService/GDA"));
+                    this.gdaQueryProxy = factory.CreateChannel();
+                    firstContact = false;
                 }
-
-                gdaQueryProxy = new NetworkModelGDAProxy("NetworkModelGDAEndpoint");
-                gdaQueryProxy.Open();
 
                 return gdaQueryProxy;
             }

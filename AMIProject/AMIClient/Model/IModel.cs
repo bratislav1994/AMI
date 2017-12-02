@@ -23,5 +23,7 @@ namespace AMIClient
         ObservableCollection<Substation> GetSomeSubstations(long subRegionId);
 
         ObservableCollection<EnergyConsumer> GetSomeAmis(long substationId);
+
+        void SetRoot(RootElement root);
     }
 }

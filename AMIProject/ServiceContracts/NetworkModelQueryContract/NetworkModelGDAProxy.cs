@@ -4,17 +4,17 @@ using System.ServiceModel;
 
 namespace FTN.ServiceContracts
 {
-	public class NetworkModelGDAProxy : ClientBase<INetworkModelGDAContract>, INetworkModelGDAContract
+	public class NetworkModelGDAProxy : ClientBase<INetworkModelGDAContractDuplex>//, INetworkModelGDAContract
 	{
 		public NetworkModelGDAProxy(string endpointName)
 			: base(endpointName)
 		{
 		}
 
-		public UpdateResult ApplyUpdate(Delta delta)
+		/*public UpdateResult ApplyUpdate(Delta delta)
 		{
 			return Channel.ApplyUpdate(delta);
-		}
+		}*/
 
 		public ResourceDescription GetValues(long resourceId, List<ModelCode> propIds)
 		{

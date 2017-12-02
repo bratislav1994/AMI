@@ -89,7 +89,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IModelForDuplex.cs" />
     <Compile Include="INetworkModelGDAContract.cs" />
+    <Compile Include="INetworkModelGDAContractDuplex.cs" />
     <Compile Include="NetworkModelGDAProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

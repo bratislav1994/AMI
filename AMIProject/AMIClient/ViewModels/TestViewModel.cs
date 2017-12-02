@@ -19,13 +19,13 @@ namespace AMIClient
         private DateTime newChange;
         private DateTime oldCahnge;
         Thread CheckLists;
-        private object lockObject;
 
         public TestViewModel(IModel model)
         {
             this.model = model;
             rootElements = new ObservableCollection<RootElement>();
             RootElements.Add(new RootElement(model, ref amis, ref newChange));
+            this.model.SetRoot(rootElements[0]);
             newChange = DateTime.Now;
             oldCahnge = DateTime.Now;
             CheckLists = new Thread(() => ThreadFunction());

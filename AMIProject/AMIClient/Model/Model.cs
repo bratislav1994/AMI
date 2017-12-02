@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,15 +15,18 @@ using TC57CIM.IEC61970.Wires;
 
 namespace AMIClient
 {
-    public class Model : IDisposable, IModel
+    public class Model : IDisposable, IModel, IModelForDuplex
     {
         private ModelResourcesDesc modelResourcesDesc = new ModelResourcesDesc();
         private ObservableCollection<GeographicalRegion> geoRegions = new ObservableCollection<GeographicalRegion>();
         private ObservableCollection<SubGeographicalRegion> subGeoRegions = new ObservableCollection<SubGeographicalRegion>();
         private ObservableCollection<Substation> substations = new ObservableCollection<Substation>();
         private ObservableCollection<EnergyConsumer> amis = new ObservableCollection<EnergyConsumer>();
+        private RootElement root;
+        private bool firstContact = true;
 
-        private NetworkModelGDAProxy gdaQueryProxy = null;
+        //private NetworkModelGDAProxy gdaQueryProxy = null;
+        private INetworkModelGDAContractDuplex gdaQueryProxy = null;
 
         private static Model instance;
 
@@ -38,7 +42,29 @@ namespace AMIClient
             }
         }
 
-        private NetworkModelGDAProxy GdaQueryProxy
+        public INetworkModelGDAContractDuplex GdaQueryProxy
+        {
+            get
+            {
+                if(firstContact)
+                {
+                    DuplexChannelFactory<INetworkModelGDAContractDuplex> factory = new DuplexChannelFactory<INetworkModelGDAContractDuplex>(
+                    new InstanceContext(this),
+                        new NetTcpBinding(),
+                        new EndpointAddress("net.tcp://localhost:10000/NetworkModelService/GDADuplex"));
+                    gdaQueryProxy = factory.CreateChannel();
+                    firstContact = false;
+                }
+                return gdaQueryProxy;
+            }
+
+            set
+            {
+                gdaQueryProxy = value;
+            }
+        }
+
+        /*private NetworkModelGDAProxy GdaQueryProxy
         {
             get
             {
@@ -53,11 +79,16 @@ namespace AMIClient
 
                 return gdaQueryProxy;
             }
-        }
+        }*/
 
         public Model()
         {
+            GdaQueryProxy.Connect();
+        }
 
+        public void SetRoot(RootElement root)
+        {
+            this.root = root;
         }
 
         #region GDAQueryService
@@ -303,6 +334,14 @@ namespace AMIClient
         public void Dispose()
         {
             GC.SuppressFinalize(this);
+        }
+
+        public void NewDeltaApplied()
+        {
+            lock (this.root.LockObject)
+            {
+                this.root.NeedsUpdate = true;
+            }
         }
     }
 }
