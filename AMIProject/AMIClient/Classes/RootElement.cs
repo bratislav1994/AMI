@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Wires;
@@ -113,10 +114,26 @@ namespace AMIClient
         protected override void LoadChildren()
         {
             base.Children.Clear();
-            ObservableCollection<GeographicalRegion> temp = this.Model.GetAllRegions();
-            foreach (GeographicalRegion gr in temp)
+            int cnt = 0;
+
+            while (cnt != 2)
             {
-                base.Children.Add(new GeoRegionForTree(this, gr, this.Model, ref this.amis, ref this.newChange));
+                ObservableCollection<GeographicalRegion> temp = this.Model.GetAllRegions();
+
+                if (temp.Count == 0)
+                {
+                    cnt++;
+                    continue;
+                }
+                else
+                {
+                    foreach (GeographicalRegion gr in temp)
+                    {
+                        base.Children.Add(new GeoRegionForTree(this, gr, this.Model, ref this.amis, ref this.newChange));
+                    }
+
+                    break;
+                }
             }
         }
 
@@ -131,7 +148,11 @@ namespace AMIClient
                         App.Current.Dispatcher.Invoke((Action)(() =>
                         {
                             LoadChildren();
+                            //this.amis.Clear();
+                            //this.amis.AddRange(this.Model.GetAllAmis());
+                            //this.newChange = DateTime.Now;
                         }));
+                        
                         needsUpdate = false;
                     }
                 }

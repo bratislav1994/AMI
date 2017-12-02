@@ -8,6 +8,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
 using TC57CIM.IEC61970.Core;
@@ -143,7 +144,7 @@ namespace AMIClient
 
                 iteratorId = GdaQueryProxy.GetExtentValues(modelCode, properties);
                 resourcesLeft = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
-
+                //MessageBox.Show(resourcesLeft.ToString());
 
                 xmlWriter = new XmlTextWriter(Config.Instance.ResultDirecotry + "\\GetExtentValues_Results.xml", Encoding.Unicode);
                 xmlWriter.Formatting = Formatting.Indented;
