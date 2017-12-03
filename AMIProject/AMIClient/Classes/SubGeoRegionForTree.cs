@@ -14,11 +14,13 @@ namespace AMIClient
         private SubGeographicalRegion subGeoRegion;
         private ObservableCollection<EnergyConsumer> amis;
         private DateTime newChange;
+        private List<TreeClasses> allTreeElements;
 
-        public SubGeoRegionForTree(SubGeographicalRegion subGeoRegion, GeoRegionForTree parent, IModel model, ref ObservableCollection<EnergyConsumer> amis, ref DateTime newChange)
+        public SubGeoRegionForTree(SubGeographicalRegion subGeoRegion, GeoRegionForTree parent, IModel model, ref ObservableCollection<EnergyConsumer> amis, ref DateTime newChange, ref List<TreeClasses> allTreeElements)
             : base(parent, model)
         {
-            this.subGeoRegion = subGeoRegion;
+            this.allTreeElements = allTreeElements;
+            this.SubGeoRegion = subGeoRegion;
             this.amis = amis;
             this.newChange = newChange;
             this.IsExpanded = false;
@@ -28,7 +30,7 @@ namespace AMIClient
         {
             get
             {
-                return this.subGeoRegion.Name;
+                return this.SubGeoRegion.Name;
             }
         }
 
@@ -52,11 +54,6 @@ namespace AMIClient
                     ((GeoRegionForTree)base.Parent).IsExpanded = true;
                 }
 
-                if (value == false)
-                {
-                    base.Children.Clear();
-                }
-
                 if (Children.Count == 0)
                 {
                     LoadChildren();
@@ -77,7 +74,7 @@ namespace AMIClient
                 {
                     base.isSelected = value;
                     ObservableCollection<Substation> ssTemp = new ObservableCollection<Substation>();
-                    ssTemp.AddRange(base.Model.GetSomeSubstations(this.subGeoRegion.GlobalId));
+                    ssTemp.AddRange(base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId));
                     this.amis.Clear();
                     foreach (Substation ss in ssTemp)
                     {
@@ -89,12 +86,54 @@ namespace AMIClient
             }
         }
 
+        public SubGeographicalRegion SubGeoRegion
+        {
+            get
+            {
+                return subGeoRegion;
+            }
+
+            set
+            {
+                subGeoRegion = value;
+            }
+        }
+
         protected override void LoadChildren()
         {
-            ObservableCollection<Substation> temp = base.Model.GetSomeSubstations(this.subGeoRegion.GlobalId);
+            bool toBeAdded = true;
+            ObservableCollection<Substation> temp = base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId);
             foreach(Substation ss in temp)
             {
-                base.Children.Add(new SubstationForTree(ss, this, this.Model, ref this.amis, ref this.newChange));
+                foreach(SubstationForTree ssft in base.Children)
+                {
+                    if(ss.GlobalId == ssft.Substation.GlobalId)
+                    {
+                        toBeAdded = false;
+                        break;
+                    }
+                }
+                if (toBeAdded)
+                {
+                    base.Children.Add(new SubstationForTree(ss, this, this.Model, ref this.amis, ref this.newChange));
+                    allTreeElements.Add(base.Children[base.Children.Count - 1]);
+                }
+                toBeAdded = true;
+            }
+        }
+
+        public override void CheckIfSeleacted()
+        {
+            if(IsSelected)
+            {
+                ObservableCollection<Substation> ssTemp = new ObservableCollection<Substation>();
+                ssTemp.AddRange(base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId));
+                this.amis.Clear();
+                foreach (Substation ss in ssTemp)
+                {
+                    this.amis.AddRange(base.Model.GetSomeAmis(ss.GlobalId));
+                }
+                this.newChange = DateTime.Now;
             }
         }
     }

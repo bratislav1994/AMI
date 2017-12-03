@@ -144,10 +144,6 @@ namespace AMIClient
 
                 iteratorId = GdaQueryProxy.GetExtentValues(modelCode, properties);
                 resourcesLeft = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
-                //MessageBox.Show(resourcesLeft.ToString());
-
-                xmlWriter = new XmlTextWriter(Config.Instance.ResultDirecotry + "\\GetExtentValues_Results.xml", Encoding.Unicode);
-                xmlWriter.Formatting = Formatting.Indented;
                 
                 while (resourcesLeft > 0)
                 {
@@ -184,9 +180,7 @@ namespace AMIClient
                                 break;
                         }
                         
-                        ids.Add(rds[i].Id);               
-                        rds[i].ExportToXml(xmlWriter);
-                        xmlWriter.Flush();
+                        ids.Add(rds[i].Id);
                     }
 
                     resourcesLeft = GdaQueryProxy.IteratorResourcesLeft(iteratorId);

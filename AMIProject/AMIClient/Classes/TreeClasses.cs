@@ -59,6 +59,9 @@ namespace AMIClient
         {
         }
 
+        public virtual void CheckIfSeleacted()
+        { }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)

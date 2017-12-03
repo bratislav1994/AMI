@@ -18,7 +18,7 @@ namespace AMIClient
         public SubstationForTree(Substation substation, SubGeoRegionForTree parent, IModel model, ref ObservableCollection<EnergyConsumer> amis, ref DateTime newChange)
             : base(parent, model)
         {
-            this.substation = substation;
+            this.Substation = substation;
             this.amis = amis;
             this.newChange = newChange;
             this.IsExpanded = false;
@@ -28,7 +28,7 @@ namespace AMIClient
         {
             get
             {
-                return this.substation.Name;
+                return this.Substation.Name;
             }
         }
 
@@ -51,9 +51,6 @@ namespace AMIClient
                 {
                     ((SubGeoRegionForTree)base.Parent).IsExpanded = true;
                 }
-
-                base.Children.Clear();
-                LoadChildren();
             }
         }
 
@@ -70,10 +67,33 @@ namespace AMIClient
                 {
                     base.isSelected = value;
                     this.amis.Clear();
-                    this.amis.AddRange(base.Model.GetSomeAmis(this.substation.GlobalId));
+                    this.amis.AddRange(base.Model.GetSomeAmis(this.Substation.GlobalId));
                     this.newChange = DateTime.Now;
                     this.OnPropertyChanged("IsSelected");
                 }
+            }
+        }
+
+        public Substation Substation
+        {
+            get
+            {
+                return substation;
+            }
+
+            set
+            {
+                substation = value;
+            }
+        }
+
+        public override void CheckIfSeleacted()
+        {
+            if(IsSelected)
+            {
+                this.amis.Clear();
+                this.amis.AddRange(base.Model.GetSomeAmis(this.Substation.GlobalId));
+                this.newChange = DateTime.Now;
             }
         }
     }

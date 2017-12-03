@@ -21,11 +21,13 @@ namespace AMIClient
         private bool needsUpdate = false;
         private object lockObject;
         private Thread updateThread;
+        private List<TreeClasses> allTreeElements;
 
         public RootElement(IModel model, ref ObservableCollection<EnergyConsumer> amis, ref DateTime newChange)
             :base(null, model)
         {
             LockObject = new object();
+            this.allTreeElements = new List<TreeClasses>();
             this.amis = amis;
             this.newChange = newChange;
             this.IsExpanded = false;
@@ -113,27 +115,25 @@ namespace AMIClient
 
         protected override void LoadChildren()
         {
-            base.Children.Clear();
-            int cnt = 0;
+            bool toBeAdded = true;
+            ObservableCollection<GeographicalRegion> temp = this.Model.GetAllRegions();
 
-            while (cnt != 2)
+            foreach (GeographicalRegion gr in temp)
             {
-                ObservableCollection<GeographicalRegion> temp = this.Model.GetAllRegions();
-
-                if (temp.Count == 0)
+                foreach(GeoRegionForTree grft in base.Children)
                 {
-                    cnt++;
-                    continue;
-                }
-                else
-                {
-                    foreach (GeographicalRegion gr in temp)
+                    if(gr.GlobalId == grft.GeoRegion.GlobalId)
                     {
-                        base.Children.Add(new GeoRegionForTree(this, gr, this.Model, ref this.amis, ref this.newChange));
+                        toBeAdded = false;
+                        break;
                     }
-
-                    break;
                 }
+                if (toBeAdded)
+                {
+                    base.Children.Add(new GeoRegionForTree(this, gr, this.Model, ref this.amis, ref this.newChange, ref allTreeElements));
+                    allTreeElements.Add(base.Children[base.Children.Count - 1]);
+                }
+                toBeAdded = true;
             }
         }
 
@@ -148,9 +148,19 @@ namespace AMIClient
                         App.Current.Dispatcher.Invoke((Action)(() =>
                         {
                             LoadChildren();
-                            //this.amis.Clear();
-                            //this.amis.AddRange(this.Model.GetAllAmis());
-                            //this.newChange = DateTime.Now;
+                            if(IsSelected)
+                            {
+                                this.amis.Clear();
+                                this.amis.AddRange(this.Model.GetAllAmis());
+                                this.newChange = DateTime.Now;
+                            }
+                            else
+                            {
+                                foreach(TreeClasses tc in allTreeElements)
+                                {
+                                    tc.CheckIfSeleacted();
+                                }
+                            }
                         }));
                         
                         needsUpdate = false;
