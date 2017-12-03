@@ -14,9 +14,9 @@ namespace AMIClient
         private SubGeographicalRegion subGeoRegion;
         private ObservableCollection<EnergyConsumer> amis;
         private DateTime newChange;
-        private List<TreeClasses> allTreeElements;
+        private Dictionary<long, TreeClasses> allTreeElements;
 
-        public SubGeoRegionForTree(SubGeographicalRegion subGeoRegion, GeoRegionForTree parent, IModel model, ref ObservableCollection<EnergyConsumer> amis, ref DateTime newChange, ref List<TreeClasses> allTreeElements)
+        public SubGeoRegionForTree(SubGeographicalRegion subGeoRegion, GeoRegionForTree parent, IModel model, ref ObservableCollection<EnergyConsumer> amis, ref DateTime newChange, ref Dictionary<long, TreeClasses> allTreeElements)
             : base(parent, model)
         {
             this.allTreeElements = allTreeElements;
@@ -101,24 +101,14 @@ namespace AMIClient
 
         protected override void LoadChildren()
         {
-            bool toBeAdded = true;
             ObservableCollection<Substation> temp = base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId);
             foreach(Substation ss in temp)
             {
-                foreach(SubstationForTree ssft in base.Children)
-                {
-                    if(ss.GlobalId == ssft.Substation.GlobalId)
-                    {
-                        toBeAdded = false;
-                        break;
-                    }
-                }
-                if (toBeAdded)
+                if (!allTreeElements.ContainsKey(ss.GlobalId))
                 {
                     base.Children.Add(new SubstationForTree(ss, this, this.Model, ref this.amis, ref this.newChange));
-                    allTreeElements.Add(base.Children[base.Children.Count - 1]);
+                    allTreeElements.Add(ss.GlobalId, base.Children[base.Children.Count - 1]);
                 }
-                toBeAdded = true;
             }
         }
 

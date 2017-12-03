@@ -20,12 +20,14 @@ namespace AMIClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        private TestViewModel tvm;
+        private NetworkPreviewViewModel tvm;
         private AddCimXmlViewModel xmlvm;
+        private IModel model;
 
         public MainWindow()
         {
-            tvm = new TestViewModel(Model.Instance);
+            model = new Model();
+            tvm = new NetworkPreviewViewModel(model);
             xmlvm = new AddCimXmlViewModel();
             InitializeComponent();
             DataContext = this;
@@ -45,7 +47,7 @@ namespace AMIClient
             }
         }
 
-        public TestViewModel Tvm
+        public NetworkPreviewViewModel Tvm
         {
             get
             {

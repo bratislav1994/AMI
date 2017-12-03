@@ -11,7 +11,7 @@ using TC57CIM.IEC61970.Wires;
 
 namespace AMIClient
 {
-    public class TestViewModel : INotifyPropertyChanged
+    public class NetworkPreviewViewModel : INotifyPropertyChanged
     {
         IModel model;
         private ObservableCollection<RootElement> rootElements;
@@ -20,7 +20,7 @@ namespace AMIClient
         private DateTime oldCahnge;
         Thread CheckLists;
 
-        public TestViewModel(IModel model)
+        public NetworkPreviewViewModel(IModel model)
         {
             this.model = model;
             rootElements = new ObservableCollection<RootElement>();

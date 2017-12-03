@@ -21,13 +21,13 @@ namespace AMIClient
         private bool needsUpdate = false;
         private object lockObject;
         private Thread updateThread;
-        private List<TreeClasses> allTreeElements;
+        private Dictionary<long, TreeClasses> allTreeElements;
 
         public RootElement(IModel model, ref ObservableCollection<EnergyConsumer> amis, ref DateTime newChange)
             :base(null, model)
         {
             LockObject = new object();
-            this.allTreeElements = new List<TreeClasses>();
+            this.allTreeElements = new Dictionary<long, TreeClasses>();
             this.amis = amis;
             this.newChange = newChange;
             this.IsExpanded = false;
@@ -115,25 +115,15 @@ namespace AMIClient
 
         protected override void LoadChildren()
         {
-            bool toBeAdded = true;
             ObservableCollection<GeographicalRegion> temp = this.Model.GetAllRegions();
 
             foreach (GeographicalRegion gr in temp)
             {
-                foreach(GeoRegionForTree grft in base.Children)
-                {
-                    if(gr.GlobalId == grft.GeoRegion.GlobalId)
-                    {
-                        toBeAdded = false;
-                        break;
-                    }
-                }
-                if (toBeAdded)
+                if (!allTreeElements.ContainsKey(gr.GlobalId))
                 {
                     base.Children.Add(new GeoRegionForTree(this, gr, this.Model, ref this.amis, ref this.newChange, ref allTreeElements));
-                    allTreeElements.Add(base.Children[base.Children.Count - 1]);
+                    allTreeElements.Add(gr.GlobalId, base.Children[base.Children.Count - 1]);
                 }
-                toBeAdded = true;
             }
         }
 
@@ -156,7 +146,7 @@ namespace AMIClient
                             }
                             else
                             {
-                                foreach(TreeClasses tc in allTreeElements)
+                                foreach(TreeClasses tc in allTreeElements.Values)
                                 {
                                     tc.CheckIfSeleacted();
                                 }

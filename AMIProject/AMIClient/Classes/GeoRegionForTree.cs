@@ -14,9 +14,9 @@ namespace AMIClient
         private GeographicalRegion geoRegion;
         private ObservableCollection<EnergyConsumer> amis;
         private DateTime newChange;
-        private List<TreeClasses> allTreeElements;
+        private Dictionary<long, TreeClasses> allTreeElements;
 
-        public GeoRegionForTree(TreeClasses parent, GeographicalRegion geoRegion, IModel model, ref ObservableCollection<EnergyConsumer> amis, ref DateTime newChange, ref List<TreeClasses> allTreeElements)
+        public GeoRegionForTree(TreeClasses parent, GeographicalRegion geoRegion, IModel model, ref ObservableCollection<EnergyConsumer> amis, ref DateTime newChange, ref Dictionary<long, TreeClasses> allTreeElements)
             :base(parent, model)
         {
             this.GeoRegion = geoRegion;
@@ -105,20 +105,11 @@ namespace AMIClient
             ObservableCollection<SubGeographicalRegion> temp = this.Model.GetSomeSubregions(GeoRegion.GlobalId);
             foreach(SubGeographicalRegion sgr in temp)
             {
-                foreach(SubGeoRegionForTree sgrft in base.Children)
-                {
-                    if(sgr.GlobalId == sgrft.SubGeoRegion.GlobalId)
-                    {
-                        toBeAdded = false;
-                        break;
-                    }
-                }
-                if (toBeAdded)
+                if (!allTreeElements.ContainsKey(sgr.GlobalId))
                 {
                     base.Children.Add(new SubGeoRegionForTree(sgr, this, this.Model, ref this.amis, ref this.newChange, ref allTreeElements));
-                    allTreeElements.Add(base.Children[base.Children.Count - 1]);
+                    allTreeElements.Add(sgr.GlobalId, base.Children[base.Children.Count - 1]);
                 }
-                toBeAdded = true;
             }
         }
 

@@ -25,23 +25,7 @@ namespace AMIClient
         private ObservableCollection<EnergyConsumer> amis = new ObservableCollection<EnergyConsumer>();
         private RootElement root;
         private bool firstContact = true;
-
-        //private NetworkModelGDAProxy gdaQueryProxy = null;
         private INetworkModelGDAContractDuplex gdaQueryProxy = null;
-
-        private static Model instance;
-
-        public static Model Instance
-        {
-            get
-            {
-                if(instance == null)
-                {
-                    instance = new Model();
-                }
-                return instance;
-            }
-        }
 
         public INetworkModelGDAContractDuplex GdaQueryProxy
         {
@@ -64,23 +48,6 @@ namespace AMIClient
                 gdaQueryProxy = value;
             }
         }
-
-        /*private NetworkModelGDAProxy GdaQueryProxy
-        {
-            get
-            {
-                if (gdaQueryProxy != null)
-                {
-                    gdaQueryProxy.Abort();
-                    gdaQueryProxy = null;
-                }
-
-                gdaQueryProxy = new NetworkModelGDAProxy("NetworkModelGDAEndpoint");
-                gdaQueryProxy.Open();
-
-                return gdaQueryProxy;
-            }
-        }*/
 
         public Model()
         {
