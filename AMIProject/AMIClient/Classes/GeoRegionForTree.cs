@@ -26,6 +26,11 @@ namespace AMIClient
             this.IsExpanded = false;
         }
 
+        public GeoRegionForTree() : base()
+        {
+
+        }
+
         public string Name
         {
             get

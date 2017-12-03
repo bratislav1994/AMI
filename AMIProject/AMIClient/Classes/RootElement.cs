@@ -37,6 +37,11 @@ namespace AMIClient
             updateThread.Start();
         }
 
+        public RootElement() : base()
+        {
+
+        }
+
         public string Name
         {
             get

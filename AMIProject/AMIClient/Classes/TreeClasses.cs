@@ -11,7 +11,7 @@ namespace AMIClient
 {
     public class TreeClasses : INotifyPropertyChanged
     {
-        private ObservableCollection<TreeClasses> children;
+        private ObservableCollection<TreeClasses> children = new ObservableCollection<TreeClasses>();
         private TreeClasses parent;
         protected bool isExpanded;
         protected bool isSelected;
@@ -21,7 +21,6 @@ namespace AMIClient
         {
             this.parent = parent;
             this.Model = model;
-            this.children = new ObservableCollection<TreeClasses>();
         }
 
         public TreeClasses() { }
