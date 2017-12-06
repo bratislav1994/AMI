@@ -24,6 +24,11 @@ namespace AMIClient
             this.IsExpanded = false;
         }
 
+        public SubstationForTree() : base()
+        {
+
+        }
+
         public string Name
         {
             get

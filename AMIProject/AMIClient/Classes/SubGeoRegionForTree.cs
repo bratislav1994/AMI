@@ -26,6 +26,11 @@ namespace AMIClient
             this.IsExpanded = false;
         }
 
+        public SubGeoRegionForTree() : base()
+        {
+
+        }
+
         public string Name
         {
             get
@@ -99,7 +104,7 @@ namespace AMIClient
             }
         }
 
-        protected override void LoadChildren()
+        public override void LoadChildren()
         {
             ObservableCollection<Substation> temp = base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId);
             foreach(Substation ss in temp)

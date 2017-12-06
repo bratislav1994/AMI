@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:cim="http://iec.ch/TC57/2010/CIM-schema-cim15#"
+	xmlns:ftn="http://www.ftnydro.com/CIM15/2010/extension#">
+	
+	<cim:BaseVoltage rdf:ID="BV_2_1">
+		<cim:BaseVoltage.nominalVoltage>12500</cim:BaseVoltage.nominalVoltage>
+		<cim:IdentifiedObject.mRID>BV_2_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>BV_2_1</cim:IdentifiedObject.name>
+	</cim:BaseVoltage>
+	<cim:BaseVoltage rdf:ID="BV_2_2">
+		<cim:BaseVoltage.nominalVoltage>15000</cim:BaseVoltage.nominalVoltage>
+		<cim:IdentifiedObject.mRID>BV_2_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>BV_2_2</cim:IdentifiedObject.name>
+	</cim:BaseVoltage>
+	
+	
+	<cim:GeographicalRegion rdf:ID="GEOREGION_2_1">
+		<cim:IdentifiedObject.mRID>GEOREGION_2_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>Sumadija</cim:IdentifiedObject.name>
+	</cim:GeographicalRegion>
+	
+	
+	<cim:SubGeographicalRegion rdf:ID="SUBGEOREGION_2_1">
+		<cim:SubGeographicalRegion.Region rdf:resource="#GEOREGION_2_1"/>
+		<cim:IdentifiedObject.mRID>SUBGEOREGION_2_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>Pomoravlje</cim:IdentifiedObject.name>
+	</cim:SubGeographicalRegion>
+	<cim:SubGeographicalRegion rdf:ID="SUBGEOREGION_2_2">
+		<cim:SubGeographicalRegion.Region rdf:resource="#GEOREGION_2_1"/>
+		<cim:IdentifiedObject.mRID>SUBGEOREGION_2_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>Podunavlje</cim:IdentifiedObject.name>
+	</cim:SubGeographicalRegion>
+	
+	
+	<cim:Substation rdf:ID="SUB_2_1">
+		<cim:Substation.Region rdf:resource="#SUBGEOREGION_2_1"/>
+		<cim:IdentifiedObject.mRID>SUB_2_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>TrafPomoravlje_2_1</cim:IdentifiedObject.name>
+	</cim:Substation>
+	<cim:Substation rdf:ID="SUB_2_2">
+		<cim:Substation.Region rdf:resource="#SUBGEOREGION_2_1"/>
+		<cim:IdentifiedObject.mRID>SUB_2_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>TrafPomoravlje_2_2</cim:IdentifiedObject.name>
+	</cim:Substation>
+	<cim:Substation rdf:ID="SUB_2_3">
+		<cim:Substation.Region rdf:resource="#SUBGEOREGION_2_2"/>
+		<cim:IdentifiedObject.mRID>SUB_2_3</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>TrafPodunavlje_2_1</cim:IdentifiedObject.name>
+	</cim:Substation>
+	
+	
+	<cim:VoltageLevel rdf:ID="VOLT_2_1">
+		<cim:VoltageLevel.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:VoltageLevel.Substation rdf:resource="#SUB_2_1"/>
+		<cim:IdentifiedObject.mRID>VOLT_2_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>VoltLevel_2_1</cim:IdentifiedObject.name>
+	</cim:VoltageLevel>
+	<cim:VoltageLevel rdf:ID="VOLT_2_2">
+		<cim:VoltageLevel.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:VoltageLevel.Substation rdf:resource="#SUB_2_2"/>
+		<cim:IdentifiedObject.mRID>VOLT_2_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>VoltLevel_2_2</cim:IdentifiedObject.name>
+	</cim:VoltageLevel>
+	<cim:VoltageLevel rdf:ID="VOLT_2_3">
+		<cim:VoltageLevel.BaseVoltage rdf:resource="#BV_2_2"/>
+		<cim:VoltageLevel.Substation rdf:resource="#SUB_2_3"/>
+		<cim:IdentifiedObject.mRID>VOLT_2_3</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>VoltLevel_2_3</cim:IdentifiedObject.name>
+	</cim:VoltageLevel>
+	
+	
+	<cim:PowerTransformer rdf:ID="PT_2_1">
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_1"/>
+		<cim:IdentifiedObject.mRID>PT_2_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>PTransformer_2_1</cim:IdentifiedObject.name>
+	</cim:PowerTransformer>
+	<cim:PowerTransformer rdf:ID="PT_2_2">
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_2"/>
+		<cim:IdentifiedObject.mRID>PT_2_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>PTransformer_2_2</cim:IdentifiedObject.name>
+	</cim:PowerTransformer>
+	<cim:PowerTransformer rdf:ID="PT_2_3">
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_2"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_3"/>
+		<cim:IdentifiedObject.mRID>PT_2_3</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>PTransformer_2_3</cim:IdentifiedObject.name>
+	</cim:PowerTransformer>
+	
+	
+	<cim:PowerTransformerEnd rdf:ID="PTE_21_1">
+		<cim:PowerTransformerEnd.PowerTransformer rdf:resource="#PT_2_1"/>
+		<cim:TransformerEnd.BaseVoltage rdf:resource="#BV_2_2"/>
+		<cim:IdentifiedObject.mRID>PTE_21_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>PTransEnd_21_1</cim:IdentifiedObject.name>
+	</cim:PowerTransformerEnd>
+	<cim:PowerTransformerEnd rdf:ID="PTE_21_2">
+		<cim:PowerTransformerEnd.PowerTransformer rdf:resource="#PT_2_1"/>
+		<cim:TransformerEnd.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:IdentifiedObject.mRID>PTE_21_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>PTransEnd_21_2</cim:IdentifiedObject.name>
+	</cim:PowerTransformerEnd>
+	<cim:PowerTransformerEnd rdf:ID="PTE_22_1">
+		<cim:PowerTransformerEnd.PowerTransformer rdf:resource="#PT_2_2"/>
+		<cim:TransformerEnd.BaseVoltage rdf:resource="#BV_2_2"/>
+		<cim:IdentifiedObject.mRID>PTE_22_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>PTransEnd_22_1</cim:IdentifiedObject.name>
+	</cim:PowerTransformerEnd>
+	<cim:PowerTransformerEnd rdf:ID="PTE_22_2">
+		<cim:PowerTransformerEnd.PowerTransformer rdf:resource="#PT_2_2"/>
+		<cim:TransformerEnd.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:IdentifiedObject.mRID>PTE_22_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>PTransEnd_22_2</cim:IdentifiedObject.name>
+	</cim:PowerTransformerEnd>
+	<cim:PowerTransformerEnd rdf:ID="PTE_23_1">
+		<cim:PowerTransformerEnd.PowerTransformer rdf:resource="#PT_2_3"/>
+		<cim:TransformerEnd.BaseVoltage rdf:resource="#BV_2_2"/>
+		<cim:IdentifiedObject.mRID>PTE_23_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>PTransEnd_23_1</cim:IdentifiedObject.name>
+	</cim:PowerTransformerEnd>
+	<cim:PowerTransformerEnd rdf:ID="PTE_23_2">
+		<cim:PowerTransformerEnd.PowerTransformer rdf:resource="#PT_2_3"/>
+		<cim:TransformerEnd.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:IdentifiedObject.mRID>PTE_23_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>PTransEnd_23_2</cim:IdentifiedObject.name>
+	</cim:PowerTransformerEnd>
+	
+	
+	<cim:RatioTapChanger rdf:ID="RTC_2_1">
+		<cim:RatioTapChanger.TransformerEnd rdf:resource="#PTE_21_2"/>
+		<cim:TapChanger.highStep>15</cim:TapChanger.highStep>
+		<cim:TapChanger.lowStep>-15</cim:TapChanger.lowStep>
+		<cim:TapChanger.neutralStep>0</cim:TapChanger.neutralStep>
+		<cim:TapChanger.normalStep>0</cim:TapChanger.normalStep>
+		<cim:IdentifiedObject.mRID>RTC_2_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>RatioTapChanger_2_1</cim:IdentifiedObject.name>
+	</cim:RatioTapChanger>
+	<cim:RatioTapChanger rdf:ID="RTC_2_2">
+		<cim:RatioTapChanger.TransformerEnd rdf:resource="#PTE_22_2"/>
+		<cim:TapChanger.highStep>15</cim:TapChanger.highStep>
+		<cim:TapChanger.lowStep>-15</cim:TapChanger.lowStep>
+		<cim:TapChanger.neutralStep>0</cim:TapChanger.neutralStep>
+		<cim:TapChanger.normalStep>0</cim:TapChanger.normalStep>
+		<cim:IdentifiedObject.mRID>RTC_2_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>RatioTapChanger_2_2</cim:IdentifiedObject.name>
+	</cim:RatioTapChanger>
+	<cim:RatioTapChanger rdf:ID="RTC_2_3">
+		<cim:RatioTapChanger.TransformerEnd rdf:resource="#PTE_23_2"/>
+		<cim:TapChanger.highStep>15</cim:TapChanger.highStep>
+		<cim:TapChanger.lowStep>-15</cim:TapChanger.lowStep>
+		<cim:TapChanger.neutralStep>0</cim:TapChanger.neutralStep>
+		<cim:TapChanger.normalStep>0</cim:TapChanger.normalStep>
+		<cim:IdentifiedObject.mRID>RTC_2_3</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>RatioTapChanger_2_3</cim:IdentifiedObject.name>
+	</cim:RatioTapChanger>
+	
+	
+	<cim:EnergyConsumer rdf:ID="EC_2_1">
+		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
+		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_1"/>
+		<cim:IdentifiedObject.mRID>EC_2_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>EConsumer_2_1</cim:IdentifiedObject.name>
+	</cim:EnergyConsumer>
+	<cim:EnergyConsumer rdf:ID="EC_2_2">
+		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
+		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_1"/>
+		<cim:IdentifiedObject.mRID>EC_2_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>EConsumer_2_2</cim:IdentifiedObject.name>
+	</cim:EnergyConsumer>
+	<cim:EnergyConsumer rdf:ID="EC_2_3">
+		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
+		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_1"/>
+		<cim:IdentifiedObject.mRID>EC_2_3</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>EConsumer_2_3</cim:IdentifiedObject.name>
+	</cim:EnergyConsumer>
+	<cim:EnergyConsumer rdf:ID="EC_2_4">
+		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
+		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_2"/>
+		<cim:IdentifiedObject.mRID>EC_2_4</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>EConsumer_2_4</cim:IdentifiedObject.name>
+	</cim:EnergyConsumer>
+	<cim:EnergyConsumer rdf:ID="EC_2_5">
+		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
+		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_2"/>
+		<cim:IdentifiedObject.mRID>EC_2_5</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>EConsumer_2_5</cim:IdentifiedObject.name>
+	</cim:EnergyConsumer>
+	<cim:EnergyConsumer rdf:ID="EC_2_6">
+		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
+		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_2"/>
+		<cim:IdentifiedObject.mRID>EC_2_6</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>EConsumer_2_6</cim:IdentifiedObject.name>
+	</cim:EnergyConsumer>
+	<cim:EnergyConsumer rdf:ID="EC_2_7">
+		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
+		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_3"/>
+		<cim:IdentifiedObject.mRID>EC_2_7</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>EConsumer_2_7</cim:IdentifiedObject.name>
+	</cim:EnergyConsumer>
+	<cim:EnergyConsumer rdf:ID="EC_2_8">
+		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
+		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_3"/>
+		<cim:IdentifiedObject.mRID>EC_2_8</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>EConsumer_2_8</cim:IdentifiedObject.name>
+	</cim:EnergyConsumer>
+	<cim:EnergyConsumer rdf:ID="EC_2_9">
+		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
+		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_3"/>
+		<cim:IdentifiedObject.mRID>EC_2_9</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>EConsumer_2_9</cim:IdentifiedObject.name>
+	</cim:EnergyConsumer>
+	<cim:EnergyConsumer rdf:ID="EC_2_10">
+		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
+		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_3"/>
+		<cim:IdentifiedObject.mRID>EC_2_10</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>EConsumer_2_10</cim:IdentifiedObject.name>
+	</cim:EnergyConsumer>
+	
+	
+	<cim:Analog rdf:ID="ANALOG_2_1">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_1"/>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_2_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_2_1</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_2_2">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_2"/>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_2_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_2_2</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_2_3">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_3"/>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_2_3</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_2_3</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_2_4">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_4"/>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_2_4</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_2_4</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_2_5">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_5"/>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_2_5</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_2_5</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_2_6">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_6"/>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_2_6</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_2_6</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_2_7">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_7"/>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_2_7</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_2_7</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_2_8">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_8"/>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_2_8</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_2_8</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_2_9">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_9"/>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_2_9</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_2_9</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_2_10">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_10"/>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_2_10</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_2_10</cim:IdentifiedObject.name>
+	</cim:Analog>
+	
+	
+	<!--cim:Discrete rdf:ID=" ">
+		<cim:Discrete.maxValue> </cim:Discrete.maxValue>
+		<cim:Discrete.minValue> </cim:Discrete.minValue>
+		<cim:Discrete.normalValue> </cim:Discrete.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#"/>
+		<cim:Measurement.unitSymbol> P Q V </cim:Measurement.unitSymbol>
+		<cim:Measurement.direction> WRITE READWRITE READ </cim:Measurement.direction>
+		<cim:IdentifiedObject.mRID> </cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name> </cim:IdentifiedObject.name>
+	</cim:Discrete-->
+
+	</rdf:RDF>

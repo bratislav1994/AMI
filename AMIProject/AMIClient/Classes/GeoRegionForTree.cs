@@ -26,6 +26,11 @@ namespace AMIClient
             this.IsExpanded = false;
         }
 
+        public GeoRegionForTree() : base()
+        {
+
+        }
+
         public string Name
         {
             get
@@ -98,7 +103,7 @@ namespace AMIClient
             }
         }
 
-        protected override void LoadChildren()
+        public override void LoadChildren()
         {
             bool toBeAdded = true;
 

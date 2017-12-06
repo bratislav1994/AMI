@@ -17,24 +17,26 @@ namespace AMIClient
     {
         private ObservableCollection<EnergyConsumer> amis;
         private DateTime newChange;
-        private string name;
+        private string name = "All";
         private bool needsUpdate = false;
-        private object lockObject;
+        private object lockObject = new object();
         private Thread updateThread;
-        private Dictionary<long, TreeClasses> allTreeElements;
+        private Dictionary<long, TreeClasses> allTreeElements = new Dictionary<long, TreeClasses>();
 
         public RootElement(IModel model, ref ObservableCollection<EnergyConsumer> amis, ref DateTime newChange)
             :base(null, model)
         {
-            LockObject = new object();
-            this.allTreeElements = new Dictionary<long, TreeClasses>();
             this.amis = amis;
             this.newChange = newChange;
             this.IsExpanded = false;
-            this.name = "All";
             updateThread = new Thread(() => CheckForUpdates());
             updateThread.IsBackground = true;
             updateThread.Start();
+        }
+
+        public RootElement() : base()
+        {
+
         }
 
         public string Name
@@ -113,7 +115,7 @@ namespace AMIClient
             }
         }
 
-        protected override void LoadChildren()
+        public override void LoadChildren()
         {
             ObservableCollection<GeographicalRegion> temp = this.Model.GetAllRegions();
 
