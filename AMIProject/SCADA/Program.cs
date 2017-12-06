@@ -26,7 +26,7 @@ namespace DotNetMasterDemo
         {
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
 
-            var channel = mgr.AddTCPClient("client", LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", 20000, ChannelListener.Print());
+            var channel = mgr.AddTCPClient("outstation", LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", 20000, ChannelListener.Print());
 
             var config = new MasterStackConfig();
 
@@ -34,18 +34,12 @@ namespace DotNetMasterDemo
             config.link.localAddr = 1;
             config.link.remoteAddr = 10;
 
-            var key = new byte[16];
-            for (int i = 0; i < key.Length; ++i)
-            {
-                key[i] = 0xFF;
-            }
-
             var master = channel.AddMaster("master", PrintingSOEHandler.Instance, DefaultMasterApplication.Instance, config);
 
             // you a can optionally add various kinds of polls
-            var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.FromMinutes(1), TaskConfig.Default);
-            var rangePoll = master.AddRangeScan(30, 2, 5, 7, TimeSpan.FromSeconds(20), TaskConfig.Default);
-            var classPoll = master.AddClassScan(ClassField.AllEventClasses, TimeSpan.FromSeconds(5), TaskConfig.Default);
+            var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.FromMinutes(30), TaskConfig.Default);
+            //var rangePoll = master.AddRangeScan(30, 2, 5, 7, TimeSpan.FromSeconds(20), TaskConfig.Default);
+            //var classPoll = master.AddClassScan(ClassField.AllEventClasses, TimeSpan.FromSeconds(5), TaskConfig.Default);
 
             /* you can also do very custom scans
             var headers = new Header[] { Header.Range8(1, 2, 7, 8), Header.Count8(2, 3, 7) };
@@ -53,8 +47,8 @@ namespace DotNetMasterDemo
             */
 
             master.Enable(); // enable communications
-
-            Console.WriteLine("Enter a command");
+            Console.ReadKey();
+            /*Console.WriteLine("Enter a command");
 
             while (true)
             {
@@ -92,7 +86,9 @@ namespace DotNetMasterDemo
                     default:
                         break;
                 }
-            }
+            }*/
+
+            return 0;
         }
     }
 }
