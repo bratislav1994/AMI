@@ -22,7 +22,7 @@ namespace AMIClientTest.ClassesTest
         private TreeClasses treeClasses;
         private TreeClasses parent;
 
-        [OneTimeSetUp]
+        //[OneTimeSetUp]
         public void SetupTest()
         {
             this.treeClasses = new TreeClasses();
@@ -47,8 +47,16 @@ namespace AMIClientTest.ClassesTest
         }
 
         [Test]
+        public void LoadChildrenTest()
+        {
+            SetupTest();
+            this.treeClasses.LoadChildren();
+        }
+
+        [Test]
         public void ChildrenTest()
         {
+            this.SetupTest();
             Assert.IsNotNull(this.treeClasses.Children);
         }
 
@@ -72,6 +80,7 @@ namespace AMIClientTest.ClassesTest
         [Test]
         public void CallTest()
         {
+            this.SetupTest();
             Assert.DoesNotThrow(() => treeClasses.CheckIfSeleacted());
         }
     }

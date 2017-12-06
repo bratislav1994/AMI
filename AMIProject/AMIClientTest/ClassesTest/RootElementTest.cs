@@ -20,11 +20,30 @@ namespace AMIClientTest.ClassesTest
         private ObservableCollection<EnergyConsumer> amis;
         private DateTime newChange;
         private Dictionary<long, TreeClasses> allTreeElements;
+        private IModel model;
 
-        [OneTimeSetUp]
+        //[OneTimeSetUp]
         public void SetupTest()
         {
             root = new RootElement();
+            IModel im = Substitute.For<IModel>();
+            ObservableCollection<GeographicalRegion> ret = new ObservableCollection<GeographicalRegion>();
+            im.GetAllRegions().Returns(ret);
+            model = im;
+            newChange = DateTime.Now;
+        }
+
+        [Test]
+        public void ConstructorTest()
+        {
+            SetupTest();
+            Assert.DoesNotThrow(() => { var r = new RootElement(model, ref amis, ref newChange); r.Dispose(); });
+        }
+
+        [Test]
+        public void LoadChildrenTest()
+        {
+            SetupTest();
         }
 
         [Test]

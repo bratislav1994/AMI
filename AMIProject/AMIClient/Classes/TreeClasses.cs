@@ -54,7 +54,7 @@ namespace AMIClient
             }
         }
 
-        protected virtual void LoadChildren()
+        public virtual void LoadChildren()
         {
         }
 

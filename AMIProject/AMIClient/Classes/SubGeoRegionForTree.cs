@@ -104,7 +104,7 @@ namespace AMIClient
             }
         }
 
-        protected override void LoadChildren()
+        public override void LoadChildren()
         {
             ObservableCollection<Substation> temp = base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId);
             foreach(Substation ss in temp)

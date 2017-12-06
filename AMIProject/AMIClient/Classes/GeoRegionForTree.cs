@@ -103,7 +103,7 @@ namespace AMIClient
             }
         }
 
-        protected override void LoadChildren()
+        public override void LoadChildren()
         {
             bool toBeAdded = true;
 
