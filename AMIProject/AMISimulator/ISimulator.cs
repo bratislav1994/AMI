@@ -11,6 +11,6 @@ namespace AMISimulator
     public interface ISimulator
     {
         [OperationContract]
-        List<int> AddMeasurement(int numberOfNewConsumers);
+        int AddMeasurement();
     }
 }

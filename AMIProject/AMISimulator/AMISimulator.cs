@@ -3,12 +3,14 @@ using Automatak.DNP3.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AMISimulator
 {
+    [ServiceBehavior(InstanceContextMode =InstanceContextMode.Single)]
     public class AMISimulator : ISimulator
     {
         private const int numberOfRTUs = 1;
@@ -18,19 +20,33 @@ namespace AMISimulator
         private const int numberOfAnalogPointsQ = 100;
         private const int numberOfAnalogPointsV = 100;
         private int numberOfInstalledPoints;
+        private IChannel channel = null;
 
         private List<IOutstation> outStations = null;
         private List<OutstationStackConfig> configs = null;
+        private static AMISimulator instance = null;
+
+        public static AMISimulator Instance
+        {
+            get
+            {
+                if(instance == null)
+                {
+                    instance = new AMISimulator();
+                }
+                return instance;
+            }
+        }
         
         public AMISimulator()
         {
-            this.numberOfInstalledPoints = 9;
+            this.numberOfInstalledPoints = 0;
 
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
 
             this.outStations = new List<IOutstation>();
             this.configs = new List<OutstationStackConfig>();
-            IChannel channel = null;
+            
 
             channel = mgr.AddTCPServer("master", LogLevels.NORMAL, ChannelRetry.Default, ipAddress, basePort, ChannelListener.Print());
 
@@ -56,8 +72,6 @@ namespace AMISimulator
             config.outstation.config.unsolClassMask.Class1 = true;
             config.outstation.config.unsolClassMask.Class2 = true;
             config.outstation.config.unsolClassMask.Class3 = true;
-            config.outstation.config.unsolicitedConfirmTimeout = new TimeSpan(0, 0, 0, 1, 0);
-            config.outstation.config.solicitedConfirmTimeout = new TimeSpan(0, 0, 0, 1, 0);
             config.link.localAddr = (ushort)rtuAddress;
             config.link.remoteAddr = 1;
             var outstation = channel.AddOutstation("outstation", RejectingCommandHandler.Instance, DefaultOutstationApplication.Instance, config);
@@ -72,6 +86,11 @@ namespace AMISimulator
 
         private void SendPointValues(OutstationStackConfig config, IOutstation outstation)
         {
+            Random rnd = new Random();
+            while (channel.GetChannelStatistics().NumOpen == 0)
+            { }
+            Console.WriteLine("Press enter to start sending process");
+            Console.ReadKey();
             while (true)
             {
                 for (int i = 0; i < numberOfInstalledPoints; i++)
@@ -79,39 +98,36 @@ namespace AMISimulator
                     if(i%3 == 0)
                     {
                         ChangeSet changeset = new ChangeSet();
-                        changeset.Update(new Analog(70, 1, DateTime.Now), config.databaseTemplate.analogs[i].index);
+                        changeset.Update(new Analog(rnd.Next(70, 170), 1, DateTime.Now), config.databaseTemplate.analogs[i].index);
                         outstation.Load(changeset);
                     }
                     else if(i%3 == 1)
                     {
                         ChangeSet changeset = new ChangeSet();
-                        changeset.Update(new Analog(7, 1, DateTime.Now), config.databaseTemplate.analogs[i].index);
+                        changeset.Update(new Analog(rnd.Next(7, 77), 1, DateTime.Now), config.databaseTemplate.analogs[i].index);
                         outstation.Load(changeset);
                     }
                     else
                     {
                         ChangeSet changeset = new ChangeSet();
-                        changeset.Update(new Analog(220, 1, DateTime.Now), config.databaseTemplate.analogs[i].index);
+                        changeset.Update(new Analog(rnd.Next(210, 240), 1, DateTime.Now), config.databaseTemplate.analogs[i].index);
                         outstation.Load(changeset);
                     }
                 }
-                Thread.Sleep(5000);
+                Thread.Sleep(10000);
             }
         }
 
-        public List<int> AddMeasurement(int numberOfNewConsumers)
+        public int AddMeasurement()
         {
-            List<int> retVal = new List<int>();
-            this.numberOfInstalledPoints += numberOfNewConsumers * 3;
+            this.numberOfInstalledPoints++;
             if(this.numberOfInstalledPoints > (numberOfAnalogPointsP + numberOfAnalogPointsQ + numberOfAnalogPointsV))
             {
-                return null;
+                this.numberOfInstalledPoints--;
+                return -1;
             }
-            retVal.Add(this.numberOfInstalledPoints - 3);
-            retVal.Add(this.numberOfInstalledPoints - 2);
-            retVal.Add(this.numberOfInstalledPoints - 1);
 
-            return retVal;
+            return this.numberOfInstalledPoints - 1;
         }
     }
 }
