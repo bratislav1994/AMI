@@ -21,7 +21,7 @@ namespace AMIClient
         {
             this.allTreeElements = allTreeElements;
             this.SubGeoRegion = subGeoRegion;
-            this.amis = amis;
+            this.Amis = amis;
             this.newChange = newChange;
             this.IsExpanded = false;
         }
@@ -80,10 +80,10 @@ namespace AMIClient
                     base.isSelected = value;
                     ObservableCollection<Substation> ssTemp = new ObservableCollection<Substation>();
                     ssTemp.AddRange(base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId));
-                    this.amis.Clear();
+                    this.Amis.Clear();
                     foreach (Substation ss in ssTemp)
                     {
-                        this.amis.AddRange(base.Model.GetSomeAmis(ss.GlobalId));
+                        this.Amis.AddRange(base.Model.GetSomeAmis(ss.GlobalId));
                     }
                     this.newChange = DateTime.Now;
                     this.OnPropertyChanged("IsSelected");
@@ -104,15 +104,32 @@ namespace AMIClient
             }
         }
 
+        public ObservableCollection<EnergyConsumer> Amis
+        {
+            get
+            {
+                return amis;
+            }
+
+            set
+            {
+                amis = value;
+            }
+        }
+
         public override void LoadChildren()
         {
             ObservableCollection<Substation> temp = base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId);
-            foreach(Substation ss in temp)
+
+            if (temp != null)
             {
-                if (!allTreeElements.ContainsKey(ss.GlobalId))
+                foreach (Substation ss in temp)
                 {
-                    base.Children.Add(new SubstationForTree(ss, this, this.Model, ref this.amis, ref this.newChange));
-                    allTreeElements.Add(ss.GlobalId, base.Children[base.Children.Count - 1]);
+                    if (!allTreeElements.ContainsKey(ss.GlobalId))
+                    {
+                        base.Children.Add(new SubstationForTree(ss, this, this.Model, ref this.amis, ref this.newChange));
+                        allTreeElements.Add(ss.GlobalId, base.Children[base.Children.Count - 1]);
+                    }
                 }
             }
         }
@@ -123,10 +140,10 @@ namespace AMIClient
             {
                 ObservableCollection<Substation> ssTemp = new ObservableCollection<Substation>();
                 ssTemp.AddRange(base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId));
-                this.amis.Clear();
+                this.Amis.Clear();
                 foreach (Substation ss in ssTemp)
                 {
-                    this.amis.AddRange(base.Model.GetSomeAmis(ss.GlobalId));
+                    this.Amis.AddRange(base.Model.GetSomeAmis(ss.GlobalId));
                 }
                 this.newChange = DateTime.Now;
             }

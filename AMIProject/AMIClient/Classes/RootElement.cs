@@ -15,7 +15,7 @@ namespace AMIClient
 {
     public class RootElement : TreeClasses, IDisposable
     {
-        private ObservableCollection<EnergyConsumer> amis;
+        public ObservableCollection<EnergyConsumer> amis = new ObservableCollection<EnergyConsumer>();
         private DateTime newChange;
         private string name = "All";
         private bool needsUpdate = false;
@@ -67,8 +67,7 @@ namespace AMIClient
                 }
             }
         }
-
-
+        
         public bool IsSelected
         {
             get
@@ -82,7 +81,7 @@ namespace AMIClient
                 {
                     this.amis.Clear();
                     base.isSelected = value;
-                    this.amis.AddRange(base.Model.GetAllAmis());
+                    this.amis.AddRange(Model.GetAllAmis());
                     this.newChange = DateTime.Now;
                     this.OnPropertyChanged("IsSelected");
                 }
@@ -115,16 +114,32 @@ namespace AMIClient
             }
         }
 
+        public Dictionary<long, TreeClasses> AllTreeElements
+        {
+            get
+            {
+                return allTreeElements;
+            }
+
+            set
+            {
+                allTreeElements = value;
+            }
+        }
+
         public override void LoadChildren()
         {
             ObservableCollection<GeographicalRegion> temp = this.Model.GetAllRegions();
 
-            foreach (GeographicalRegion gr in temp)
+            if (temp != null)
             {
-                if (!allTreeElements.ContainsKey(gr.GlobalId))
+                foreach (GeographicalRegion gr in temp)
                 {
-                    base.Children.Add(new GeoRegionForTree(this, gr, this.Model, ref this.amis, ref this.newChange, ref allTreeElements));
-                    allTreeElements.Add(gr.GlobalId, base.Children[base.Children.Count - 1]);
+                    if (!AllTreeElements.ContainsKey(gr.GlobalId))
+                    {
+                        base.Children.Add(new GeoRegionForTree(this, gr, this.Model, ref this.amis, ref this.newChange, ref allTreeElements));
+                        AllTreeElements.Add(gr.GlobalId, base.Children[base.Children.Count - 1]);
+                    }
                 }
             }
         }
@@ -148,7 +163,7 @@ namespace AMIClient
                             }
                             else
                             {
-                                foreach(TreeClasses tc in allTreeElements.Values)
+                                foreach(TreeClasses tc in AllTreeElements.Values)
                                 {
                                     tc.CheckIfSeleacted();
                                 }

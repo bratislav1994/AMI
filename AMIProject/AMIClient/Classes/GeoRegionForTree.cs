@@ -20,7 +20,7 @@ namespace AMIClient
             :base(parent, model)
         {
             this.GeoRegion = geoRegion;
-            this.amis = amis;
+            this.Amis = amis;
             this.newChange = newChange;
             this.allTreeElements = allTreeElements;
             this.IsExpanded = false;
@@ -79,10 +79,10 @@ namespace AMIClient
                     {
                         ssTemp.AddRange(base.Model.GetSomeSubstations(sgr.GlobalId));
                     }
-                    this.amis.Clear();
+                    this.Amis.Clear();
                     foreach (Substation ss in ssTemp)
                     {
-                        this.amis.AddRange(base.Model.GetSomeAmis(ss.GlobalId));
+                        this.Amis.AddRange(base.Model.GetSomeAmis(ss.GlobalId));
                     }
                     this.newChange = DateTime.Now;
                     this.OnPropertyChanged("IsSelected");
@@ -103,24 +103,39 @@ namespace AMIClient
             }
         }
 
+        public ObservableCollection<EnergyConsumer> Amis
+        {
+            get
+            {
+                return amis;
+            }
+
+            set
+            {
+                amis = value;
+            }
+        }
+
         public override void LoadChildren()
         {
-            bool toBeAdded = true;
-
             ObservableCollection<SubGeographicalRegion> temp = this.Model.GetSomeSubregions(GeoRegion.GlobalId);
-            foreach(SubGeographicalRegion sgr in temp)
+
+            if (temp != null)
             {
-                if (!allTreeElements.ContainsKey(sgr.GlobalId))
+                foreach (SubGeographicalRegion sgr in temp)
                 {
-                    base.Children.Add(new SubGeoRegionForTree(sgr, this, this.Model, ref this.amis, ref this.newChange, ref allTreeElements));
-                    allTreeElements.Add(sgr.GlobalId, base.Children[base.Children.Count - 1]);
+                    if (!allTreeElements.ContainsKey(sgr.GlobalId))
+                    {
+                        base.Children.Add(new SubGeoRegionForTree(sgr, this, this.Model, ref this.amis, ref this.newChange, ref allTreeElements));
+                        allTreeElements.Add(sgr.GlobalId, base.Children[base.Children.Count - 1]);
+                    }
                 }
             }
         }
 
         public override void CheckIfSeleacted()
         {
-            if(IsSelected)
+            if (IsSelected)
             {
                 ObservableCollection<SubGeographicalRegion> sgrTemp = base.Model.GetSomeSubregions(this.GeoRegion.GlobalId);
                 ObservableCollection<Substation> ssTemp = new ObservableCollection<Substation>();
@@ -128,10 +143,10 @@ namespace AMIClient
                 {
                     ssTemp.AddRange(base.Model.GetSomeSubstations(sgr.GlobalId));
                 }
-                this.amis.Clear();
+                this.Amis.Clear();
                 foreach (Substation ss in ssTemp)
                 {
-                    this.amis.AddRange(base.Model.GetSomeAmis(ss.GlobalId));
+                    this.Amis.AddRange(base.Model.GetSomeAmis(ss.GlobalId));
                 }
                 this.newChange = DateTime.Now;
             }
