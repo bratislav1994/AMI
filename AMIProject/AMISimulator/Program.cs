@@ -5,15 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using Automatak.DNP3.Interface;
 using Automatak.DNP3.Adapter;
+using System.ServiceModel;
 
 namespace AMISimulator
 {
     class Program
     {
+        private static ServiceHost svc = null;
+
         static void Main(string[] args)
         {
-            AMISimulator simulator = new AMISimulator();
-            simulator.SendPointValues();
+            svc = new ServiceHost(AMISimulator.Instance);
+            svc.AddServiceEndpoint(typeof(ISimulator),
+                                    new NetTcpBinding(),
+                                    new Uri("net.tcp://localhost:10100/AMISimulator/Simulator"));
+            svc.Open();
+            AMISimulator.Instance.SendPointValues();
         }
     }
 }
