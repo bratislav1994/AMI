@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace FTN.ServiceContracts
 {
-    [ServiceContract(CallbackContract = typeof(IModelForDuplex))]
-    public interface INetworkModelGDAContractDuplex
+    public interface IBaseNetworkModelGDAContract
     {
         /// <summary>
 		/// Gets resource description for resource specified by id.
@@ -82,8 +81,5 @@ namespace FTN.ServiceContracts
         /// <returns>TRUE if iterator is successfully closed</returns>
         [OperationContract]
         bool IteratorClose(int id);
-
-        [OperationContract]
-        void Connect();
     }
 }

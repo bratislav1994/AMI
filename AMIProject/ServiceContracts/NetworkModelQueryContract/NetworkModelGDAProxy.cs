@@ -4,7 +4,7 @@ using System.ServiceModel;
 
 namespace FTN.ServiceContracts
 {
-	public class NetworkModelGDAProxy : ClientBase<INetworkModelGDAContractDuplex>//, INetworkModelGDAContract
+	public class NetworkModelGDAProxy : ClientBase<INetworkModelGDAContractDuplexClient>//, INetworkModelGDAContract
 	{
 		public NetworkModelGDAProxy(string endpointName)
 			: base(endpointName)

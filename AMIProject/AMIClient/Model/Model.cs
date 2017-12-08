@@ -25,18 +25,18 @@ namespace AMIClient
         private ObservableCollection<EnergyConsumer> amis = new ObservableCollection<EnergyConsumer>();
         private RootElement root;
         private bool firstContact = true;
-        private INetworkModelGDAContractDuplex gdaQueryProxy = null;
+        private INetworkModelGDAContractDuplexClient gdaQueryProxy = null;
 
-        public INetworkModelGDAContractDuplex GdaQueryProxy
+        public INetworkModelGDAContractDuplexClient GdaQueryProxy
         {
             get
             {
                 if(firstContact)
                 {
-                    DuplexChannelFactory<INetworkModelGDAContractDuplex> factory = new DuplexChannelFactory<INetworkModelGDAContractDuplex>(
+                    DuplexChannelFactory<INetworkModelGDAContractDuplexClient> factory = new DuplexChannelFactory<INetworkModelGDAContractDuplexClient>(
                     new InstanceContext(this),
                         new NetTcpBinding(),
-                        new EndpointAddress("net.tcp://localhost:10000/NetworkModelService/GDADuplex"));
+                        new EndpointAddress("net.tcp://localhost:10000/NetworkModelService/GDADuplexClient"));
                     gdaQueryProxy = factory.CreateChannel();
                     firstContact = false;
                 }
@@ -51,7 +51,7 @@ namespace AMIClient
 
         public Model()
         {
-            GdaQueryProxy.Connect();
+            GdaQueryProxy.ConnectClient();
         }
 
         public void SetRoot(RootElement root)

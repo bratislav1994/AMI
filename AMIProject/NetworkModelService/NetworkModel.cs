@@ -10,6 +10,7 @@ using TC57CIM.IEC61970.Core;
 using FTN.ServiceContracts;
 using System.ServiceModel;
 using System.Threading;
+using TC57CIM.IEC61970.Meas;
 
 namespace FTN.Services.NetworkModelService
 {
@@ -27,28 +28,39 @@ namespace FTN.Services.NetworkModelService
 
         private List<IModelForDuplex> clients;
         private List<IModelForDuplex> clientsForDeleting;
-        private Thread updateThread;
-        private bool needsToUpdate = false;
-        private object lockObject;
+        private List<IScadaForDuplex> scadas;
+        private List<IScadaForDuplex> scadasForDeleting;
+        private Thread updateThreadClient;
+        private bool clientsNeedToUpdate = false;
+        private object lockObjectClient;
+        private object lockObjectScada;
 
         /// <summary>
         /// Initializes a new instance of the Model class.
         /// </summary>
         public NetworkModel()
         {
-            lockObject = new object();
+            lockObjectClient = new object();
+            lockObjectScada = new object();
             networkDataModel = new Dictionary<DMSType, Container>();
             resourcesDescs = new ModelResourcesDesc();
             clients = new List<IModelForDuplex>();
             clientsForDeleting = new List<IModelForDuplex>();
-            updateThread = new Thread(() => InformClients());
-            updateThread.Start();
+            scadas = new List<IScadaForDuplex>();
+            scadasForDeleting = new List<IScadaForDuplex>();
+            updateThreadClient = new Thread(() => InformClients());
+            updateThreadClient.Start();
             Initialize();
         }
 
-        public void Connect()
+        public void ConnectClient()
         {
             this.clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
+        }
+
+        public void ConnectScada()
+        {
+            this.scadas.Add(OperationContext.Current.GetCallbackChannel<IScadaForDuplex>());
         }
         
         #region Find
@@ -272,6 +284,8 @@ namespace FTN.Services.NetworkModelService
 		{
 			bool applyingStarted = false;
 			UpdateResult updateResult = new UpdateResult();
+            List<Measurement> measurements = new List<Measurement>();
+            bool canApply = true;
 
 			try
 			{
@@ -284,6 +298,31 @@ namespace FTN.Services.NetworkModelService
 				delta.SortOperations();
 
 				applyingStarted = true;
+
+                foreach(ResourceDescription rd in delta.InsertOperations)
+                {
+                    DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(rd.Id);
+                    if (type == DMSType.ANALOG)
+                    {
+                        Analog analog = new Analog();
+                        analog.RD2Class(rd);
+                        measurements.Add(analog);
+                    }
+                }
+
+                foreach(IScadaForDuplex scada in scadas)
+                {
+                    if(!scada.AddMeasurements(measurements))
+                    {
+                        canApply = false;
+                        break;
+                    }
+                }
+
+                if(!canApply)
+                {
+                    throw new Exception("Transaction not successful");
+                }
 
 				foreach (ResourceDescription rd in delta.InsertOperations)
 				{
@@ -316,13 +355,16 @@ namespace FTN.Services.NetworkModelService
 					SaveDelta(delta);
 				}
 
-				if (updateResult.Result == ResultType.Succeeded)
-				{
-					string mesage = "Applying delta to network model successfully finished.";
-					CommonTrace.WriteTrace(CommonTrace.TraceInfo, mesage);
-					updateResult.Message = mesage;
-                    needsToUpdate = true;
-				}				
+                if (updateResult.Result == ResultType.Succeeded)
+                {
+                    string mesage = "Applying delta to network model successfully finished.";
+                    CommonTrace.WriteTrace(CommonTrace.TraceInfo, mesage);
+                    updateResult.Message = mesage;
+                    lock (lockObjectClient)
+                    {
+                        clientsNeedToUpdate = true;
+                    }
+                }				
 			}
 
 			return updateResult;
@@ -332,9 +374,9 @@ namespace FTN.Services.NetworkModelService
         {
             while (true)
             {
-                lock (lockObject)
+                lock (lockObjectClient)
                 {
-                    if (needsToUpdate)
+                    if (clientsNeedToUpdate)
                     {
                         clientsForDeleting.Clear();
                         foreach (IModelForDuplex client in clients)
@@ -352,7 +394,7 @@ namespace FTN.Services.NetworkModelService
                         {
                             clients.Remove(client);
                         }
-                        needsToUpdate = false;
+                        clientsNeedToUpdate = false;
                     }
                 }
                 Thread.Sleep(200);

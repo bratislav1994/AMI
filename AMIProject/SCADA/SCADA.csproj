@@ -52,8 +52,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IScadaForDuplex.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scada.cs" />
     <Compile Include="SOEHandler.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -65,9 +67,17 @@
       <Project>{64221F5E-FB8A-4630-8B94-24A1504EBFF5}</Project>
       <Name>AMISimulator</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{892CBE15-9ED7-4540-81FA-0EAABA592138}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetworkModelService\DataModel\DataModel.csproj">
       <Project>{ADE96497-7C11-40B6-AE82-57F956C9F104}</Project>
       <Name>DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServiceContracts\NetworkModelQueryContract\NetworkModelGDAContract.csproj">
+      <Project>{B726FB71-D295-41EE-9644-B2B0B1BC8911}</Project>
+      <Name>NetworkModelGDAContract</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

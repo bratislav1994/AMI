@@ -16,7 +16,8 @@ namespace FTN.Services.NetworkModelService
 	{				
 		private NetworkModel nm = null;
 		private List<ServiceHost> hosts = null;
-        private ServiceHost svcDuplex = null;
+        private ServiceHost svcDuplexClient = null;
+        private ServiceHost svcDuplexScada = null;
         private ServiceHost svc = null;
 
         public NetworkModelService()
@@ -24,21 +25,27 @@ namespace FTN.Services.NetworkModelService
 			nm = new NetworkModel();			
 			GenericDataAccess.NetworkModel = nm;
             ResourceIterator.NetworkModel = nm;
-            svcDuplex = new ServiceHost(typeof(GenericDataAccess));
-            svcDuplex.AddServiceEndpoint(typeof(INetworkModelGDAContractDuplex), 
+            svcDuplexClient = new ServiceHost(typeof(GenericDataAccess));
+            svcDuplexClient.AddServiceEndpoint(typeof(INetworkModelGDAContractDuplexClient), 
                                     new NetTcpBinding(),
-                                    new Uri("net.tcp://localhost:10000/NetworkModelService/GDADuplex"));
+                                    new Uri("net.tcp://localhost:10000/NetworkModelService/GDADuplexClient"));
 
             svc = new ServiceHost(typeof(GenericDataAccess));
             svc.AddServiceEndpoint(typeof(INetworkModelGDAContract),
                                     new NetTcpBinding(),
                                     new Uri("net.tcp://localhost:10001/NetworkModelService/GDA"));
+
+            svcDuplexScada = new ServiceHost(typeof(GenericDataAccess));
+            svcDuplexScada.AddServiceEndpoint(typeof(INetworkModelGDAContractDuplexScada),
+                                    new NetTcpBinding(),
+                                    new Uri("net.tcp://localhost:10002/NetworkModelService/GDADuplexScada"));
             //InitializeHosts();
         }
 	
 		public void Start()
 		{
-            svcDuplex.Open();
+            svcDuplexClient.Open();
+            svcDuplexScada.Open();
             svc.Open();
             Console.WriteLine("WCF services opened and ready");
 			//StartHosts();			
@@ -48,8 +55,9 @@ namespace FTN.Services.NetworkModelService
 		{
             //CloseHosts();
             svc.Close();
-            svcDuplex.Close();
-			GC.SuppressFinalize(this);
+            svcDuplexClient.Close();
+            svcDuplexScada.Close();
+            GC.SuppressFinalize(this);
 		}
 
 		private void InitializeHosts()

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using FTN.Common;
+using System.Runtime.Serialization;
 
 namespace TC57CIM.IEC61970.Core {
 
@@ -24,25 +25,28 @@ namespace TC57CIM.IEC61970.Core {
     /// This is a root class to provide common identification for all classes needing
     /// identification and naming attributes.
     /// </summary>
+    [DataContract]
     public class IdentifiedObject {
 
         private static ModelResourcesDesc resourcesDescs = new ModelResourcesDesc();
-
+        [DataMember]
         private long globalId;
 
-		/// <summary>
-		/// Master resource identifier issued by a model authority. The mRID is globally
-		/// unique within an exchange context.
-		/// Global uniqeness is easily achived by using a UUID for the mRID. It is strongly
-		/// recommended to do this.
-		/// For CIMXML data files in RDF syntax, the mRID is mapped to rdf:ID or rdf:about
-		/// attributes that identify CIM object elements.
-		/// </summary>
-		private string mRID;
+        /// <summary>
+        /// Master resource identifier issued by a model authority. The mRID is globally
+        /// unique within an exchange context.
+        /// Global uniqeness is easily achived by using a UUID for the mRID. It is strongly
+        /// recommended to do this.
+        /// For CIMXML data files in RDF syntax, the mRID is mapped to rdf:ID or rdf:about
+        /// attributes that identify CIM object elements.
+        /// </summary>
+        [DataMember]
+        private string mRID;
         /// <summary>
         /// The name is any free human readable and possibly non unique text naming the
         /// object.
         /// </summary>
+        [DataMember]
         private string name;
 
         public IdentifiedObject()
