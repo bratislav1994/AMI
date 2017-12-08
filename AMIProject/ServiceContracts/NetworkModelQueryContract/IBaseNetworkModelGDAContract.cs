@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace FTN.ServiceContracts
 {
+    [ServiceContract]
     public interface IBaseNetworkModelGDAContract
     {
         /// <summary>

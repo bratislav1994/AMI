@@ -284,7 +284,7 @@ namespace FTN.Services.NetworkModelService
 		{
 			bool applyingStarted = false;
 			UpdateResult updateResult = new UpdateResult();
-            List<Measurement> measurements = new List<Measurement>();
+            List<ResourceDescription> measurements = new List<ResourceDescription>();
             bool canApply = true;
 
 			try
@@ -304,9 +304,7 @@ namespace FTN.Services.NetworkModelService
                     DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(rd.Id);
                     if (type == DMSType.ANALOG)
                     {
-                        Analog analog = new Analog();
-                        analog.RD2Class(rd);
-                        measurements.Add(analog);
+                        measurements.Add(rd);
                     }
                 }
 

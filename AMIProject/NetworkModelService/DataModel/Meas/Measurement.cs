@@ -41,17 +41,13 @@ namespace TC57CIM.IEC61970.Meas {
     /// When the sensor location is needed both Measurement-PSR and Measurement-
     /// Terminal are used. The Measurement-Terminal association is never used alone.
     /// </summary>
-    [DataContract]
     public class Measurement : IdentifiedObject {
 
         /// <summary>
         /// The unit of measure of the measured quantity.
         /// </summary>
-        [DataMember]
         private UnitSymbol unitSymbol;
-        [DataMember]
         private Direction signalDirection;
-        [DataMember]
         private long powerSystemResource = 0;
 
         public Measurement()

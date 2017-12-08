@@ -17,25 +17,21 @@ namespace TC57CIM.IEC61970.Meas {
 	/// <summary>
 	/// Analog represents an analog Measurement.
 	/// </summary>
-    [DataContract]
 	public class Analog : Measurement {
 
         /// <summary>
         /// Normal value range maximum for any of the MeasurementValue.values. Used for
         /// scaling, e.g. in bar graphs or of telemetered raw values.
         /// </summary>
-        [DataMember]
         private float maxValue;
         /// <summary>
         /// Normal value range minimum for any of the MeasurementValue.values. Used for
         /// scaling, e.g. in bar graphs or of telemetered raw values.
         /// </summary>
-        [DataMember]
         private float minValue;
         /// <summary>
         /// Normal measurement value, e.g., used for percentage calculations.
         /// </summary>
-        [DataMember]
         private float normalValue;
 
         public Analog()

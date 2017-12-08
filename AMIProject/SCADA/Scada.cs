@@ -107,14 +107,17 @@ namespace SCADA
             }
         }
 
-        public bool AddMeasurements(List<Measurement> measurements)
+        public bool AddMeasurements(List<ResourceDescription> measurements)
         {
             List<Measurement> Ps = new List<Measurement>();
             List<Measurement> Qs = new List<Measurement>();
             List<Measurement> Vs = new List<Measurement>();
 
-            foreach(Measurement m in measurements)
+            foreach(ResourceDescription rd in measurements)
             {
+                TC57CIM.IEC61970.Meas.Analog m = new TC57CIM.IEC61970.Meas.Analog();
+                m.RD2Class(rd);
+
                 switch(m.UnitSymbol)
                 {
                     case UnitSymbol.P:

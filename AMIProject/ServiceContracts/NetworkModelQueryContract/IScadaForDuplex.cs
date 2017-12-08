@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FTN.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
@@ -12,6 +13,6 @@ namespace FTN.ServiceContracts
     public interface IScadaForDuplex
     {
         [OperationContract]
-        bool AddMeasurements(List<Measurement> measurements);
+        bool AddMeasurements(List<ResourceDescription> measurements);
     }
 }

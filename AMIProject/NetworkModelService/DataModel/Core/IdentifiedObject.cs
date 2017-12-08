@@ -25,11 +25,9 @@ namespace TC57CIM.IEC61970.Core {
     /// This is a root class to provide common identification for all classes needing
     /// identification and naming attributes.
     /// </summary>
-    [DataContract]
     public class IdentifiedObject {
 
         private static ModelResourcesDesc resourcesDescs = new ModelResourcesDesc();
-        [DataMember]
         private long globalId;
 
         /// <summary>
@@ -40,13 +38,11 @@ namespace TC57CIM.IEC61970.Core {
         /// For CIMXML data files in RDF syntax, the mRID is mapped to rdf:ID or rdf:about
         /// attributes that identify CIM object elements.
         /// </summary>
-        [DataMember]
         private string mRID;
         /// <summary>
         /// The name is any free human readable and possibly non unique text naming the
         /// object.
         /// </summary>
-        [DataMember]
         private string name;
 
         public IdentifiedObject()
