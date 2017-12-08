@@ -106,6 +106,15 @@
             {
                 Converter.PopulateIdentifiedObjectProperties(cimMeas, rd);
 
+                if(cimMeas.UnitSymbolHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.MEASUREMENT_UNITSYMBOL, (int)cimMeas.UnitSymbol));
+                }
+                if(cimMeas.SignalDirectionHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.MEASUREMENT_DIRECTION, (int)cimMeas.SignalDirection));
+                }
+
                 if (cimMeas.PowerSystemResourceHasValue)
                 {
                     long gid = importHelper.GetMappedGID(cimMeas.PowerSystemResource.ID);
