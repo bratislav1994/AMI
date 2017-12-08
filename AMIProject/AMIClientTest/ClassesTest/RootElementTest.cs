@@ -7,9 +7,13 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Wires;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Object;
 
 namespace AMIClientTest.ClassesTest
 {
@@ -19,7 +23,7 @@ namespace AMIClientTest.ClassesTest
         private RootElement root;
         private ObservableCollection<EnergyConsumer> amis;
         private DateTime newChange;
-        private Dictionary<long, TreeClasses> allTreeElements;
+        private Dictionary<long, TreeClasses> allTreeEl = new Dictionary<long, TreeClasses>();
         private IModel model;
 
         //[OneTimeSetUp]
@@ -27,9 +31,9 @@ namespace AMIClientTest.ClassesTest
         {
             root = new RootElement();
             IModel im = Substitute.For<IModel>();
-            ObservableCollection<GeographicalRegion> ret = new ObservableCollection<GeographicalRegion>();
-            im.GetAllRegions().Returns(ret);
+            im.GetAllRegions().Returns(new ObservableCollection<GeographicalRegion>());
             model = im;
+            root.Model = im;
             newChange = DateTime.Now;
         }
 
@@ -39,12 +43,91 @@ namespace AMIClientTest.ClassesTest
             SetupTest();
             Assert.DoesNotThrow(() => { var r = new RootElement(model, ref amis, ref newChange); r.Dispose(); });
         }
+        
+        [Test]
+        public void NeedsUpdateTest()
+        {
+            this.SetupTest();
+            root.NeedsUpdate = true;
+            Assert.AreEqual(root.NeedsUpdate, true);
+        }
+
+        [Test]
+        public void LockObjectTest()
+        {
+            this.SetupTest();
+            root.LockObject = new object();
+            Assert.IsNotNull(root.LockObject);
+        }
+
+        [Test]
+        public void IsSelectedTest()
+        {
+            this.SetupTest();
+            root.IsSelected = false;
+            Assert.AreEqual(root.IsSelected, false);
+            IModel mock = Substitute.For<IModel>();
+            mock.GetAllAmis().Returns(new ObservableCollection<EnergyConsumer>());
+            root.Model = mock;
+            root.IsSelected = true;
+            Assert.AreEqual(root.IsSelected, true);
+        }
+
+        [Test]
+        public void NameTest()
+        {
+            this.SetupTest();
+            Assert.AreEqual(root.Name, "All");
+        }
+
+        [Test]
+        public void IsExpandedTest()
+        {
+            this.SetupTest();
+            this.root.IsExpanded = true;
+            Assert.AreEqual(root.IsExpanded, true);
+        }
 
         [Test]
         public void LoadChildrenTest()
         {
             SetupTest();
+            IModel mock = Substitute.For<IModel>();
+            mock.GetAllRegions().Returns(
+                new ObservableCollection<GeographicalRegion>()
+                {
+                    new GeographicalRegion()
+                    {
+                        GlobalId = 43290,
+                        Mrid = "43290",
+                        Name = "Vojvodina"
+                    }
+                });
+
+            this.root.Model = mock;
+            this.root.LoadChildren();
         }
+
+        //[Test]
+        //[Timeout(4000)]
+        //public void CheckForUpdatesTest()
+        //{
+        //    SetupTest();
+        //    IModel im = Substitute.For<IModel>();
+        //    im.GetAllRegions().Returns(new ObservableCollection<GeographicalRegion>());
+        //    im.GetAllAmis().Returns(new ObservableCollection<EnergyConsumer>());
+        //    root.Model = im;
+        //    model = im;
+        //    newChange = DateTime.Now;
+
+        //    Assert.DoesNotThrow(() => root = new RootElement(model, ref amis, ref newChange) { NeedsUpdate = true, Model = im, amis = new ObservableCollection<EnergyConsumer>() });
+        //    Assert.DoesNotThrow(() => root = new RootElement(model, ref amis, ref newChange) { NeedsUpdate = true, Model = im, amis = new ObservableCollection<EnergyConsumer>(), IsSelected = true });
+        //    TreeClasses tc = new TreeClasses();
+        //    allTreeEl.Add(234, tc);
+
+        //    Assert.DoesNotThrow(() => root = new RootElement(model, ref amis, ref newChange) { NeedsUpdate = true, Model = im, amis = new ObservableCollection<EnergyConsumer>(), IsSelected = false, AllTreeElements = allTreeEl });
+        //    //Assert.DoesNotThrow(() => root = new RootElement(model, ref amis, ref newChange) { NeedsUpdate = true});
+        //}
 
         [Test]
         public void RaisePropertyChangedTest()
