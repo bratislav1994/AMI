@@ -13,6 +13,6 @@ namespace FTN.ServiceContracts
     public interface IScadaForDuplex
     {
         [OperationContract]
-        bool AddMeasurements(List<ResourceDescription> measurements);
+        bool Prepare(List<ResourceDescription> measurements);
     }
 }

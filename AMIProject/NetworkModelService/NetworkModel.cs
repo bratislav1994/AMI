@@ -82,7 +82,23 @@ namespace FTN.Services.NetworkModelService
 		    return false;
 		}
 
-		public IdentifiedObject GetEntity(long globalId)
+        public bool EntityExists2PC(long globalId, Dictionary<DMSType, Container> model)
+        {
+            DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(globalId);
+
+            if (ContainerExists2PC(type, model))
+            {
+                Container container = GetContainer2PC(type, model);
+
+                if (container.EntityExists(globalId))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public IdentifiedObject GetEntity(long globalId)
 		{
 			if (EntityExists(globalId))
 			{
@@ -98,13 +114,29 @@ namespace FTN.Services.NetworkModelService
 			}
 		}
 
+        public IdentifiedObject GetEntity2PC(long globalId, Dictionary<DMSType, Container> model)
+        {
+            if (EntityExists2PC(globalId, model))
+            {
+                DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(globalId);
+                IdentifiedObject io = GetContainer2PC(type, model).GetEntity(globalId);
 
-		/// <summary>
-		/// Checks if container exists in model.
-		/// </summary>
-		/// <param name="type">Type of container.</param>
-		/// <returns>True if container exists, otherwise FALSE.</returns>
-		private bool ContainerExists(DMSType type)
+                return io;
+            }
+            else
+            {
+                string message = string.Format("Entity  (GID = 0x{0:x16}) does not exist.", globalId);
+                throw new Exception(message);
+            }
+        }
+
+
+        /// <summary>
+        /// Checks if container exists in model.
+        /// </summary>
+        /// <param name="type">Type of container.</param>
+        /// <returns>True if container exists, otherwise FALSE.</returns>
+        private bool ContainerExists(DMSType type)
 		{
 			if (networkDataModel.ContainsKey(type))
 			{
@@ -114,12 +146,22 @@ namespace FTN.Services.NetworkModelService
 			return false;			
 		}
 
-		/// <summary>
-		/// Gets container of specified type.
-		/// </summary>
-		/// <param name="type">Type of container.</param>
-		/// <returns>Container for specified local id</returns>
-		private Container GetContainer(DMSType type)
+        private bool ContainerExists2PC(DMSType type, Dictionary<DMSType, Container> model)
+        {
+            if (model.ContainsKey(type))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Gets container of specified type.
+        /// </summary>
+        /// <param name="type">Type of container.</param>
+        /// <returns>Container for specified local id</returns>
+        private Container GetContainer(DMSType type)
 		{
 			if (ContainerExists(type))
 			{
@@ -132,18 +174,31 @@ namespace FTN.Services.NetworkModelService
 			}
 			
 		}
+        private Container GetContainer2PC(DMSType type, Dictionary<DMSType, Container> model)
+        {
+            if (ContainerExists2PC(type, model))
+            {
+                return model[type];
+            }
+            else
+            {
+                string message = string.Format("Container does not exist for type {0}.", type);
+                throw new Exception(message);
+            }
 
-		#endregion Find
+        }
 
-		#region GDA query
+        #endregion Find
 
-		/// <summary>
-		/// Gets resource description for entity requested by globalId.
-		/// </summary>
-		/// <param name="globalId">Id of the entity</param>
-		/// <param name="properties">List of requested properties</param>		
-		/// <returns>Resource description of the specified entity</returns>
-		public ResourceDescription GetValues(long globalId, List<ModelCode> properties)
+        #region GDA query
+
+        /// <summary>
+        /// Gets resource description for entity requested by globalId.
+        /// </summary>
+        /// <param name="globalId">Id of the entity</param>
+        /// <param name="properties">List of requested properties</param>		
+        /// <returns>Resource description of the specified entity</returns>
+        public ResourceDescription GetValues(long globalId, List<ModelCode> properties)
 		{
 			CommonTrace.WriteTrace(CommonTrace.TraceVerbose, String.Format("Getting values for GID = 0x{0:x16}.", globalId));
 
@@ -284,8 +339,6 @@ namespace FTN.Services.NetworkModelService
 		{
 			bool applyingStarted = false;
 			UpdateResult updateResult = new UpdateResult();
-            List<ResourceDescription> measurements = new List<ResourceDescription>();
-            bool canApply = true;
 
 			try
 			{
@@ -296,46 +349,27 @@ namespace FTN.Services.NetworkModelService
 				delta.FixNegativeToPositiveIds(ref typesCounters, ref globalIdPairs);
 				updateResult.GlobalIdPairs = globalIdPairs;
 				delta.SortOperations();
+                Dictionary<DMSType, Container> copy = new Dictionary<DMSType, Container>();
 
-				applyingStarted = true;
-
-                foreach(ResourceDescription rd in delta.InsertOperations)
+                if(Prepare(delta, ref copy))
                 {
-                    DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(rd.Id);
-                    if (type == DMSType.ANALOG)
-                    {
-                        measurements.Add(rd);
-                    }
+                    Commit(ref copy);
                 }
 
-                foreach(IScadaForDuplex scada in scadas)
-                {
-                    if(!scada.AddMeasurements(measurements))
-                    {
-                        canApply = false;
-                        break;
-                    }
-                }
+    //            foreach (ResourceDescription rd in delta.InsertOperations)
+				//{
+				//	InsertEntity(rd);
+				//}
 
-                if(!canApply)
-                {
-                    throw new Exception("Transaction not successful");
-                }
+				//foreach (ResourceDescription rd in delta.UpdateOperations)
+				//{
+				//	UpdateEntity(rd);
+				//}
 
-				foreach (ResourceDescription rd in delta.InsertOperations)
-				{
-					InsertEntity(rd);
-				}
-
-				foreach (ResourceDescription rd in delta.UpdateOperations)
-				{
-					UpdateEntity(rd);
-				}
-
-				foreach (ResourceDescription rd in delta.DeleteOperations)
-				{
-					DeleteEntity(rd);
-				}				 				
+				//foreach (ResourceDescription rd in delta.DeleteOperations)
+				//{
+				//	DeleteEntity(rd);
+				//}				 				
 
 			}
 			catch (Exception ex)
@@ -368,34 +402,54 @@ namespace FTN.Services.NetworkModelService
 			return updateResult;
 		}
 
-        private void InformClients()
+        private bool Prepare(Delta delta, ref Dictionary<DMSType, Container> model)
         {
-            while (true)
+            try
             {
-                lock (lockObjectClient)
+                foreach (KeyValuePair<DMSType, Container> kp in networkDataModel)
                 {
-                    if (clientsNeedToUpdate)
+                    model[kp.Key] = kp.Value;
+                }
+
+                if(InsertEntities(delta.InsertOperations, ref model))
+                {
+                    List<ResourceDescription> measurements = new List<ResourceDescription>();
+
+                    foreach (ResourceDescription rd in delta.InsertOperations)
                     {
-                        clientsForDeleting.Clear();
-                        foreach (IModelForDuplex client in clients)
+                        DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(rd.Id);
+                        if (type == DMSType.ANALOG)
                         {
-                            try
-                            {
-                                client.NewDeltaApplied();
-                            }
-                            catch
-                            {
-                                clientsForDeleting.Add(client);
-                            }
+                            measurements.Add(rd);
                         }
-                        foreach (IModelForDuplex client in clientsForDeleting)
+                    }
+
+                    foreach (IScadaForDuplex scada in scadas)
+                    {
+                        if (!scada.Prepare(measurements))
                         {
-                            clients.Remove(client);
+                            return false;
                         }
-                        clientsNeedToUpdate = false;
                     }
                 }
-                Thread.Sleep(200);
+
+
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+
+            return true;
+        }
+
+        private void Commit(ref Dictionary<DMSType, Container> model)
+        {
+            /*commit za sve skade*/
+            networkDataModel.Clear();
+            foreach (KeyValuePair<DMSType, Container> kp in model)
+            {
+                networkDataModel[kp.Key] = kp.Value;
             }
         }
         
@@ -403,94 +457,104 @@ namespace FTN.Services.NetworkModelService
         /// Inserts entity into the network model.
         /// </summary>
         /// <param name="rd">Description of the resource that should be inserted</param>        
-		private void InsertEntity(ResourceDescription rd)
+		private bool InsertEntities(List<ResourceDescription> rds, ref Dictionary<DMSType, Container> copy)
 		{
-			if (rd == null)
+			if (rds.Count == 0)
 			{
 				CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Insert entity is not done because update operation is empty.");
-				return;
-			}			
-
-			long globalId = rd.Id;
-
-			CommonTrace.WriteTrace(CommonTrace.TraceInfo, "Inserting entity with GID ({0:x16}).", globalId);
-
-			// check if mapping for specified global id already exists			
-			if (this.EntityExists(globalId))
-			{
-				string message = String.Format("Failed to insert entity because entity with specified GID ({0:x16}) already exists in network model.", globalId);
-				CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-				throw new Exception(message);
+				return true;
 			}
 
-			try
-			{
-				// find type
-				DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(globalId);
+            foreach (ResourceDescription rd in rds)
+            {
+                long globalId = rd.Id;
 
-				Container container = null;
+                CommonTrace.WriteTrace(CommonTrace.TraceInfo, "Inserting entity with GID ({0:x16}).", globalId);
 
-				// get container or create container 
-				if (ContainerExists(type))
-				{
-					container = GetContainer(type);
-				}
-				else
-				{
-					container = new Container();
-					networkDataModel.Add(type, container);
-				}
+                // check if mapping for specified global id already exists			
+                if (this.EntityExists(globalId))
+                {
+                    string message = String.Format("Failed to insert entity because entity with specified GID ({0:x16}) already exists in network model.", globalId);
+                    CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+                    throw new Exception(message);
+                }
 
-				// create entity and add it to container
-				IdentifiedObject io = container.CreateEntity(globalId);
+                try
+                {
+                    // find type
+                    DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(globalId);
 
-				// apply properties on created entity
-				if (rd.Properties != null)
-				{
-					foreach (Property property in  rd.Properties)
-					{						
-						// globalId must not be set as property
-						if (property.Id == ModelCode.IDOBJ_GID)
-						{
-							continue;
-						}
+                    Container container = null;
 
-						if (property.Type == PropertyType.Reference)
-						{
-							// if property is a reference to another entity 
-							long targetGlobalId = property.AsReference();
+                    // get container or create container 
+                    if (ContainerExists2PC(type, copy))
+                    {
+                        container = GetContainer2PC(type, copy);
+                        Container newContainer = new Container();
+                        foreach(KeyValuePair<long, IdentifiedObject> kp in container.Entities)
+                        {
+                            newContainer.Entities.Add(kp.Key, kp.Value);
+                        }
+                        copy[type] = newContainer;
+                    }
+                    else
+                    {
+                        container = new Container();
+                        copy.Add(type, container);
+                    }
 
-							if (targetGlobalId != 0)
-							{
+                    // create entity and add it to container
+                    IdentifiedObject io = container.CreateEntity(globalId);
 
-								if (!EntityExists(targetGlobalId))
-								{
-									string message = string.Format("Failed to get target entity with GID: 0x{0:X16}. {1}", targetGlobalId);
-									throw new Exception(message);
-								}
+                    // apply properties on created entity
+                    if (rd.Properties != null)
+                    {
+                        foreach (Property property in rd.Properties)
+                        {
+                            // globalId must not be set as property
+                            if (property.Id == ModelCode.IDOBJ_GID)
+                            {
+                                continue;
+                            }
 
-								// get referenced entity for update
-								IdentifiedObject targetEntity = GetEntity(targetGlobalId);
-								targetEntity.AddReference(property.Id, io.GlobalId);																	
-							}
+                            if (property.Type == PropertyType.Reference)
+                            {
+                                // if property is a reference to another entity 
+                                long targetGlobalId = property.AsReference();
 
-							io.SetProperty(property);
-						}
-						else
-						{
-							io.SetProperty(property);
-						}						
-					}
-				}
+                                if (targetGlobalId != 0)
+                                {
 
-				CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Inserting entity with GID ({0:x16}) successfully finished.", globalId);
-			}			
-			catch (Exception ex)
-			{
-				string message = String.Format("Failed to insert entity (GID = 0x{0:x16}) into model. {1}", rd.Id, ex.Message);				
-				CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-				throw new Exception(message);
-			}
+                                    if (!EntityExists2PC(targetGlobalId, copy))
+                                    {
+                                        string message = string.Format("Failed to get target entity with GID: 0x{0:X16}. {1}", targetGlobalId);
+                                        throw new Exception(message);
+                                    }
+
+                                    // get referenced entity for update
+                                    IdentifiedObject targetEntity = GetEntity(targetGlobalId);
+                                    targetEntity.AddReference(property.Id, io.GlobalId);
+                                }
+
+                                io.SetProperty(property);
+                            }
+                            else
+                            {
+                                io.SetProperty(property);
+                            }
+                        }
+                    }
+
+                    CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Inserting entity with GID ({0:x16}) successfully finished.", globalId);
+                }
+                catch (Exception ex)
+                {
+                    string message = String.Format("Failed to insert entity (GID = 0x{0:x16}) into model. {1}", rd.Id, ex.Message);
+                    CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+                    throw new Exception(message);
+                }
+            }
+            return true;
 		}
 		
 		/// <summary>
@@ -872,6 +936,37 @@ namespace FTN.Services.NetworkModelService
 
 			return typesCounters;
 		}
+
+        private void InformClients()
+        {
+            while (true)
+            {
+                lock (lockObjectClient)
+                {
+                    if (clientsNeedToUpdate)
+                    {
+                        clientsForDeleting.Clear();
+                        foreach (IModelForDuplex client in clients)
+                        {
+                            try
+                            {
+                                client.NewDeltaApplied();
+                            }
+                            catch
+                            {
+                                clientsForDeleting.Add(client);
+                            }
+                        }
+                        foreach (IModelForDuplex client in clientsForDeleting)
+                        {
+                            clients.Remove(client);
+                        }
+                        clientsNeedToUpdate = false;
+                    }
+                }
+                Thread.Sleep(200);
+            }
+        }
 
     }
 }

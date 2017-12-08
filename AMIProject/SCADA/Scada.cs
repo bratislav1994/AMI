@@ -107,7 +107,7 @@ namespace SCADA
             }
         }
 
-        public bool AddMeasurements(List<ResourceDescription> measurements)
+        public bool Prepare(List<ResourceDescription> measurements)
         {
             List<Measurement> Ps = new List<Measurement>();
             List<Measurement> Qs = new List<Measurement>();
