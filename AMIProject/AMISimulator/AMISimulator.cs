@@ -1,5 +1,6 @@
 ﻿using Automatak.DNP3.Adapter;
 using Automatak.DNP3.Interface;
+using FTN.ServiceContracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,7 @@ namespace AMISimulator
                 {
                     instance = new AMISimulator();
                 }
+
                 return instance;
             }
         }
@@ -76,6 +78,7 @@ namespace AMISimulator
             config.link.remoteAddr = 1;
             var outstation = channel.AddOutstation("outstation", RejectingCommandHandler.Instance, DefaultOutstationApplication.Instance, config);
             outstation.Enable();
+
             return outstation;
         }
 
@@ -114,6 +117,7 @@ namespace AMISimulator
                         outstation.Load(changeset);
                     }
                 }
+
                 Thread.Sleep(10000);
             }
         }
@@ -121,6 +125,7 @@ namespace AMISimulator
         public int AddMeasurement()
         {
             this.numberOfInstalledPoints++;
+
             if(this.numberOfInstalledPoints > (numberOfAnalogPointsP + numberOfAnalogPointsQ + numberOfAnalogPointsV))
             {
                 this.numberOfInstalledPoints--;
@@ -128,6 +133,11 @@ namespace AMISimulator
             }
 
             return this.numberOfInstalledPoints - 1;
+        }
+
+        public void Rollback(int decrease)
+        {
+            this.numberOfInstalledPoints -= decrease;
         }
     }
 }

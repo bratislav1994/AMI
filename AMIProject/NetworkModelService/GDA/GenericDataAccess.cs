@@ -12,9 +12,10 @@ using FTN.ServiceContracts;
 
 namespace FTN.Services.NetworkModelService
 {
-	public class GenericDataAccess : INetworkModelGDAContract, INetworkModelGDAContractDuplexClient, INetworkModelGDAContractDuplexScada
+	public class GenericDataAccess : INetworkModelGDAContractDuplexClient
 	{
-		private static Dictionary<int, ResourceIterator> resourceItMap = new Dictionary<int, ResourceIterator>();
+        //INetworkModelGDAContract,
+        private static Dictionary<int, ResourceIterator> resourceItMap = new Dictionary<int, ResourceIterator>();
 		private static int resourceItId = 0;
 		protected static NetworkModel nm = null;
 
@@ -35,15 +36,10 @@ namespace FTN.Services.NetworkModelService
             nm.ConnectClient();
         }
 
-        public void ConnectScada()
-        {
-            nm.ConnectScada();
-        }
-
-		public UpdateResult ApplyUpdate(Delta delta)
-		{
-			return nm.ApplyDelta(delta);
-		}
+		//public UpdateResult ApplyUpdate(Delta delta)
+		//{
+		//	return nm.ApplyDelta(delta);
+		//}
 
 		public ResourceDescription GetValues(long resourceId, List<ModelCode> propIds)
 		{
@@ -220,6 +216,5 @@ namespace FTN.Services.NetworkModelService
 				return resourceItMap.Remove(iteratorId);
 			}
 		}
-
-	}
+    }
 }

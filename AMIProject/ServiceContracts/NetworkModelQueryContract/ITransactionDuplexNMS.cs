@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace FTN.ServiceContracts
 {
-    [ServiceContract(CallbackContract = typeof(IScadaForDuplex))]
-    public interface INetworkModelGDAContractDuplexScada : IBaseNetworkModelGDAContract
+    [ServiceContract(CallbackContract = typeof(INetworkModel))]
+    public interface ITransactionDuplexNMS
     {
         [OperationContract]
-        void ConnectScada();
+        void ConnectNMS();
     }
 }

@@ -91,10 +91,15 @@
   <ItemGroup>
     <Compile Include="IBaseNetworkModelGDAContract.cs" />
     <Compile Include="IModelForDuplex.cs" />
+    <Compile Include="INetworkModel.cs" />
     <Compile Include="INetworkModelGDAContract.cs" />
     <Compile Include="INetworkModelGDAContractDuplexClient.cs" />
-    <Compile Include="INetworkModelGDAContractDuplexScada.cs" />
-    <Compile Include="IScadaForDuplex.cs" />
+    <Compile Include="ITransactionCoordinator.cs" />
+    <Compile Include="ITransactionDuplexNMS.cs" />
+    <Compile Include="ITransactionDuplexScada.cs" />
+    <Compile Include="IScada.cs" />
+    <Compile Include="ISimulator.cs" />
+    <Compile Include="IBaseTransaction.cs" />
     <Compile Include="NetworkModelGDAProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Automatak.DNP3.Interface;
 using Automatak.DNP3.Adapter;
 using System.ServiceModel;
+using FTN.ServiceContracts;
 
 namespace AMISimulator
 {

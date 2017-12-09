@@ -5,14 +5,21 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
-using TC57CIM.IEC61970.Meas;
 
 namespace FTN.ServiceContracts
 {
     [ServiceContract]
-    public interface IScadaForDuplex
+    public interface IScada 
     {
         [OperationContract]
-        bool Prepare(List<ResourceDescription> measurements);
+        void EnlistMeas(List<ResourceDescription> measurements);
+        [OperationContract]
+        bool Prepare();
+
+        [OperationContract]
+        void Commit();
+
+        [OperationContract]
+        void Rollback();
     }
 }

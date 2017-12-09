@@ -10,18 +10,22 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using TC57CIM.IEC61970.Meas;
+using FTN.Services.NetworkModelService;
 
 namespace SCADA
 {
-    public class Scada : IScadaForDuplex
+    public class Scada : IScada
     {
         bool firstTimeSimulator = true;
-        bool firstTimeNMS = true;
+        bool firstTimeCoordinator = true;
         ISimulator proxySimulator = null;
         Dictionary<int, Measurement> measurements;
         SOEHandler handler;
         IDNP3Manager mgr;
-        INetworkModelGDAContractDuplexScada proxyNMS;
+        ITransactionDuplexScada proxyCoordinator;
+        int cnt = 0;
+        private List<ResourceDescription> measurementsToEnlist;
+        private Dictionary<int, Measurement> copyMeasurements = new Dictionary<int, Measurement>();
 
         public ISimulator ProxySimulator
         {
@@ -45,25 +49,25 @@ namespace SCADA
             }
         }
 
-        public INetworkModelGDAContractDuplexScada ProxyNMS
+        public ITransactionDuplexScada ProxyCoordinator
         {
             get
             {
-                if (firstTimeNMS)
+                if (firstTimeCoordinator)
                 {
-                    DuplexChannelFactory<INetworkModelGDAContractDuplexScada> factory = new DuplexChannelFactory<INetworkModelGDAContractDuplexScada>(
+                    DuplexChannelFactory<ITransactionDuplexScada> factory = new DuplexChannelFactory<ITransactionDuplexScada>(
                     new InstanceContext(this),
                         new NetTcpBinding(),
-                        new EndpointAddress("net.tcp://localhost:10002/NetworkModelService/GDADuplexScada"));
-                    proxyNMS = factory.CreateChannel();
-                    firstTimeNMS = false;
+                        new EndpointAddress("net.tcp://localhost:10002/TransactionCoordinator/Scada"));
+                    proxyCoordinator = factory.CreateChannel();
+                    firstTimeCoordinator = false;
                 }
-                return proxyNMS;
+                return proxyCoordinator;
             }
 
             set
             {
-                proxyNMS = value;
+                proxyCoordinator = value;
             }
         }
 
@@ -82,7 +86,7 @@ namespace SCADA
             config.master.disableUnsolOnStartup = false;
 
             var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.MaxValue, TaskConfig.Default);
-            ProxyNMS.ConnectScada();
+            ProxyCoordinator.ConnectScada();
 
             master.Enable();
 
@@ -107,18 +111,27 @@ namespace SCADA
             }
         }
 
-        public bool Prepare(List<ResourceDescription> measurements)
+        public void EnlistMeas(List<ResourceDescription> meas)
+        {
+            this.measurementsToEnlist = meas;
+            foreach (KeyValuePair<int, Measurement> kvp in this.measurements)
+            {
+                this.copyMeasurements.Add(kvp.Key, kvp.Value);
+            }
+        }
+
+        public bool Prepare()
         {
             List<Measurement> Ps = new List<Measurement>();
             List<Measurement> Qs = new List<Measurement>();
             List<Measurement> Vs = new List<Measurement>();
 
-            foreach(ResourceDescription rd in measurements)
+            foreach (ResourceDescription rd in measurementsToEnlist)
             {
                 TC57CIM.IEC61970.Meas.Analog m = new TC57CIM.IEC61970.Meas.Analog();
                 m.RD2Class(rd);
 
-                switch(m.UnitSymbol)
+                switch (m.UnitSymbol)
                 {
                     case UnitSymbol.P:
                         Ps.Add(m);
@@ -134,7 +147,7 @@ namespace SCADA
                 }
             }
 
-            if(Ps.Count != Qs.Count || Ps.Count != Vs.Count || Qs.Count != Vs.Count)
+            if (Ps.Count != Qs.Count || Ps.Count != Vs.Count || Qs.Count != Vs.Count)
             {
                 return false;
             }
@@ -142,9 +155,10 @@ namespace SCADA
             for (int i = 0; i < Ps.Count; i++)
             {
                 int index = ProxySimulator.AddMeasurement();
-                if(index != -1)
+                if (index != -1)
                 {
-                    this.measurements.Add(index, Ps[i]);
+                    this.copyMeasurements.Add(index, Ps[i]);
+                    ++cnt;
                 }
                 else
                 {
@@ -153,7 +167,8 @@ namespace SCADA
                 index = ProxySimulator.AddMeasurement();
                 if (index != -1)
                 {
-                    this.measurements.Add(index, Qs[i]);
+                    this.copyMeasurements.Add(index, Qs[i]);
+                    ++cnt;
                 }
                 else
                 {
@@ -162,14 +177,35 @@ namespace SCADA
                 index = ProxySimulator.AddMeasurement();
                 if (index != -1)
                 {
-                    this.measurements.Add(index, Vs[i]);
+                    this.copyMeasurements.Add(index, Vs[i]);
+                    ++cnt;
                 }
                 else
                 {
                     return false;
                 }
             }
+
             return true;
+        }
+
+        public void Commit()
+        {
+            this.measurements.Clear();
+            foreach (KeyValuePair<int, Measurement> kvp in this.copyMeasurements)
+            {
+                this.measurements.Add(kvp.Key, kvp.Value);
+            }
+
+            cnt = 0;
+            this.copyMeasurements.Clear();
+        }
+
+        public void Rollback()
+        {
+            this.ProxySimulator.Rollback(cnt);
+            cnt = 0;
+            this.copyMeasurements.Clear();
         }
     }
 }

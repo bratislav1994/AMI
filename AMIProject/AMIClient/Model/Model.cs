@@ -31,7 +31,7 @@ namespace AMIClient
         {
             get
             {
-                if(firstContact)
+                if (firstContact)
                 {
                     DuplexChannelFactory<INetworkModelGDAContractDuplexClient> factory = new DuplexChannelFactory<INetworkModelGDAContractDuplexClient>(
                     new InstanceContext(this),
@@ -51,7 +51,18 @@ namespace AMIClient
 
         public Model()
         {
-            GdaQueryProxy.ConnectClient();
+            while (true)
+            {
+                try
+                {
+                    GdaQueryProxy.ConnectClient();
+                    break;
+                }
+                catch
+                {
+                    Thread.Sleep(1000);
+                }
+            }
         }
 
         public void SetRoot(RootElement root)

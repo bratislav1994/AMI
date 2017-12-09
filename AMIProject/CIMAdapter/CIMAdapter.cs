@@ -14,27 +14,27 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter
 {
 	public class CIMAdapter
 	{
-        private INetworkModelGDAContract gdaQueryProxy = null;
+        private ITransactionCoordinator proxy = null;
         private bool firstContact = true;
        
 		public CIMAdapter()
 		{
 		}
 
-        private INetworkModelGDAContract GdaQueryProxy
+        private ITransactionCoordinator Proxy
         {
             get
             {
                 if(firstContact)
                 {
-                    ChannelFactory<INetworkModelGDAContract> factory = new ChannelFactory<INetworkModelGDAContract>(
+                    ChannelFactory<ITransactionCoordinator> factory = new ChannelFactory<ITransactionCoordinator>(
                         new NetTcpBinding(),
-                        new EndpointAddress("net.tcp://localhost:10001/NetworkModelService/GDA"));
-                    this.gdaQueryProxy = factory.CreateChannel();
+                        new EndpointAddress("net.tcp://localhost:10001/TransactionCoordinator/Adapter"));
+                    this.proxy = factory.CreateChannel();
                     firstContact = false;
                 }
 
-                return gdaQueryProxy;
+                return proxy;
             }
         }
 
@@ -64,7 +64,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter
 			if ((delta != null) && (delta.NumberOfOperations != 0))
 			{
 				//// NetworkModelService->ApplyUpdates
-                updateResult = GdaQueryProxy.ApplyUpdate(delta).ToString();
+                updateResult = Proxy.ApplyDelta(delta).ToString();
 			}
 
 			Thread.CurrentThread.CurrentCulture = culture;

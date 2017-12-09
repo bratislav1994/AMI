@@ -30,23 +30,13 @@ namespace FTN.Services.NetworkModelService
                                     new NetTcpBinding(),
                                     new Uri("net.tcp://localhost:10000/NetworkModelService/GDADuplexClient"));
 
-            svc = new ServiceHost(typeof(GenericDataAccess));
-            svc.AddServiceEndpoint(typeof(INetworkModelGDAContract),
-                                    new NetTcpBinding(),
-                                    new Uri("net.tcp://localhost:10001/NetworkModelService/GDA"));
-
-            svcDuplexScada = new ServiceHost(typeof(GenericDataAccess));
-            svcDuplexScada.AddServiceEndpoint(typeof(INetworkModelGDAContractDuplexScada),
-                                    new NetTcpBinding(),
-                                    new Uri("net.tcp://localhost:10002/NetworkModelService/GDADuplexScada"));
+            
             //InitializeHosts();
         }
 	
 		public void Start()
 		{
             svcDuplexClient.Open();
-            svcDuplexScada.Open();
-            svc.Open();
             Console.WriteLine("WCF services opened and ready");
 			//StartHosts();			
 		}
@@ -54,9 +44,7 @@ namespace FTN.Services.NetworkModelService
 		public void Dispose()
 		{
             //CloseHosts();
-            svc.Close();
             svcDuplexClient.Close();
-            svcDuplexScada.Close();
             GC.SuppressFinalize(this);
 		}
 
