@@ -11,21 +11,27 @@ using System.Text;
 using System.Threading.Tasks;
 using TC57CIM.IEC61970.Meas;
 using FTN.Services.NetworkModelService;
+using System.Threading;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace SCADA
 {
-    public class Scada : IScada
+    public class Scada : IScada, IDisposable
     {
         bool firstTimeSimulator = true;
         bool firstTimeCoordinator = true;
         ISimulator proxySimulator = null;
-        Dictionary<int, Measurement> measurements;
+        Dictionary<int, ResourceDescription> measurements;
         SOEHandler handler;
         IDNP3Manager mgr;
         ITransactionDuplexScada proxyCoordinator;
         int cnt = 0;
         private List<ResourceDescription> measurementsToEnlist;
-        private Dictionary<int, Measurement> copyMeasurements = new Dictionary<int, Measurement>();
+        private Dictionary<int, ResourceDescription> copyMeasurements = new Dictionary<int, ResourceDescription>();
+        private List<ResourceDescription> resourcesToSend = new List<ResourceDescription>();
+        private object lockObject = new object();
+        private Thread sendingThread;
 
         public ISimulator ProxySimulator
         {
@@ -73,8 +79,8 @@ namespace SCADA
 
         public Scada()
         {
-            measurements = new Dictionary<int, Measurement>();
-            handler = new SOEHandler(ref measurements);
+            measurements = new Dictionary<int, ResourceDescription>();
+            handler = new SOEHandler(ref measurements, ref resourcesToSend, ref lockObject);
             mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
             var channel = mgr.AddTCPClient("outstation", LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", 20000, ChannelListener.Print());
 
@@ -88,7 +94,11 @@ namespace SCADA
             var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.MaxValue, TaskConfig.Default);
             ProxyCoordinator.ConnectScada();
 
+            Deserialize(measurements);
+
             master.Enable();
+            sendingThread = new Thread(() => CheckIfThereIsSomethingToSned());
+            sendingThread.Start();
 
         }
 
@@ -114,7 +124,7 @@ namespace SCADA
         public void EnlistMeas(List<ResourceDescription> meas)
         {
             this.measurementsToEnlist = meas;
-            foreach (KeyValuePair<int, Measurement> kvp in this.measurements)
+            foreach (KeyValuePair<int, ResourceDescription> kvp in this.measurements)
             {
                 this.copyMeasurements.Add(kvp.Key, kvp.Value);
             }
@@ -122,9 +132,9 @@ namespace SCADA
 
         public bool Prepare()
         {
-            List<Measurement> Ps = new List<Measurement>();
-            List<Measurement> Qs = new List<Measurement>();
-            List<Measurement> Vs = new List<Measurement>();
+            List<ResourceDescription> Ps = new List<ResourceDescription>();
+            List<ResourceDescription> Qs = new List<ResourceDescription>();
+            List<ResourceDescription> Vs = new List<ResourceDescription>();
 
             foreach (ResourceDescription rd in measurementsToEnlist)
             {
@@ -134,13 +144,13 @@ namespace SCADA
                 switch (m.UnitSymbol)
                 {
                     case UnitSymbol.P:
-                        Ps.Add(m);
+                        Ps.Add(rd);
                         break;
                     case UnitSymbol.Q:
-                        Qs.Add(m);
+                        Qs.Add(rd);
                         break;
                     case UnitSymbol.V:
-                        Vs.Add(m);
+                        Vs.Add(rd);
                         break;
                     default:
                         return false;
@@ -192,11 +202,11 @@ namespace SCADA
         public void Commit()
         {
             this.measurements.Clear();
-            foreach (KeyValuePair<int, Measurement> kvp in this.copyMeasurements)
+            foreach (KeyValuePair<int, ResourceDescription> kvp in this.copyMeasurements)
             {
                 this.measurements.Add(kvp.Key, kvp.Value);
             }
-
+            Serialize(measurements);
             cnt = 0;
             this.copyMeasurements.Clear();
         }
@@ -206,6 +216,56 @@ namespace SCADA
             this.ProxySimulator.Rollback(cnt);
             cnt = 0;
             this.copyMeasurements.Clear();
+        }
+
+        private void CheckIfThereIsSomethingToSned()
+        {
+            while(true)
+            {
+                lock(lockObject)
+                {
+                    if(resourcesToSend.Count > 0)
+                    {
+                        Console.WriteLine("List changed, here will be code for sending measurements to Calculation Engine...");
+                        resourcesToSend.Clear();
+                    }
+                }
+                Thread.Sleep(200);
+            }
+        }
+
+        public void Dispose()
+        {
+            sendingThread.Abort();
+        }
+
+        private void Serialize(Dictionary<int, ResourceDescription> measurements)
+        {
+            TextWriter tw = new StreamWriter("Measurements.xml");
+            List<ClassForSerialization> meas = new List<ClassForSerialization>(measurements.Count);
+            foreach(int key in measurements.Keys)
+            {
+                meas.Add(new ClassForSerialization(key, measurements[key]));
+            }
+            XmlSerializer serializer = new XmlSerializer(typeof(List<ClassForSerialization>));
+            serializer.Serialize(tw, meas);
+        }
+
+        private void Deserialize(Dictionary<int, ResourceDescription> measurements)
+        {
+            try
+            {
+                TextReader tr = new StreamReader(File.OpenRead("Measurements.xml"));
+                measurements.Clear();
+                XmlSerializer serializer = new XmlSerializer(typeof(List<ClassForSerialization>));
+                List<ClassForSerialization> meas = (List<ClassForSerialization>)serializer.Deserialize(tr);
+
+                foreach (ClassForSerialization cfs in meas)
+                {
+                    measurements.Add(cfs.Key, cfs.Rd);
+                }
+            }
+            catch { }
         }
     }
 }

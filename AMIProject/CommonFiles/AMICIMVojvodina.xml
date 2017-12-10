@@ -242,7 +242,7 @@
 	<cim:Analog rdf:ID="ANALOG_1_1_1">
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Analog.normalValue>77</cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_1"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>

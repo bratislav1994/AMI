@@ -1,4 +1,5 @@
 ﻿using Automatak.DNP3.Interface;
+using FTN.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,53 @@ namespace SCADA
     public class SOEHandler : ISOEHandler
     {
         bool canExecute = false;
-        Dictionary<int, TC57CIM.IEC61970.Meas.Measurement> measurements;
+        Dictionary<int, ResourceDescription> measurements;
+        List<ResourceDescription> resourcesToSend;
+        object lockObject;
 
-        public SOEHandler(ref Dictionary<int, TC57CIM.IEC61970.Meas.Measurement> measurements)
+        public SOEHandler(ref Dictionary<int, ResourceDescription> measurements, ref List<ResourceDescription> resourcesToSend, ref object lockObject)
         {
             this.measurements = measurements;
+            this.resourcesToSend = resourcesToSend;
+            this.lockObject = lockObject;
         }
 
+        public void Process(HeaderInfo info, IEnumerable<IndexedValue<Analog>> values)
+        {
+            if (canExecute)
+            {
+                lock (lockObject)
+                {
+                    List<IndexedValue<Analog>> analogs = new List<IndexedValue<Analog>>();
+                    analogs.AddRange(values.ToList());
+                    foreach (IndexedValue<Analog> analog in analogs)
+                    {
+                        if (analog.Value.Value != 0)
+                        {
+                            ResourceDescription newRD = new ResourceDescription();
+                            newRD.Id = measurements[analog.Index].Id;
+                            foreach (Property p in measurements[analog.Index].Properties)
+                            {
+                                if (p.Id == ModelCode.ANALOG_NORMALVALUE)
+                                {
+                                    Property newP = new Property(p.Id, (float)analog.Value.Value);
+                                    newRD.AddProperty(newP);
+                                }
+                                else
+                                {
+                                    newRD.AddProperty(p);
+                                }
+                            }
+                            resourcesToSend.Add(newRD);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 
         public void End()
         {
@@ -76,26 +117,6 @@ namespace SCADA
         public void Process(HeaderInfo info, IEnumerable<IndexedValue<Binary>> values)
         {
             throw new NotImplementedException();
-        }
-
-        public void Process(HeaderInfo info, IEnumerable<IndexedValue<Analog>> values)
-        {
-            if (canExecute)
-            {
-                List<IndexedValue<Analog>> analogs = new List<IndexedValue<Analog>>();
-                analogs.AddRange(values.ToList());
-                foreach (IndexedValue<Analog> analog in analogs)
-                {
-                    if (analog.Value.Value != 0)
-                    {
-                        Console.WriteLine("[" + analog.Index + "]" + "=" + analog.Value.Value);
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
         }
 
         public void Start()

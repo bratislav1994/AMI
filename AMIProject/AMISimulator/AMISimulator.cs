@@ -26,6 +26,7 @@ namespace AMISimulator
         private List<IOutstation> outStations = null;
         private List<OutstationStackConfig> configs = null;
         private static AMISimulator instance = null;
+        private object lockObject;
 
         public static AMISimulator Instance
         {
@@ -43,6 +44,7 @@ namespace AMISimulator
         public AMISimulator()
         {
             this.numberOfInstalledPoints = 0;
+            lockObject = new object();
 
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
 
@@ -124,20 +126,26 @@ namespace AMISimulator
 
         public int AddMeasurement()
         {
-            this.numberOfInstalledPoints++;
-
-            if(this.numberOfInstalledPoints > (numberOfAnalogPointsP + numberOfAnalogPointsQ + numberOfAnalogPointsV))
+            lock (lockObject)
             {
-                this.numberOfInstalledPoints--;
-                return -1;
-            }
+                this.numberOfInstalledPoints++;
 
-            return this.numberOfInstalledPoints - 1;
+                if (this.numberOfInstalledPoints > (numberOfAnalogPointsP + numberOfAnalogPointsQ + numberOfAnalogPointsV))
+                {
+                    this.numberOfInstalledPoints--;
+                    return -1;
+                }
+
+                return this.numberOfInstalledPoints - 1;
+            }
         }
 
         public void Rollback(int decrease)
         {
-            this.numberOfInstalledPoints -= decrease;
+            lock (lockObject)
+            {
+                this.numberOfInstalledPoints -= decrease;
+            }
         }
     }
 }
