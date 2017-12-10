@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="IBaseNetworkModelGDAContract.cs" />
     <Compile Include="ICalculationDuplexClient.cs" />
+    <Compile Include="ICalculationEngine.cs" />
     <Compile Include="IModelForDuplex.cs" />
     <Compile Include="INetworkModel.cs" />
     <Compile Include="INetworkModelGDAContract.cs" />

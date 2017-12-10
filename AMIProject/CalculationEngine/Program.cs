@@ -11,10 +11,11 @@ namespace CalculationEngine
     class Program
     {
         public static ServiceHost svc = null;
+        public static ServiceHost svc1 = null;
 
         static void Main(string[] args)
         {
-            CalculationEngine ce = new CalculationEngine();
+         //   CalculationEngine ce = new CalculationEngine();
 
             Start();
             Console.ReadKey(true);
@@ -26,14 +27,20 @@ namespace CalculationEngine
             svc = new ServiceHost(CalculationEngine.Instance);
             var binding = new NetTcpBinding();
             svc.AddServiceEndpoint(typeof(ICalculationDuplexClient), binding, new Uri("net.tcp://localhost:10006/CalculationEngine/Client"));
-            
+
+            svc1 = new ServiceHost(CalculationEngine.Instance);
+            var binding1 = new NetTcpBinding();
+            svc1.AddServiceEndpoint(typeof(ICalculationEngine), binding1, new Uri("net.tcp://localhost:10050/ICalculationEngine/Calculation"));
+
             svc.Open();
+            svc1.Open();
             Console.WriteLine("CalculationEngine waiting for request..");
         }
 
         public static void Stop()
         {
             svc.Close();
+            svc1.Close();
             Console.WriteLine("CalculationEngine server stopped");
         }
     }

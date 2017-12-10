@@ -11,22 +11,19 @@ using System.Threading.Tasks;
 namespace CalculationEngine
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class CalculationEngine : ICalculationDuplexClient
+    public class CalculationEngine : ICalculationEngine, ICalculationDuplexClient
     {
         private static CalculationEngine instance;
         private List<IModelForDuplex> clients;
         private List<IModelForDuplex> clientsForDeleting;
-
-        private Thread poziv;
+        private List<ResourceDescription> meas;
 
         public CalculationEngine()
         {
             clients = new List<IModelForDuplex>();
             clientsForDeleting = new List<IModelForDuplex>();
 
-            //nit koja glumi scadu tj dobija kao preko nje podatke iz scade --> brisace se
-            poziv = new Thread(() => Slanje());
-            poziv.Start();
+            meas = new List<ResourceDescription>();
         }
 
         public static CalculationEngine Instance
@@ -47,48 +44,29 @@ namespace CalculationEngine
             this.clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
         }
 
-        //ovo je fju koja ce povezivati scadu sa ce, primice podatke od scade i u njoj treba da prosledi te podatke clientu
-        public void ReceiveData(List<ResourceDescription> measurements)
+        public void DataFromScada(List<ResourceDescription> measurements)
         {
-            if(measurements.Count != 0)
-            {
-                Console.WriteLine("Receive data from SCADA");
-                Console.WriteLine("Send data to client");
+            Console.WriteLine("Receive data from SCADA");
+            this.meas = measurements;
 
-                clientsForDeleting.Clear();
-                foreach (IModelForDuplex client in clients)
+            Console.WriteLine("Send data to client");
+
+            clientsForDeleting.Clear();
+            foreach (IModelForDuplex client in clients)
+            {
+                try
                 {
-                    try
-                    {
-                        client.SendMeasurements(measurements);
-                    }
-                    catch
-                    {
-                        clientsForDeleting.Add(client);
-                    }
+                    client.SendMeasurements(measurements);
                 }
-                foreach (IModelForDuplex client in clientsForDeleting)
+                catch
                 {
-                    clients.Remove(client);
+                    clientsForDeleting.Add(client);
                 }
             }
-        }
 
-        public void Slanje()
-        {
-            while (true)
+            foreach (IModelForDuplex client in clientsForDeleting)
             {
-                if (clients.Count > 0)
-                {
-                    List<ResourceDescription> meas = new List<ResourceDescription>();
-                    meas.Add(new ResourceDescription(123));
-                    ReceiveData(meas);
-                    break;
-                }
-                else
-                {
-                    Thread.Sleep(2000);
-                }
+                clients.Remove(client);
             }
         }
     }

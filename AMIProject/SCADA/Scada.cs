@@ -14,6 +14,7 @@ using FTN.Services.NetworkModelService;
 using System.Threading;
 using System.IO;
 using System.Xml.Serialization;
+using System.Windows.Threading;
 
 namespace SCADA
 {
@@ -21,6 +22,7 @@ namespace SCADA
     {
         bool firstTimeSimulator = true;
         bool firstTimeCoordinator = true;
+        bool firstTimeCE = true;
         ISimulator proxySimulator = null;
         Dictionary<int, ResourceDescription> measurements;
         SOEHandler handler;
@@ -32,6 +34,7 @@ namespace SCADA
         private List<ResourceDescription> resourcesToSend = new List<ResourceDescription>();
         private object lockObject = new object();
         private Thread sendingThread;
+        ICalculationEngine proxyCE;
 
         public ISimulator ProxySimulator
         {
@@ -74,6 +77,28 @@ namespace SCADA
             set
             {
                 proxyCoordinator = value;
+            }
+        }
+
+        public ICalculationEngine ProxyCE
+        {
+            get
+            {
+                if (firstTimeCE)
+                {
+                    ChannelFactory<ICalculationEngine> factory = new ChannelFactory<ICalculationEngine>(new NetTcpBinding(),
+                                                                                        new EndpointAddress("net.tcp://localhost:10050/ICalculationEngine/Calculation"));
+                    proxyCE = factory.CreateChannel();
+
+                    firstTimeCE = false;
+                }
+
+                return proxyCE;
+            }
+
+            set
+            {
+                proxyCE = value;
             }
         }
 
@@ -227,6 +252,8 @@ namespace SCADA
                     if(resourcesToSend.Count > 0)
                     {
                         Console.WriteLine("List changed, here will be code for sending measurements to Calculation Engine...");
+                        ProxyCE.DataFromScada(resourcesToSend);
+
                         resourcesToSend.Clear();
                     }
                 }
