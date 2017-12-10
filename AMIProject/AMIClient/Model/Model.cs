@@ -13,19 +13,23 @@ using System.Windows.Controls;
 using System.Xml;
 using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Wires;
+using TC57CIM.IEC61970.Meas;
 
 namespace AMIClient
 {
     public class Model : IDisposable, IModel, IModelForDuplex
     {
         private ModelResourcesDesc modelResourcesDesc = new ModelResourcesDesc();
+        private List<ResourceDescription> meas = new List<ResourceDescription>();
         private ObservableCollection<GeographicalRegion> geoRegions = new ObservableCollection<GeographicalRegion>();
         private ObservableCollection<SubGeographicalRegion> subGeoRegions = new ObservableCollection<SubGeographicalRegion>();
         private ObservableCollection<Substation> substations = new ObservableCollection<Substation>();
         private ObservableCollection<EnergyConsumer> amis = new ObservableCollection<EnergyConsumer>();
         private RootElement root;
         private bool firstContact = true;
+        private bool firstContactCE = true;
         private INetworkModelGDAContractDuplexClient gdaQueryProxy = null;
+        private ICalculationDuplexClient ceQueryProxy = null;
 
         public INetworkModelGDAContractDuplexClient GdaQueryProxy
         {
@@ -49,6 +53,28 @@ namespace AMIClient
             }
         }
 
+        public ICalculationDuplexClient CEQueryProxy
+        {
+            get
+            {
+                if (firstContactCE)
+                {
+                    DuplexChannelFactory<ICalculationDuplexClient> factoryCE = new DuplexChannelFactory<ICalculationDuplexClient>(
+                    new InstanceContext(this),
+                        new NetTcpBinding(),
+                        new EndpointAddress("net.tcp://localhost:10006/CalculationEngine/Client"));
+                    ceQueryProxy = factoryCE.CreateChannel();
+                    firstContactCE = false;
+                }
+                return ceQueryProxy;
+            }
+
+            set
+            {
+                ceQueryProxy = value;
+            }
+        }
+
         public Model()
         {
             while (true)
@@ -56,6 +82,7 @@ namespace AMIClient
                 try
                 {
                     GdaQueryProxy.ConnectClient();
+                    CEQueryProxy.ConncetClient();
                     break;
                 }
                 catch
@@ -315,6 +342,11 @@ namespace AMIClient
             {
                 this.root.NeedsUpdate = true;
             }
+        }
+
+        public void SendMeasurements(List<ResourceDescription> measurements)
+        {
+            this.meas = measurements;
         }
     }
 }
