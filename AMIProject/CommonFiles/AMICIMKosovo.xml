@@ -277,107 +277,308 @@
 	</cim:EnergyConsumer>
 	
 	
-	<cim:Analog rdf:ID="ANALOG_3_1">
+	<cim:Analog rdf:ID="ANALOG_3_1_1">
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_1"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
-		<cim:IdentifiedObject.mRID>ANALOG_3_1</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_3_1</cim:IdentifiedObject.name>
+		<cim:IdentifiedObject.mRID>ANALOG_3_1_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_1_1</cim:IdentifiedObject.name>
 	</cim:Analog>
-	<cim:Analog rdf:ID="ANALOG_3_2">
+	<cim:Analog rdf:ID="ANALOG_3_2_1">
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_2"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
-		<cim:IdentifiedObject.mRID>ANALOG_3_2</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_3_2</cim:IdentifiedObject.name>
+		<cim:IdentifiedObject.mRID>ANALOG_3_2_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_2_1</cim:IdentifiedObject.name>
 	</cim:Analog>
-	<cim:Analog rdf:ID="ANALOG_3_3">
+	<cim:Analog rdf:ID="ANALOG_3_3_1">
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_3"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
-		<cim:IdentifiedObject.mRID>ANALOG_3_3</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_3_3</cim:IdentifiedObject.name>
+		<cim:IdentifiedObject.mRID>ANALOG_3_3_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_3_1</cim:IdentifiedObject.name>
 	</cim:Analog>
-	<cim:Analog rdf:ID="ANALOG_3_4">
+	<cim:Analog rdf:ID="ANALOG_3_4_1">
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_4"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
-		<cim:IdentifiedObject.mRID>ANALOG_3_4</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_3_4</cim:IdentifiedObject.name>
+		<cim:IdentifiedObject.mRID>ANALOG_3_4_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_4_1</cim:IdentifiedObject.name>
 	</cim:Analog>
-	<cim:Analog rdf:ID="ANALOG_3_5">
+	<cim:Analog rdf:ID="ANALOG_3_5_1">
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_5"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
-		<cim:IdentifiedObject.mRID>ANALOG_3_5</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_3_5</cim:IdentifiedObject.name>
+		<cim:IdentifiedObject.mRID>ANALOG_3_5_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_5_1</cim:IdentifiedObject.name>
 	</cim:Analog>
-	<cim:Analog rdf:ID="ANALOG_3_6">
+	<cim:Analog rdf:ID="ANALOG_3_6_1">
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_6"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
-		<cim:IdentifiedObject.mRID>ANALOG_3_6</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_3_6</cim:IdentifiedObject.name>
+		<cim:IdentifiedObject.mRID>ANALOG_3_6_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_6_1</cim:IdentifiedObject.name>
 	</cim:Analog>
-	<cim:Analog rdf:ID="ANALOG_3_7">
+	<cim:Analog rdf:ID="ANALOG_3_7_1">
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_7"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
-		<cim:IdentifiedObject.mRID>ANALOG_3_7</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_3_7</cim:IdentifiedObject.name>
+		<cim:IdentifiedObject.mRID>ANALOG_3_7_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_7_1</cim:IdentifiedObject.name>
 	</cim:Analog>
-	<cim:Analog rdf:ID="ANALOG_3_8">
+	<cim:Analog rdf:ID="ANALOG_3_8_1">
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_8"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
-		<cim:IdentifiedObject.mRID>ANALOG_3_8</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_3_8</cim:IdentifiedObject.name>
+		<cim:IdentifiedObject.mRID>ANALOG_3_8_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_8_1</cim:IdentifiedObject.name>
 	</cim:Analog>
-	<cim:Analog rdf:ID="ANALOG_3_9">
+	<cim:Analog rdf:ID="ANALOG_3_9_1">
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_9"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
-		<cim:IdentifiedObject.mRID>ANALOG_3_9</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_3_9</cim:IdentifiedObject.name>
+		<cim:IdentifiedObject.mRID>ANALOG_3_9_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_9_1</cim:IdentifiedObject.name>
 	</cim:Analog>
-	<cim:Analog rdf:ID="ANALOG_3_10">
+	<cim:Analog rdf:ID="ANALOG_3_10_1">
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue> </cim:Analog.normalValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_10"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
-		<cim:IdentifiedObject.mRID>ANALOG_3_10</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_3_10</cim:IdentifiedObject.name>
+		<cim:IdentifiedObject.mRID>ANALOG_3_10_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_10_1</cim:IdentifiedObject.name>
 	</cim:Analog>
 	
+	<cim:Analog rdf:ID="ANALOG_3_1_2">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_1"/>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_1_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_1_2</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_3_2_2">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_2"/>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_2_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_2_2</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_3_3_2">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_3"/>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_3_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_3_2</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_3_4_2">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_4"/>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_4_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_4_2</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_3_5_2">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_5"/>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_5_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_5_2</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_3_6_2">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_6"/>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_6_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_6_2</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_3_7_2">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_7"/>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_7_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_7_2</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_3_8_2">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_8"/>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_8_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_8_2</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_3_9_2">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_9"/>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_9_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_9_2</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_3_10_2">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_10"/>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_10_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_10_2</cim:IdentifiedObject.name>
+	</cim:Analog>
+	
+	<cim:Analog rdf:ID="ANALOG_3_1_3">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_1"/>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_1_3</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_1_3</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_3_2_3">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_2"/>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_2_3</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_2_3</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_3_3_3">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_3"/>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_3_3</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_3_3</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_3_4_3">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_4"/>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_4_3</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_4_3</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_3_5_3">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_5"/>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_5_3</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_5_3</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_3_6_3">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_6"/>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_6_3</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_6_3</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_3_7_3">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_7"/>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_7_3</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_7_3</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_3_8_3">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_8"/>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_8_3</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_8_3</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_3_9_3">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_9"/>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_9_3</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_9_3</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOG_3_10_3">
+		<cim:Analog.maxValue>100</cim:Analog.maxValue>
+		<cim:Analog.minValue>7</cim:Analog.minValue>
+		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_10"/>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
+		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:IdentifiedObject.mRID>ANALOG_3_10_3</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOG_3_10_3</cim:IdentifiedObject.name>
+	</cim:Analog>
 	
 	<!--cim:Discrete rdf:ID=" ">
 		<cim:Discrete.maxValue> </cim:Discrete.maxValue>
