@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AMIClient.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,12 +27,13 @@ namespace AMIClient
 
         public MainWindow()
         {
-            model = new Model();
-            tvm = new NetworkPreviewViewModel(model);
-            xmlvm = new AddCimXmlViewModel();
+            //model = new Model();
+            //tvm = new NetworkPreviewViewModel(model);
+            //xmlvm = new AddCimXmlViewModel();
             InitializeComponent();
-            DataContext = this;
-            Closing += tvm.AbortThread;
+            //DataContext = this;
+            //Closing += tvm.AbortThread;
+            DataContext = new MasterViewModel();
         }
 
         public AddCimXmlViewModel Xmlvm
