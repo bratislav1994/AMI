@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AMIClient.View"
+             xmlns:vml="clr-namespace:AMIClient.VML"
+             vml:ViewModelLocator.AutoHookedUpViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Margin="0,0,0,0">
@@ -22,18 +24,18 @@
         </Grid.ColumnDefinitions>
 
         <Label x:Name="label" Grid.Column="0" Content="CIM/XML file: " HorizontalAlignment="Left" VerticalAlignment="Center" Height="29" Width="95"/>
-        <TextBox HorizontalAlignment="Left" Grid.Column="1" Text="{Binding Xmlvm.XMLPath, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="326" Grid.ColumnSpan="2"/>
-        <Button x:Name="button" Grid.Column="2" HorizontalAlignment="Right" Content="Browse" Command="{Binding Xmlvm.BrowseCommand}" VerticalAlignment="Center" Width="83"/>
+        <TextBox HorizontalAlignment="Left" Grid.Column="1" Text="{Binding XMLPath, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="326" Grid.ColumnSpan="2"/>
+        <Button x:Name="button" Grid.Column="2" HorizontalAlignment="Right" Content="Browse" Command="{Binding BrowseCommand}" VerticalAlignment="Center" Width="83"/>
 
         <Label Grid.Row="1" Grid.Column="0" Content="CIM profile:"  VerticalAlignment="Center"/>
-        <ComboBox Grid.Row="1" HorizontalAlignment="Left" Grid.Column="1" SelectedItem="{Binding Xmlvm.CIMProfile}" ItemsSource="{Binding Xmlvm.CIMProfiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="326" Grid.ColumnSpan="2" />
+        <ComboBox Grid.Row="1" HorizontalAlignment="Left" Grid.Column="1" SelectedItem="{Binding CIMProfile}" ItemsSource="{Binding CIMProfiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="326" Grid.ColumnSpan="2" />
 
-        <Button Grid.Row="2" Content="Convert" HorizontalAlignment="Left" Command="{Binding Xmlvm.ConvertCommand}" VerticalAlignment="Center" Width="83"/>
-        <Button x:Name="button1" Content="Apply Delta" Command="{Binding Xmlvm.ApplyDeltaCommand}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="2" Width="83"/>
+        <Button Grid.Row="2" Content="Convert" HorizontalAlignment="Left" Command="{Binding ConvertCommand}" VerticalAlignment="Center" Width="83"/>
+        <Button x:Name="button1" Content="Apply Delta" Command="{Binding ApplyDeltaCommand}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="2" Width="83"/>
 
         <Label x:Name="label1" Content="Report: " HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Top"/>
         <ScrollViewer Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalScrollBarVisibility="Visible">
-            <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Xmlvm.Report, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Background="White" >
+            <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Report, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Background="White" >
 
             </TextBlock>
         </ScrollViewer>

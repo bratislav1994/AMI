@@ -139,9 +139,10 @@
     <Compile Include="View\AddCimXmlControl.xaml.cs">
       <DependentUpon>AddCimXmlControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\NetworkPreviewWindow.xaml.cs">
-      <DependentUpon>NetworkPreviewWindow.xaml</DependentUpon>
+    <Compile Include="View\NetworkPreviewControl.xaml.cs">
+      <DependentUpon>NetworkPreviewControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VML\ViewModelLocator.cs" />
     <Page Include="View\AddCimXmlControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -164,7 +165,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\NetworkPreviewWindow.xaml">
+    <Page Include="View\NetworkPreviewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

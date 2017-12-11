@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace AMIClient
+namespace AMIClient.ViewModels
 {
     public class AddCimXmlViewModel : INotifyPropertyChanged
     {
@@ -24,6 +24,7 @@ namespace AMIClient
         private CIMAdapter adapter = new CIMAdapter();
         private bool isOk;
         private BindingList<SupportedProfiles> cIMProfiles;
+        private static AddCimXmlViewModel instance;
 
         public AddCimXmlViewModel()
         {
@@ -31,6 +32,19 @@ namespace AMIClient
             XMLPath = string.Empty;
             CIMProfiles = new BindingList<SupportedProfiles>() { SupportedProfiles.AMIProfile };
             CIMProfile = CIMProfiles[0];
+        }
+
+        public static AddCimXmlViewModel Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new AddCimXmlViewModel();   
+                }
+
+                return instance;
+            }
         }
 
         public string Report

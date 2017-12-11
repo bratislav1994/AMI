@@ -72,9 +72,11 @@ namespace FTN.Services.NetworkModelService
             {
                 if (firstTimeCoordinator)
                 {
+                    NetTcpBinding binding = new NetTcpBinding();
+                    binding.SendTimeout = TimeSpan.FromSeconds(3);
                     DuplexChannelFactory<ITransactionDuplexNMS> factory = new DuplexChannelFactory<ITransactionDuplexNMS>(
                     new InstanceContext(this),
-                        new NetTcpBinding(),
+                        binding,
                         new EndpointAddress("net.tcp://localhost:10003/TransactionCoordinator/NMS"));
                     proxyCoordinator = factory.CreateChannel();
                     firstTimeCoordinator = false;

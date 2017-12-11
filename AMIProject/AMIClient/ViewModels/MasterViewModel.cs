@@ -17,9 +17,11 @@ namespace AMIClient.ViewModels
 
         public MasterViewModel()
         {
-            model = new Model();
-            tvm = new NetworkPreviewViewModel(model);
+            Model = new Model();
+            tvm = new NetworkPreviewViewModel();
+            //tvm.model = Model;
             xmlvm = new AddCimXmlViewModel();
+            this.CurrentViewModel = Tvm;
         }
 
         public AddCimXmlViewModel Xmlvm
@@ -45,6 +47,19 @@ namespace AMIClient.ViewModels
             set
             {
                 tvm = value;
+            }
+        }
+
+        public IModel Model
+        {
+            get
+            {
+                return model;
+            }
+
+            set
+            {
+                model = value;
             }
         }
 
@@ -92,7 +107,7 @@ namespace AMIClient.ViewModels
                 return addCimXmlCommand;
             }
         }
-
+        
         private void AddCimXmlAction()
         {
             this.CurrentViewModel = Xmlvm;

@@ -65,7 +65,7 @@ namespace SCADA
                 if (firstTimeCoordinator)
                 {
                     NetTcpBinding binding = new NetTcpBinding();
-                    binding.CloseTimeout = TimeSpan.FromSeconds(3);
+                    binding.SendTimeout = TimeSpan.FromSeconds(3);
                     DuplexChannelFactory<ITransactionDuplexScada> factory = new DuplexChannelFactory<ITransactionDuplexScada>(
                     new InstanceContext(this),
                         binding,

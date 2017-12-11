@@ -9,29 +9,41 @@ using System.Threading.Tasks;
 using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Wires;
 
-namespace AMIClient
+namespace AMIClient.ViewModels
 {
     public class NetworkPreviewViewModel : INotifyPropertyChanged
     {
-        IModel model;
+        public IModel model;
         private ObservableCollection<RootElement> rootElements;
         private ObservableCollection<EnergyConsumer> amis = new ObservableCollection<EnergyConsumer>();
         private DateTime newChange;
         private DateTime oldCahnge;
         Thread CheckLists;
+        private static NetworkPreviewViewModel instance;
 
-        public NetworkPreviewViewModel(IModel model)
+        public NetworkPreviewViewModel()
         {
-            this.model = model;
             rootElements = new ObservableCollection<RootElement>();
-            RootElements.Add(new RootElement(model, ref amis, ref newChange));
-            this.model.SetRoot(rootElements[0]);
+            RootElements.Add(new RootElement(Model.Instance, ref amis, ref newChange));
+            Model.Instance.SetRoot(rootElements[0]);
             newChange = DateTime.Now;
             oldCahnge = DateTime.Now;
             CheckLists = new Thread(() => ThreadFunction());
             CheckLists.IsBackground = true;
             CheckLists.Start();
+        }
 
+        public static NetworkPreviewViewModel Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new NetworkPreviewViewModel();
+                }
+
+                return instance;
+            }
         }
 
         public ObservableCollection<RootElement> RootElements

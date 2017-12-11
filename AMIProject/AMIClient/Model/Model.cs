@@ -30,6 +30,20 @@ namespace AMIClient
         private bool firstContactCE = true;
         private INetworkModelGDAContractDuplexClient gdaQueryProxy = null;
         private ICalculationDuplexClient ceQueryProxy = null;
+        private static Model instance;
+
+        public static Model Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Model();
+                }
+
+                return instance;
+            }
+        }
 
         public INetworkModelGDAContractDuplexClient GdaQueryProxy
         {
@@ -38,7 +52,7 @@ namespace AMIClient
                 if (firstContact)
                 {
                     NetTcpBinding binding = new NetTcpBinding();
-                    binding.CloseTimeout = TimeSpan.FromSeconds(3);
+                    binding.SendTimeout = TimeSpan.FromSeconds(3);
                     DuplexChannelFactory<INetworkModelGDAContractDuplexClient> factory = new DuplexChannelFactory<INetworkModelGDAContractDuplexClient>(
                     new InstanceContext(this),
                         binding,
@@ -62,7 +76,7 @@ namespace AMIClient
                 if (firstContactCE)
                 {
                     NetTcpBinding binding = new NetTcpBinding();
-                    binding.CloseTimeout = TimeSpan.FromSeconds(3);
+                    binding.SendTimeout = TimeSpan.FromSeconds(3);
                     DuplexChannelFactory<ICalculationDuplexClient> factoryCE = new DuplexChannelFactory<ICalculationDuplexClient>(
                     new InstanceContext(this),
                         binding,
@@ -81,15 +95,16 @@ namespace AMIClient
 
         public Model()
         {
-            Thread t2 = new Thread(() => ConnectToCE());
-            t2.Start();
-            t2.Join();
             Thread t = new Thread(() => ConnectToNMS());
             t.Start();
+            
+
+            Thread t2 = new Thread(() => ConnectToCE());
+            t2.Start();
             t.Join();
+            t2.Join();
             
-            
-            
+
             //while (true)
             //{
             //    try

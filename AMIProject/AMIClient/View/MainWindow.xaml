@@ -11,13 +11,13 @@
 
     <Window.Resources>
 
-        <DataTemplate DataType="{x:Type local:NetworkPreviewViewModel}">
+        <DataTemplate DataType="{x:Type local3:NetworkPreviewViewModel }">
 
-            <local2:NetworkPreviewWindow />
+            <local2:NetworkPreviewControl />
 
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type local:AddCimXmlViewModel}">
+        <DataTemplate DataType="{x:Type local3:AddCimXmlViewModel}">
 
             <local2:AddCimXmlControl />
 
