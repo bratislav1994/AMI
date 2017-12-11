@@ -37,9 +37,11 @@ namespace AMIClient
             {
                 if (firstContact)
                 {
+                    NetTcpBinding binding = new NetTcpBinding();
+                    binding.CloseTimeout = TimeSpan.FromSeconds(3);
                     DuplexChannelFactory<INetworkModelGDAContractDuplexClient> factory = new DuplexChannelFactory<INetworkModelGDAContractDuplexClient>(
                     new InstanceContext(this),
-                        new NetTcpBinding(),
+                        binding,
                         new EndpointAddress("net.tcp://localhost:10000/NetworkModelService/GDADuplexClient"));
                     gdaQueryProxy = factory.CreateChannel();
                     firstContact = false;
@@ -59,9 +61,11 @@ namespace AMIClient
             {
                 if (firstContactCE)
                 {
+                    NetTcpBinding binding = new NetTcpBinding();
+                    binding.CloseTimeout = TimeSpan.FromSeconds(3);
                     DuplexChannelFactory<ICalculationDuplexClient> factoryCE = new DuplexChannelFactory<ICalculationDuplexClient>(
                     new InstanceContext(this),
-                        new NetTcpBinding(),
+                        binding,
                         new EndpointAddress("net.tcp://localhost:10006/CalculationEngine/Client"));
                     ceQueryProxy = factoryCE.CreateChannel();
                     firstContactCE = false;
@@ -77,11 +81,15 @@ namespace AMIClient
 
         public Model()
         {
-            Thread t = new Thread(() => ConnectToNMS());
-            t.Start();
             Thread t2 = new Thread(() => ConnectToCE());
             t2.Start();
-
+            t2.Join();
+            Thread t = new Thread(() => ConnectToNMS());
+            t.Start();
+            t.Join();
+            
+            
+            
             //while (true)
             //{
             //    try
@@ -108,6 +116,7 @@ namespace AMIClient
                 }
                 catch
                 {
+                    firstContactCE = true;
                     Thread.Sleep(1000);
                 }
             }
@@ -124,6 +133,7 @@ namespace AMIClient
                 }
                 catch
                 {
+                    firstContact = true;
                     Thread.Sleep(1000);
                 }
             }

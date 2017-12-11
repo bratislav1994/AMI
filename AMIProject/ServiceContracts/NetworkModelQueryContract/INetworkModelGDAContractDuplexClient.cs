@@ -11,7 +11,7 @@ namespace FTN.ServiceContracts
     [ServiceContract(CallbackContract = typeof(IModelForDuplex))]
     public interface INetworkModelGDAContractDuplexClient : IBaseNetworkModelGDAContract
     {
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void ConnectClient();
     }
 }

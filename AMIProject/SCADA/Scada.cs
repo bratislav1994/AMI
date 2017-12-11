@@ -64,9 +64,11 @@ namespace SCADA
             {
                 if (firstTimeCoordinator)
                 {
+                    NetTcpBinding binding = new NetTcpBinding();
+                    binding.CloseTimeout = TimeSpan.FromSeconds(3);
                     DuplexChannelFactory<ITransactionDuplexScada> factory = new DuplexChannelFactory<ITransactionDuplexScada>(
                     new InstanceContext(this),
-                        new NetTcpBinding(),
+                        binding,
                         new EndpointAddress("net.tcp://localhost:10002/TransactionCoordinator/Scada"));
                     proxyCoordinator = factory.CreateChannel();
                     firstTimeCoordinator = false;
@@ -117,7 +119,19 @@ namespace SCADA
             config.master.disableUnsolOnStartup = false;
 
             var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.MaxValue, TaskConfig.Default);
-            ProxyCoordinator.ConnectScada();
+            while (true)
+            {
+                try
+                {
+                    ProxyCoordinator.ConnectScada();
+                    break;
+                }
+                catch
+                {
+                    firstTimeCoordinator = true;
+                    Thread.Sleep(1000);
+                }
+            }
 
             Deserialize(measurements);
 
