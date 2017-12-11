@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Wires;
@@ -108,26 +109,35 @@ namespace AMIClientTest.ClassesTest
             this.root.LoadChildren();
         }
 
-        //[Test]
-        //[Timeout(4000)]
-        //public void CheckForUpdatesTest()
-        //{
-        //    SetupTest();
-        //    IModel im = Substitute.For<IModel>();
-        //    im.GetAllRegions().Returns(new ObservableCollection<GeographicalRegion>());
-        //    im.GetAllAmis().Returns(new ObservableCollection<EnergyConsumer>());
-        //    root.Model = im;
-        //    model = im;
-        //    newChange = DateTime.Now;
+        [Test]
+        public void AllTreeElementsTest()
+        {
+            SetupTest();
+            this.root.AllTreeElements = new Dictionary<long, TreeClasses>();
+            Assert.IsNotNull(this.root.AllTreeElements);
+        }
 
-        //    Assert.DoesNotThrow(() => root = new RootElement(model, ref amis, ref newChange) { NeedsUpdate = true, Model = im, amis = new ObservableCollection<EnergyConsumer>() });
-        //    Assert.DoesNotThrow(() => root = new RootElement(model, ref amis, ref newChange) { NeedsUpdate = true, Model = im, amis = new ObservableCollection<EnergyConsumer>(), IsSelected = true });
-        //    TreeClasses tc = new TreeClasses();
-        //    allTreeEl.Add(234, tc);
+        [Test]
+        public void CheckForUpdatesTest()
+        {
+            //Dispatcher a = Dispatcher.CurrentDispatcher;
+            SetupTest();
+            IModel im = Substitute.For<IModel>();
+            im.GetAllRegions().Returns(new ObservableCollection<GeographicalRegion>());
+            im.GetAllAmis().Returns(new ObservableCollection<EnergyConsumer>());
+            root.Model = im;
+            model = im;
+            newChange = DateTime.Now;
 
-        //    Assert.DoesNotThrow(() => root = new RootElement(model, ref amis, ref newChange) { NeedsUpdate = true, Model = im, amis = new ObservableCollection<EnergyConsumer>(), IsSelected = false, AllTreeElements = allTreeEl });
-        //    //Assert.DoesNotThrow(() => root = new RootElement(model, ref amis, ref newChange) { NeedsUpdate = true});
-        //}
+            Assert.DoesNotThrow(() => { root = new RootElement(model, ref amis, ref newChange) { NeedsUpdate = true, Model = im, amis = new ObservableCollection<EnergyConsumer>() }; root.Dispose(); });
+            
+            Assert.DoesNotThrow(() => { root = new RootElement(model, ref amis, ref newChange) { NeedsUpdate = true, Model = im, amis = new ObservableCollection<EnergyConsumer>(), IsSelected = true }; root.Dispose(); });
+            TreeClasses tc = new TreeClasses();
+            allTreeEl.Add(234, tc);
+            
+            Assert.DoesNotThrow(() => { root = new RootElement(model, ref amis, ref newChange) { NeedsUpdate = true, Model = im, amis = new ObservableCollection<EnergyConsumer>(), IsSelected = false, AllTreeElements = allTreeEl }; root.Dispose(); });
+            //Assert.DoesNotThrow(() => root = new RootElement(model, ref amis, ref newChange) { NeedsUpdate = true});
+        }
 
         [Test]
         public void RaisePropertyChangedTest()

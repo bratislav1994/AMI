@@ -94,7 +94,7 @@ namespace AMIClient
 
         public override void CheckIfSeleacted()
         {
-            if(IsSelected)
+            if (IsSelected)
             {
                 this.amis.Clear();
                 this.amis.AddRange(base.Model.GetSomeAmis(this.Substation.GlobalId));

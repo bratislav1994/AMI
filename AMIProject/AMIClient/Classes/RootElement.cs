@@ -22,6 +22,7 @@ namespace AMIClient
         private object lockObject = new object();
         private Thread updateThread;
         private Dictionary<long, TreeClasses> allTreeElements = new Dictionary<long, TreeClasses>();
+        private Dispatcher dispatcher;
 
         public RootElement(IModel model, ref ObservableCollection<EnergyConsumer> amis, ref DateTime newChange)
             :base(null, model)
@@ -143,6 +144,19 @@ namespace AMIClient
                 }
             }
         }
+        
+        //public Dispatcher Dispatcher
+        //{
+        //    get
+        //    {
+        //        return this.dispatcher;
+        //    }
+
+        //    set
+        //    {
+        //        this.dispatcher = value;
+        //    }
+        //}
 
         private void CheckForUpdates()
         {
@@ -155,7 +169,7 @@ namespace AMIClient
                         App.Current.Dispatcher.Invoke((Action)(() =>
                         {
                             LoadChildren();
-                            if(IsSelected)
+                            if (IsSelected)
                             {
                                 this.amis.Clear();
                                 this.amis.AddRange(this.Model.GetAllAmis());
