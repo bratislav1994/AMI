@@ -77,12 +77,49 @@ namespace AMIClient
 
         public Model()
         {
+            Thread t = new Thread(() => ConnectToNMS());
+            t.Start();
+            Thread t2 = new Thread(() => ConnectToCE());
+            t2.Start();
+
+            //while (true)
+            //{
+            //    try
+            //    {
+            //        GdaQueryProxy.ConnectClient();
+            //        CEQueryProxy.ConncetClient();
+            //        break;
+            //    }
+            //    catch
+            //    {
+            //        Thread.Sleep(1000);
+            //    }
+            //}
+        }
+
+        private void ConnectToCE()
+        {
+            while (true)
+            {
+                try
+                {
+                    CEQueryProxy.ConncetClient();
+                    break;
+                }
+                catch
+                {
+                    Thread.Sleep(1000);
+                }
+            }
+        }
+
+        private void ConnectToNMS()
+        {
             while (true)
             {
                 try
                 {
                     GdaQueryProxy.ConnectClient();
-                    CEQueryProxy.ConncetClient();
                     break;
                 }
                 catch
