@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace FTN.Common.Logger
         
         static Logger()
         {
-            fileName = "~..\\..\\..\\..\\..\\..\\CommonFiles\\Logging\\logs.txt";
+            fileName = "logs.txt";  //fileName = "C:\\logs.txt";
         }
 
         public static void LogMessageToFile(string msg)
