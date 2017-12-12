@@ -372,7 +372,7 @@ namespace FTN.Services.NetworkModelService
 
 		#endregion GDA query	
 
-		private bool ApplyDelta(Delta delta)
+		private Delta ApplyDelta(Delta delta)
 		{
 			//bool applyingStarted = false;
 			//UpdateResult updateResult = new UpdateResult();
@@ -387,9 +387,15 @@ namespace FTN.Services.NetworkModelService
 				//updateResult.GlobalIdPairs = globalIdPairs;
 				delta.SortOperations();
                 copy = new Dictionary<DMSType, Container>();
-
-                return Validation(delta, ref copy);
-
+                if (Validation(delta, ref copy))
+                {
+                    return delta;
+                }
+                else
+                {
+                    return null;
+                }
+                
     //            foreach (ResourceDescription rd in delta.InsertOperations)
 				//{
 				//	InsertEntity(rd);
@@ -414,7 +420,7 @@ namespace FTN.Services.NetworkModelService
 				//updateResult.Result = ResultType.Failed;
 				//updateResult.Message = message;
 
-                return false;
+                return null;
 			}
 			//finally
 			//{
@@ -441,7 +447,7 @@ namespace FTN.Services.NetworkModelService
             this.delta = delta;
         }
 
-        public bool Prepare()
+        public Delta Prepare()
         {
             Logger.LogMessageToFile(string.Format("NMS.NetworkModel.Prepare; line: {0}; Try to apply delta", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             return this.ApplyDelta(this.delta);

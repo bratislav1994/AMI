@@ -47,7 +47,7 @@ namespace AMIClient
             set
             {
                 currentP = value;
-                RaisePropertyChanged("P");
+                RaisePropertyChanged("CurrentP");
             }
         }
 
@@ -61,7 +61,7 @@ namespace AMIClient
             set
             {
                 currentQ = value;
-                RaisePropertyChanged("Q");
+                RaisePropertyChanged("CurrentQ");
             }
         }
 
@@ -75,7 +75,7 @@ namespace AMIClient
             set
             {
                 currentV = value;
-                RaisePropertyChanged("v");
+                RaisePropertyChanged("CurrentV");
             }
         }
 

@@ -120,7 +120,7 @@ namespace AMISimulator
                     }
                 }
 
-                Thread.Sleep(10000);
+                Thread.Sleep(3000);
             }
         }
 

@@ -14,7 +14,7 @@ namespace FTN.ServiceContracts
         [OperationContract]
         void EnlistDelta(Delta delta);
         [OperationContract]
-        bool Prepare();
+        Delta Prepare();
 
         [OperationContract]
         void Commit();

@@ -77,6 +77,7 @@ namespace AMIClient
                     Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.IsSelected; line: {0}; Start - get all ami for the selected region", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     base.isSelected = value;
                     base.Model.Substations.Clear();
+                    base.Model.ClearPositions();
                     base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId);
                     base.Model.Amis.Clear();
                     foreach (Substation ss in base.Model.Substations)

@@ -66,7 +66,7 @@
 
             </TreeView.Resources>
         </TreeView>
-        <DataGrid Grid.Column="1" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.Amis, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
+        <DataGrid Grid.Column="1" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.Amis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
             <DataGrid.Columns>
 
                 <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Ami.Mrid}"/>
