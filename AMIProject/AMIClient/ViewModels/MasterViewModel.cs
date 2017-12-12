@@ -13,13 +13,13 @@ namespace AMIClient.ViewModels
     {
         private NetworkPreviewViewModel tvm;
         private AddCimXmlViewModel xmlvm;
-        private IModel model;
+        private Model model;
 
         public MasterViewModel()
         {
             Model = new Model();
             tvm = new NetworkPreviewViewModel();
-            //tvm.model = Model;
+            tvm.SetModel(Model);
             xmlvm = new AddCimXmlViewModel();
             this.CurrentViewModel = Tvm;
         }
@@ -50,7 +50,7 @@ namespace AMIClient.ViewModels
             }
         }
 
-        public IModel Model
+        public Model Model
         {
             get
             {

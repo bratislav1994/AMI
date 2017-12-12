@@ -15,8 +15,6 @@ namespace AMIClient
 {
     public class RootElement : TreeClasses, IDisposable
     {
-        public ObservableCollection<EnergyConsumer> amis = new ObservableCollection<EnergyConsumer>();
-        private DateTime newChange;
         private string name = "All";
         private bool needsUpdate = false;
         private object lockObject = new object();
@@ -24,11 +22,9 @@ namespace AMIClient
         private Dictionary<long, TreeClasses> allTreeElements = new Dictionary<long, TreeClasses>();
         private Dispatcher dispatcher;
 
-        public RootElement(IModel model, ref ObservableCollection<EnergyConsumer> amis, ref DateTime newChange)
+        public RootElement(Model model)
             :base(null, model)
         {
-            this.amis = amis;
-            this.newChange = newChange;
             this.IsExpanded = false;
             updateThread = new Thread(() => CheckForUpdates());
             updateThread.IsBackground = true;
@@ -80,10 +76,8 @@ namespace AMIClient
             {
                 if (value != base.isSelected)
                 {
-                    this.amis.Clear();
                     base.isSelected = value;
-                    this.amis.AddRange(Model.GetAllAmis());
-                    this.newChange = DateTime.Now;
+                    Model.GetAllAmis();
                     this.OnPropertyChanged("IsSelected");
                 }
             }
@@ -130,15 +124,16 @@ namespace AMIClient
 
         public override void LoadChildren()
         {
-            ObservableCollection<GeographicalRegion> temp = this.Model.GetAllRegions();
+            this.Model.GeoRegions.Clear();
+            this.Model.GetAllRegions();
 
-            if (temp != null)
+            if (this.Model.GeoRegions != null)
             {
-                foreach (GeographicalRegion gr in temp)
+                foreach (GeographicalRegion gr in this.Model.GeoRegions)
                 {
                     if (!AllTreeElements.ContainsKey(gr.GlobalId))
                     {
-                        base.Children.Add(new GeoRegionForTree(this, gr, this.Model, ref this.amis, ref this.newChange, ref allTreeElements));
+                        base.Children.Add(new GeoRegionForTree(this, gr, this.Model, ref allTreeElements));
                         AllTreeElements.Add(gr.GlobalId, base.Children[base.Children.Count - 1]);
                     }
                 }
@@ -169,11 +164,10 @@ namespace AMIClient
                         App.Current.Dispatcher.Invoke((Action)(() =>
                         {
                             LoadChildren();
+                            this.Model.Amis.Clear();
                             if (IsSelected)
                             {
-                                this.amis.Clear();
-                                this.amis.AddRange(this.Model.GetAllAmis());
-                                this.newChange = DateTime.Now;
+                                this.Model.GetAllAmis();
                             }
                             else
                             {

@@ -66,12 +66,15 @@
 
             </TreeView.Resources>
         </TreeView>
-        <DataGrid Grid.Column="1" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Amis, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
+        <DataGrid Grid.Column="1" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.Amis, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
             <DataGrid.Columns>
 
-                <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Mrid}"/>
-                <DataGridTextColumn MinWidth="100" Width="100" Header="Name" Binding="{Binding Name}"/>
-                <DataGridTextColumn MinWidth="100" Width="*" Header="Subgeographical region ID" Binding="{Binding EqContainer}"/>
+                <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Ami.Mrid}"/>
+                <DataGridTextColumn MinWidth="100" Width="100" Header="Name" Binding="{Binding Ami.Name}"/>
+                <DataGridTextColumn MinWidth="100" Width="100" Header="Subgeographical region ID" Binding="{Binding Ami.EqContainer}"/>
+                <DataGridTextColumn MinWidth="100" Width="100" Header="Current P" Binding="{Binding CurrentP}"/>
+                <DataGridTextColumn MinWidth="100" Width="100" Header="Current Q" Binding="{Binding CurrentQ}"/>
+                <DataGridTextColumn MinWidth="100" Width="*" Header="Current V" Binding="{Binding CurrentV}"/>
 
             </DataGrid.Columns>
         </DataGrid>

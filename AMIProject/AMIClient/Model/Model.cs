@@ -14,36 +14,38 @@ using System.Xml;
 using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Wires;
 using TC57CIM.IEC61970.Meas;
+using System.ComponentModel;
 
 namespace AMIClient
 {
-    public class Model : IDisposable, IModel, IModelForDuplex
+    public class Model : IDisposable, IModelForDuplex, INotifyPropertyChanged
     {
         private ModelResourcesDesc modelResourcesDesc = new ModelResourcesDesc();
         private List<ResourceDescription> meas = new List<ResourceDescription>();
         private ObservableCollection<GeographicalRegion> geoRegions = new ObservableCollection<GeographicalRegion>();
         private ObservableCollection<SubGeographicalRegion> subGeoRegions = new ObservableCollection<SubGeographicalRegion>();
         private ObservableCollection<Substation> substations = new ObservableCollection<Substation>();
-        private ObservableCollection<EnergyConsumer> amis = new ObservableCollection<EnergyConsumer>();
+        private Dictionary<long, int> positions = new Dictionary<long, int>();
+        private ObservableCollection<EnergyConsumerForTable> amis = new ObservableCollection<EnergyConsumerForTable>();
         private RootElement root;
         private bool firstContact = true;
         private bool firstContactCE = true;
         private INetworkModelGDAContractDuplexClient gdaQueryProxy = null;
         private ICalculationDuplexClient ceQueryProxy = null;
-        private static Model instance;
+        //private static Model instance;
 
-        public static Model Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new Model();
-                }
+        //public static Model Instance
+        //{
+        //    get
+        //    {
+        //        if (instance == null)
+        //        {
+        //            instance = new Model();
+        //        }
 
-                return instance;
-            }
-        }
+        //        return instance;
+        //    }
+        //}
 
         public INetworkModelGDAContractDuplexClient GdaQueryProxy
         {
@@ -93,6 +95,59 @@ namespace AMIClient
             }
         }
 
+        public ObservableCollection<GeographicalRegion> GeoRegions
+        {
+            get
+            {
+                return geoRegions;
+            }
+
+            set
+            {
+                geoRegions = value;
+            }
+        }
+
+        public ObservableCollection<SubGeographicalRegion> SubGeoRegions
+        {
+            get
+            {
+                return subGeoRegions;
+            }
+
+            set
+            {
+                subGeoRegions = value;
+            }
+        }
+
+        public ObservableCollection<Substation> Substations
+        {
+            get
+            {
+                return substations;
+            }
+
+            set
+            {
+                substations = value;
+            }
+        }
+
+        public ObservableCollection<EnergyConsumerForTable> Amis
+        {
+            get
+            {
+                return amis;
+            }
+
+            set
+            {
+                amis = value;
+                RaisePropertyChanged("Amis");
+            }
+        }
+
         public Model()
         {
             Thread t = new Thread(() => ConnectToNMS());
@@ -103,21 +158,6 @@ namespace AMIClient
             t2.Start();
             t.Join();
             t2.Join();
-            
-
-            //while (true)
-            //{
-            //    try
-            //    {
-            //        GdaQueryProxy.ConnectClient();
-            //        CEQueryProxy.ConncetClient();
-            //        break;
-            //    }
-            //    catch
-            //    {
-            //        Thread.Sleep(1000);
-            //    }
-            //}
         }
 
         private void ConnectToCE()
@@ -161,38 +201,39 @@ namespace AMIClient
 
         #region GDAQueryService
         
-        public ObservableCollection<GeographicalRegion> GetAllRegions()
+        public void GetAllRegions()
         {
-            geoRegions.Clear();
+            GeoRegions.Clear();
             GetExtentValues(ModelCode.GEOREGION);
-            return geoRegions;
+            //return GeoRegions;
         }
 
-        public ObservableCollection<SubGeographicalRegion> GetAllSubRegions()
+        public void GetAllSubRegions()
         {
-            subGeoRegions.Clear();
+            SubGeoRegions.Clear();
             GetExtentValues(ModelCode.SUBGEOREGION);
-            return subGeoRegions;
+            //return SubGeoRegions;
         }
 
-        public ObservableCollection<Substation> GetAllSubstations()
+        public void GetAllSubstations()
         {
-            substations.Clear();
+            Substations.Clear();
             GetExtentValues(ModelCode.SUBSTATION);
-            return substations;
+            //return Substations;
         }
 
-        public ObservableCollection<EnergyConsumer> GetAllAmis()
+        public void GetAllAmis()
         {
-            amis.Clear();
+            Amis.Clear();
             GetExtentValues(ModelCode.ENERGYCONS);
-            return amis;
+            //return Amis;
         }
 
         private void GetExtentValues(ModelCode modelCode)
         {
-            substations.Clear();
-            amis.Clear();
+            Substations.Clear();
+            Amis.Clear();
+            positions.Clear();
             string message = "Getting extent values method started.";
             Console.WriteLine(message);
             CommonTrace.WriteTrace(CommonTrace.TraceError, message);
@@ -225,22 +266,23 @@ namespace AMIClient
                             case ModelCode.GEOREGION:
                                 GeographicalRegion gr = new GeographicalRegion();
                                 gr.RD2Class(rds[i]);
-                                geoRegions.Add(gr);
+                                GeoRegions.Add(gr);
                                 break;
                             case ModelCode.SUBGEOREGION:
                                 SubGeographicalRegion sgr = new SubGeographicalRegion();
                                 sgr.RD2Class(rds[i]);
-                                subGeoRegions.Add(sgr);
+                                SubGeoRegions.Add(sgr);
                                 break;
                             case ModelCode.SUBSTATION:
                                 Substation ss = new Substation();
                                 ss.RD2Class(rds[i]);
-                                substations.Add(ss);
+                                Substations.Add(ss);
                                 break;
                             case ModelCode.ENERGYCONS:
                                 EnergyConsumer ec = new EnergyConsumer();
                                 ec.RD2Class(rds[i]);
-                                amis.Add(ec);
+                                Amis.Add(new EnergyConsumerForTable(ec));
+                                positions.Add(ec.GlobalId, Amis.Count - 1);
                                 break;
 
                             default:
@@ -307,41 +349,37 @@ namespace AMIClient
             }
         }
 
-        public ObservableCollection<SubGeographicalRegion> GetSomeSubregions(long regionId)
+        public void GetSomeSubregions(long regionId)
         {
-            subGeoRegions.Clear();
-
             List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.SUBGEOREGION);
             Association associtaion = new Association();
             associtaion.PropertyId = ModelCode.GEOREGION_SUBGEOREGIONS;
             associtaion.Type = ModelCode.SUBGEOREGION;
             GetRelatedValues(regionId, properties, associtaion, ModelCode.SUBGEOREGION);
 
-            return subGeoRegions;
+            //return SubGeoRegions;
         }
 
-        public ObservableCollection<Substation> GetSomeSubstations(long subRegionId)
+        public void GetSomeSubstations(long subRegionId)
         {
-            substations.Clear();
             List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.SUBSTATION);
             Association associtaion = new Association();
             associtaion.PropertyId = ModelCode.SUBGEOREGION_SUBS;
             associtaion.Type = ModelCode.SUBSTATION;
             GetRelatedValues(subRegionId, properties, associtaion, ModelCode.SUBSTATION);
 
-            return substations;
+            //return Substations;
         }
 
-        public ObservableCollection<EnergyConsumer> GetSomeAmis(long substationId)
+        public void GetSomeAmis(long substationId)
         {
-            amis.Clear();
             List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.ENERGYCONS);
             Association associtaion = new Association();
             associtaion.PropertyId = ModelCode.EQCONTAINER_EQUIPMENTS;
             associtaion.Type = ModelCode.ENERGYCONS;
             GetRelatedValues(substationId, properties, associtaion, ModelCode.ENERGYCONS);
 
-            return amis;
+            //return Amis;
         }
 
         private void GetRelatedValues(long source, List<ModelCode> propIds, Association association, ModelCode modelCode)
@@ -366,7 +404,7 @@ namespace AMIClient
                     {
                         SubGeographicalRegion sgr = new SubGeographicalRegion();
                         sgr.RD2Class(rd);
-                        subGeoRegions.Add(sgr);
+                        SubGeoRegions.Add(sgr);
                     }
                     break;
                 case ModelCode.SUBSTATION:
@@ -374,7 +412,7 @@ namespace AMIClient
                     {
                         Substation ss = new Substation();
                         ss.RD2Class(rd);
-                        substations.Add(ss);
+                        Substations.Add(ss);
                     }
                     break;
                 case ModelCode.ENERGYCONS:
@@ -382,7 +420,8 @@ namespace AMIClient
                     {
                         EnergyConsumer ec = new EnergyConsumer();
                         ec.RD2Class(rd);
-                        amis.Add(ec);
+                        Amis.Add(new EnergyConsumerForTable(ec));
+                        positions.Add(ec.GlobalId, Amis.Count - 1);
                     }
                     break;
 
@@ -408,7 +447,36 @@ namespace AMIClient
 
         public void SendMeasurements(List<ResourceDescription> measurements)
         {
-            this.meas = measurements;
+            foreach (ResourceDescription rd in measurements)
+            {
+                Analog an = new Analog();
+                an.RD2Class(rd);
+                if (positions.ContainsKey(an.PowerSystemResourceRef))
+                {
+                    switch (an.UnitSymbol)
+                    {
+                        case UnitSymbol.P:
+                            Amis[positions[an.PowerSystemResourceRef]].CurrentP = an.NormalValue;
+                            break;
+                        case UnitSymbol.Q:
+                            Amis[positions[an.PowerSystemResourceRef]].CurrentQ = an.NormalValue;
+                            break;
+                        case UnitSymbol.V:
+                            Amis[positions[an.PowerSystemResourceRef]].CurrentV = an.NormalValue;
+                            break;
+                    }
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void RaisePropertyChanged(string propName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propName));
+            }
         }
     }
 }

@@ -127,6 +127,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\EnergyConsumerForTable.cs" />
     <Compile Include="Classes\GeoRegionForTree.cs" />
     <Compile Include="Classes\RootElement.cs" />
     <Compile Include="Classes\SubGeoRegionForTree.cs" />
