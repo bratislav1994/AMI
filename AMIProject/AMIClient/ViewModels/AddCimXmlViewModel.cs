@@ -1,4 +1,5 @@
 ﻿using FTN.Common;
+using FTN.Common.Logger;
 using FTN.ESI.SIMES.CIM.CIMAdapter;
 using FTN.ESI.SIMES.CIM.CIMAdapter.Manager;
 using Microsoft.Win32;
@@ -119,6 +120,7 @@ namespace AMIClient.ViewModels
 
         private void BrowseCommandAction()
         {
+            Logger.LogMessageToFile(string.Format("AMIClient.AddCimXmlViewModel.BrowseCommandAction; line: {0}; Client browse xml", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             dlg.DefaultExt = ".png";
             dlg.Filter = "XML Files (*.xml)|*.xml";
@@ -129,6 +131,7 @@ namespace AMIClient.ViewModels
                 this.XMLPath = dlg.FileName;
                 ConvertCommand.RaiseCanExecuteChanged();
             }
+            Logger.LogMessageToFile(string.Format("AMIClient.AddCimXmlViewModel.BrowseCommandAction; line: {0}; Finish browse", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
         private DelegateCommand convertCommand;
@@ -149,6 +152,7 @@ namespace AMIClient.ViewModels
         {
             try
             {
+                Logger.LogMessageToFile(string.Format("AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: {0}; Try convert xml", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 if (XMLPath == string.Empty)
                 {
                     MessageBox.Show("Must enter CIM/XML file.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -173,9 +177,11 @@ namespace AMIClient.ViewModels
                     }
                     isOk = true;
                 }
+                Logger.LogMessageToFile(string.Format("AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: {0}; Convert succeeded", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             }
             catch (Exception e)
             {
+                Logger.LogMessageToFile(string.Format("AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: {0}; Convert faild", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 MessageBox.Show(string.Format("An error occurred.\n\n{0}", e.Message), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             XMLPath = "";
@@ -214,14 +220,17 @@ namespace AMIClient.ViewModels
             {
                 try
                 {
+                    Logger.LogMessageToFile(string.Format("AMIClient.AddCimXmlViewModel.ApplyDeltaCommandAction; line: {0}; Try apply delta", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     string log = adapter.ApplyUpdates(nmsDelta);
                     Report += log;
                     nmsDelta = null;
                     isOk = false;
                     ApplyDeltaCommand.RaiseCanExecuteChanged();
+                    Logger.LogMessageToFile(string.Format("AMIClient.AddCimXmlViewModel.ApplyDeltaCommandAction; line: {0}; Apply delta succeeded", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 }
                 catch (Exception e)
                 {
+                    Logger.LogMessageToFile(string.Format("AMIClient.AddCimXmlViewModel.ApplyDeltaCommandAction; line: {0}; Apply delta faild", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     MessageBox.Show(string.Format("An error occurred.\n\n{0}", e.Message), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }

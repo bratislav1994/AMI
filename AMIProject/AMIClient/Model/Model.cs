@@ -15,6 +15,7 @@ using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Wires;
 using TC57CIM.IEC61970.Meas;
 using System.ComponentModel;
+using FTN.Common.Logger;
 
 namespace AMIClient
 {
@@ -53,6 +54,7 @@ namespace AMIClient
             {
                 if (firstContact)
                 {
+                    Logger.LogMessageToFile(string.Format("AMIClient.Model.GdaQueryProxy; line: {0}; Create channel between Client and NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.SendTimeout = TimeSpan.FromSeconds(3);
                     DuplexChannelFactory<INetworkModelGDAContractDuplexClient> factory = new DuplexChannelFactory<INetworkModelGDAContractDuplexClient>(
@@ -62,6 +64,7 @@ namespace AMIClient
                     gdaQueryProxy = factory.CreateChannel();
                     firstContact = false;
                 }
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.GdaQueryProxy; line: {0}; Channel Client-NMS is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return gdaQueryProxy;
             }
 
@@ -77,6 +80,7 @@ namespace AMIClient
             {
                 if (firstContactCE)
                 {
+                    Logger.LogMessageToFile(string.Format("AMIClient.Model.CEQueryProxy; line: {0}; Create channel between Client and CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.SendTimeout = TimeSpan.FromSeconds(3);
                     DuplexChannelFactory<ICalculationDuplexClient> factoryCE = new DuplexChannelFactory<ICalculationDuplexClient>(
@@ -86,6 +90,7 @@ namespace AMIClient
                     ceQueryProxy = factoryCE.CreateChannel();
                     firstContactCE = false;
                 }
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.CEQueryProxy; line: {0}; Channel Client-CE is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return ceQueryProxy;
             }
 
@@ -166,11 +171,14 @@ namespace AMIClient
             {
                 try
                 {
+                    Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client try to connect with CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     CEQueryProxy.ConncetClient();
+                    Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client is connected to the CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     break;
                 }
                 catch
                 {
+                    Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client faild to connect with CE. CATCH", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     firstContactCE = true;
                     Thread.Sleep(1000);
                 }
@@ -183,11 +191,14 @@ namespace AMIClient
             {
                 try
                 {
+                    Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToNMS; line: {0}; Client try to connect with NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     GdaQueryProxy.ConnectClient();
+                    Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToNMS; line: {0}; Client is connected to the NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     break;
                 }
                 catch
                 {
+                    Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToNMS; line: {0}; Client faild to connect with NMS. CATCH", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     firstContact = true;
                     Thread.Sleep(1000);
                 }
@@ -203,6 +214,7 @@ namespace AMIClient
         
         public void GetAllRegions()
         {
+            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllRegions; line: {0}; Start the GetAllRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             GeoRegions.Clear();
             GetExtentValues(ModelCode.GEOREGION);
             //return GeoRegions;
@@ -210,6 +222,7 @@ namespace AMIClient
 
         public void GetAllSubRegions()
         {
+            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllSubRegions; line: {0}; Start the GetAllSubRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             SubGeoRegions.Clear();
             GetExtentValues(ModelCode.SUBGEOREGION);
             //return SubGeoRegions;
@@ -217,6 +230,7 @@ namespace AMIClient
 
         public void GetAllSubstations()
         {
+            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllSubstations; line: {0}; Start the GetAllSubstations function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             Substations.Clear();
             GetExtentValues(ModelCode.SUBSTATION);
             //return Substations;
@@ -224,6 +238,7 @@ namespace AMIClient
 
         public void GetAllAmis()
         {
+            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllAmis; line: {0}; Start the GetAllAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             Amis.Clear();
             GetExtentValues(ModelCode.ENERGYCONS);
             //return Amis;
@@ -351,34 +366,43 @@ namespace AMIClient
 
         public void GetSomeSubregions(long regionId)
         {
+            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubregions; line: {0}; Start the GetSomeSubregions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+
             List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.SUBGEOREGION);
             Association associtaion = new Association();
             associtaion.PropertyId = ModelCode.GEOREGION_SUBGEOREGIONS;
             associtaion.Type = ModelCode.SUBGEOREGION;
             GetRelatedValues(regionId, properties, associtaion, ModelCode.SUBGEOREGION);
 
+            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubregions; line: {0}; Finish the GetSomeSubregions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             //return SubGeoRegions;
         }
 
         public void GetSomeSubstations(long subRegionId)
         {
+            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubstation; line: {0}; Start the GetSomeSubstation function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+
             List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.SUBSTATION);
             Association associtaion = new Association();
             associtaion.PropertyId = ModelCode.SUBGEOREGION_SUBS;
             associtaion.Type = ModelCode.SUBSTATION;
             GetRelatedValues(subRegionId, properties, associtaion, ModelCode.SUBSTATION);
 
+            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubstation; line: {0}; Finish the GetSomeSubstations function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             //return Substations;
         }
 
         public void GetSomeAmis(long substationId)
         {
+            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeAmis; line: {0}; Start the GetSomeAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+
             List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.ENERGYCONS);
             Association associtaion = new Association();
             associtaion.PropertyId = ModelCode.EQCONTAINER_EQUIPMENTS;
             associtaion.Type = ModelCode.ENERGYCONS;
             GetRelatedValues(substationId, properties, associtaion, ModelCode.ENERGYCONS);
 
+            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeAmis; line: {0}; Finish the GetSomeAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             //return Amis;
         }
 
