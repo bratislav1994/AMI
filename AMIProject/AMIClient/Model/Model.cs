@@ -33,20 +33,7 @@ namespace AMIClient
         private bool firstContactCE = true;
         private INetworkModelGDAContractDuplexClient gdaQueryProxy = null;
         private ICalculationDuplexClient ceQueryProxy = null;
-        //private static Model instance;
-
-        //public static Model Instance
-        //{
-        //    get
-        //    {
-        //        if (instance == null)
-        //        {
-        //            instance = new Model();
-        //        }
-
-        //        return instance;
-        //    }
-        //}
+        private object lockObj = new object();
 
         public INetworkModelGDAContractDuplexClient GdaQueryProxy
         {
@@ -248,7 +235,6 @@ namespace AMIClient
         {
             Substations.Clear();
             Amis.Clear();
-            positions.Clear();
             string message = "Getting extent values method started.";
             Console.WriteLine(message);
             CommonTrace.WriteTrace(CommonTrace.TraceError, message);
@@ -471,25 +457,36 @@ namespace AMIClient
 
         public void SendMeasurements(List<ResourceDescription> measurements)
         {
-            foreach (ResourceDescription rd in measurements)
+            lock (lockObj)
             {
-                Analog an = new Analog();
-                an.RD2Class(rd);
-                if (positions.ContainsKey(an.PowerSystemResourceRef))
+                foreach (ResourceDescription rd in measurements)
                 {
-                    switch (an.UnitSymbol)
+                    Analog an = new Analog();
+                    an.RD2Class(rd);
+                    if (positions.ContainsKey(an.PowerSystemResourceRef))
                     {
-                        case UnitSymbol.P:
-                            Amis[positions[an.PowerSystemResourceRef]].CurrentP = an.NormalValue;
-                            break;
-                        case UnitSymbol.Q:
-                            Amis[positions[an.PowerSystemResourceRef]].CurrentQ = an.NormalValue;
-                            break;
-                        case UnitSymbol.V:
-                            Amis[positions[an.PowerSystemResourceRef]].CurrentV = an.NormalValue;
-                            break;
+                        switch (an.UnitSymbol)
+                        {
+                            case UnitSymbol.P:
+                                Amis[positions[an.PowerSystemResourceRef]].CurrentP = an.NormalValue;
+                                break;
+                            case UnitSymbol.Q:
+                                Amis[positions[an.PowerSystemResourceRef]].CurrentQ = an.NormalValue;
+                                break;
+                            case UnitSymbol.V:
+                                Amis[positions[an.PowerSystemResourceRef]].CurrentV = an.NormalValue;
+                                break;
+                        }
                     }
                 }
+            }
+        }
+
+        public void ClearPositions()
+        {
+            lock (lockObj)
+            {
+                this.positions.Clear();
             }
         }
 

@@ -78,7 +78,9 @@ namespace AMIClient
                 if (value != base.isSelected)
                 {
                     base.isSelected = value;
+                    base.Model.ClearPositions();
                     Model.GetAllAmis();
+                    
                     this.OnPropertyChanged("IsSelected");
                 }
             }

@@ -68,6 +68,7 @@ namespace AMIClient
                 {
                     base.isSelected = value;
                     base.Model.Amis.Clear();
+                    base.Model.ClearPositions();
                     base.Model.GetSomeAmis(this.Substation.GlobalId);
                     this.OnPropertyChanged("IsSelected");
                 }

@@ -15,20 +15,11 @@ namespace AMIClient.ViewModels
     {
         private Model model;
         private ObservableCollection<RootElement> rootElements;
-        private ObservableCollection<EnergyConsumer> amis = new ObservableCollection<EnergyConsumer>();
-        private DateTime newChange;
-        private DateTime oldCahnge;
-        Thread CheckLists;
         private static NetworkPreviewViewModel instance;
 
         public NetworkPreviewViewModel()
         {
             rootElements = new ObservableCollection<RootElement>();
-            newChange = DateTime.Now;
-            oldCahnge = DateTime.Now;
-            CheckLists = new Thread(() => ThreadFunction());
-            CheckLists.IsBackground = true;
-            CheckLists.Start();
         }
 
         public static NetworkPreviewViewModel Instance
@@ -57,20 +48,6 @@ namespace AMIClient.ViewModels
             }
         }
 
-        public ObservableCollection<EnergyConsumer> Amis
-        {
-            get
-            {
-                return amis;
-            }
-
-            set
-            {
-                amis = value;
-                RaisePropertyChanged("Amis");
-            }
-        }
-
         public Model Model
         {
             get
@@ -94,29 +71,11 @@ namespace AMIClient.ViewModels
             }
         }
 
-        private void ThreadFunction()
-        {
-            while(true)
-            {
-                if(this.newChange > this.oldCahnge)
-                {
-                    RaisePropertyChanged("Amis");
-                    this.oldCahnge = this.newChange;
-                }
-                Thread.Sleep(200);
-            }
-        }
-
         public void SetModel(Model model)
         {
             this.Model = model;
             RootElements.Add(new RootElement(this.model));
             this.model.SetRoot(rootElements[0]);
-        }
-        
-        public void AbortThread(object sender, CancelEventArgs e)
-        {
-            this.CheckLists.Abort();
         }
     }
 }
