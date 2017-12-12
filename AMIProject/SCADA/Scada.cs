@@ -15,6 +15,7 @@ using System.Threading;
 using System.IO;
 using System.Xml.Serialization;
 using System.Windows.Threading;
+using FTN.Common.Logger;
 
 namespace SCADA
 {
@@ -42,13 +43,14 @@ namespace SCADA
             {
                 if (firstTimeSimulator)
                 {
+                    Logger.LogMessageToFile(string.Format("SCADA.Scada.ProxySimulator; line: {0}; Create channel between Scada and Simulator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     ChannelFactory<ISimulator> factory = new ChannelFactory<ISimulator>(new NetTcpBinding(),
                                                                                         new EndpointAddress("net.tcp://localhost:10100/AMISimulator/Simulator"));
                     proxySimulator = factory.CreateChannel();
 
                     firstTimeSimulator = false;
                 }
-
+                Logger.LogMessageToFile(string.Format("SCADA.Scada.ProxySimulator; line: {0}; Channel SCADA-Simulator is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return proxySimulator;
             }
 
@@ -64,6 +66,7 @@ namespace SCADA
             {
                 if (firstTimeCoordinator)
                 {
+                    Logger.LogMessageToFile(string.Format("SCADA.Scada.ProxyCoordinator; line: {0}; Create channel between Scada and Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.SendTimeout = TimeSpan.FromSeconds(3);
                     DuplexChannelFactory<ITransactionDuplexScada> factory = new DuplexChannelFactory<ITransactionDuplexScada>(
@@ -73,6 +76,7 @@ namespace SCADA
                     proxyCoordinator = factory.CreateChannel();
                     firstTimeCoordinator = false;
                 }
+                Logger.LogMessageToFile(string.Format("SCADA.Scada.ProxyCoordinator; line: {0}; Channel SCADA-Coordinator is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return proxyCoordinator;
             }
 
@@ -88,13 +92,14 @@ namespace SCADA
             {
                 if (firstTimeCE)
                 {
+                    Logger.LogMessageToFile(string.Format("SCADA.Scada.ProxyCE; line: {0}; Create channel between Scada and CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     ChannelFactory<ICalculationEngine> factory = new ChannelFactory<ICalculationEngine>(new NetTcpBinding(),
                                                                                         new EndpointAddress("net.tcp://localhost:10050/ICalculationEngine/Calculation"));
                     proxyCE = factory.CreateChannel();
 
                     firstTimeCE = false;
                 }
-
+                Logger.LogMessageToFile(string.Format("SCADA.Scada.ProxyCE; line: {0}; Channel SCADA-CE is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return proxyCE;
             }
 
@@ -123,11 +128,14 @@ namespace SCADA
             {
                 try
                 {
+                    Logger.LogMessageToFile(string.Format("SCADA.Scada; line: {0}; Scada try to connect with Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     ProxyCoordinator.ConnectScada();
+                    Logger.LogMessageToFile(string.Format("SCADA.Scada; line: {0}; Scada is connected to the Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     break;
                 }
                 catch
                 {
+                    Logger.LogMessageToFile(string.Format("SCADA.Scada; line: {0}; Scada faild to connect with Coordinator. CATCH", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     firstTimeCoordinator = true;
                     Thread.Sleep(1000);
                 }
@@ -162,15 +170,18 @@ namespace SCADA
 
         public void EnlistMeas(List<ResourceDescription> meas)
         {
+            Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Start the EnlistMeas function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             this.measurementsToEnlist = meas;
             foreach (KeyValuePair<int, ResourceDescription> kvp in this.measurements)
             {
                 this.copyMeasurements.Add(kvp.Key, kvp.Value);
             }
+            Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Finish the EnlistMeas function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
         public bool Prepare()
         {
+            Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Start the Prepare function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             List<ResourceDescription> Ps = new List<ResourceDescription>();
             List<ResourceDescription> Qs = new List<ResourceDescription>();
             List<ResourceDescription> Vs = new List<ResourceDescription>();
@@ -234,12 +245,13 @@ namespace SCADA
                     return false;
                 }
             }
-
+            Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Finish the EnlistMeas function successful", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             return true;
         }
 
         public void Commit()
         {
+            Logger.LogMessageToFile(string.Format("SCADA.Scada.Commit; line: {0}; Start the Commit function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             this.measurements.Clear();
             foreach (KeyValuePair<int, ResourceDescription> kvp in this.copyMeasurements)
             {
@@ -248,18 +260,22 @@ namespace SCADA
             Serialize(measurements);
             cnt = 0;
             this.copyMeasurements.Clear();
+            Logger.LogMessageToFile(string.Format("SCADA.Scada.Commit; line: {0}; Finish the Commit function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
         public void Rollback()
         {
+            Logger.LogMessageToFile(string.Format("SCADA.Scada.Rollback; line: {0}; Start the Rollback function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             this.ProxySimulator.Rollback(cnt);
             cnt = 0;
             this.copyMeasurements.Clear();
+            Logger.LogMessageToFile(string.Format("SCADA.Scada.Rollback; line: {0}; Finish the Rollback function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
         private void CheckIfThereIsSomethingToSned()
         {
-            while(true)
+            Logger.LogMessageToFile(string.Format("SCADA.Scada.CheckIfThereIsSomethingToSned; line: {0}; Scada sends data to client if it has data to send", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            while (true)
             {
                 lock(lockObject)
                 {
@@ -282,6 +298,7 @@ namespace SCADA
 
         private void Serialize(Dictionary<int, ResourceDescription> measurements)
         {
+            Logger.LogMessageToFile(string.Format("SCADA.Scada.Serialize; line: {0}; Start the Serialize function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             TextWriter tw = new StreamWriter("Measurements.xml");
             List<ClassForSerialization> meas = new List<ClassForSerialization>(measurements.Count);
             foreach(int key in measurements.Keys)
@@ -290,12 +307,15 @@ namespace SCADA
             }
             XmlSerializer serializer = new XmlSerializer(typeof(List<ClassForSerialization>));
             serializer.Serialize(tw, meas);
+            Logger.LogMessageToFile(string.Format("SCADA.Scada.Serialize; line: {0}; Finish the Serialize function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
         private void Deserialize(Dictionary<int, ResourceDescription> measurements)
         {
             try
             {
+                Logger.LogMessageToFile(string.Format("SCADA.Scada.Deserialize; line: {0}; Start the Deserialize function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+
                 TextReader tr = new StreamReader(File.OpenRead("Measurements.xml"));
                 measurements.Clear();
                 XmlSerializer serializer = new XmlSerializer(typeof(List<ClassForSerialization>));
@@ -305,8 +325,12 @@ namespace SCADA
                 {
                     measurements.Add(cfs.Key, cfs.Rd);
                 }
+                Logger.LogMessageToFile(string.Format("SCADA.Scada.Deserialize; line: {0}; Finish the Deserialize function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             }
-            catch { }
+            catch
+            {
+                Logger.LogMessageToFile(string.Format("SCADA.Scada.Deserialize; line: {0}; Deserialization failed", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            }
         }
     }
 }

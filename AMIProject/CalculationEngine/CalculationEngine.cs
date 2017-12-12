@@ -1,4 +1,5 @@
 ﻿using FTN.Common;
+using FTN.Common.Logger;
 using FTN.ServiceContracts;
 using System;
 using System.Collections.Generic;
@@ -46,6 +47,7 @@ namespace CalculationEngine
 
         public void DataFromScada(List<ResourceDescription> measurements)
         {
+            Logger.LogMessageToFile(string.Format("CalculationEngine.CalculationEngine.DataFromScada; line: {0}; CE receive data from scada and send this data to client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             Console.WriteLine("Receive data from SCADA");
             this.meas = measurements;
 
@@ -68,6 +70,7 @@ namespace CalculationEngine
             {
                 clients.Remove(client);
             }
+            Logger.LogMessageToFile(string.Format("CalculationEngine.CalculationEngine.DataFromScada; line: {0}; Finish transport data SCADA-CE-Client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
     }
 }

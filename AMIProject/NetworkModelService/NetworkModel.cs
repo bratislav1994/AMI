@@ -11,6 +11,7 @@ using FTN.ServiceContracts;
 using System.ServiceModel;
 using System.Threading;
 using TC57CIM.IEC61970.Meas;
+using FTN.Common.Logger;
 
 namespace FTN.Services.NetworkModelService
 {
@@ -56,11 +57,14 @@ namespace FTN.Services.NetworkModelService
             {
                 try
                 {
+                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS try to connect with Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     this.ProxyCoordinator.ConnectNMS();
+                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS is connected to the Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     break;
                 }
                 catch
                 {
+                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS faild to connect with Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     Thread.Sleep(1000);
                 }
             }
@@ -72,6 +76,7 @@ namespace FTN.Services.NetworkModelService
             {
                 if (firstTimeCoordinator)
                 {
+                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel.ProxyCoordinator; line: {0}; Create channel between NMS and Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.SendTimeout = TimeSpan.FromSeconds(3);
                     DuplexChannelFactory<ITransactionDuplexNMS> factory = new DuplexChannelFactory<ITransactionDuplexNMS>(
@@ -81,6 +86,7 @@ namespace FTN.Services.NetworkModelService
                     proxyCoordinator = factory.CreateChannel();
                     firstTimeCoordinator = false;
                 }
+                Logger.LogMessageToFile(string.Format("NMS.NetworkModel.ProxyCoordinator; line: {0}; Channel NMS-Coordinator is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return proxyCoordinator;
             }
 
@@ -373,7 +379,7 @@ namespace FTN.Services.NetworkModelService
 
 			try
 			{
-				CommonTrace.WriteTrace(CommonTrace.TraceInfo, "Applying  delta to network model.");
+                CommonTrace.WriteTrace(CommonTrace.TraceInfo, "Applying  delta to network model.");
 
 				Dictionary<short, int> typesCounters = GetCounters();
 				Dictionary<long, long> globalIdPairs = new Dictionary<long, long>();
@@ -437,11 +443,13 @@ namespace FTN.Services.NetworkModelService
 
         public bool Prepare()
         {
+            Logger.LogMessageToFile(string.Format("NMS.NetworkModel.Prepare; line: {0}; Try to apply delta", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             return this.ApplyDelta(this.delta);
         }
 
         public void Commit()
         {
+            Logger.LogMessageToFile(string.Format("NMS.NetworkModel.Commit; line: {0}; Start the Commit function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             this.networkDataModel.Clear();
             foreach (KeyValuePair<DMSType, Container> kvp in copy)
             {
@@ -456,6 +464,7 @@ namespace FTN.Services.NetworkModelService
             {
                 clientsNeedToUpdate = true;
             }
+            Logger.LogMessageToFile(string.Format("NMS.NetworkModelCommit; line: {0}; Finish the Commit function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
         public void Rollback()
@@ -467,6 +476,7 @@ namespace FTN.Services.NetworkModelService
         {
             try
             {
+                Logger.LogMessageToFile(string.Format("NMS.NetworkModel.Validation; line: {0}; Validation of entities", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 foreach (KeyValuePair<DMSType, Container> kp in networkDataModel)
                 {
                     model[kp.Key] = kp.Value;
@@ -488,6 +498,7 @@ namespace FTN.Services.NetworkModelService
             }
             catch(Exception ex)
             {
+                Logger.LogMessageToFile(string.Format("NMS.NetworkModel.Validation; line: {0}; Validation of entities - EXCEPTION", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 throw ex;
             }
         }

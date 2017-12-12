@@ -1,5 +1,6 @@
 ﻿using Automatak.DNP3.Interface;
 using FTN.Common;
+using FTN.Common.Logger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace SCADA
 
         public void Process(HeaderInfo info, IEnumerable<IndexedValue<Analog>> values)
         {
+            Logger.LogMessageToFile(string.Format("SCADA.SOEHandler.Process; line: {0}; Start the Process function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             if (canExecute)
             {
                 lock (lockObject)
@@ -57,6 +59,7 @@ namespace SCADA
                     }
                 }
             }
+            Logger.LogMessageToFile(string.Format("SCADA.SOEHandler.Process; line: {0}; Finish the Process function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
         public void End()

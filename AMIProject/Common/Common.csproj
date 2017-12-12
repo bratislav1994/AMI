@@ -99,6 +99,7 @@
     <Compile Include="Enums.cs" />
     <Compile Include="GDA\CompareHelper.cs" />
     <Compile Include="GDA\UpdateResult.cs" />
+    <Compile Include="Logger\Logger.cs" />
     <Compile Include="ModelException\ErrorCode.cs" />
     <Compile Include="ModelException\ModelException.cs" />
     <Compile Include="Trace\CommonTrace.cs" />
