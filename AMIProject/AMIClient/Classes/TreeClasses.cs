@@ -15,9 +15,9 @@ namespace AMIClient
         private TreeClasses parent;
         protected bool isExpanded;
         protected bool isSelected;
-        private IModel model;
+        private Model model;
 
-        public TreeClasses(TreeClasses parent, IModel model)
+        public TreeClasses(TreeClasses parent, Model model)
         {
             this.parent = parent;
             this.Model = model;
@@ -41,7 +41,7 @@ namespace AMIClient
             }
         }
         
-        public IModel Model
+        public Model Model
         {
             get
             {

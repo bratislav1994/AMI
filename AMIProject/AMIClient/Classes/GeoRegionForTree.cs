@@ -12,16 +12,12 @@ namespace AMIClient
     public class GeoRegionForTree : TreeClasses
     {
         private GeographicalRegion geoRegion;
-        private ObservableCollection<EnergyConsumer> amis;
-        private DateTime newChange;
         private Dictionary<long, TreeClasses> allTreeElements;
 
-        public GeoRegionForTree(TreeClasses parent, GeographicalRegion geoRegion, IModel model, ref ObservableCollection<EnergyConsumer> amis, ref DateTime newChange, ref Dictionary<long, TreeClasses> allTreeElements)
+        public GeoRegionForTree(TreeClasses parent, GeographicalRegion geoRegion, Model model, ref Dictionary<long, TreeClasses> allTreeElements)
             :base(parent, model)
         {
             this.GeoRegion = geoRegion;
-            this.Amis = amis;
-            this.newChange = newChange;
             this.allTreeElements = allTreeElements;
             this.IsExpanded = false;
         }
@@ -73,18 +69,18 @@ namespace AMIClient
                 if (value != base.isSelected)
                 {
                     base.isSelected = value;
-                    ObservableCollection<SubGeographicalRegion> sgrTemp = base.Model.GetSomeSubregions(this.GeoRegion.GlobalId);
-                    ObservableCollection<Substation> ssTemp = new ObservableCollection<Substation>();
-                    foreach(SubGeographicalRegion sgr in sgrTemp)
+                    base.Model.SubGeoRegions.Clear();
+                    base.Model.GetSomeSubregions(this.GeoRegion.GlobalId);
+                    base.Model.Substations.Clear();
+                    foreach(SubGeographicalRegion sgr in base.Model.SubGeoRegions)
                     {
-                        ssTemp.AddRange(base.Model.GetSomeSubstations(sgr.GlobalId));
+                        base.Model.GetSomeSubstations(sgr.GlobalId);
                     }
-                    this.Amis.Clear();
-                    foreach (Substation ss in ssTemp)
+                    base.Model.Amis.Clear();
+                    foreach (Substation ss in base.Model.Substations)
                     {
-                        this.Amis.AddRange(base.Model.GetSomeAmis(ss.GlobalId));
+                        base.Model.GetSomeAmis(ss.GlobalId);
                     }
-                    this.newChange = DateTime.Now;
                     this.OnPropertyChanged("IsSelected");
                 }
             }
@@ -103,30 +99,18 @@ namespace AMIClient
             }
         }
 
-        public ObservableCollection<EnergyConsumer> Amis
-        {
-            get
-            {
-                return amis;
-            }
-
-            set
-            {
-                amis = value;
-            }
-        }
-
         public override void LoadChildren()
         {
-            ObservableCollection<SubGeographicalRegion> temp = this.Model.GetSomeSubregions(GeoRegion.GlobalId);
+            this.Model.SubGeoRegions.Clear();
+            this.Model.GetSomeSubregions(GeoRegion.GlobalId);
 
-            if (temp != null)
+            if (this.Model.SubGeoRegions != null)
             {
-                foreach (SubGeographicalRegion sgr in temp)
+                foreach (SubGeographicalRegion sgr in this.Model.SubGeoRegions)
                 {
                     if (!allTreeElements.ContainsKey(sgr.GlobalId))
                     {
-                        base.Children.Add(new SubGeoRegionForTree(sgr, this, this.Model, ref this.amis, ref this.newChange, ref allTreeElements));
+                        base.Children.Add(new SubGeoRegionForTree(sgr, this, this.Model, ref allTreeElements));
                         allTreeElements.Add(sgr.GlobalId, base.Children[base.Children.Count - 1]);
                     }
                 }
@@ -137,18 +121,17 @@ namespace AMIClient
         {
             if (IsSelected)
             {
-                ObservableCollection<SubGeographicalRegion> sgrTemp = base.Model.GetSomeSubregions(this.GeoRegion.GlobalId);
-                ObservableCollection<Substation> ssTemp = new ObservableCollection<Substation>();
-                foreach (SubGeographicalRegion sgr in sgrTemp)
+                base.Model.GetSomeSubregions(this.GeoRegion.GlobalId);
+                base.Model.Substations.Clear();
+                foreach (SubGeographicalRegion sgr in base.Model.SubGeoRegions)
                 {
-                    ssTemp.AddRange(base.Model.GetSomeSubstations(sgr.GlobalId));
+                    base.Model.GetSomeSubstations(sgr.GlobalId);
                 }
-                this.Amis.Clear();
-                foreach (Substation ss in ssTemp)
+                base.Model.Amis.Clear();
+                foreach (Substation ss in base.Model.Substations)
                 {
-                    this.Amis.AddRange(base.Model.GetSomeAmis(ss.GlobalId));
+                    base.Model.GetSomeAmis(ss.GlobalId);
                 }
-                this.newChange = DateTime.Now;
             }
         }
     }
