@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace AMISimulator
 {
-    [ServiceBehavior(InstanceContextMode =InstanceContextMode.Single)]
     public class AMISimulator : ISimulator
     {
         private const int numberOfRTUs = 1;
@@ -25,22 +24,48 @@ namespace AMISimulator
 
         private List<IOutstation> outStations = null;
         private List<OutstationStackConfig> configs = null;
-        private static AMISimulator instance = null;
         private object lockObject;
+        private IScadaDuplexSimulator proxyScada;
+        private bool firstContact = true;
+        private DuplexChannelFactory<IScadaDuplexSimulator> factory;
 
-        public static AMISimulator Instance
+        public IScadaDuplexSimulator ProxyScada
         {
             get
             {
-                if(instance == null)
+                if(firstContact)
                 {
-                    instance = new AMISimulator();
-                }
+                    while (true)
+                    {
+                        try
+                        {
+                            NetTcpBinding binding = new NetTcpBinding();
+                            binding.SendTimeout = TimeSpan.FromSeconds(3);
+                            factory = new DuplexChannelFactory<IScadaDuplexSimulator>(new InstanceContext(this),
+                                                                                    binding,
+                                                                                    new EndpointAddress("net.tcp://localhost:10100/Scada/Simulator"));
+                            
+                            proxyScada = factory.CreateChannel();
 
-                return instance;
+                            firstContact = false;
+                            break;
+                        }
+                        catch
+                        {
+                            Thread.Sleep(2000);
+                        }
+                        
+                    }
+                }
+                return proxyScada;
+            }
+
+            set
+            {
+                proxyScada = value;
             }
         }
-        
+
         public AMISimulator()
         {
             this.numberOfInstalledPoints = 0;
@@ -79,6 +104,23 @@ namespace AMISimulator
             config.link.localAddr = (ushort)rtuAddress;
             config.link.remoteAddr = 1;
             var outstation = channel.AddOutstation("outstation", RejectingCommandHandler.Instance, DefaultOutstationApplication.Instance, config);
+            Console.WriteLine("Connecting to scada...");
+            while (true)
+            {
+                try
+                {
+                    ProxyScada.Connect();
+                    factory.Endpoint.Binding.SendTimeout = TimeSpan.FromMinutes(1);
+                    break;
+                }
+                catch
+                {
+                    firstContact = true;
+                    Thread.Sleep(2000);
+                }
+            }
+            Console.WriteLine("Connected to scada");
+            numberOfInstalledPoints = ProxyScada.GetNumberOfPoints();
             outstation.Enable();
 
             return outstation;
