@@ -46,9 +46,10 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         
-        <Menu Grid.Row="0" VerticalAlignment="Top">
+        <Menu Grid.Row="0" VerticalAlignment="Top" IsMainMenu="True">
             <MenuItem Header="File">
                 <MenuItem Header="Table view" Command="{Binding NetworkPreviewCommand}" />
+                <MenuItem Header="Probaaa" Command="{Binding NetworkPreviewCommand}" />
             </MenuItem>
             <MenuItem Header="Advanced">
                 <MenuItem Header="Delta" Command="{Binding AddCimXmlCommand}"/>
