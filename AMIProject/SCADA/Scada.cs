@@ -19,47 +19,25 @@ using FTN.Common.Logger;
 
 namespace SCADA
 {
-    public class Scada : IScada, IDisposable
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    public class Scada : IScada, IScadaDuplexSimulator, IDisposable
     {
         bool firstTimeSimulator = true;
         bool firstTimeCoordinator = true;
         bool firstTimeCE = true;
-        ISimulator proxySimulator = null;
         Dictionary<int, ResourceDescription> measurements;
         SOEHandler handler;
         IDNP3Manager mgr;
         ITransactionDuplexScada proxyCoordinator;
         int cnt = 0;
         private List<ResourceDescription> measurementsToEnlist;
-        private Dictionary<int, ResourceDescription> copyMeasurements = new Dictionary<int, ResourceDescription>();
-        private List<ResourceDescription> resourcesToSend = new List<ResourceDescription>();
+        private Dictionary<int, ResourceDescription> copyMeasurements;
+        private List<ResourceDescription> resourcesToSend;
         private object lockObject = new object();
         private Thread sendingThread;
         ICalculationEngine proxyCE;
-
-        public ISimulator ProxySimulator
-        {
-            get
-            {
-                if (firstTimeSimulator)
-                {
-                    Logger.LogMessageToFile(string.Format("SCADA.Scada.ProxySimulator; line: {0}; Create channel between Scada and Simulator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    ChannelFactory<ISimulator> factory = new ChannelFactory<ISimulator>(new NetTcpBinding(),
-                                                                                        new EndpointAddress("net.tcp://localhost:10100/AMISimulator/Simulator"));
-                    proxySimulator = factory.CreateChannel();
-
-                    firstTimeSimulator = false;
-                }
-                Logger.LogMessageToFile(string.Format("SCADA.Scada.ProxySimulator; line: {0}; Channel SCADA-Simulator is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                return proxySimulator;
-            }
-
-            set
-            {
-                proxySimulator = value;
-            }
-        }
-
+        private List<ISimulator> simulators;
+        
         public ITransactionDuplexScada ProxyCoordinator
         {
             get
@@ -112,6 +90,9 @@ namespace SCADA
         public Scada()
         {
             measurements = new Dictionary<int, ResourceDescription>();
+            copyMeasurements = new Dictionary<int, ResourceDescription>();
+            resourcesToSend = new List<ResourceDescription>();
+            simulators = new List<ISimulator>();
             handler = new SOEHandler(ref measurements, ref resourcesToSend, ref lockObject);
             mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
             var channel = mgr.AddTCPClient("outstation", LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", 20000, ChannelListener.Print());
@@ -151,7 +132,7 @@ namespace SCADA
 
         public void StartIssueCommands()
         {
-            Console.WriteLine("Enter a command");
+            /*Console.WriteLine("Enter a command");
 
             while (true)
             {
@@ -165,7 +146,7 @@ namespace SCADA
                     default:
                         break;
                 }
-            }
+            }*/
         }
 
         public void EnlistMeas(List<ResourceDescription> meas)
@@ -185,6 +166,11 @@ namespace SCADA
             List<ResourceDescription> Ps = new List<ResourceDescription>();
             List<ResourceDescription> Qs = new List<ResourceDescription>();
             List<ResourceDescription> Vs = new List<ResourceDescription>();
+
+            if(this.simulators.Count == 0)
+            {
+                return false;
+            }
 
             foreach (ResourceDescription rd in measurementsToEnlist)
             {
@@ -214,7 +200,7 @@ namespace SCADA
 
             for (int i = 0; i < Ps.Count; i++)
             {
-                int index = ProxySimulator.AddMeasurement();
+                int index = simulators[0].AddMeasurement();
                 if (index != -1)
                 {
                     this.copyMeasurements.Add(index, Ps[i]);
@@ -224,7 +210,7 @@ namespace SCADA
                 {
                     return false;
                 }
-                index = ProxySimulator.AddMeasurement();
+                index = simulators[0].AddMeasurement();
                 if (index != -1)
                 {
                     this.copyMeasurements.Add(index, Qs[i]);
@@ -234,7 +220,7 @@ namespace SCADA
                 {
                     return false;
                 }
-                index = ProxySimulator.AddMeasurement();
+                index = simulators[0].AddMeasurement();
                 if (index != -1)
                 {
                     this.copyMeasurements.Add(index, Vs[i]);
@@ -266,7 +252,7 @@ namespace SCADA
         public void Rollback()
         {
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Rollback; line: {0}; Start the Rollback function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            this.ProxySimulator.Rollback(cnt);
+            this.simulators[0].Rollback(cnt);
             cnt = 0;
             this.copyMeasurements.Clear();
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Rollback; line: {0}; Finish the Rollback function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -331,6 +317,16 @@ namespace SCADA
             {
                 Logger.LogMessageToFile(string.Format("SCADA.Scada.Deserialize; line: {0}; Deserialization failed", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             }
+        }
+
+        public void Connect()
+        {
+            this.simulators.Add(OperationContext.Current.GetCallbackChannel<ISimulator>());
+        }
+
+        public int GetNumberOfPoints()
+        {
+            return this.measurements.Count();
         }
     }
 }

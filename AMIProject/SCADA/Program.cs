@@ -8,16 +8,23 @@ using Automatak.DNP3.Interface;
 using System.ServiceModel;
 using AMISimulator;
 using TC57CIM.IEC61970.Meas;
+using FTN.ServiceContracts;
 
 namespace SCADA
 {
     class Program
     {
+        private static ServiceHost svc = null;
 
         static int Main(string[] args)
         {
             Scada scada = new Scada();
             scada.StartIssueCommands();
+            svc = new ServiceHost(scada);
+            svc.AddServiceEndpoint(typeof(IScadaDuplexSimulator),
+                                   new NetTcpBinding(),
+                                   new Uri("net.tcp://localhost:10100/Scada/Simulator"));
+            svc.Open();
 
             return 0;
         }

@@ -16,12 +16,8 @@ namespace AMISimulator
 
         static void Main(string[] args)
         {
-            svc = new ServiceHost(AMISimulator.Instance);
-            svc.AddServiceEndpoint(typeof(ISimulator),
-                                    new NetTcpBinding(),
-                                    new Uri("net.tcp://localhost:10100/AMISimulator/Simulator"));
-            svc.Open();
-            AMISimulator.Instance.SendPointValues();
+            AMISimulator simulator = new AMISimulator();
+            simulator.SendPointValues();
         }
     }
 }
