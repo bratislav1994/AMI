@@ -1,6 +1,7 @@
 ﻿using FTN.Common;
 using FTN.Common.Logger;
 using FTN.ServiceContracts;
+using FTN.Services.NetworkModelService.DataModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,11 +46,10 @@ namespace CalculationEngine
             this.clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
         }
 
-        public void DataFromScada(List<ResourceDescription> measurements)
+        public void DataFromScada(List<DynamicMeasurement> measurements)
         {
             Logger.LogMessageToFile(string.Format("CalculationEngine.CalculationEngine.DataFromScada; line: {0}; CE receive data from scada and send this data to client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             Console.WriteLine("Receive data from SCADA");
-            this.meas = measurements;
 
             Console.WriteLine("Send data to client");
 

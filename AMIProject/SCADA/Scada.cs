@@ -16,6 +16,7 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Windows.Threading;
 using FTN.Common.Logger;
+using FTN.Services.NetworkModelService.DataModel;
 
 namespace SCADA
 {
@@ -32,7 +33,7 @@ namespace SCADA
         int cnt = 0;
         private List<ResourceDescription> measurementsToEnlist;
         private Dictionary<int, ResourceDescription> copyMeasurements;
-        private List<ResourceDescription> resourcesToSend;
+        private List<DynamicMeasurement> resourcesToSend;
         private object lockObject = new object();
         private Thread sendingThread;
         ICalculationEngine proxyCE;
@@ -91,9 +92,9 @@ namespace SCADA
         {
             measurements = new Dictionary<int, ResourceDescription>();
             copyMeasurements = new Dictionary<int, ResourceDescription>();
-            resourcesToSend = new List<ResourceDescription>();
+            resourcesToSend = new List<DynamicMeasurement>();
             simulators = new List<ISimulator>();
-            handler = new SOEHandler(ref measurements, ref resourcesToSend, ref lockObject);
+            handler = new SOEHandler(ref measurements, resourcesToSend, ref lockObject);
             mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
             var channel = mgr.AddTCPClient("outstation", LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", 20000, ChannelListener.Print());
 
@@ -260,19 +261,20 @@ namespace SCADA
 
         private void CheckIfThereIsSomethingToSned()
         {
-            Logger.LogMessageToFile(string.Format("SCADA.Scada.CheckIfThereIsSomethingToSned; line: {0}; Scada sends data to client if it has data to send", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             while (true)
             {
                 lock(lockObject)
                 {
-                    if(resourcesToSend.Count > 0)
+                    if (handler.resourcesToSend.Count > 0)
                     {
+                        Logger.LogMessageToFile(string.Format("SCADA.Scada.CheckIfThereIsSomethingToSned; line: {0}; Scada sends data to client if it has data to send", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                         Console.WriteLine("List changed, here will be code for sending measurements to Calculation Engine...");
-                        ProxyCE.DataFromScada(resourcesToSend);
+                        ProxyCE.DataFromScada(handler.resourcesToSend);
 
-                        resourcesToSend.Clear();
+                        handler.resourcesToSend.Clear();
                     }
                 }
+
                 Thread.Sleep(200);
             }
         }

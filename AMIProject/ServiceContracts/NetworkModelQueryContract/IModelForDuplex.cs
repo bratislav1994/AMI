@@ -1,4 +1,5 @@
 ﻿using FTN.Common;
+using FTN.Services.NetworkModelService.DataModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,6 @@ namespace FTN.ServiceContracts
         void NewDeltaApplied();
 
         [OperationContract]
-        void SendMeasurements(List<ResourceDescription> measurements);
+        void SendMeasurements(List<DynamicMeasurement> measurements);
     }
 }

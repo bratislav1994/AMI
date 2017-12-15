@@ -101,6 +101,7 @@
     <Compile Include="Core\SubGeographicalRegion.cs" />
     <Compile Include="Core\Substation.cs" />
     <Compile Include="Core\VoltageLevel.cs" />
+    <Compile Include="Dynamic\DynamicMeasurement.cs" />
     <Compile Include="Meas\Analog.cs" />
     <Compile Include="Meas\Discrete.cs" />
     <Compile Include="Meas\Measurement.cs" />

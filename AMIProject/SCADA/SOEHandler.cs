@@ -1,65 +1,95 @@
 ﻿using Automatak.DNP3.Interface;
 using FTN.Common;
 using FTN.Common.Logger;
+using FTN.Services.NetworkModelService.DataModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TC57CIM.IEC61970.Meas;
 
 namespace SCADA
 {
     public class SOEHandler : ISOEHandler
     {
-        bool canExecute = false;
-        Dictionary<int, ResourceDescription> measurements;
-        List<ResourceDescription> resourcesToSend;
-        object lockObject;
+        private bool canExecute = false;
+        private Dictionary<int, ResourceDescription> measurements;
+        public List<DynamicMeasurement> resourcesToSend;
+        private object lockObject;
 
-        public SOEHandler(ref Dictionary<int, ResourceDescription> measurements, ref List<ResourceDescription> resourcesToSend, ref object lockObject)
+        public SOEHandler(ref Dictionary<int, ResourceDescription> measurements, List<DynamicMeasurement> resourcesToSend, ref object lockObject)
         {
             this.measurements = measurements;
             this.resourcesToSend = resourcesToSend;
             this.lockObject = lockObject;
         }
 
-        public void Process(HeaderInfo info, IEnumerable<IndexedValue<Analog>> values)
+        public void Process(HeaderInfo info, IEnumerable<IndexedValue<Automatak.DNP3.Interface.Analog>> values)
         {
-            Logger.LogMessageToFile(string.Format("SCADA.SOEHandler.Process; line: {0}; Start the Process function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             if (canExecute)
             {
                 lock (lockObject)
                 {
-                    List<IndexedValue<Analog>> analogs = new List<IndexedValue<Analog>>();
+                    Logger.LogMessageToFile(string.Format("SCADA.SOEHandler.Process; line: {0}; Start the Process function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    List<IndexedValue<Automatak.DNP3.Interface.Analog>> analogs = new List<IndexedValue<Automatak.DNP3.Interface.Analog>>();
                     analogs.AddRange(values.ToList());
-                    foreach (IndexedValue<Analog> analog in analogs)
+                    Dictionary<long, DynamicMeasurement> localDic = new Dictionary<long, DynamicMeasurement>(this.measurements.Count/3);
+                    
+                    foreach (IndexedValue<Automatak.DNP3.Interface.Analog> analog in analogs)
                     {
                         if (analog.Value.Value != 0)
                         {
-                            ResourceDescription newRD = new ResourceDescription();
-                            newRD.Id = measurements[analog.Index].Id;
-                            foreach (Property p in measurements[analog.Index].Properties)
+                            TC57CIM.IEC61970.Meas.Analog a = new TC57CIM.IEC61970.Meas.Analog();
+                            a.RD2Class(measurements[analog.Index]);
+
+                            if (localDic.ContainsKey(a.PowerSystemResourceRef))
                             {
-                                if (p.Id == ModelCode.ANALOG_NORMALVALUE)
+                                switch (analog.Index % 3)
                                 {
-                                    Property newP = new Property(p.Id, (float)analog.Value.Value);
-                                    newRD.AddProperty(newP);
-                                }
-                                else
-                                {
-                                    newRD.AddProperty(p);
+                                    case 0:
+                                        localDic[a.PowerSystemResourceRef].CurrentP = (float)analog.Value.Value;
+                                        break;
+                                    case 1:
+                                        localDic[a.PowerSystemResourceRef].CurrentQ = (float)analog.Value.Value;
+                                        break;
+                                    case 2:
+                                        localDic[a.PowerSystemResourceRef].CurrentV = (float)analog.Value.Value;
+                                        break;
                                 }
                             }
-                            resourcesToSend.Add(newRD);
+                            else
+                            {
+                                localDic.Add(a.PowerSystemResourceRef, new DynamicMeasurement(a.PowerSystemResourceRef));
+
+                                switch (analog.Index % 3)
+                                {
+                                    case 0:
+                                        localDic[a.PowerSystemResourceRef].CurrentP = (float)analog.Value.Value;
+                                        break;
+                                    case 1:
+                                        localDic[a.PowerSystemResourceRef].CurrentQ = (float)analog.Value.Value;
+                                        break;
+                                    case 2:
+                                        localDic[a.PowerSystemResourceRef].CurrentV = (float)analog.Value.Value;
+                                        break;
+                                }
+                            }
                         }
                         else
                         {
                             break;
                         }
                     }
+
+                    foreach (KeyValuePair<long, DynamicMeasurement> kvp in localDic)
+                    {
+                        resourcesToSend.Add(kvp.Value);
+                    }
+
+                    Logger.LogMessageToFile(string.Format("SCADA.SOEHandler.Process; line: {0}; Finish the Process function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 }
             }
-            Logger.LogMessageToFile(string.Format("SCADA.SOEHandler.Process; line: {0}; Finish the Process function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
         public void End()

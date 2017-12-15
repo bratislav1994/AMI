@@ -1,42 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
-using TC57CIM.IEC61970.Meas;
-using TC57CIM.IEC61970.Wires;
 
-namespace AMIClient
+namespace FTN.Services.NetworkModelService.DataModel
 {
-    public class EnergyConsumerForTable : INotifyPropertyChanged
+    [DataContract]
+    public class DynamicMeasurement
     {
-        private EnergyConsumer ami;
+        private long psrRef;
         private float currentP;
         private float currentQ;
         private float currentV;
 
-        public EnergyConsumerForTable(EnergyConsumer ami)
+        public DynamicMeasurement(long psrRef)
         {
-            this.Ami = ami;
-            this.CurrentP = 0;
-            this.currentQ = 0;
-            this.CurrentV = 0;
+            this.psrRef = psrRef;
+            this.currentP = -1;
+            this.currentQ = -1;
+            this.currentV = -1;
         }
 
-        public EnergyConsumer Ami
+        [DataMember]
+        public long PsrRef
         {
             get
             {
-                return ami;
+                return psrRef;
             }
 
             set
             {
-                ami = value;
+                psrRef = value;
             }
         }
 
+        [DataMember]
         public float CurrentP
         {
             get
@@ -47,10 +48,10 @@ namespace AMIClient
             set
             {
                 currentP = value;
-                RaisePropertyChanged("CurrentP");
             }
         }
 
+        [DataMember]
         public float CurrentQ
         {
             get
@@ -61,10 +62,10 @@ namespace AMIClient
             set
             {
                 currentQ = value;
-                RaisePropertyChanged("CurrentQ");
             }
         }
 
+        [DataMember]
         public float CurrentV
         {
             get
@@ -75,17 +76,6 @@ namespace AMIClient
             set
             {
                 currentV = value;
-                RaisePropertyChanged("CurrentV");
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void RaisePropertyChanged(string propName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propName));
             }
         }
     }
