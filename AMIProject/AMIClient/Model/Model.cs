@@ -16,6 +16,7 @@ using TC57CIM.IEC61970.Wires;
 using TC57CIM.IEC61970.Meas;
 using System.ComponentModel;
 using FTN.Common.Logger;
+using FTN.Services.NetworkModelService.DataModel;
 
 namespace AMIClient
 {
@@ -457,28 +458,17 @@ namespace AMIClient
             }
         }
 
-        public void SendMeasurements(List<ResourceDescription> measurements)
+        public void SendMeasurements(List<DynamicMeasurement> measurements)
         {
             lock (lockObj)
             {
-                foreach (ResourceDescription rd in measurements)
+                foreach (DynamicMeasurement dm in measurements)
                 {
-                    Analog an = new Analog();
-                    an.RD2Class(rd);
-                    if (positions.ContainsKey(an.PowerSystemResourceRef))
+                    if (positions.ContainsKey(dm.PsrRef))
                     {
-                        switch (an.UnitSymbol)
-                        {
-                            case UnitSymbol.P:
-                                Amis[positions[an.PowerSystemResourceRef]].CurrentP = an.NormalValue;
-                                break;
-                            case UnitSymbol.Q:
-                                Amis[positions[an.PowerSystemResourceRef]].CurrentQ = an.NormalValue;
-                                break;
-                            case UnitSymbol.V:
-                                Amis[positions[an.PowerSystemResourceRef]].CurrentV = an.NormalValue;
-                                break;
-                        }
+                        Amis[positions[dm.PsrRef]].CurrentP = dm.CurrentP != -1 ? dm.CurrentP : Amis[positions[dm.PsrRef]].CurrentP;
+                        Amis[positions[dm.PsrRef]].CurrentQ = dm.CurrentQ != -1 ? dm.CurrentQ : Amis[positions[dm.PsrRef]].CurrentQ;
+                        Amis[positions[dm.PsrRef]].CurrentV = dm.CurrentV != -1 ? dm.CurrentV : Amis[positions[dm.PsrRef]].CurrentV;
                     }
                 }
             }
