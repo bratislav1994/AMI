@@ -34,6 +34,8 @@ namespace AMIClient
         private INetworkModelGDAContractDuplexClient gdaQueryProxy = null;
         private ICalculationDuplexClient ceQueryProxy = null;
         private object lockObj = new object();
+        DuplexChannelFactory<INetworkModelGDAContractDuplexClient> factory;
+        DuplexChannelFactory<ICalculationDuplexClient> factoryCE;
 
         public INetworkModelGDAContractDuplexClient GdaQueryProxy
         {
@@ -44,7 +46,7 @@ namespace AMIClient
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.GdaQueryProxy; line: {0}; Create channel between Client and NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.SendTimeout = TimeSpan.FromSeconds(3);
-                    DuplexChannelFactory<INetworkModelGDAContractDuplexClient> factory = new DuplexChannelFactory<INetworkModelGDAContractDuplexClient>(
+                    factory = new DuplexChannelFactory<INetworkModelGDAContractDuplexClient>(
                     new InstanceContext(this),
                         binding,
                         new EndpointAddress("net.tcp://localhost:10000/NetworkModelService/GDADuplexClient"));
@@ -70,7 +72,7 @@ namespace AMIClient
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.CEQueryProxy; line: {0}; Create channel between Client and CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.SendTimeout = TimeSpan.FromSeconds(3);
-                    DuplexChannelFactory<ICalculationDuplexClient> factoryCE = new DuplexChannelFactory<ICalculationDuplexClient>(
+                    factoryCE = new DuplexChannelFactory<ICalculationDuplexClient>(
                     new InstanceContext(this),
                         binding,
                         new EndpointAddress("net.tcp://localhost:10006/CalculationEngine/Client"));
@@ -160,6 +162,7 @@ namespace AMIClient
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client try to connect with CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     CEQueryProxy.ConncetClient();
+                    factoryCE.Endpoint.Binding.SendTimeout = TimeSpan.FromMinutes(1);
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client is connected to the CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     break;
                 }
@@ -180,6 +183,7 @@ namespace AMIClient
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToNMS; line: {0}; Client try to connect with NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     GdaQueryProxy.ConnectClient();
+                    factory.Endpoint.Binding.SendTimeout = TimeSpan.FromMinutes(1);
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToNMS; line: {0}; Client is connected to the NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     break;
                 }
@@ -236,10 +240,7 @@ namespace AMIClient
             Substations.Clear();
             Amis.Clear();
             string message = "Getting extent values method started.";
-            Console.WriteLine(message);
             CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-
-            XmlTextWriter xmlWriter = null;
             int iteratorId = 0;
             List<long> ids = new List<long>();
             
@@ -299,22 +300,14 @@ namespace AMIClient
                 GdaQueryProxy.IteratorClose(iteratorId);
 
                 message = "Getting extent values method successfully finished.";
-                Console.WriteLine(message);
                 CommonTrace.WriteTrace(CommonTrace.TraceError, message);
 
             }
             catch (Exception e)
             {
                 message = string.Format("Getting extent values method failed for {0}.\n\t{1}", modelCode, e.Message);
-                Console.WriteLine(message);
+                MessageBox.Show(e.Message);
                 CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-            }
-            finally
-            {
-                if (xmlWriter != null)
-                {
-                    xmlWriter.Close();
-                }
             }
         }
 
@@ -394,49 +387,58 @@ namespace AMIClient
 
         private void GetRelatedValues(long source, List<ModelCode> propIds, Association association, ModelCode modelCode)
         {
-            int iteratorId = GdaQueryProxy.GetRelatedValues(source, propIds, association);
-            int resourcesLeft = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
-
-            int numberOfResources = 10;
-            List<ResourceDescription> results = new List<ResourceDescription>();
-
-            while(resourcesLeft > 0)
+            try
             {
-                List<ResourceDescription> rds = GdaQueryProxy.IteratorNext(numberOfResources, iteratorId);
-                results.AddRange(rds);
-                resourcesLeft = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
+                int iteratorId = GdaQueryProxy.GetRelatedValues(source, propIds, association);
+                int resourcesLeft = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
+
+                int numberOfResources = 10;
+                List<ResourceDescription> results = new List<ResourceDescription>();
+
+                while (resourcesLeft > 0)
+                {
+                    List<ResourceDescription> rds = GdaQueryProxy.IteratorNext(numberOfResources, iteratorId);
+                    results.AddRange(rds);
+                    resourcesLeft = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
+                }
+
+                switch (modelCode)
+                {
+                    case ModelCode.SUBGEOREGION:
+                        foreach (ResourceDescription rd in results)
+                        {
+                            SubGeographicalRegion sgr = new SubGeographicalRegion();
+                            sgr.RD2Class(rd);
+                            SubGeoRegions.Add(sgr);
+                        }
+                        break;
+                    case ModelCode.SUBSTATION:
+                        foreach (ResourceDescription rd in results)
+                        {
+                            Substation ss = new Substation();
+                            ss.RD2Class(rd);
+                            Substations.Add(ss);
+                        }
+                        break;
+                    case ModelCode.ENERGYCONS:
+                        foreach (ResourceDescription rd in results)
+                        {
+                            EnergyConsumer ec = new EnergyConsumer();
+                            ec.RD2Class(rd);
+                            Amis.Add(new EnergyConsumerForTable(ec));
+                            positions.Add(ec.GlobalId, Amis.Count - 1);
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
             }
-
-            switch(modelCode)
+            catch(Exception e)
             {
-                case ModelCode.SUBGEOREGION:
-                    foreach(ResourceDescription rd in results)
-                    {
-                        SubGeographicalRegion sgr = new SubGeographicalRegion();
-                        sgr.RD2Class(rd);
-                        SubGeoRegions.Add(sgr);
-                    }
-                    break;
-                case ModelCode.SUBSTATION:
-                    foreach(ResourceDescription rd in results)
-                    {
-                        Substation ss = new Substation();
-                        ss.RD2Class(rd);
-                        Substations.Add(ss);
-                    }
-                    break;
-                case ModelCode.ENERGYCONS:
-                    foreach (ResourceDescription rd in results)
-                    {
-                        EnergyConsumer ec = new EnergyConsumer();
-                        ec.RD2Class(rd);
-                        Amis.Add(new EnergyConsumerForTable(ec));
-                        positions.Add(ec.GlobalId, Amis.Count - 1);
-                    }
-                    break;
-
-                default:
-                    break;
+                string message = string.Format("Getting related values method failed for {0}.\n\t{1}", modelCode, e.Message);
+                MessageBox.Show(e.Message);
+                CommonTrace.WriteTrace(CommonTrace.TraceError, message);
             }
         }
 
