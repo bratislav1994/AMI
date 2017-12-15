@@ -13,5 +13,7 @@ namespace FTN.ServiceContracts
     {
         [OperationContract(IsOneWay = true)]
         void ConnectClient();
+        
+        bool Ping();
     }
 }

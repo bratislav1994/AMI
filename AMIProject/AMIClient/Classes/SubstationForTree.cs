@@ -67,7 +67,7 @@ namespace AMIClient
                 if (value != base.isSelected)
                 {
                     base.isSelected = value;
-                    base.Model.Amis.Clear();
+                    base.Model.ClearAmis();
                     base.Model.ClearPositions();
                     base.Model.GetSomeAmis(this.Substation.GlobalId);
                     this.OnPropertyChanged("IsSelected");
@@ -90,7 +90,7 @@ namespace AMIClient
 
         public override void CheckIfSeleacted()
         {
-            base.Model.Amis.Clear();
+            base.Model.ClearAmis();
             if (IsSelected)
             {
                 base.Model.GetSomeAmis(this.Substation.GlobalId);

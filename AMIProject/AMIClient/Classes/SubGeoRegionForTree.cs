@@ -79,7 +79,7 @@ namespace AMIClient
                     base.Model.Substations.Clear();
                     base.Model.ClearPositions();
                     base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId);
-                    base.Model.Amis.Clear();
+                    base.Model.ClearAmis();
                     foreach (Substation ss in base.Model.Substations)
                     {
                         base.Model.GetSomeAmis(ss.GlobalId);
@@ -129,7 +129,7 @@ namespace AMIClient
             {
                 base.Model.Substations.Clear();
                 base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId);
-                base.Model.Amis.Clear();
+                base.Model.ClearAmis();
                 foreach (Substation ss in base.Model.Substations)
                 {
                     base.Model.GetSomeAmis(ss.GlobalId);

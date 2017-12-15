@@ -20,7 +20,7 @@ namespace FTN.Common.Logger
 
         public static void LogMessageToFile(string msg)
         {
-            System.IO.StreamWriter sw = System.IO.File.AppendText(fileName);
+            /*System.IO.StreamWriter sw = System.IO.File.AppendText(fileName);
             try
             {
                 string logline = string.Format(
@@ -30,7 +30,7 @@ namespace FTN.Common.Logger
             finally
             {
                 sw.Close();
-            }
+            }*/
         }
     }
 }

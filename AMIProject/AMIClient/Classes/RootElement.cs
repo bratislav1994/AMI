@@ -169,7 +169,7 @@ namespace AMIClient
                         App.Current.Dispatcher.Invoke((Action)(() =>
                         {
                             LoadChildren();
-                            this.Model.Amis.Clear();
+                            base.Model.ClearAmis();
                             if (IsSelected)
                             {
                                 this.Model.GetAllAmis();

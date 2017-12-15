@@ -216,5 +216,10 @@ namespace FTN.Services.NetworkModelService
 				return resourceItMap.Remove(iteratorId);
 			}
 		}
+
+        public bool Ping()
+        {
+            return true;
+        }
     }
 }

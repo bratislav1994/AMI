@@ -79,7 +79,7 @@ namespace AMIClient
                     {
                         base.Model.GetSomeSubstations(sgr.GlobalId);
                     }
-                    base.Model.Amis.Clear();
+                    base.Model.ClearAmis();
                     foreach (Substation ss in base.Model.Substations)
                     {
                         base.Model.GetSomeAmis(ss.GlobalId);
@@ -133,7 +133,7 @@ namespace AMIClient
                 {
                     base.Model.GetSomeSubstations(sgr.GlobalId);
                 }
-                base.Model.Amis.Clear();
+                base.Model.ClearAmis();
                 foreach (Substation ss in base.Model.Substations)
                 {
                     base.Model.GetSomeAmis(ss.GlobalId);

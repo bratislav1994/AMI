@@ -221,6 +221,7 @@ namespace SCADA
                 {
                     return false;
                 }
+                
                 index = simulators[0].AddMeasurement();
                 if (index != -1)
                 {

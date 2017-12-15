@@ -35,8 +35,9 @@ namespace AMIClient
         private INetworkModelGDAContractDuplexClient gdaQueryProxy = null;
         private ICalculationDuplexClient ceQueryProxy = null;
         private object lockObj = new object();
-        DuplexChannelFactory<INetworkModelGDAContractDuplexClient> factory;
-        DuplexChannelFactory<ICalculationDuplexClient> factoryCE;
+        private DuplexChannelFactory<INetworkModelGDAContractDuplexClient> factory;
+        private DuplexChannelFactory<ICalculationDuplexClient> factoryCE;
+        private Thread checkNMS;
 
         public INetworkModelGDAContractDuplexClient GdaQueryProxy
         {
@@ -145,6 +146,8 @@ namespace AMIClient
 
         public Model()
         {
+            checkNMS = new Thread(() => CheckIfNMSIsAlive());
+
             Thread t = new Thread(() => ConnectToNMS());
             t.Start();
             
@@ -186,6 +189,8 @@ namespace AMIClient
                     GdaQueryProxy.ConnectClient();
                     factory.Endpoint.Binding.SendTimeout = TimeSpan.FromMinutes(1);
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToNMS; line: {0}; Client is connected to the NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    checkNMS.Start();
+
                     break;
                 }
                 catch
@@ -194,6 +199,25 @@ namespace AMIClient
                     firstContact = true;
                     Thread.Sleep(1000);
                 }
+            }
+        }
+
+        private void CheckIfNMSIsAlive()
+        {
+            while (true)
+            {
+                try
+                {
+                    GdaQueryProxy.Ping();
+                }
+                catch
+                {
+                    firstContact = true;
+                    new Thread(() => ConnectToNMS()).Start();
+                    break;
+                }
+
+                Thread.Sleep(3000);
             }
         }
 
@@ -231,7 +255,7 @@ namespace AMIClient
         public void GetAllAmis()
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllAmis; line: {0}; Start the GetAllAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            Amis.Clear();
+            ClearAmis();
             GetExtentValues(ModelCode.ENERGYCONS);
             //return Amis;
         }
@@ -239,7 +263,7 @@ namespace AMIClient
         private void GetExtentValues(ModelCode modelCode)
         {
             Substations.Clear();
-            Amis.Clear();
+            ClearAmis();
             string message = "Getting extent values method started.";
             CommonTrace.WriteTrace(CommonTrace.TraceError, message);
             int iteratorId = 0;
@@ -309,6 +333,12 @@ namespace AMIClient
                 message = string.Format("Getting extent values method failed for {0}.\n\t{1}", modelCode, e.Message);
                 MessageBox.Show(e.Message);
                 CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+
+                if (!firstContact)
+                {
+                    firstContact = true;
+                    new Thread(() => ConnectToNMS()).Start();
+                }
             }
         }
 
@@ -440,6 +470,12 @@ namespace AMIClient
                 string message = string.Format("Getting related values method failed for {0}.\n\t{1}", modelCode, e.Message);
                 MessageBox.Show(e.Message);
                 CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+
+                if (!firstContact)
+                {
+                    firstContact = true;
+                    new Thread(() => ConnectToNMS()).Start();
+                }
             }
         }
 
@@ -462,6 +498,11 @@ namespace AMIClient
         {
             lock (lockObj)
             {
+                if (Amis.Count == 0)
+                {
+                    positions.Clear();
+                }
+
                 foreach (DynamicMeasurement dm in measurements)
                 {
                     if (positions.ContainsKey(dm.PsrRef))
@@ -471,6 +512,14 @@ namespace AMIClient
                         Amis[positions[dm.PsrRef]].CurrentV = dm.CurrentV != -1 ? dm.CurrentV : Amis[positions[dm.PsrRef]].CurrentV;
                     }
                 }
+            }
+        }
+
+        public void ClearAmis()
+        {
+            lock (lockObj)
+            {
+                this.Amis.Clear();
             }
         }
 

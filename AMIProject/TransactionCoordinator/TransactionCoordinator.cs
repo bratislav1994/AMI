@@ -54,10 +54,19 @@ namespace TransactionCoordinator
         {
             Logger.LogMessageToFile(string.Format("TranscactionCoordinator.TranscactionCoordinator.ApplyDelta; line: {0}; Coordinator sends data to NMS and SCADA", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             List<ResourceDescription> measurements = new List<ResourceDescription>();
+            Delta newDelta = null;
 
-            proxyNMS.EnlistDelta(delta);
 
-            Delta newDelta = proxyNMS.Prepare();
+            try
+            {
+                proxyNMS.EnlistDelta(delta);
+                newDelta = proxyNMS.Prepare();
+            }
+            catch
+            {
+                proxyNMS = null;
+                return false;
+            }
 
             if (newDelta != null)
             {
@@ -72,23 +81,71 @@ namespace TransactionCoordinator
 
                 foreach (IScada scada in scadas)
                 {
-                    scada.EnlistMeas(measurements);
+                    try
+                    {
+                        scada.EnlistMeas(measurements);
+                    }
+                    catch
+                    {
+                        scadasForDeleting.Add(scada);
+                    }
                 }
-                
+
+                if (scadasForDeleting.Count > 0)
+                {
+                    scadasForDeleting.ForEach(s => scadas.Remove(s));
+                    return false;
+                }
+
                 List<bool> list = new List<bool>(scadas.Count);
                 foreach (IScada scada in scadas)
                 {
-                    list.Add(scada.Prepare());
+                    try
+                    {
+                        list.Add(scada.Prepare());
+                    }
+                    catch
+                    {
+                        scadasForDeleting.Add(scada);
+                    }
+                }
+
+                if (scadasForDeleting.Count > 0)
+                {
+                    scadasForDeleting.ForEach(s => scadas.Remove(s));
+                    return false;
                 }
 
                 if (list.All(x => x == true))
                 {
                     foreach (IScada scada in scadas)
                     {
-                        scada.Commit();
+                        try
+                        {
+                            scada.Commit();
+                        }
+                        catch
+                        {
+                            scadasForDeleting.Add(scada);
+                        }
                     }
 
-                    proxyNMS.Commit();
+                    if (scadasForDeleting.Count > 0)
+                    {
+                        scadasForDeleting.ForEach(s => scadas.Remove(s));
+                        return false;
+                    }
+
+                    try
+                    {
+                        proxyNMS.Commit();
+                    }
+                    catch
+                    {
+                        proxyNMS = null;
+                        return false;
+                    }
+                    
                     Logger.LogMessageToFile(string.Format("TranscactionCoordinator.TranscactionCoordinator.ApplyDelta; line: {0}; Data is successfully sent", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     return true;
                 }
@@ -96,7 +153,19 @@ namespace TransactionCoordinator
                 {
                     foreach (IScada scada in scadas)
                     {
-                        scada.Rollback();
+                        try
+                        {
+                            scada.Rollback();
+                        }
+                        catch
+                        {
+                            scadasForDeleting.Add(scada);
+                        }
+                    }
+
+                    if (scadasForDeleting.Count > 0)
+                    {
+                        scadasForDeleting.ForEach(s => scadas.Remove(s));
                     }
 
                     Logger.LogMessageToFile(string.Format("TranscactionCoordinator.TranscactionCoordinator.ApplyDelta; line: {0}; Data failed to send successfully", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -105,7 +174,15 @@ namespace TransactionCoordinator
             }
             else
             {
-                proxyNMS.Rollback();
+                try
+                {
+                    proxyNMS.Rollback();
+                }
+                catch
+                {
+                    proxyNMS = null;
+                }
+                
                 return false;
             }
         }
