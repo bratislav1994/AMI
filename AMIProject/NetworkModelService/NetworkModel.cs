@@ -370,13 +370,21 @@ namespace FTN.Services.NetworkModelService
 			}
 		}
 
-		#endregion GDA query	
+        #endregion GDA query	
 
-		private Delta ApplyDelta(Delta delta)
+        public void EnlistDelta(Delta delta)
+        {
+            this.delta = delta;
+        }
+
+        public Delta Prepare()
+        {
+            Logger.LogMessageToFile(string.Format("NMS.NetworkModel.Prepare; line: {0}; Try to apply delta", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            return this.ApplyDelta(this.delta);
+        }
+
+        private Delta ApplyDelta(Delta delta)
 		{
-			//bool applyingStarted = false;
-			//UpdateResult updateResult = new UpdateResult();
-
 			try
 			{
                 CommonTrace.WriteTrace(CommonTrace.TraceInfo, "Applying  delta to network model.");
@@ -394,22 +402,7 @@ namespace FTN.Services.NetworkModelService
                 else
                 {
                     return null;
-                }
-                
-    //            foreach (ResourceDescription rd in delta.InsertOperations)
-				//{
-				//	InsertEntity(rd);
-				//}
-
-				//foreach (ResourceDescription rd in delta.UpdateOperations)
-				//{
-				//	UpdateEntity(rd);
-				//}
-
-				//foreach (ResourceDescription rd in delta.DeleteOperations)
-				//{
-				//	DeleteEntity(rd);
-				//}				 				
+                }	 				
 
 			}
 			catch (Exception ex)
@@ -417,42 +410,10 @@ namespace FTN.Services.NetworkModelService
 				string message = string.Format("Applying delta to network model failed. {0}.", ex.Message);
 				CommonTrace.WriteTrace(CommonTrace.TraceError, message);
 
-				//updateResult.Result = ResultType.Failed;
-				//updateResult.Message = message;
-
                 return null;
 			}
-			//finally
-			//{
-			//	if (applyingStarted)
-			//	{
-			//		SaveDelta(delta);
-			//	}
-
-   //             if (updateResult.Result == ResultType.Succeeded)
-   //             {
-   //                 string mesage = "Applying delta to network model successfully finished.";
-   //                 CommonTrace.WriteTrace(CommonTrace.TraceInfo, mesage);
-   //                 updateResult.Message = mesage;
-   //                 lock (lockObjectClient)
-   //                 {
-   //                     clientsNeedToUpdate = true;
-   //                 }
-   //             }				
-			//}
 		}
-
-        public void EnlistDelta(Delta delta)
-        {
-            this.delta = delta;
-        }
-
-        public Delta Prepare()
-        {
-            Logger.LogMessageToFile(string.Format("NMS.NetworkModel.Prepare; line: {0}; Try to apply delta", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            return this.ApplyDelta(this.delta);
-        }
-
+        
         public void Commit()
         {
             Logger.LogMessageToFile(string.Format("NMS.NetworkModel.Commit; line: {0}; Start the Commit function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -489,18 +450,6 @@ namespace FTN.Services.NetworkModelService
                 }
 
                 return InsertEntities(delta.InsertOperations, ref model);
-                //{
-                    //List<ResourceDescription> measurements = new List<ResourceDescription>();
-
-                    //foreach (ResourceDescription rd in delta.InsertOperations)
-                    //{
-                    //    DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(rd.Id);
-                    //    if (type == DMSType.ANALOG)
-                    //    {
-                    //        measurements.Add(rd);
-                    //    }
-                    //}
-                //}
             }
             catch(Exception ex)
             {
@@ -508,101 +457,7 @@ namespace FTN.Services.NetworkModelService
                 throw ex;
             }
         }
-
-        /// <summary>
-        /// Inserts entity into the network model.
-        /// </summary>
-        /// <param name="rd">Description of the resource that should be inserted</param>        
-		private void InsertEntity(ResourceDescription rd)
-        {
-            if (rd == null)
-            {
-                CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Insert entity is not done because update operation is empty.");
-                return;
-            }
-
-            long globalId = rd.Id;
-
-            CommonTrace.WriteTrace(CommonTrace.TraceInfo, "Inserting entity with GID ({0:x16}).", globalId);
-
-            // check if mapping for specified global id already exists			
-            if (this.EntityExists(globalId))
-            {
-                string message = String.Format("Failed to insert entity because entity with specified GID ({0:x16}) already exists in network model.", globalId);
-                CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-                throw new Exception(message);
-            }
-
-            try
-            {
-                // find type
-                DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(globalId);
-
-                Container container = null;
-
-                // get container or create container 
-                if (ContainerExists(type))
-                {
-                    container = GetContainer(type);
-                }
-                else
-                {
-                    container = new Container();
-                    networkDataModel.Add(type, container);
-                }
-
-                // create entity and add it to container
-                IdentifiedObject io = container.CreateEntity(globalId);
-
-                // apply properties on created entity
-                if (rd.Properties != null)
-                {
-                    foreach (Property property in rd.Properties)
-                    {
-                        // globalId must not be set as property
-                        if (property.Id == ModelCode.IDOBJ_GID)
-                        {
-                            continue;
-                        }
-
-                        if (property.Type == PropertyType.Reference)
-                        {
-                            // if property is a reference to another entity 
-                            long targetGlobalId = property.AsReference();
-
-                            if (targetGlobalId != 0)
-                            {
-
-                                if (!EntityExists(targetGlobalId))
-                                {
-                                    string message = string.Format("Failed to get target entity with GID: 0x{0:X16}. {1}", targetGlobalId);
-                                    throw new Exception(message);
-                                }
-
-                                // get referenced entity for update
-                                IdentifiedObject targetEntity = GetEntity(targetGlobalId);
-                                targetEntity.AddReference(property.Id, io.GlobalId);
-                            }
-
-                            io.SetProperty(property);
-                        }
-                        else
-                        {
-                            io.SetProperty(property);
-                        }
-                    }
-                }
-
-                CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Inserting entity with GID ({0:x16}) successfully finished.", globalId);
-            }
-            catch (Exception ex)
-            {
-                string message = String.Format("Failed to insert entity (GID = 0x{0:x16}) into model. {1}", rd.Id, ex.Message);
-                CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-                throw new Exception(message);
-            }
-        }
-
+        
         /// <summary>
         /// Inserts entity into the network model.
         /// </summary>
@@ -708,12 +563,106 @@ namespace FTN.Services.NetworkModelService
 
             return true;
 		}
-		
-		/// <summary>
-		/// Updates entity in block model.
-		/// </summary>
-		/// <param name="rd">Description of the resource that should be updated</param>		
-		private void UpdateEntity(ResourceDescription rd)
+
+        /// <summary>
+        /// Inserts entity into the network model.
+        /// </summary>
+        /// <param name="rd">Description of the resource that should be inserted</param>        
+		private void InsertEntity(ResourceDescription rd)
+        {
+            if (rd == null)
+            {
+                CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Insert entity is not done because update operation is empty.");
+                return;
+            }
+
+            long globalId = rd.Id;
+
+            CommonTrace.WriteTrace(CommonTrace.TraceInfo, "Inserting entity with GID ({0:x16}).", globalId);
+
+            // check if mapping for specified global id already exists			
+            if (this.EntityExists(globalId))
+            {
+                string message = String.Format("Failed to insert entity because entity with specified GID ({0:x16}) already exists in network model.", globalId);
+                CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+                throw new Exception(message);
+            }
+
+            try
+            {
+                // find type
+                DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(globalId);
+
+                Container container = null;
+
+                // get container or create container 
+                if (ContainerExists(type))
+                {
+                    container = GetContainer(type);
+                }
+                else
+                {
+                    container = new Container();
+                    networkDataModel.Add(type, container);
+                }
+
+                // create entity and add it to container
+                IdentifiedObject io = container.CreateEntity(globalId);
+
+                // apply properties on created entity
+                if (rd.Properties != null)
+                {
+                    foreach (Property property in rd.Properties)
+                    {
+                        // globalId must not be set as property
+                        if (property.Id == ModelCode.IDOBJ_GID)
+                        {
+                            continue;
+                        }
+
+                        if (property.Type == PropertyType.Reference)
+                        {
+                            // if property is a reference to another entity 
+                            long targetGlobalId = property.AsReference();
+
+                            if (targetGlobalId != 0)
+                            {
+
+                                if (!EntityExists(targetGlobalId))
+                                {
+                                    string message = string.Format("Failed to get target entity with GID: 0x{0:X16}. {1}", targetGlobalId);
+                                    throw new Exception(message);
+                                }
+
+                                // get referenced entity for update
+                                IdentifiedObject targetEntity = GetEntity(targetGlobalId);
+                                targetEntity.AddReference(property.Id, io.GlobalId);
+                            }
+
+                            io.SetProperty(property);
+                        }
+                        else
+                        {
+                            io.SetProperty(property);
+                        }
+                    }
+                }
+
+                CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Inserting entity with GID ({0:x16}) successfully finished.", globalId);
+            }
+            catch (Exception ex)
+            {
+                string message = String.Format("Failed to insert entity (GID = 0x{0:x16}) into model. {1}", rd.Id, ex.Message);
+                CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+                throw new Exception(message);
+            }
+        }
+
+        /// <summary>
+        /// Updates entity in block model.
+        /// </summary>
+        /// <param name="rd">Description of the resource that should be updated</param>		
+        private void UpdateEntity(ResourceDescription rd)
 		{
 			if (rd == null || rd.Properties == null && rd.Properties.Count == 0)
 			{	
