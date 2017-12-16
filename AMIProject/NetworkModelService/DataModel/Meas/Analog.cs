@@ -149,6 +149,23 @@ namespace TC57CIM.IEC61970.Meas {
             }
         }
 
+        public Analog DeepCopy()
+        {
+            Analog analogCopy = new Analog();
+
+            analogCopy.GlobalId = this.GlobalId;
+            analogCopy.Mrid = this.Mrid;
+            analogCopy.Name = this.Name;
+            analogCopy.MinValue = this.MinValue;
+            analogCopy.MaxValue = this.MaxValue;
+            analogCopy.NormalValue = this.NormalValue;
+            analogCopy.UnitSymbol = this.UnitSymbol;
+            analogCopy.SignalDirection = this.SignalDirection;
+            analogCopy.PowerSystemResourceRef = this.PowerSystemResourceRef;
+
+            return analogCopy;
+        }
+
 
     }//end Analog
 

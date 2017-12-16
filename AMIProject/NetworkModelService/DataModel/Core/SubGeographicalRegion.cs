@@ -202,6 +202,19 @@ namespace TC57CIM.IEC61970.Core {
             }
         }
 
+        public SubGeographicalRegion DeepCopy()
+        {
+            SubGeographicalRegion subGeoRegionCopy = new SubGeographicalRegion();
+
+            subGeoRegionCopy.GlobalId = this.GlobalId;
+            subGeoRegionCopy.Mrid = this.Mrid;
+            subGeoRegionCopy.Name = this.Name;
+            subGeoRegionCopy.GeoRegion = this.GeoRegion;
+            subGeoRegionCopy.Substations = this.Substations;
+
+            return subGeoRegionCopy;
+        }
+
     }//end SubGeographicalRegion
 
 }//end namespace Core

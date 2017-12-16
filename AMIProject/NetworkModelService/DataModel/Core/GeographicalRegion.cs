@@ -178,6 +178,18 @@ namespace TC57CIM.IEC61970.Core {
             }
         }
 
+        public GeographicalRegion DeepCopy()
+        {
+            GeographicalRegion geoRegionCopy = new GeographicalRegion();
+
+            geoRegionCopy.GlobalId = this.GlobalId;
+            geoRegionCopy.Mrid = this.Mrid;
+            geoRegionCopy.Name = this.Name;
+            geoRegionCopy.SubGeoRegions = this.SubGeoRegions;
+
+            return geoRegionCopy;
+        }
+
     }//end GeographicalRegion
 
 }//end namespace Core

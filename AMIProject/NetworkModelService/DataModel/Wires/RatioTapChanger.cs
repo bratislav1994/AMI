@@ -123,6 +123,23 @@ namespace TC57CIM.IEC61970.Wires {
 
         #endregion IReference implementation	
 
+        public RatioTapChanger DeepCopy()
+        {
+            RatioTapChanger tapChangerCopy = new RatioTapChanger();
+
+            tapChangerCopy.GlobalId = this.GlobalId;
+            tapChangerCopy.Mrid = this.Mrid;
+            tapChangerCopy.Name = this.Name;
+            tapChangerCopy.HighStep = this.HighStep;
+            tapChangerCopy.LowStep = this.LowStep;
+            tapChangerCopy.NeutralStep = this.NeutralStep;
+            tapChangerCopy.NormalStep = this.NormalStep;
+            tapChangerCopy.Measurements = this.Measurements;
+            tapChangerCopy.TransformerEnd = this.TransformerEnd;
+
+            return tapChangerCopy;
+        }
+
     }//end RatioTapChanger
 
 }//end namespace Wires

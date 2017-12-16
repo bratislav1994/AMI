@@ -148,6 +148,21 @@ namespace TC57CIM.IEC61970.Core {
 
         #endregion IReference implementation	
 
+        public VoltageLevel DeepCopy()
+        {
+            VoltageLevel voltLevelCopy = new VoltageLevel();
+
+            voltLevelCopy.GlobalId = this.GlobalId;
+            voltLevelCopy.Mrid = this.Mrid;
+            voltLevelCopy.Name = this.Name;
+            voltLevelCopy.BaseVoltage = this.BaseVoltage;
+            voltLevelCopy.Substation = this.Substation;
+            voltLevelCopy.Equipments = this.Equipments;
+            voltLevelCopy.Measurements = this.Measurements;
+            
+            return voltLevelCopy;
+        }
+
     }//end VoltageLevel
 
 }//end namespace Core

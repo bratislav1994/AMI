@@ -166,6 +166,21 @@ namespace TC57CIM.IEC61970.Wires {
 
         #endregion IReference implementation
 
+        public PowerTransformer DeepCopy()
+        {
+            PowerTransformer powerTransCopy = new PowerTransformer();
+
+            powerTransCopy.GlobalId = this.GlobalId;
+            powerTransCopy.Mrid = this.Mrid;
+            powerTransCopy.Name = this.Name;
+            powerTransCopy.BaseVoltage = this.BaseVoltage;
+            powerTransCopy.EqContainer = this.EqContainer;
+            powerTransCopy.Measurements = this.Measurements;
+            powerTransCopy.PowerTransEnds = this.PowerTransEnds;
+
+            return powerTransCopy;
+        }
+
     }//end PowerTransformer
 
 }//end namespace Wires

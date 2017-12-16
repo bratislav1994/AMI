@@ -264,6 +264,21 @@ namespace TC57CIM.IEC61970.Core {
 
         #endregion IReference implementation	
 
+        public BaseVoltage DeepCopy()
+        {
+            BaseVoltage baseVoltageCopy = new BaseVoltage();
+
+            baseVoltageCopy.GlobalId = this.GlobalId;
+            baseVoltageCopy.Mrid = this.Mrid;
+            baseVoltageCopy.Name = this.Name;
+            baseVoltageCopy.NominalVoltage = this.NominalVoltage;
+            baseVoltageCopy.TransformerEnds = this.TransformerEnds;
+            baseVoltageCopy.VoltageLevels = this.VoltageLevels;
+            baseVoltageCopy.ConductingEquipments = this.ConductingEquipments;
+
+            return baseVoltageCopy;
+        }
+
     }//end BaseVoltage
 
 }//end namespace Core

@@ -139,6 +139,22 @@ namespace TC57CIM.IEC61970.Wires {
             }
         }
 
+        public EnergyConsumer DeepCopy()
+        {
+            EnergyConsumer consumerCopy = new EnergyConsumer();
+
+            consumerCopy.GlobalId = this.GlobalId;
+            consumerCopy.Mrid = this.Mrid;
+            consumerCopy.Name = this.Name;
+            consumerCopy.BaseVoltage = this.BaseVoltage;
+            consumerCopy.EqContainer = this.EqContainer;
+            consumerCopy.Measurements = this.Measurements;
+            consumerCopy.Pfixed = this.Pfixed;
+            consumerCopy.Qfixed = this.Qfixed;
+
+            return consumerCopy;
+        }
+
     }//end EnergyConsumer
 
 }//end namespace Wires

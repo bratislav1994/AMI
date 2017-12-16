@@ -203,6 +203,21 @@ namespace TC57CIM.IEC61970.Core {
             }
         }
 
+        public Substation DeepCopy()
+        {
+            Substation subCopy = new Substation();
+
+            subCopy.GlobalId = this.GlobalId;
+            subCopy.Mrid = this.Mrid;
+            subCopy.Name = this.Name;
+            subCopy.Equipments = this.Equipments;
+            subCopy.Measurements = this.Measurements;
+            subCopy.SubGeoRegion = this.SubGeoRegion;
+            subCopy.VoltageLevels = this.VoltageLevels;
+
+            return subCopy;
+        }
+
     }//end Substation
 
 }//end namespace Core

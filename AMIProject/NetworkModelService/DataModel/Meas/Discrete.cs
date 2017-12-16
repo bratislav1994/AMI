@@ -142,6 +142,23 @@ namespace TC57CIM.IEC61970.Meas {
 
         #endregion IAccess implementation
 
+        public Discrete DeepCopy()
+        {
+            Discrete discreteCopy = new Discrete();
+
+            discreteCopy.GlobalId = this.GlobalId;
+            discreteCopy.Mrid = this.Mrid;
+            discreteCopy.Name = this.Name;
+            discreteCopy.MinValue = this.MinValue;
+            discreteCopy.MaxValue = this.MaxValue;
+            discreteCopy.NormalValue = this.NormalValue;
+            discreteCopy.UnitSymbol = this.UnitSymbol;
+            discreteCopy.SignalDirection = this.SignalDirection;
+            discreteCopy.PowerSystemResourceRef = this.PowerSystemResourceRef;
+
+            return discreteCopy;
+        }
+
     }//end Discrete
 
 }//end namespace Meas
