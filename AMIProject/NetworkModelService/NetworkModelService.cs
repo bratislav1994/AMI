@@ -22,10 +22,11 @@ namespace FTN.Services.NetworkModelService
 
         public NetworkModelService()
 		{			
-			nm = new NetworkModel();			
-			GenericDataAccess.NetworkModel = nm;
+			nm = new NetworkModel();
+            GenericDataAccess gda = new GenericDataAccess();			
+			gda.NetworkModel = nm;
             ResourceIterator.NetworkModel = nm;
-            svcDuplexClient = new ServiceHost(typeof(GenericDataAccess));
+            svcDuplexClient = new ServiceHost(gda);
             svcDuplexClient.AddServiceEndpoint(typeof(INetworkModelGDAContractDuplexClient), 
                                     new NetTcpBinding(),
                                     new Uri("net.tcp://localhost:10000/NetworkModelService/GDADuplexClient"));

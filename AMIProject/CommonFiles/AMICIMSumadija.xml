@@ -531,7 +531,7 @@
 		<cim:IdentifiedObject.mRID>ANALOG_2_9_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_9_3</cim:IdentifiedObject.name>
 	</cim:Analog>
-	<cim:Analog rdf:ID="ANALOG_2_10_3">
+	<!--cim:Analog rdf:ID="ANALOG_2_10_3">
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
@@ -540,7 +540,7 @@
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:IdentifiedObject.mRID>ANALOG_2_10_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_10_3</cim:IdentifiedObject.name>
-	</cim:Analog>
+	</cim:Analog-->
 	
 	<!--cim:Discrete rdf:ID=" ">
 		<cim:Discrete.maxValue> </cim:Discrete.maxValue>

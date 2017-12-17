@@ -166,7 +166,8 @@ namespace AMIClient
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client try to connect with CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     CEQueryProxy.ConncetClient();
-                    factoryCE.Endpoint.Binding.SendTimeout = TimeSpan.FromMinutes(1);
+                    //factoryCE.Endpoint.Binding.SendTimeout = TimeSpan.FromMinutes(1);
+                    ((IContextChannel)CEQueryProxy).OperationTimeout = TimeSpan.FromMinutes(1);
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client is connected to the CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     break;
                 }
@@ -187,7 +188,8 @@ namespace AMIClient
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToNMS; line: {0}; Client try to connect with NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     GdaQueryProxy.ConnectClient();
-                    factory.Endpoint.Binding.SendTimeout = TimeSpan.FromMinutes(1);
+                    //factory.Endpoint.Binding.SendTimeout = TimeSpan.FromMinutes(1);
+                    ((IContextChannel)GdaQueryProxy).OperationTimeout = TimeSpan.FromMinutes(1);
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToNMS; line: {0}; Client is connected to the NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     checkNMS.Start();
 

@@ -12,16 +12,17 @@ using System.ServiceModel;
 using System.Threading;
 using TC57CIM.IEC61970.Meas;
 using FTN.Common.Logger;
+using TC57CIM.IEC61970.Wires;
 
 namespace FTN.Services.NetworkModelService
 {
-    public class NetworkModel : INetworkModel
+    public class NetworkModel
     {
         /// <summary>
         /// Dictionaru which contains all data: Key - DMSType, Value - Container
         /// </summary>
-        private Dictionary<DMSType, Container> networkDataModel;
-        private Dictionary<DMSType, Container> copy;
+        public Dictionary<DMSType, Container> networkDataModel;
+        //private Dictionary<DMSType, Container> copy;
 
         /// <summary>
         /// ModelResourceDesc class contains metadata of the model
@@ -34,71 +35,118 @@ namespace FTN.Services.NetworkModelService
         private bool clientsNeedToUpdate = false;
         private object lockObjectClient;
         private object lockObjectScada;
-        private ITransactionDuplexNMS proxyCoordinator;
-        private bool firstTimeCoordinator = true;
-        private Delta delta;
+
+        public ModelResourcesDesc ResourcesDescs
+        {
+            get
+            {
+                return resourcesDescs;
+            }
+
+            set
+            {
+                resourcesDescs = value;
+            }
+        }
+
+        public List<IModelForDuplex> Clients
+        {
+            get
+            {
+                return clients;
+            }
+
+            set
+            {
+                clients = value;
+            }
+        }
+
+        public List<IModelForDuplex> ClientsForDeleting
+        {
+            get
+            {
+                return clientsForDeleting;
+            }
+
+            set
+            {
+                clientsForDeleting = value;
+            }
+        }
+
+        public Thread UpdateThreadClient
+        {
+            get
+            {
+                return updateThreadClient;
+            }
+
+            set
+            {
+                updateThreadClient = value;
+            }
+        }
+
+        public bool ClientsNeedToUpdate
+        {
+            get
+            {
+                return clientsNeedToUpdate;
+            }
+
+            set
+            {
+                clientsNeedToUpdate = value;
+            }
+        }
+
+        public object LockObjectClient
+        {
+            get
+            {
+                return lockObjectClient;
+            }
+
+            set
+            {
+                lockObjectClient = value;
+            }
+        }
+
+        public object LockObjectScada
+        {
+            get
+            {
+                return lockObjectScada;
+            }
+
+            set
+            {
+                lockObjectScada = value;
+            }
+        }
+
 
         /// <summary>
         /// Initializes a new instance of the Model class.
         /// </summary>
         public NetworkModel()
         {
-            lockObjectClient = new object();
-            lockObjectScada = new object();
+            LockObjectClient = new object();
+            LockObjectScada = new object();
             networkDataModel = new Dictionary<DMSType, Container>();
-            resourcesDescs = new ModelResourcesDesc();
-            clients = new List<IModelForDuplex>();
-            clientsForDeleting = new List<IModelForDuplex>();
-            updateThreadClient = new Thread(() => InformClients());
-            updateThreadClient.Start();
+            ResourcesDescs = new ModelResourcesDesc();
+            Clients = new List<IModelForDuplex>();
+            ClientsForDeleting = new List<IModelForDuplex>();
+            UpdateThreadClient = new Thread(() => InformClients());
+            UpdateThreadClient.Start();
             Initialize();
-
-            while (true)
-            {
-                try
-                {
-                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS try to connect with Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    this.ProxyCoordinator.ConnectNMS();
-                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS is connected to the Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    break;
-                }
-                catch
-                {
-                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS faild to connect with Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    Thread.Sleep(1000);
-                }
-            }
-        }
-
-        public ITransactionDuplexNMS ProxyCoordinator
-        {
-            get
-            {
-                if (firstTimeCoordinator)
-                {
-                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel.ProxyCoordinator; line: {0}; Create channel between NMS and Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    NetTcpBinding binding = new NetTcpBinding();
-                    binding.SendTimeout = TimeSpan.FromSeconds(3);
-                    DuplexChannelFactory<ITransactionDuplexNMS> factory = new DuplexChannelFactory<ITransactionDuplexNMS>(
-                    new InstanceContext(this),
-                        binding,
-                        new EndpointAddress("net.tcp://localhost:10003/TransactionCoordinator/NMS"));
-                    proxyCoordinator = factory.CreateChannel();
-                    firstTimeCoordinator = false;
-                }
-                Logger.LogMessageToFile(string.Format("NMS.NetworkModel.ProxyCoordinator; line: {0}; Channel NMS-Coordinator is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                return proxyCoordinator;
-            }
-
-            set
-            {
-                proxyCoordinator = value;
-            }
         }
 
         public void ConnectClient()
         {
-            this.clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
+            this.Clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
         }
         
         #region Find
@@ -120,7 +168,7 @@ namespace FTN.Services.NetworkModelService
 		    return false;
 		}
 
-        public bool EntityExists2PC(long globalId, Dictionary<DMSType, Container> model)
+        /*public bool EntityExists2PC(long globalId, Dictionary<DMSType, Container> model)
         {
             DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(globalId);
 
@@ -134,7 +182,7 @@ namespace FTN.Services.NetworkModelService
                 }
             }
             return false;
-        }
+        }*/
 
         public IdentifiedObject GetEntity(long globalId)
 		{
@@ -152,7 +200,7 @@ namespace FTN.Services.NetworkModelService
 			}
 		}
 
-        public IdentifiedObject GetEntity2PC(long globalId, Dictionary<DMSType, Container> model)
+        /*public IdentifiedObject GetEntity2PC(long globalId, Dictionary<DMSType, Container> model)
         {
             if (EntityExists2PC(globalId, model))
             {
@@ -166,7 +214,7 @@ namespace FTN.Services.NetworkModelService
                 string message = string.Format("Entity  (GID = 0x{0:x16}) does not exist.", globalId);
                 throw new Exception(message);
             }
-        }
+        }*/
 
 
         /// <summary>
@@ -184,7 +232,7 @@ namespace FTN.Services.NetworkModelService
 			return false;			
 		}
 
-        private bool ContainerExists2PC(DMSType type, Dictionary<DMSType, Container> model)
+        /*private bool ContainerExists2PC(DMSType type, Dictionary<DMSType, Container> model)
         {
             if (model.ContainsKey(type))
             {
@@ -192,7 +240,7 @@ namespace FTN.Services.NetworkModelService
             }
 
             return false;
-        }
+        }*/
 
         /// <summary>
         /// Gets container of specified type.
@@ -212,7 +260,7 @@ namespace FTN.Services.NetworkModelService
 			}
 			
 		}
-        private Container GetContainer2PC(DMSType type, Dictionary<DMSType, Container> model)
+        /*private Container GetContainer2PC(DMSType type, Dictionary<DMSType, Container> model)
         {
             if (ContainerExists2PC(type, model))
             {
@@ -223,7 +271,7 @@ namespace FTN.Services.NetworkModelService
                 string message = string.Format("Container does not exist for type {0}.", type);
                 throw new Exception(message);
             }
-        }
+        }*/
 
         #endregion Find
 
@@ -372,19 +420,42 @@ namespace FTN.Services.NetworkModelService
 
         #endregion GDA query	
 
-        public void EnlistDelta(Delta delta)
-        {
-            this.delta = delta;
-        }
-
-        public Delta Prepare()
-        {
-            Logger.LogMessageToFile(string.Format("NMS.NetworkModel.Prepare; line: {0}; Try to apply delta", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            return this.ApplyDelta(this.delta);
-        }
-
-        private Delta ApplyDelta(Delta delta)
+        public Delta ApplyDelta(Delta delta)
 		{
+            try
+            {
+                CommonTrace.WriteTrace(CommonTrace.TraceInfo, "Applying  delta to network model.");
+
+                Dictionary<short, int> typesCounters = GetCounters();
+                Dictionary<long, long> globalIdPairs = new Dictionary<long, long>();
+                delta.FixNegativeToPositiveIds(ref typesCounters, ref globalIdPairs);
+                delta.SortOperations();
+
+                foreach (ResourceDescription rd in delta.InsertOperations)
+                {
+                    InsertEntity(rd);
+                }
+
+                foreach (ResourceDescription rd in delta.UpdateOperations)
+                {
+                    UpdateEntity(rd);
+                }
+
+                foreach (ResourceDescription rd in delta.DeleteOperations)
+                {
+                    DeleteEntity(rd);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                string message = string.Format("Applying delta to network model failed. {0}.", ex.Message);
+                CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+            }
+            return delta;
+
+            #region OldCode
+            /*
 			try
 			{
                 CommonTrace.WriteTrace(CommonTrace.TraceInfo, "Applying  delta to network model.");
@@ -411,10 +482,17 @@ namespace FTN.Services.NetworkModelService
 				CommonTrace.WriteTrace(CommonTrace.TraceError, message);
 
                 return null;
-			}
-		}
-        
-        public void Commit()
+			}*/
+            #endregion OldCode
+        }
+
+        public void IssueSaveDelta(Delta delta)
+        {
+            SaveDelta(delta);
+        }
+
+        #region 2PC
+        /*public void Commit()
         {
             Logger.LogMessageToFile(string.Format("NMS.NetworkModel.Commit; line: {0}; Start the Commit function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             this.networkDataModel.Clear();
@@ -432,6 +510,17 @@ namespace FTN.Services.NetworkModelService
                 clientsNeedToUpdate = true;
             }
             Logger.LogMessageToFile(string.Format("NMS.NetworkModelCommit; line: {0}; Finish the Commit function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+        }
+
+        public void EnlistDelta(Delta delta)
+        {
+            this.delta = delta;
+        }
+
+        public Delta Prepare()
+        {
+            Logger.LogMessageToFile(string.Format("NMS.NetworkModel.Prepare; line: {0}; Try to apply delta", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            return this.ApplyDelta(this.delta);
         }
 
         public void Rollback()
@@ -456,9 +545,11 @@ namespace FTN.Services.NetworkModelService
                 Logger.LogMessageToFile(string.Format("NMS.NetworkModel.Validation; line: {0}; Validation of entities - EXCEPTION", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 throw ex;
             }
-        }
-        
-        /// <summary>
+        }*/
+        #endregion 2PC
+
+        #region InsertEntities
+        /*/// <summary>
         /// Inserts entity into the network model.
         /// </summary>
         /// <param name="rd">Description of the resource that should be inserted</param>        
@@ -562,13 +653,14 @@ namespace FTN.Services.NetworkModelService
             }
 
             return true;
-		}
+		}*/
+        #endregion InsertEntities
 
         /// <summary>
         /// Inserts entity into the network model.
         /// </summary>
         /// <param name="rd">Description of the resource that should be inserted</param>        
-		private void InsertEntity(ResourceDescription rd)
+        private void InsertEntity(ResourceDescription rd)
         {
             if (rd == null)
             {
@@ -784,7 +876,7 @@ namespace FTN.Services.NetworkModelService
 				}
 							
 				// find property ids
-				List<ModelCode> propertyIds = resourcesDescs.GetAllSettablePropertyIdsForEntityId(io.GlobalId);
+				List<ModelCode> propertyIds = ResourcesDescs.GetAllSettablePropertyIdsForEntityId(io.GlobalId);
 
 				// remove references
 				Property property = null;
@@ -1042,12 +1134,12 @@ namespace FTN.Services.NetworkModelService
         {
             while (true)
             {
-                lock (lockObjectClient)
+                lock (LockObjectClient)
                 {
-                    if (clientsNeedToUpdate)
+                    if (ClientsNeedToUpdate)
                     {
-                        clientsForDeleting.Clear();
-                        foreach (IModelForDuplex client in clients)
+                        ClientsForDeleting.Clear();
+                        foreach (IModelForDuplex client in Clients)
                         {
                             try
                             {
@@ -1055,18 +1147,86 @@ namespace FTN.Services.NetworkModelService
                             }
                             catch
                             {
-                                clientsForDeleting.Add(client);
+                                ClientsForDeleting.Add(client);
                             }
                         }
-                        foreach (IModelForDuplex client in clientsForDeleting)
+                        foreach (IModelForDuplex client in ClientsForDeleting)
                         {
-                            clients.Remove(client);
+                            Clients.Remove(client);
                         }
-                        clientsNeedToUpdate = false;
+                        ClientsNeedToUpdate = false;
                     }
                 }
                 Thread.Sleep(200);
             }
+        }
+
+        public void UpdateClients()
+        {
+            lock(LockObjectClient)
+            {
+                ClientsNeedToUpdate = true;
+            }
+        }
+
+        public Dictionary<DMSType, Container> DeepCopy()
+        {
+            Dictionary<DMSType, Container> retVal = new Dictionary<DMSType, Container>();
+            foreach(KeyValuePair<DMSType, Container> kvp in networkDataModel)
+            {
+                retVal.Add(kvp.Key, new Container());
+                foreach(KeyValuePair<long, IdentifiedObject> kvp2 in kvp.Value.Entities)
+                {
+                    switch(kvp.Key)
+                    {
+                        case DMSType.ANALOG:
+                            Analog analogCopy = ((Analog)kvp2.Value).DeepCopy();
+                            retVal[kvp.Key].Entities.Add(analogCopy.GlobalId, analogCopy);
+                            break;
+                        case DMSType.BASEVOLTAGE:
+                            BaseVoltage baseVoltageCopy = ((BaseVoltage)kvp2.Value).DeepCopy();
+                            retVal[kvp.Key].Entities.Add(baseVoltageCopy.GlobalId, baseVoltageCopy);
+                            break;
+                        case DMSType.DISCRETE:
+                            Discrete discreteCopy = ((Discrete)kvp2.Value).DeepCopy();
+                            retVal[kvp.Key].Entities.Add(discreteCopy.GlobalId, discreteCopy);
+                            break;
+                        case DMSType.ENERGYCONS:
+                            EnergyConsumer ecCopy = ((EnergyConsumer)kvp2.Value).DeepCopy();
+                            retVal[kvp.Key].Entities.Add(ecCopy.GlobalId, ecCopy);
+                            break;
+                        case DMSType.GEOREGION:
+                            GeographicalRegion geoRegionCopy = ((GeographicalRegion)kvp2.Value).DeepCopy();
+                            retVal[kvp.Key].Entities.Add(geoRegionCopy.GlobalId, geoRegionCopy);
+                            break;
+                        case DMSType.POWERTRANSEND:
+                            PowerTransformerEnd pteCopy = ((PowerTransformerEnd)kvp2.Value).DeepCopy();
+                            retVal[kvp.Key].Entities.Add(pteCopy.GlobalId, pteCopy);
+                            break;
+                        case DMSType.POWERTRANSFORMER:
+                            PowerTransformer ptCopy = ((PowerTransformer)kvp2.Value).DeepCopy();
+                            retVal[kvp.Key].Entities.Add(ptCopy.GlobalId, ptCopy);
+                            break;
+                        case DMSType.RATIOTAPCHANGER:
+                            RatioTapChanger rtpCopy = ((RatioTapChanger)kvp2.Value).DeepCopy();
+                            retVal[kvp.Key].Entities.Add(rtpCopy.GlobalId, rtpCopy);
+                            break;
+                        case DMSType.SUBGEOREGION:
+                            SubGeographicalRegion sgrCopy = ((SubGeographicalRegion)kvp2.Value).DeepCopy();
+                            retVal[kvp.Key].Entities.Add(sgrCopy.GlobalId, sgrCopy);
+                            break;
+                        case DMSType.SUBSTATION:
+                            Substation ssCopy = ((Substation)kvp2.Value).DeepCopy();
+                            retVal[kvp.Key].Entities.Add(ssCopy.GlobalId, ssCopy);
+                            break;
+                        case DMSType.VOLTAGELEVEL:
+                            VoltageLevel vlCopy = ((VoltageLevel)kvp2.Value).DeepCopy();
+                            retVal[kvp.Key].Entities.Add(vlCopy.GlobalId, vlCopy);
+                            break;
+                    }
+                }
+            }
+            return retVal;
         }
     }
 }

@@ -19,7 +19,7 @@ namespace FTN.Services.NetworkModelService
         
         public static NetworkModel NetworkModel
         {
-            set { ResourceIterator.networkModel = value; }
+            set { networkModel = value; }
         }
 
 		public ResourceIterator()

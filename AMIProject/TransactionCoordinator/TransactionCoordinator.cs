@@ -151,6 +151,14 @@ namespace TransactionCoordinator
                 }
                 else
                 {
+                    try
+                    {
+                        proxyNMS.Rollback();
+                    }
+                    catch
+                    {
+                        proxyNMS = null;
+                    }
                     foreach (IScada scada in scadas)
                     {
                         try

@@ -305,8 +305,7 @@ namespace TC57CIM.IEC61970.Core {
         //}
 
         #endregion utility methods
-
-
+            
     }//end IdentifiedObject
 
 }//end namespace Core
