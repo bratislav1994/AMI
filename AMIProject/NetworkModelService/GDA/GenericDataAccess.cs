@@ -9,6 +9,7 @@ using FTN.Common;
 using System.Collections;
 using FTN.ServiceContracts;
 using TC57CIM.IEC61970.Meas;
+using TC57CIM.IEC61970.Core;
 
 namespace FTN.Services.NetworkModelService
 {
@@ -90,6 +91,11 @@ namespace FTN.Services.NetworkModelService
 
         public Delta Prepare()
         {
+            if (!DeltaValidation())
+            {
+                return null;
+            }
+
             nmCopy = new NetworkModel();
             nmCopy.Clients = nm.Clients;
             nmCopy.ClientsForDeleting = nm.ClientsForDeleting;
@@ -116,6 +122,37 @@ namespace FTN.Services.NetworkModelService
         public void Rollback()
         {
             nmCopy = nm;
+        }
+
+        private bool DeltaValidation()
+        {
+            List<string> mRIDs = new List<string>();
+
+            foreach (ResourceDescription resDesc in delta.InsertOperations)
+            {
+                mRIDs.Add(resDesc.Properties.Where(x => x.Id.Equals(ModelCode.IDOBJ_MRID)).FirstOrDefault().PropertyValue.StringValue);
+            }
+
+            foreach (string mrid in mRIDs)
+            {
+                if (mRIDs.Where(x => x.Equals(mrid)).Count() != 1)
+                {
+                    return false;
+                }
+            }
+            
+            foreach (KeyValuePair<DMSType, Container> kvp in nm.networkDataModel)
+            {
+                foreach (KeyValuePair<long, IdentifiedObject> kvp2 in kvp.Value.Entities)
+                {
+                    if (mRIDs.Where(x => x.Equals(kvp2.Value.Mrid)).Count() != 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         public ResourceDescription GetValues(long resourceId, List<ModelCode> propIds)
