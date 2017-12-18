@@ -12,6 +12,7 @@ namespace FTN.ServiceContracts
     {
         [OperationContract]
         int AddMeasurement();
+
         [OperationContract]
         void Rollback(int decrease);
     }

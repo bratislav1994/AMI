@@ -13,6 +13,7 @@ namespace FTN.ServiceContracts
     {
         [OperationContract]
         void EnlistMeas(List<ResourceDescription> measurements);
+
         [OperationContract]
         bool Prepare();
 
