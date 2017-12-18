@@ -18,6 +18,7 @@ namespace AMIClient.ViewModels
         public MasterViewModel()
         {
             Model = new Model();
+            Model.Start();
             tvm = new NetworkPreviewViewModel();
             tvm.SetModel(Model);
             xmlvm = new AddCimXmlViewModel();

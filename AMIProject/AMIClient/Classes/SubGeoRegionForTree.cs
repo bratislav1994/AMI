@@ -125,7 +125,7 @@ namespace AMIClient
 
         public override void CheckIfSeleacted()
         {
-            if(IsSelected)
+            if (IsSelected)
             {
                 base.Model.Substations.Clear();
                 base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId);

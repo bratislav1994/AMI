@@ -15,23 +15,14 @@ namespace AMIClientTest.ClassesTest
     [TestFixture]
     public class TreeClassesTest
     {
-        private ObservableCollection<RootElement> rootElements;
         private ObservableCollection<EnergyConsumer> amis = new ObservableCollection<EnergyConsumer>();
-        private DateTime newChange;
-        private IModel model;
+        private Model model;
         private TreeClasses treeClasses;
-        private TreeClasses parent;
 
         //[OneTimeSetUp]
         public void SetupTest()
         {
             this.treeClasses = new TreeClasses();
-            IModel im = Substitute.For<IModel>();
-            model = im;
-            //rootElements = new ObservableCollection<RootElement>();
-            //rootElements.Add(new RootElement(model, ref amis, ref newChange));
-            //this.model.SetRoot(rootElements[0]);
-            //newChange = DateTime.Now;
         }
 
         [Test]
@@ -70,7 +61,7 @@ namespace AMIClientTest.ClassesTest
         [Test]
         public void ModelTest()
         {
-            IModel temp = this.model;
+            Model temp = this.model;
             Assert.AreEqual(temp, this.model);
 
             this.treeClasses.Model = this.model;

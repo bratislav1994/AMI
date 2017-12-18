@@ -16,7 +16,7 @@ namespace AMIClient
         private Dictionary<long, TreeClasses> allTreeElements;
 
         public GeoRegionForTree(TreeClasses parent, GeographicalRegion geoRegion, Model model, ref Dictionary<long, TreeClasses> allTreeElements)
-            :base(parent, model)
+            : base(parent, model)
         {
             this.GeoRegion = geoRegion;
             this.allTreeElements = allTreeElements;
@@ -49,8 +49,8 @@ namespace AMIClient
                     isExpanded = value;
                     this.OnPropertyChanged("IsExpanded");
                 }
-                
-                if(Children.Count == 0)
+
+                if (Children.Count == 0)
                 {
                     LoadChildren();
                 }
@@ -75,7 +75,7 @@ namespace AMIClient
                     base.Model.ClearPositions();
                     base.Model.GetSomeSubregions(this.GeoRegion.GlobalId);
                     base.Model.Substations.Clear();
-                    foreach(SubGeographicalRegion sgr in base.Model.SubGeoRegions)
+                    foreach (SubGeographicalRegion sgr in base.Model.SubGeoRegions)
                     {
                         base.Model.GetSomeSubstations(sgr.GlobalId);
                     }

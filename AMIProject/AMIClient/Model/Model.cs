@@ -146,11 +146,16 @@ namespace AMIClient
 
         public Model()
         {
+            
+        }
+
+        public void Start()
+        {
             checkNMS = new Thread(() => CheckIfNMSIsAlive());
 
             Thread t = new Thread(() => ConnectToNMS());
             t.Start();
-            
+
 
             Thread t2 = new Thread(() => ConnectToCE());
             t2.Start();
@@ -262,6 +267,8 @@ namespace AMIClient
             //return Amis;
         }
 
+        public bool isTest = false;
+
         private void GetExtentValues(ModelCode modelCode)
         {
             Substations.Clear();
@@ -322,6 +329,11 @@ namespace AMIClient
                     }
 
                     resourcesLeft = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
+
+                    if (isTest)
+                    {
+                        resourcesLeft = 0;
+                    }
                 }
 
                 GdaQueryProxy.IteratorClose(iteratorId);

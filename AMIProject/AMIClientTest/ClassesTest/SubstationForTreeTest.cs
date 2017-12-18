@@ -1,4 +1,6 @@
 ﻿using AMIClient;
+using FTN.Common;
+using FTN.ServiceContracts;
 using NSubstitute;
 using NUnit.Framework;
 using System;
@@ -18,7 +20,7 @@ namespace AMIClientTest.ClassesTest
         private SubstationForTree substationForTree;
         private ObservableCollection<EnergyConsumer> amis;
         private DateTime newChange;
-        private IModel model;
+        private Model model;
         private Substation substation;
         private SubGeoRegionForTree parent;
 
@@ -27,13 +29,23 @@ namespace AMIClientTest.ClassesTest
             amis = new ObservableCollection<EnergyConsumer>();
             substation = new Substation() { Name = "sub", GlobalId = 1234 };
             parent = new SubGeoRegionForTree();
-            IModel im = Substitute.For<IModel>();
-            im.GetAllRegions().Returns(new ObservableCollection<GeographicalRegion>());
-            model = im;
+            
             //root.Model = im;
             newChange = DateTime.Now;
             this.substationForTree = new SubstationForTree();
             this.substationForTree.Substation = substation;
+
+            INetworkModelGDAContractDuplexClient mock2 = Substitute.For<INetworkModelGDAContractDuplexClient>();
+            List<ModelCode> properties = new List<ModelCode>();
+            List<ResourceDescription> ret = new List<ResourceDescription>();
+            mock2.GetExtentValues(ModelCode.ANALOG, properties).Returns(2);
+            mock2.IteratorResourcesLeft(0).Returns(0);
+            mock2.IteratorClose(2);
+            substationForTree.Model = new Model();
+            substationForTree.Model.GdaQueryProxy = mock2;
+            model = new Model();
+            model.GdaQueryProxy = mock2;
+            newChange = DateTime.Now;
         }
 
         [Test]
@@ -41,7 +53,7 @@ namespace AMIClientTest.ClassesTest
         {
             SetupTest();
             Assert.DoesNotThrow(() =>
-                substationForTree = new SubstationForTree(substation, parent, model, ref amis, ref newChange)
+                substationForTree = new SubstationForTree(substation, parent, model)
             );
 
             this.substationForTree = new SubstationForTree();
@@ -58,12 +70,11 @@ namespace AMIClientTest.ClassesTest
         public void IsSelectedTest()
         {
             this.SetupTest();
-            this.substationForTree = new SubstationForTree(substation, parent, model, ref amis, ref newChange);
+            this.substationForTree = new SubstationForTree(substation, parent, model);
             this.substationForTree.IsSelected = false;
             Assert.AreEqual(substationForTree.IsSelected, false);
             IModel mock = Substitute.For<IModel>();
             mock.GetSomeAmis(1).ReturnsForAnyArgs(new ObservableCollection<EnergyConsumer>());
-            this.substationForTree.Model = mock;
             this.substationForTree.IsSelected = true;
             Assert.AreEqual(this.substationForTree.IsSelected, true);
         }
@@ -73,26 +84,24 @@ namespace AMIClientTest.ClassesTest
         {
             this.SetupTest();
 
-            IModel mock = Substitute.For<IModel>();
-            mock.GetSomeSubstations(this.substation.GlobalId).ReturnsForAnyArgs(new ObservableCollection<Substation>()
-            {
-                new Substation() { GlobalId = 123}
-            });
-            mock.GetSomeSubregions(this.substation.GlobalId).ReturnsForAnyArgs(new ObservableCollection<SubGeographicalRegion>()
-            {
-                new SubGeographicalRegion() { GlobalId = 123}
-            });
+            //IModel mock = Substitute.For<IModel>();
+            //mock.GetSomeSubstations(this.substation.GlobalId).ReturnsForAnyArgs(new ObservableCollection<Substation>()
+            //{
+            //    new Substation() { GlobalId = 123}
+            //});
+            //mock.GetSomeSubregions(this.substation.GlobalId).ReturnsForAnyArgs(new ObservableCollection<SubGeographicalRegion>()
+            //{
+            //    new SubGeographicalRegion() { GlobalId = 123}
+            //});
 
-            this.substationForTree = new SubstationForTree(substation, parent, model, ref amis, ref newChange);
-            this.substationForTree.Substation = new Substation() { GlobalId = 13 };
+            //this.substationForTree = new SubstationForTree(substation, parent, model);
+            //this.substationForTree.Substation = new Substation() { GlobalId = 13 };
+            
+            //((SubGeoRegionForTree)this.substationForTree.Parent).SubGeoRegion = new SubGeographicalRegion() { GlobalId = 1453 };
 
-            this.substationForTree.Model = mock;
-            ((SubGeoRegionForTree)this.substationForTree.Parent).SubGeoRegion = new SubGeographicalRegion() { GlobalId = 1453 };
-
-            // sad se mora mokovati model u subGeoRegion
-            IModel mock2 = Substitute.For<IModel>();
-            mock2.GetSomeSubstations(43).ReturnsForAnyArgs(new ObservableCollection<Substation>());
-            ((SubGeoRegionForTree)this.substationForTree.Parent).Model = mock2;
+            //// sad se mora mokovati model u subGeoRegion
+            //IModel mock2 = Substitute.For<IModel>();
+            //mock2.GetSomeSubstations(43).ReturnsForAnyArgs(new ObservableCollection<Substation>());
 
             this.substationForTree.IsExpanded = true;
             Assert.AreEqual(this.substationForTree.IsExpanded, true);
@@ -102,7 +111,7 @@ namespace AMIClientTest.ClassesTest
         public void CheckIfSeleactedTest()
         {
             SetupTest();
-            this.substationForTree = new SubstationForTree(substation, parent, model, ref amis, ref newChange);
+            this.substationForTree = new SubstationForTree(substation, parent, model);
 
             IModel mock = Substitute.For<IModel>();
 
@@ -114,8 +123,7 @@ namespace AMIClientTest.ClassesTest
             {
                 new EnergyConsumer()
             });
-
-            this.substationForTree.Model = mock;
+            
             this.substationForTree.Substation = substation;
 
             this.substationForTree.IsSelected = false;

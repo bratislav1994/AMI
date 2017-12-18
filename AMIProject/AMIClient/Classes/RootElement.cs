@@ -142,6 +142,7 @@ namespace AMIClient
                     }
                 }
             }
+
             Logger.LogMessageToFile(string.Format("AMIClient.RootElement.LoadChildren; line: {0}; Finish the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
         
@@ -186,6 +187,7 @@ namespace AMIClient
                         needsUpdate = false;
                     }
                 }
+
                 Thread.Sleep(200);
             }
         }
