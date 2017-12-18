@@ -40,8 +40,10 @@ namespace AMIClientTest.ClassesTest
             mock2.IteratorResourcesLeft(0).Returns(0);
             mock2.IteratorClose(2);
             root.Model = new Model();
+            root.Model.FirstContact = false;
             root.Model.GdaQueryProxy = mock2;
             model = new Model();
+            model.FirstContact = false;
             model.GdaQueryProxy = mock2;
             newChange = DateTime.Now;
             root.Model.GeoRegions = new ObservableCollection<GeographicalRegion>()
@@ -165,8 +167,7 @@ namespace AMIClientTest.ClassesTest
             {
                 receivedEvents = e.PropertyName;
             };
-
-            IModel im = Substitute.For<IModel>();
+            
             this.root.Children.Add(new GeoRegionForTree());
             this.root.IsExpanded = true;
             Assert.IsNotNull(receivedEvents);

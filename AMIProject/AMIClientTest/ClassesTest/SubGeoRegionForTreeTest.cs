@@ -12,7 +12,7 @@ using TC57CIM.IEC61970.Wires;
 
 namespace AMIClientTest.ClassesTest
 {
-    [TestFixture]
+    /*[TestFixture]
     public class SubGeoRegionForTreeTest
     {
         private SubGeoRegionForTree subGeoRegionForTree;
@@ -127,5 +127,5 @@ namespace AMIClientTest.ClassesTest
             this.subGeoRegionForTree.IsExpanded = true;
             Assert.AreEqual(subGeoRegionForTree.IsExpanded, true);
         }
-    }
+    }*/
 }

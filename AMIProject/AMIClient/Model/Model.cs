@@ -43,7 +43,7 @@ namespace AMIClient
         {
             get
             {
-                if (firstContact)
+                if (FirstContact)
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.GdaQueryProxy; line: {0}; Create channel between Client and NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
@@ -53,7 +53,7 @@ namespace AMIClient
                         binding,
                         new EndpointAddress("net.tcp://localhost:10000/NetworkModelService/GDADuplexClient"));
                     gdaQueryProxy = factory.CreateChannel();
-                    firstContact = false;
+                    FirstContact = false;
                 }
                 Logger.LogMessageToFile(string.Format("AMIClient.Model.GdaQueryProxy; line: {0}; Channel Client-NMS is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return gdaQueryProxy;
@@ -69,7 +69,7 @@ namespace AMIClient
         {
             get
             {
-                if (firstContactCE)
+                if (FirstContactCE)
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.CEQueryProxy; line: {0}; Create channel between Client and CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
@@ -79,7 +79,7 @@ namespace AMIClient
                         binding,
                         new EndpointAddress("net.tcp://localhost:10006/CalculationEngine/Client"));
                     ceQueryProxy = factoryCE.CreateChannel();
-                    firstContactCE = false;
+                    FirstContactCE = false;
                 }
                 Logger.LogMessageToFile(string.Format("AMIClient.Model.CEQueryProxy; line: {0}; Channel Client-CE is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return ceQueryProxy;
@@ -144,6 +144,32 @@ namespace AMIClient
             }
         }
 
+        public bool FirstContact
+        {
+            get
+            {
+                return firstContact;
+            }
+
+            set
+            {
+                firstContact = value;
+            }
+        }
+
+        public bool FirstContactCE
+        {
+            get
+            {
+                return firstContactCE;
+            }
+
+            set
+            {
+                firstContactCE = value;
+            }
+        }
+
         public Model()
         {
             
@@ -179,7 +205,7 @@ namespace AMIClient
                 catch
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client faild to connect with CE. CATCH", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    firstContactCE = true;
+                    FirstContactCE = true;
                     Thread.Sleep(1000);
                 }
             }
@@ -203,7 +229,7 @@ namespace AMIClient
                 catch
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToNMS; line: {0}; Client faild to connect with NMS. CATCH", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    firstContact = true;
+                    FirstContact = true;
                     Thread.Sleep(1000);
                 }
             }
@@ -219,7 +245,7 @@ namespace AMIClient
                 }
                 catch
                 {
-                    firstContact = true;
+                    FirstContact = true;
                     new Thread(() => ConnectToNMS()).Start();
                     break;
                 }
@@ -348,9 +374,9 @@ namespace AMIClient
                 MessageBox.Show(e.Message);
                 CommonTrace.WriteTrace(CommonTrace.TraceError, message);
 
-                if (!firstContact)
+                if (!FirstContact)
                 {
-                    firstContact = true;
+                    FirstContact = true;
                     new Thread(() => ConnectToNMS()).Start();
                 }
             }
@@ -485,9 +511,9 @@ namespace AMIClient
                 MessageBox.Show(e.Message);
                 CommonTrace.WriteTrace(CommonTrace.TraceError, message);
 
-                if (!firstContact)
+                if (!FirstContact)
                 {
-                    firstContact = true;
+                    FirstContact = true;
                     new Thread(() => ConnectToNMS()).Start();
                 }
             }

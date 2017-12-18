@@ -16,7 +16,7 @@ namespace AMIClientTest.ClassesTest
     public class TreeClassesTest
     {
         private ObservableCollection<EnergyConsumer> amis = new ObservableCollection<EnergyConsumer>();
-        private Model model;
+        private Model model = new Model();
         private TreeClasses treeClasses;
 
         //[OneTimeSetUp]

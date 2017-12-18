@@ -1,4 +1,6 @@
 ﻿using AMIClient;
+using FTN.Common;
+using FTN.ServiceContracts;
 using NSubstitute;
 using NUnit.Framework;
 using System;
@@ -17,65 +19,107 @@ namespace AMIClientTest.ClassesTest
     {
         private GeoRegionForTree geoRegionForTree;
         private RootElement root;
-        private ObservableCollection<EnergyConsumer> amis;
-        private DateTime newChange;
+        private ModelResourcesDesc modelResourcesDesc = new ModelResourcesDesc();
         private Dictionary<long, TreeClasses> allTreeEl = new Dictionary<long, TreeClasses>();
-        private IModel model;
+        private Model model;
         private TreeClasses parent;
         private GeographicalRegion geoRegion;
 
         public void SetupTest()
         {
-            amis = new ObservableCollection<EnergyConsumer>();
             geoRegion = new GeographicalRegion() { Name = "geo", GlobalId = 1234};
             parent = new TreeClasses();
             geoRegionForTree = new GeoRegionForTree();
             geoRegionForTree.GeoRegion = geoRegion;
-            geoRegionForTree.Amis = amis;
             root = new RootElement();
-            IModel im = Substitute.For<IModel>();
-            im.GetAllRegions().Returns(new ObservableCollection<GeographicalRegion>());
-            model = im;
-            root.Model = im;
-            newChange = DateTime.Now;
+           
+
+            INetworkModelGDAContractDuplexClient mock2 = Substitute.For<INetworkModelGDAContractDuplexClient>();
+            List<ModelCode> propertiesGeoregion = modelResourcesDesc.GetAllPropertyIds(ModelCode.GEOREGION);
+            ResourceDescription rd1 = new ResourceDescription();
+            ResourceDescription rd2 = new ResourceDescription();
+            rd1.AddProperty(new Property(ModelCode.IDOBJ_GID, 4321));
+            rd2.AddProperty(new Property(ModelCode.IDOBJ_GID, 4322));
+            List<ResourceDescription> ret = new List<ResourceDescription>() { rd1, rd2 };
+            List<ModelCode> propertiesSubregion = modelResourcesDesc.GetAllPropertyIds(ModelCode.SUBGEOREGION);
+            Association associtaion = new Association();
+            /*associtaion.PropertyId = ModelCode.GEOREGION_SUBGEOREGIONS;
+            associtaion.Type = ModelCode.SUBGEOREGION;*/
+            mock2.GetExtentValues(ModelCode.GEOREGION, propertiesGeoregion).Returns(2);
+            mock2.GetRelatedValues(1234, propertiesSubregion, associtaion).ReturnsForAnyArgs(2);
+            //mock2.IteratorResourcesLeft(2).Returns(x => (count++ < 1) ? 1 : 0);
+            mock2.IteratorNext(10, 2).Returns(ret);
+            mock2.IteratorClose(2);
+            geoRegionForTree.Model = new Model();
+            geoRegionForTree.Model.FirstContact = false;
+            geoRegionForTree.Model.GdaQueryProxy = mock2;
+            model = new Model();
+            model.FirstContact = false;
+            model.GdaQueryProxy = mock2;
         }
 
         [Test]
         public void ConstructorTest()
         {
-            SetupTest();
+            geoRegion = new GeographicalRegion() { Name = "geo", GlobalId = 1234 };
+            parent = new TreeClasses();
+            model = new Model();
+            model.FirstContact = false;
+
             Assert.DoesNotThrow(() => 
-                geoRegionForTree = new GeoRegionForTree(parent, geoRegion, model, ref amis, ref newChange, ref allTreeEl)
+                geoRegionForTree = new GeoRegionForTree(parent, geoRegion, model, ref allTreeEl)
             );
         }
 
         [Test]
         public void NameTest()
         {
-            this.SetupTest();
+            geoRegion = new GeographicalRegion() { Name = "geo", GlobalId = 1234 };
+            geoRegionForTree = new GeoRegionForTree();
+            geoRegionForTree.GeoRegion = geoRegion;
             Assert.AreEqual(geoRegionForTree.Name, "geo");
         }
 
         [Test]
         public void CheckIfSeleactedTest()
         {
-            SetupTest();
+            int countForResourcesLeft1 = 0;
+            int countForResourcesLeft2 = 0;
+            int countForResourcesLeft3 = 0;
+            int countForRelatedValues = 0;
 
-            IModel mock = Substitute.For<IModel>();
-            mock.GetSomeSubregions(this.geoRegion.GlobalId).ReturnsForAnyArgs(new ObservableCollection<SubGeographicalRegion>()
-            {
-                new SubGeographicalRegion()
-            });
-            mock.GetSomeSubstations(this.geoRegion.GlobalId).ReturnsForAnyArgs(new ObservableCollection<Substation>()
-            {
-                new Substation()
-            });
-            mock.GetSomeAmis(this.geoRegion.GlobalId).ReturnsForAnyArgs(new ObservableCollection<EnergyConsumer>()
-            {
-                new EnergyConsumer()
-            });
+            geoRegion = new GeographicalRegion() { Name = "geo", GlobalId = 1234 };
+            parent = new TreeClasses();
+            geoRegionForTree = new GeoRegionForTree();
+            geoRegionForTree.GeoRegion = geoRegion;
 
-            this.geoRegionForTree.Model = mock;
+            INetworkModelGDAContractDuplexClient mock2 = Substitute.For<INetworkModelGDAContractDuplexClient>();
+            ResourceDescription subGeoregion1 = new ResourceDescription();
+            ResourceDescription subStation = new ResourceDescription();
+            ResourceDescription ami = new ResourceDescription();
+            subGeoregion1.AddProperty(new Property(ModelCode.IDOBJ_GID, 4321));
+            subStation.AddProperty(new Property(ModelCode.IDOBJ_GID, 4322));
+            ami.AddProperty(new Property(ModelCode.IDOBJ_GID, 4323));
+            List<ResourceDescription> ret = new List<ResourceDescription>() { subGeoregion1};
+            List<ResourceDescription> ret1 = new List<ResourceDescription>() { subStation };
+            List<ResourceDescription> ret2 = new List<ResourceDescription>() { ami };
+            Association associtaion = new Association();
+            List<ModelCode> properties = new List<ModelCode>();
+            mock2.GetRelatedValues(1234, properties, associtaion).ReturnsForAnyArgs(x => (++countForRelatedValues));
+            mock2.IteratorResourcesLeft(1).Returns(x => (countForResourcesLeft1++ < 1) ? 1 : 0);
+            mock2.IteratorResourcesLeft(2).Returns(x => (countForResourcesLeft2++ < 1) ? 1 : 0);
+            mock2.IteratorResourcesLeft(3).Returns(x => (countForResourcesLeft3++ < 1) ? 1 : 0);
+            mock2.IteratorNext(10, 1).Returns(ret);
+            mock2.IteratorNext(10, 2).Returns(ret1);
+            mock2.IteratorNext(10, 3).Returns(ret2);
+            mock2.IteratorClose(1);
+            mock2.IteratorClose(2);
+            mock2.IteratorClose(3);
+            model = new Model();
+            model.FirstContact = false;
+            model.GdaQueryProxy = mock2;
+
+            this.geoRegionForTree.Model = model;
             this.geoRegionForTree.GeoRegion = geoRegion;
 
             this.geoRegionForTree.IsSelected = false;
@@ -86,16 +130,30 @@ namespace AMIClientTest.ClassesTest
         [Test]
         public void LoadChildrenTest()
         {
-            SetupTest();
-            IModel mock = Substitute.For<IModel>();
-            mock.GetSomeSubregions(this.geoRegion.GlobalId).ReturnsForAnyArgs(new ObservableCollection<SubGeographicalRegion>()
-            {
-                new SubGeographicalRegion() { GlobalId = 123}
-            });
+            int countForResourcesLeft1 = 0;
+            int countForRelatedValues = 0;
 
-            geoRegionForTree = new GeoRegionForTree(parent, geoRegion, model, ref amis, ref newChange, ref allTreeEl);
+            geoRegion = new GeographicalRegion() { Name = "geo", GlobalId = 1234 };
+            parent = new TreeClasses();
+            geoRegionForTree = new GeoRegionForTree();
+            geoRegionForTree.GeoRegion = geoRegion;
+            geoRegionForTree.AllTreeElements = allTreeEl;
 
-            this.geoRegionForTree.Model = mock;
+            INetworkModelGDAContractDuplexClient mock2 = Substitute.For<INetworkModelGDAContractDuplexClient>();
+            ResourceDescription subGeoregion1 = new ResourceDescription();
+            subGeoregion1.AddProperty(new Property(ModelCode.IDOBJ_GID, 4321));
+            List<ResourceDescription> ret = new List<ResourceDescription>() { subGeoregion1 };
+            Association associtaion = new Association();
+            List<ModelCode> properties = new List<ModelCode>();
+            mock2.GetRelatedValues(1234, properties, associtaion).ReturnsForAnyArgs(x => (++countForRelatedValues));
+            mock2.IteratorResourcesLeft(1).Returns(x => (countForResourcesLeft1++ < 1) ? 1 : 0);
+            mock2.IteratorNext(10, 1).Returns(ret);
+            mock2.IteratorClose(1);
+            model = new Model();
+            model.FirstContact = false;
+            model.GdaQueryProxy = mock2;
+
+            this.geoRegionForTree.Model = model;
             this.geoRegionForTree.GeoRegion = geoRegion;
 
             Assert.DoesNotThrow(() => this.geoRegionForTree.LoadChildren());
@@ -104,17 +162,30 @@ namespace AMIClientTest.ClassesTest
         [Test]
         public void IsExpandedTest()
         {
-            this.SetupTest();
+            int countForResourcesLeft1 = 0;
+            int countForRelatedValues = 0;
 
-            IModel mock = Substitute.For<IModel>();
-            mock.GetSomeSubregions(this.geoRegion.GlobalId).ReturnsForAnyArgs(new ObservableCollection<SubGeographicalRegion>()
-            {
-                new SubGeographicalRegion() { GlobalId = 123}
-            });
+            geoRegion = new GeographicalRegion() { Name = "geo", GlobalId = 1234 };
+            parent = new TreeClasses();
+            geoRegionForTree = new GeoRegionForTree();
+            geoRegionForTree.GeoRegion = geoRegion;
+            geoRegionForTree.AllTreeElements = allTreeEl;
 
-            geoRegionForTree = new GeoRegionForTree(parent, geoRegion, model, ref amis, ref newChange, ref allTreeEl);
+            INetworkModelGDAContractDuplexClient mock2 = Substitute.For<INetworkModelGDAContractDuplexClient>();
+            ResourceDescription subGeoregion1 = new ResourceDescription();
+            subGeoregion1.AddProperty(new Property(ModelCode.IDOBJ_GID, 4321));
+            List<ResourceDescription> ret = new List<ResourceDescription>() { subGeoregion1 };
+            Association associtaion = new Association();
+            List<ModelCode> properties = new List<ModelCode>();
+            mock2.GetRelatedValues(1234, properties, associtaion).ReturnsForAnyArgs(x => (++countForRelatedValues));
+            mock2.IteratorResourcesLeft(1).Returns(x => (countForResourcesLeft1++ < 1) ? 1 : 0);
+            mock2.IteratorNext(10, 1).Returns(ret);
+            mock2.IteratorClose(1);
+            model = new Model();
+            model.FirstContact = false;
+            model.GdaQueryProxy = mock2;
 
-            this.geoRegionForTree.Model = mock;
+            this.geoRegionForTree.Model = model;
             this.geoRegionForTree.GeoRegion = geoRegion;
 
             this.geoRegionForTree.IsExpanded = true;

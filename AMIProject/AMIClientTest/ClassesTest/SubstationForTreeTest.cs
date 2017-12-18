@@ -19,7 +19,6 @@ namespace AMIClientTest.ClassesTest
     {
         private SubstationForTree substationForTree;
         private ObservableCollection<EnergyConsumer> amis;
-        private DateTime newChange;
         private Model model;
         private Substation substation;
         private SubGeoRegionForTree parent;
@@ -31,21 +30,21 @@ namespace AMIClientTest.ClassesTest
             parent = new SubGeoRegionForTree();
             
             //root.Model = im;
-            newChange = DateTime.Now;
             this.substationForTree = new SubstationForTree();
             this.substationForTree.Substation = substation;
 
             INetworkModelGDAContractDuplexClient mock2 = Substitute.For<INetworkModelGDAContractDuplexClient>();
             List<ModelCode> properties = new List<ModelCode>();
             List<ResourceDescription> ret = new List<ResourceDescription>();
-            mock2.GetExtentValues(ModelCode.ANALOG, properties).Returns(2);
+            mock2.GetExtentValues(ModelCode.ANALOG, properties).ReturnsForAnyArgs(2);
             mock2.IteratorResourcesLeft(0).Returns(0);
             mock2.IteratorClose(2);
             substationForTree.Model = new Model();
+            substationForTree.Model.FirstContact = false;
             substationForTree.Model.GdaQueryProxy = mock2;
             model = new Model();
+            model.FirstContact = false;
             model.GdaQueryProxy = mock2;
-            newChange = DateTime.Now;
         }
 
         [Test]

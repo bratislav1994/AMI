@@ -19,7 +19,7 @@ namespace AMIClient
             : base(parent, model)
         {
             this.GeoRegion = geoRegion;
-            this.allTreeElements = allTreeElements;
+            this.AllTreeElements = allTreeElements;
             this.IsExpanded = false;
         }
 
@@ -103,6 +103,19 @@ namespace AMIClient
             }
         }
 
+        public Dictionary<long, TreeClasses> AllTreeElements
+        {
+            get
+            {
+                return allTreeElements;
+            }
+
+            set
+            {
+                allTreeElements = value;
+            }
+        }
+
         public override void LoadChildren()
         {
             Logger.LogMessageToFile(string.Format("AMIClient.GeoRegionForTree.LoadChildren; line: {0}; Start the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -113,10 +126,10 @@ namespace AMIClient
             {
                 foreach (SubGeographicalRegion sgr in this.Model.SubGeoRegions)
                 {
-                    if (!allTreeElements.ContainsKey(sgr.GlobalId))
+                    if (!AllTreeElements.ContainsKey(sgr.GlobalId))
                     {
                         base.Children.Add(new SubGeoRegionForTree(sgr, this, this.Model, ref allTreeElements));
-                        allTreeElements.Add(sgr.GlobalId, base.Children[base.Children.Count - 1]);
+                        AllTreeElements.Add(sgr.GlobalId, base.Children[base.Children.Count - 1]);
                     }
                 }
             }
