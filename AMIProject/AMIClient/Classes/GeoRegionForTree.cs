@@ -56,8 +56,7 @@ namespace AMIClient
                 }
             }
         }
-
-
+        
         public bool IsSelected
         {
             get
@@ -133,6 +132,7 @@ namespace AMIClient
                     }
                 }
             }
+
             Logger.LogMessageToFile(string.Format("AMIClient.GeoRegionForTree.LoadChildren; line: {0}; Finish the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
@@ -142,11 +142,14 @@ namespace AMIClient
             {
                 base.Model.GetSomeSubregions(this.GeoRegion.GlobalId);
                 base.Model.Substations.Clear();
+
                 foreach (SubGeographicalRegion sgr in base.Model.SubGeoRegions)
                 {
                     base.Model.GetSomeSubstations(sgr.GlobalId);
                 }
+
                 base.Model.ClearAmis();
+
                 foreach (Substation ss in base.Model.Substations)
                 {
                     base.Model.GetSomeAmis(ss.GlobalId);

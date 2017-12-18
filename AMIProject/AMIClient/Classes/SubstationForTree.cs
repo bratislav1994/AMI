@@ -91,6 +91,7 @@ namespace AMIClient
         public override void CheckIfSeleacted()
         {
             base.Model.ClearAmis();
+
             if (IsSelected)
             {
                 base.Model.GetSomeAmis(this.Substation.GlobalId);

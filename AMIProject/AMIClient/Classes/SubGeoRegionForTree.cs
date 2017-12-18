@@ -103,6 +103,19 @@ namespace AMIClient
             }
         }
 
+        public Dictionary<long, TreeClasses> AllTreeElements
+        {
+            get
+            {
+                return allTreeElements;
+            }
+
+            set
+            {
+                allTreeElements = value;
+            }
+        }
+
         public override void LoadChildren()
         {
             Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.LoadChildren; line: {0}; Start the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -120,6 +133,7 @@ namespace AMIClient
                     }
                 }
             }
+
             Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.LoadChildren; line: {0}; Finish the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
