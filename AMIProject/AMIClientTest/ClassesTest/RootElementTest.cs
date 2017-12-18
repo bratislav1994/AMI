@@ -42,6 +42,7 @@ namespace AMIClientTest.ClassesTest
             root.Model = new Model();
             root.Model.FirstContact = false;
             root.Model.GdaQueryProxy = mock2;
+            root.Model.FirstContact = false;
             model = new Model();
             model.FirstContact = false;
             model.GdaQueryProxy = mock2;
@@ -81,14 +82,23 @@ namespace AMIClientTest.ClassesTest
             this.SetupTest();
             root.IsSelected = false;
             Assert.AreEqual(root.IsSelected, false);
+
             INetworkModelGDAContractDuplexClient mock2 = Substitute.For<INetworkModelGDAContractDuplexClient>();
+            ResourceDescription subGeoregion1 = new ResourceDescription();
+            subGeoregion1.AddProperty(new Property(ModelCode.IDOBJ_GID, 43211));
+            List<ResourceDescription> ret = new List<ResourceDescription>() { subGeoregion1 };
+            Association associtaion = new Association();
             List<ModelCode> properties = new List<ModelCode>();
-            List<ResourceDescription> ret = new List<ResourceDescription>();
-            mock2.GetExtentValues(ModelCode.ANALOG, properties).Returns(2);
-            mock2.IteratorResourcesLeft(0).Returns(0);
-            mock2.IteratorClose(2);
-            root.Model = new Model();
-            root.Model.GdaQueryProxy = mock2;
+            mock2.GetRelatedValues(12345, properties, associtaion).ReturnsForAnyArgs(0);
+            mock2.IteratorResourcesLeft(1).Returns(0);
+            mock2.IteratorNext(10, 1).Returns(ret);
+            mock2.IteratorClose(1);
+            model = new Model();
+            model.FirstContact = false;
+            model.GdaQueryProxy = mock2;
+
+            this.root.Model = model;
+            root.Model.FirstContact = false;
             root.IsSelected = true;
             Assert.AreEqual(root.IsSelected, true);
         }
@@ -103,7 +113,25 @@ namespace AMIClientTest.ClassesTest
         [Test]
         public void IsExpandedTest()
         {
-            this.SetupTest();
+            root = new RootElement();
+            
+            INetworkModelGDAContractDuplexClient mock2 = Substitute.For<INetworkModelGDAContractDuplexClient>();
+            ResourceDescription subGeoregion1 = new ResourceDescription();
+            subGeoregion1.AddProperty(new Property(ModelCode.IDOBJ_GID, 43211));
+            List<ResourceDescription> ret = new List<ResourceDescription>() { subGeoregion1 };
+            Association associtaion = new Association();
+            List<ModelCode> properties = new List<ModelCode>();
+            mock2.GetRelatedValues(12345, properties, associtaion).ReturnsForAnyArgs(0);
+            mock2.IteratorResourcesLeft(1).Returns(0);
+            mock2.IteratorNext(10, 1).Returns(ret);
+            mock2.IteratorClose(1);
+            model = new Model();
+            model.FirstContact = false;
+            model.GdaQueryProxy = mock2;
+
+            this.root.Model = model;
+            root.Model.FirstContact = false;
+
             this.root.IsExpanded = true;
             Assert.AreEqual(root.IsExpanded, true);
         }
@@ -111,20 +139,25 @@ namespace AMIClientTest.ClassesTest
         [Test]
         public void LoadChildrenTest()
         {
-            SetupTest();
+            int countForResourcesLeft1 = 0;
+            int countForExtentValues = 0;
             root = new RootElement();
             INetworkModelGDAContractDuplexClient mock2 = Substitute.For<INetworkModelGDAContractDuplexClient>();
+            ResourceDescription subGeoregion1 = new ResourceDescription();
+            subGeoregion1.AddProperty(new Property(ModelCode.IDOBJ_GID, 43211));
+            List<ResourceDescription> ret = new List<ResourceDescription>() { subGeoregion1 };
+            Association associtaion = new Association();
             List<ModelCode> properties = new List<ModelCode>();
-            List<ResourceDescription> ret = new List<ResourceDescription>();
-            mock2.GetExtentValues(ModelCode.GEOREGION, properties).ReturnsForAnyArgs(2);
-            mock2.IteratorResourcesLeft(0).Returns(1);
-            mock2.IteratorNext(2, 2).Returns(new List<ResourceDescription>() { new ResourceDescription() });
-            mock2.IteratorClose(2);
-            root.Model = new Model();
-            root.Model.GdaQueryProxy = mock2;
+            mock2.GetExtentValues(ModelCode.GEOREGION, properties).ReturnsForAnyArgs(++countForExtentValues);
+            mock2.IteratorResourcesLeft(1).Returns(x => (countForResourcesLeft1++ < 1) ? 1 : 0);
+            mock2.IteratorNext(10, 1).ReturnsForAnyArgs(ret);
+            mock2.IteratorClose(1);
             model = new Model();
+            model.FirstContact = false;
             model.GdaQueryProxy = mock2;
-            newChange = DateTime.Now;
+
+            this.root.Model = model;
+            root.Model.FirstContact = false;
 
             this.root.LoadChildren();
         }
@@ -132,32 +165,26 @@ namespace AMIClientTest.ClassesTest
         [Test]
         public void AllTreeElementsTest()
         {
-            SetupTest();
+            root = new RootElement();
             this.root.AllTreeElements = new Dictionary<long, TreeClasses>();
             Assert.IsNotNull(this.root.AllTreeElements);
         }
 
-        //[Test]
-        //public void CheckForUpdatesTest()
-        //{
-        //    //Dispatcher a = Dispatcher.CurrentDispatcher;
-        //    SetupTest();
-        //    IModel im = Substitute.For<IModel>();
-        //    im.GetAllRegions().Returns(new ObservableCollection<GeographicalRegion>());
-        //    im.GetAllAmis().Returns(new ObservableCollection<EnergyConsumer>());
-        //    root.Model = im;
-        //    model = im;
-        //    newChange = DateTime.Now;
+        [Test]
+        public void CheckForUpdatesTest()
+        {
+            //Dispatcher a = Dispatcher.CurrentDispatcher;
+            SetupTest();
+            
+            Assert.DoesNotThrow(() => { root = new RootElement(model) { NeedsUpdate = true, Model = model }; root.Dispose(); });
 
-        //    Assert.DoesNotThrow(() => { root = new RootElement(model, ref amis, ref newChange) { NeedsUpdate = true, Model = im, amis = new ObservableCollection<EnergyConsumer>() }; root.Dispose(); });
-            
-        //    Assert.DoesNotThrow(() => { root = new RootElement(model, ref amis, ref newChange) { NeedsUpdate = true, Model = im, amis = new ObservableCollection<EnergyConsumer>(), IsSelected = true }; root.Dispose(); });
-        //    TreeClasses tc = new TreeClasses();
-        //    allTreeEl.Add(234, tc);
-            
-        //    Assert.DoesNotThrow(() => { root = new RootElement(model, ref amis, ref newChange) { NeedsUpdate = true, Model = im, amis = new ObservableCollection<EnergyConsumer>(), IsSelected = false, AllTreeElements = allTreeEl }; root.Dispose(); });
-        //    //Assert.DoesNotThrow(() => root = new RootElement(model, ref amis, ref newChange) { NeedsUpdate = true});
-        //}
+            Assert.DoesNotThrow(() => { root = new RootElement(model) { NeedsUpdate = true, Model = model, IsSelected = true }; root.Dispose(); });
+            TreeClasses tc = new TreeClasses();
+            allTreeEl.Add(234, tc);
+
+            Assert.DoesNotThrow(() => { root = new RootElement(model) { NeedsUpdate = true, Model = model, IsSelected = false, AllTreeElements = allTreeEl }; root.Dispose(); });
+            //Assert.DoesNotThrow(() => root = new RootElement(model, ref amis, ref newChange) { NeedsUpdate = true});
+        }
 
         [Test]
         public void RaisePropertyChangedTest()

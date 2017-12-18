@@ -27,12 +27,12 @@ namespace AMIClientTest.ClassesTest
 
         public void SetupTest()
         {
-            geoRegion = new GeographicalRegion() { Name = "geo", GlobalId = 1234};
+            geoRegion = new GeographicalRegion() { Name = "geo", GlobalId = 1234 };
             parent = new TreeClasses();
             geoRegionForTree = new GeoRegionForTree();
             geoRegionForTree.GeoRegion = geoRegion;
             root = new RootElement();
-           
+
 
             INetworkModelGDAContractDuplexClient mock2 = Substitute.For<INetworkModelGDAContractDuplexClient>();
             List<ModelCode> propertiesGeoregion = modelResourcesDesc.GetAllPropertyIds(ModelCode.GEOREGION);
@@ -61,12 +61,9 @@ namespace AMIClientTest.ClassesTest
         [Test]
         public void ConstructorTest()
         {
-            geoRegion = new GeographicalRegion() { Name = "geo", GlobalId = 1234 };
-            parent = new TreeClasses();
-            model = new Model();
-            model.FirstContact = false;
+            SetupTest();
 
-            Assert.DoesNotThrow(() => 
+            Assert.DoesNotThrow(() =>
                 geoRegionForTree = new GeoRegionForTree(parent, geoRegion, model, ref allTreeEl)
             );
         }
@@ -100,7 +97,7 @@ namespace AMIClientTest.ClassesTest
             subGeoregion1.AddProperty(new Property(ModelCode.IDOBJ_GID, 4321));
             subStation.AddProperty(new Property(ModelCode.IDOBJ_GID, 4322));
             ami.AddProperty(new Property(ModelCode.IDOBJ_GID, 4323));
-            List<ResourceDescription> ret = new List<ResourceDescription>() { subGeoregion1};
+            List<ResourceDescription> ret = new List<ResourceDescription>() { subGeoregion1 };
             List<ResourceDescription> ret1 = new List<ResourceDescription>() { subStation };
             List<ResourceDescription> ret2 = new List<ResourceDescription>() { ami };
             Association associtaion = new Association();

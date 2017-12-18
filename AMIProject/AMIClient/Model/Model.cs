@@ -293,8 +293,6 @@ namespace AMIClient
             //return Amis;
         }
 
-        public bool isTest = false;
-
         private void GetExtentValues(ModelCode modelCode)
         {
             Substations.Clear();
@@ -355,11 +353,6 @@ namespace AMIClient
                     }
 
                     resourcesLeft = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
-
-                    if (isTest)
-                    {
-                        resourcesLeft = 0;
-                    }
                 }
 
                 GdaQueryProxy.IteratorClose(iteratorId);

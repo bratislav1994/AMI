@@ -25,6 +25,7 @@ namespace AMIClientTest.ClassesTest
         private Model model;
         private GeoRegionForTree parent = new GeoRegionForTree();
         private SubGeographicalRegion subGeoRegion;
+        private ModelResourcesDesc modelResourcesDesc = new ModelResourcesDesc();
 
         public void SetupTest()
         {
@@ -34,8 +35,27 @@ namespace AMIClientTest.ClassesTest
             subGeoRegionForTree = new SubGeoRegionForTree();
             subGeoRegionForTree.SubGeoRegion = subGeoRegion;
             root = new RootElement();
+
+            INetworkModelGDAContractDuplexClient mock2 = Substitute.For<INetworkModelGDAContractDuplexClient>();
+            List<ModelCode> propertiesGeoregion = modelResourcesDesc.GetAllPropertyIds(ModelCode.SUBGEOREGION);
+            ResourceDescription rd1 = new ResourceDescription();
+            rd1.AddProperty(new Property(ModelCode.IDOBJ_GID, 4321));
+            List<ResourceDescription> ret = new List<ResourceDescription>() { rd1 };
+            List<ModelCode> propertiesSubregion = modelResourcesDesc.GetAllPropertyIds(ModelCode.SUBGEOREGION);
+            Association associtaion = new Association();
+            /*associtaion.PropertyId = ModelCode.GEOREGION_SUBGEOREGIONS;
+            associtaion.Type = ModelCode.SUBGEOREGION;*/
+            mock2.GetExtentValues(ModelCode.GEOREGION, propertiesGeoregion).Returns(2);
+            mock2.GetRelatedValues(1234, propertiesSubregion, associtaion).ReturnsForAnyArgs(2);
+            //mock2.IteratorResourcesLeft(2).Returns(x => (count++ < 1) ? 1 : 0);
+            mock2.IteratorNext(10, 2).Returns(ret);
+            mock2.IteratorClose(2);
+            subGeoRegionForTree.Model = new Model();
+            subGeoRegionForTree.Model.FirstContact = false;
+            subGeoRegionForTree.Model.GdaQueryProxy = mock2;
             model = new Model();
-            newChange = DateTime.Now;
+            model.FirstContact = false;
+            model.GdaQueryProxy = mock2;
         }
 
         [Test]
