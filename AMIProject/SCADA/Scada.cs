@@ -163,7 +163,7 @@ namespace SCADA
 
         public bool Prepare()
         {
-            Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Start the Prepare function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            Logger.LogMessageToFile(string.Format("SCADA.Scada.Prepare; line: {0}; Start the Prepare function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             List<ResourceDescription> Ps = new List<ResourceDescription>();
             List<ResourceDescription> Qs = new List<ResourceDescription>();
             List<ResourceDescription> Vs = new List<ResourceDescription>();
@@ -233,7 +233,7 @@ namespace SCADA
                     return false;
                 }
             }
-            Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Finish the EnlistMeas function successful", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            Logger.LogMessageToFile(string.Format("SCADA.Scada.Prepare; line: {0}; Finish the EnlistMeas function successful", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             return true;
         }
 
