@@ -68,7 +68,7 @@ namespace AMIClient
             {
                 if (value != base.isSelected)
                 {
-                    Logger.LogMessageToFile(string.Format("AMIClient.GeoRegionForTree.IsSelected; line: {0}; Start - get all ami for the selected region", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    Logger.LogMessageToFile(string.Format("AMIClient.GeoRegionForTree.IsSelected; line: {0}; Start - get all ami for the selected region", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()), "Client.txt");
                     base.isSelected = value;
                     base.Model.SubGeoRegions.Clear();
                     base.Model.ClearPositions();
@@ -84,7 +84,7 @@ namespace AMIClient
                         base.Model.GetSomeAmis(ss.GlobalId);
                     }
                     this.OnPropertyChanged("IsSelected");
-                    Logger.LogMessageToFile(string.Format("AMIClient.GeoRegionForTree.IsSelected; line: {0}; Finish - get all ami for the selected region", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    Logger.LogMessageToFile(string.Format("AMIClient.GeoRegionForTree.IsSelected; line: {0}; Finish - get all ami for the selected region", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()), "Client.txt");
                 }
             }
         }
@@ -117,7 +117,7 @@ namespace AMIClient
 
         public override void LoadChildren()
         {
-            Logger.LogMessageToFile(string.Format("AMIClient.GeoRegionForTree.LoadChildren; line: {0}; Start the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            Logger.LogMessageToFile(string.Format("AMIClient.GeoRegionForTree.LoadChildren; line: {0}; Start the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()), "Client.txt");
             this.Model.SubGeoRegions.Clear();
             this.Model.GetSomeSubregions(GeoRegion.GlobalId);
 
@@ -133,16 +133,17 @@ namespace AMIClient
                 }
             }
 
-            Logger.LogMessageToFile(string.Format("AMIClient.GeoRegionForTree.LoadChildren; line: {0}; Finish the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            Logger.LogMessageToFile(string.Format("AMIClient.GeoRegionForTree.LoadChildren; line: {0}; Finish the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()), "Client.txt");
         }
 
         public override void CheckIfSeleacted()
         {
             if (IsSelected)
             {
+                base.Model.SubGeoRegions.Clear();
                 base.Model.GetSomeSubregions(this.GeoRegion.GlobalId);
                 base.Model.Substations.Clear();
-
+                base.Model.ClearPositions();
                 foreach (SubGeographicalRegion sgr in base.Model.SubGeoRegions)
                 {
                     base.Model.GetSomeSubstations(sgr.GlobalId);

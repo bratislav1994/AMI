@@ -52,7 +52,7 @@ namespace TransactionCoordinator
 
         public bool ApplyDelta(Delta delta)
         {
-            Logger.LogMessageToFile(string.Format("TranscactionCoordinator.TranscactionCoordinator.ApplyDelta; line: {0}; Coordinator sends data to NMS and SCADA", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            Logger.LogMessageToFile(string.Format("TranscactionCoordinator.TranscactionCoordinator.ApplyDelta; line: {0}; Coordinator sends data to NMS and SCADA", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()), "Coordinator");
             List<ResourceDescription> measurements = new List<ResourceDescription>();
             Delta newDelta = null;
 
@@ -146,7 +146,7 @@ namespace TransactionCoordinator
                         return false;
                     }
                     
-                    Logger.LogMessageToFile(string.Format("TranscactionCoordinator.TranscactionCoordinator.ApplyDelta; line: {0}; Data is successfully sent", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    Logger.LogMessageToFile(string.Format("TranscactionCoordinator.TranscactionCoordinator.ApplyDelta; line: {0}; Data is successfully sent", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()), "Coordinator");
                     return true;
                 }
                 else
@@ -176,7 +176,7 @@ namespace TransactionCoordinator
                         scadasForDeleting.ForEach(s => scadas.Remove(s));
                     }
 
-                    Logger.LogMessageToFile(string.Format("TranscactionCoordinator.TranscactionCoordinator.ApplyDelta; line: {0}; Data failed to send successfully", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    Logger.LogMessageToFile(string.Format("TranscactionCoordinator.TranscactionCoordinator.ApplyDelta; line: {0}; Data failed to send successfully", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()), "Coordinator");
                     return false;
                 }
             }
