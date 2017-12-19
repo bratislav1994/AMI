@@ -49,7 +49,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NSubstitute">
-      <HintPath>..\ViewModelTests\NSubstitute.dll</HintPath>
+      <HintPath>..\packages\NSubstitute.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>

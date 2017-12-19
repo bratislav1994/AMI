@@ -13,6 +13,7 @@ namespace FTN.ServiceContracts
     {
         [OperationContract]
         void EnlistDelta(Delta delta);
+
         [OperationContract]
         Delta Prepare();
 
