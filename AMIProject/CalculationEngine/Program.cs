@@ -1,4 +1,5 @@
-﻿using FTN.ServiceContracts;
+﻿using FTN.Common.Logger;
+using FTN.ServiceContracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,8 @@ namespace CalculationEngine
 
         static void Main(string[] args)
         {
-         //   CalculationEngine ce = new CalculationEngine();
-
+            //   CalculationEngine ce = new CalculationEngine();
+            Logger.Path = "CalculationEngnine.txt";
             Start();
             Console.ReadKey(true);
             Stop();

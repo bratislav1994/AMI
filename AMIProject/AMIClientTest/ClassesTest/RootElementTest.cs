@@ -1,5 +1,6 @@
 ﻿using AMIClient;
 using FTN.Common;
+using FTN.Common.Logger;
 using FTN.ServiceContracts;
 using NSubstitute;
 using NUnit.Framework;
@@ -28,6 +29,12 @@ namespace AMIClientTest.ClassesTest
         private DateTime newChange;
         private Dictionary<long, TreeClasses> allTreeEl = new Dictionary<long, TreeClasses>();
         private Model model;
+
+        [OneTimeSetUp]
+        public void Init()
+        {
+            Logger.Path = "TestClient.txt";
+        }
 
         //[OneTimeSetUp]
         public void SetupTest()

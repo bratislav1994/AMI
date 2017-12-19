@@ -74,7 +74,7 @@ namespace AMIClient
             {
                 if (value != base.isSelected)
                 {
-                    Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.IsSelected; line: {0}; Start - get all ami for the selected region", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()), "Client.txt");
+                    Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.IsSelected; line: {0}; Start - get all ami for the selected region", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     base.isSelected = value;
                     base.Model.Substations.Clear();
                     base.Model.ClearPositions();
@@ -85,7 +85,7 @@ namespace AMIClient
                         base.Model.GetSomeAmis(ss.GlobalId);
                     }
                     this.OnPropertyChanged("IsSelected");
-                    Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.IsSelected; line: {0}; Finish - get all ami for the selected region", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()), "Client.txt");
+                    Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.IsSelected; line: {0}; Finish - get all ami for the selected region", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 }
             }
         }
@@ -118,7 +118,7 @@ namespace AMIClient
 
         public override void LoadChildren()
         {
-            Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.LoadChildren; line: {0}; Start the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()), "Client.txt");
+            Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.LoadChildren; line: {0}; Start the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             base.Model.Substations.Clear();
             base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId);
 
@@ -134,7 +134,7 @@ namespace AMIClient
                 }
             }
 
-            Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.LoadChildren; line: {0}; Finish the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()), "Client.txt");
+            Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.LoadChildren; line: {0}; Finish the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
         public override void CheckIfSeleacted()

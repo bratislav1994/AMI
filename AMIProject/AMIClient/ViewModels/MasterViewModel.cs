@@ -1,4 +1,5 @@
 ﻿using AMIClient.View;
+using FTN.Common.Logger;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace AMIClient.ViewModels
 
         public MasterViewModel()
         {
+            Logger.Path = "Client.txt";
             Model = new Model();
             Model.Start();
             tvm = new NetworkPreviewViewModel();

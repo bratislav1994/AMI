@@ -1,4 +1,5 @@
-﻿using FTN.ServiceContracts;
+﻿using FTN.Common.Logger;
+using FTN.ServiceContracts;
 using FTN.Services.NetworkModelService;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace TransactionCoordinator
 
         static void Main(string[] args)
         {
+            Logger.Path = "Coordinator.txt";
             TransactionCoordinator t = new TransactionCoordinator();
             
             Start();

@@ -1,4 +1,5 @@
 ﻿using AMIClient;
+using FTN.Common.Logger;
 using NSubstitute;
 using NUnit.Framework;
 using System;
@@ -18,6 +19,12 @@ namespace AMIClientTest.ClassesTest
         private ObservableCollection<EnergyConsumer> amis = new ObservableCollection<EnergyConsumer>();
         private Model model = new Model();
         private TreeClasses treeClasses;
+
+        [OneTimeSetUp]
+        public void Init()
+        {
+            Logger.Path = "TestClient.txt";
+        }
 
         //[OneTimeSetUp]
         public void SetupTest()

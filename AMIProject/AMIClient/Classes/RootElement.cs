@@ -127,7 +127,7 @@ namespace AMIClient
 
         public override void LoadChildren()
         {
-            Logger.LogMessageToFile(string.Format("AMIClient.RootElement.LoadChildren; line: {0}; Start the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()), "Client.txt");
+            Logger.LogMessageToFile(string.Format("AMIClient.RootElement.LoadChildren; line: {0}; Start the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             this.Model.GeoRegions.Clear();
             this.Model.GetAllRegions();
 
@@ -143,7 +143,7 @@ namespace AMIClient
                 }
             }
 
-            Logger.LogMessageToFile(string.Format("AMIClient.RootElement.LoadChildren; line: {0}; Finish the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()), "Client.txt");
+            Logger.LogMessageToFile(string.Format("AMIClient.RootElement.LoadChildren; line: {0}; Finish the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
         
         //public Dispatcher Dispatcher

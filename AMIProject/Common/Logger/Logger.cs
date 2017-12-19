@@ -10,8 +10,25 @@ namespace FTN.Common.Logger
     public class Logger
     {
         private static object lockObject = new object();
+        private static string path = string.Empty;
 
-        public static void LogMessageToFile(string msg, string path)
+        public static string Path
+        {
+            get
+            {
+                return path;
+            }
+
+            set
+            {
+                if (path != value)
+                {
+                    path = value;
+                }
+            }
+        }
+
+        public static void LogMessageToFile(string msg)
         {
             lock (lockObject)
             {

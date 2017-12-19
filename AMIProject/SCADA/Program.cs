@@ -9,6 +9,7 @@ using System.ServiceModel;
 using AMISimulator;
 using TC57CIM.IEC61970.Meas;
 using FTN.ServiceContracts;
+using FTN.Common.Logger;
 
 namespace SCADA
 {
@@ -18,6 +19,7 @@ namespace SCADA
 
         static int Main(string[] args)
         {
+            Logger.Path = "Scada.txt";
             Scada scada = new Scada();
             scada.StartIssueCommands();
             svc = new ServiceHost(scada);
