@@ -91,6 +91,7 @@ namespace AMIClient
         public override void CheckIfSeleacted()
         {
             base.Model.ClearAmis();
+            base.Model.ClearPositions();
 
             if (IsSelected)
             {

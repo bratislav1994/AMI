@@ -83,6 +83,8 @@ namespace AMIClientTest.ClassesTest
             int countForResourcesLeft1 = 0;
             int countForResourcesLeft2 = 0;
             int countForResourcesLeft3 = 0;
+            int countForResourcesLeft4 = 0;
+            int countForResourcesLeft5 = 0;
             int countForRelatedValues = 0;
 
             geoRegion = new GeographicalRegion() { Name = "geo", GlobalId = 1234 };
@@ -106,12 +108,18 @@ namespace AMIClientTest.ClassesTest
             mock2.IteratorResourcesLeft(1).Returns(x => (countForResourcesLeft1++ < 1) ? 1 : 0);
             mock2.IteratorResourcesLeft(2).Returns(x => (countForResourcesLeft2++ < 1) ? 1 : 0);
             mock2.IteratorResourcesLeft(3).Returns(x => (countForResourcesLeft3++ < 1) ? 1 : 0);
+            mock2.IteratorResourcesLeft(4).Returns(x => (countForResourcesLeft4++ < 1) ? 1 : 0);
+            mock2.IteratorResourcesLeft(5).Returns(x => (countForResourcesLeft5++ < 1) ? 1 : 0);
             mock2.IteratorNext(10, 1).Returns(ret);
             mock2.IteratorNext(10, 2).Returns(ret1);
             mock2.IteratorNext(10, 3).Returns(ret2);
+            mock2.IteratorNext(10, 4).Returns(ret1);
+            mock2.IteratorNext(10, 5).Returns(ret2);
             mock2.IteratorClose(1);
             mock2.IteratorClose(2);
             mock2.IteratorClose(3);
+            mock2.IteratorClose(4);
+            mock2.IteratorClose(5);
             model = new Model();
             model.FirstContact = false;
             model.GdaQueryProxy = mock2;

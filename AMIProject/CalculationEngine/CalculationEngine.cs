@@ -48,7 +48,7 @@ namespace CalculationEngine
 
         public void DataFromScada(List<DynamicMeasurement> measurements)
         {
-            Logger.LogMessageToFile(string.Format("CalculationEngine.CalculationEngine.DataFromScada; line: {0}; CE receive data from scada and send this data to client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            Logger.LogMessageToFile(string.Format("CalculationEngine.CalculationEngine.DataFromScada; line: {0}; CE receive data from scada and send this data to client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()), "CalculationEngnine.txt");
             Console.WriteLine("Receive data from SCADA");
 
             Console.WriteLine("Send data to client");
@@ -70,7 +70,7 @@ namespace CalculationEngine
             {
                 clients.Remove(client);
             }
-            Logger.LogMessageToFile(string.Format("CalculationEngine.CalculationEngine.DataFromScada; line: {0}; Finish transport data SCADA-CE-Client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            Logger.LogMessageToFile(string.Format("CalculationEngine.CalculationEngine.DataFromScada; line: {0}; Finish transport data SCADA-CE-Client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()), "CalculationEngine.txt");
         }
     }
 }
