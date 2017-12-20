@@ -290,12 +290,15 @@ namespace SCADA
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Serialize; line: {0}; Start the Serialize function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             TextWriter tw = new StreamWriter("Measurements.xml");
             List<ClassForSerialization> meas = new List<ClassForSerialization>(measurements.Count);
+            
             foreach(int key in measurements.Keys)
             {
                 meas.Add(new ClassForSerialization(key, measurements[key]));
             }
+
             XmlSerializer serializer = new XmlSerializer(typeof(List<ClassForSerialization>));
             serializer.Serialize(tw, meas);
+            tw.Close();
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Serialize; line: {0}; Finish the Serialize function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
@@ -309,11 +312,13 @@ namespace SCADA
                 measurements.Clear();
                 XmlSerializer serializer = new XmlSerializer(typeof(List<ClassForSerialization>));
                 List<ClassForSerialization> meas = (List<ClassForSerialization>)serializer.Deserialize(tr);
+                tr.Close();
 
                 foreach (ClassForSerialization cfs in meas)
                 {
                     measurements.Add(cfs.Key, cfs.Rd);
                 }
+
                 Logger.LogMessageToFile(string.Format("SCADA.Scada.Deserialize; line: {0}; Finish the Deserialize function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             }
             catch
