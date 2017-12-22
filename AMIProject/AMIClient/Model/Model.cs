@@ -196,7 +196,7 @@ namespace AMIClient
                 try
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client try to connect with CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    CEQueryProxy.ConncetClient();
+                    CEQueryProxy.ConnectClient();
                     //factoryCE.Endpoint.Binding.SendTimeout = TimeSpan.FromMinutes(1);
                     ((IContextChannel)CEQueryProxy).OperationTimeout = TimeSpan.FromMinutes(1);
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client is connected to the CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));

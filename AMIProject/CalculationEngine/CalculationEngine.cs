@@ -16,9 +16,12 @@ namespace CalculationEngine
     public class CalculationEngine : ICalculationEngine, ICalculationDuplexClient
     {
         private static CalculationEngine instance;
+        private ITransactionDuplexCE proxyCoordinator;
         private List<IModelForDuplex> clients;
         private List<IModelForDuplex> clientsForDeleting;
         private List<ResourceDescription> meas;
+        private bool firstTimeCoordinator = true;
+        private Delta delta;
 
         public CalculationEngine()
         {
@@ -26,6 +29,23 @@ namespace CalculationEngine
             clientsForDeleting = new List<IModelForDuplex>();
 
             meas = new List<ResourceDescription>();
+
+            while (true)
+            {
+                try
+                {
+                    Logger.LogMessageToFile(string.Format("CE.CalculationEngine; line: {0}; CE try to connect with Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    this.ProxyCoordinator.ConnectCE();
+                    Logger.LogMessageToFile(string.Format("CE.CalculationEngine; line: {0}; CE is connected to the Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    break;
+                }
+                catch
+                {
+                    Logger.LogMessageToFile(string.Format("CE.CalculationEngine; line: {0}; CE faild to connect with Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    firstTimeCoordinator = true;
+                    Thread.Sleep(1000);
+                }
+            }
         }
 
         public static CalculationEngine Instance
@@ -41,14 +61,60 @@ namespace CalculationEngine
             }
         }
 
-        public void ConncetClient()
+        public ITransactionDuplexCE ProxyCoordinator
+        {
+            get
+            {
+                if (firstTimeCoordinator)
+                {
+                    Logger.LogMessageToFile(string.Format("CE.CalculationEngine.ProxyCoordinator; line: {0}; Create channel between CE and Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    NetTcpBinding binding = new NetTcpBinding();
+                    binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    DuplexChannelFactory<ITransactionDuplexCE> factory = new DuplexChannelFactory<ITransactionDuplexCE>(
+                    new InstanceContext(this),
+                        binding,
+                        new EndpointAddress("net.tcp://localhost:10103/TransactionCoordinator/CE"));
+                    proxyCoordinator = factory.CreateChannel();
+                    firstTimeCoordinator = false;
+                }
+                Logger.LogMessageToFile(string.Format("CE.CalculationEngine.ProxyCoordinator; line: {0}; Channel CE-Coordinator is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                return proxyCoordinator;
+            }
+
+            set
+            {
+                proxyCoordinator = value;
+            }
+        }
+
+        public void ConnectClient()
         {
             this.clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
         }
 
+        public void EnlistDelta(Delta delta)
+        {
+            this.delta = delta;
+        }
+
+        public void Prepare()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Commit()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Rollback()
+        {
+            throw new NotImplementedException();
+        }
+
         public void DataFromScada(List<DynamicMeasurement> measurements)
         {
-            Logger.LogMessageToFile(string.Format("CalculationEngine.CalculationEngine.DataFromScada; line: {0}; CE receive data from scada and send this data to client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            Logger.LogMessageToFile(string.Format("CE.CalculationEngine.DataFromScada; line: {0}; CE receive data from scada and send this data to client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             Console.WriteLine("Receive data from SCADA");
 
             Console.WriteLine("Send data to client");
@@ -70,7 +136,7 @@ namespace CalculationEngine
             {
                 clients.Remove(client);
             }
-            Logger.LogMessageToFile(string.Format("CalculationEngine.CalculationEngine.DataFromScada; line: {0}; Finish transport data SCADA-CE-Client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            Logger.LogMessageToFile(string.Format("CE.CalculationEngine.DataFromScada; line: {0}; Finish transport data SCADA-CE-Client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
     }
 }

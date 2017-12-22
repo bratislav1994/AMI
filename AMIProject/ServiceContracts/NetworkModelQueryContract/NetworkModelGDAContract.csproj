@@ -98,6 +98,7 @@
     <Compile Include="INetworkModelGDAContractDuplexClient.cs" />
     <Compile Include="IScadaDuplexSimulator.cs" />
     <Compile Include="ITransactionCoordinator.cs" />
+    <Compile Include="ITransactionDuplexCE.cs" />
     <Compile Include="ITransactionDuplexNMS.cs" />
     <Compile Include="ITransactionDuplexScada.cs" />
     <Compile Include="IScada.cs" />

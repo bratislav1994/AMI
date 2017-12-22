@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace FTN.ServiceContracts
 {
-    [ServiceContract(CallbackContract = typeof(IModelForDuplex))]
-    public interface ICalculationDuplexClient
+    [ServiceContract(CallbackContract = typeof(ICalculationEngine))]
+    public interface ITransactionDuplexCE
     {
         [OperationContract]
-        void ConnectClient();
+        void ConnectCE();
     }
 }

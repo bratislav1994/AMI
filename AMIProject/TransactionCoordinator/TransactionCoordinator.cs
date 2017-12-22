@@ -12,12 +12,13 @@ using FTN.Common.Logger;
 namespace TransactionCoordinator
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class TransactionCoordinator : ITransactionCoordinator, ITransactionDuplexNMS, ITransactionDuplexScada
+    public class TransactionCoordinator : ITransactionCoordinator, ITransactionDuplexNMS, ITransactionDuplexScada, ITransactionDuplexCE
     {
         bool firstTimeNMS = true;
         private List<IScada> scadas;
         private List<IScada> scadasForDeleting;
         private INetworkModel proxyNMS;
+        private ICalculationEngine proxyCE;
         private static TransactionCoordinator instance;
         private Delta delta;
 
@@ -50,12 +51,16 @@ namespace TransactionCoordinator
             this.proxyNMS = OperationContext.Current.GetCallbackChannel<INetworkModel>();
         }
 
+        public void ConnectCE()
+        {
+            this.proxyCE = OperationContext.Current.GetCallbackChannel<ICalculationEngine>();
+        }
+
         public bool ApplyDelta(Delta delta)
         {
             Logger.LogMessageToFile(string.Format("TranscactionCoordinator.TranscactionCoordinator.ApplyDelta; line: {0}; Coordinator sends data to NMS and SCADA", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             List<ResourceDescription> measurements = new List<ResourceDescription>();
             Delta newDelta = null;
-
 
             try
             {
@@ -94,6 +99,17 @@ namespace TransactionCoordinator
                 if (scadasForDeleting.Count > 0)
                 {
                     scadasForDeleting.ForEach(s => scadas.Remove(s));
+                    return false;
+                }
+
+                try
+                {
+                    proxyCE.EnlistDelta(newDelta);
+         //           proxyCE.Prepare();
+                }
+                catch
+                {
+                    proxyCE = null;
                     return false;
                 }
 
@@ -145,6 +161,16 @@ namespace TransactionCoordinator
                         proxyNMS = null;
                         return false;
                     }
+
+                    try
+                    {
+         //               proxyCE.Commit();
+                    }
+                    catch
+                    {
+                        proxyCE = null;
+                        return false;
+                    }
                     
                     Logger.LogMessageToFile(string.Format("TranscactionCoordinator.TranscactionCoordinator.ApplyDelta; line: {0}; Data is successfully sent", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     return true;
@@ -159,6 +185,16 @@ namespace TransactionCoordinator
                     {
                         proxyNMS = null;
                     }
+
+                    try
+                    {
+         //               proxyCE.Rollback();
+                    }
+                    catch
+                    {
+                        proxyCE = null;
+                    }
+
                     foreach (IScada scada in scadas)
                     {
                         try
