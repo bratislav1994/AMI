@@ -114,6 +114,10 @@
                 {
                     rd.AddProperty(new Property(ModelCode.MEASUREMENT_DIRECTION, (int)cimMeas.SignalDirection));
                 }
+                if(cimMeas.RtuAddressHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.MEASUREMENT_RTUADDRESS, (int)cimMeas.RtuAddress));
+                }
 
                 if (cimMeas.PowerSystemResourceHasValue)
                 {
