@@ -23,16 +23,15 @@ namespace SCADA
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class Scada : IScada, IScadaDuplexSimulator, IDisposable
     {
-        private Dictionary<int, bool> addressPool;
+        private Dictionary<int, RTUAddress> addressPool;
         private bool firstTimeCoordinator = true;
         private bool firstTimeCE = true;
         private Dictionary<Tuple<int, int>, ResourceDescription> measurements;
         private SOEHandler handler;
         private IDNP3Manager mgr;
         private ITransactionDuplexScada proxyCoordinator;
-        private int cnt = 0;
         private List<ResourceDescription> measurementsToEnlist;
-        private Dictionary<int, ResourceDescription> copyMeasurements;
+        private Dictionary<Tuple<int, int>, ResourceDescription> copyMeasurements;
         private List<DynamicMeasurement> resourcesToSend;
         private object lockObject = new object();
         private Thread sendingThread;
@@ -90,14 +89,14 @@ namespace SCADA
 
         public Scada()
         {
-            addressPool = new Dictionary<int, bool>();
+            addressPool = new Dictionary<int, RTUAddress>();
             for (int i = 1; i < 10; i++)
             {
-                addressPool.Add(i, false);
+                addressPool.Add(i, new RTUAddress() { IsConnected = false, Cnt = 0 });
             }
 
             measurements = new Dictionary<Tuple<int, int>, ResourceDescription>();
-            copyMeasurements = new Dictionary<int, ResourceDescription>();
+            copyMeasurements = new Dictionary<Tuple<int, int>, ResourceDescription>();
             resourcesToSend = new List<DynamicMeasurement>();
             simulators = new Dictionary<int, ISimulator>();
             handler = new SOEHandler(ref measurements, resourcesToSend, ref lockObject);
@@ -112,6 +111,7 @@ namespace SCADA
             config.master.disableUnsolOnStartup = false;
 
             var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.MaxValue, TaskConfig.Default);
+
             while (true)
             {
                 try
@@ -129,12 +129,11 @@ namespace SCADA
                 }
             }
 
-            Deserialize(measurements);
+            //Deserialize(measurements);
 
             master.Enable();
             sendingThread = new Thread(() => CheckIfThereIsSomethingToSned());
             sendingThread.Start();
-
         }
 
         public void StartIssueCommands()
@@ -161,9 +160,9 @@ namespace SCADA
             Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Start the EnlistMeas function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             this.measurementsToEnlist = meas;
 
-            foreach (KeyValuePair<int, ResourceDescription> kvp in this.measurements)
+            foreach (KeyValuePair<Tuple<int, int>, ResourceDescription> kvp in this.measurements)
             {
-                this.copyMeasurements.Add(kvp.Key, kvp.Value);
+                this.copyMeasurements.Add(new Tuple<int, int>(kvp.Key.Item1, kvp.Key.Item2), kvp.Value);
             }
 
             Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Finish the EnlistMeas function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -209,38 +208,71 @@ namespace SCADA
 
             for (int i = 0; i < Ps.Count; i++)
             {
-                int index = simulators[0].AddMeasurement();
-                if (index != -1)
+                TC57CIM.IEC61970.Meas.Analog m = new TC57CIM.IEC61970.Meas.Analog();
+                m.RD2Class(Ps[i]);
+                int index = -1;
+
+                try
                 {
-                    this.copyMeasurements.Add(index, Ps[i]);
-                    ++cnt;
+                    index = simulators[m.RtuAddress].AddMeasurement();
                 }
-                else
+                catch
                 {
-                    return false;
-                }
-                index = simulators[0].AddMeasurement();
-                if (index != -1)
-                {
-                    this.copyMeasurements.Add(index, Qs[i]);
-                    ++cnt;
-                }
-                else
-                {
+                    addressPool[m.RtuAddress].IsConnected = false;
                     return false;
                 }
                 
-                index = simulators[0].AddMeasurement();
                 if (index != -1)
                 {
-                    this.copyMeasurements.Add(index, Vs[i]);
-                    ++cnt;
+                    this.copyMeasurements.Add(new Tuple<int, int>(m.RtuAddress, index), Ps[i]);
+                    ++addressPool[m.RtuAddress].Cnt;
+                }
+                else
+                {
+                    return false;
+                }
+
+                try
+                {
+                    index = simulators[m.RtuAddress].AddMeasurement();
+                    addressPool[m.RtuAddress].IsConnected = false;
+                }
+                catch
+                {
+                    return false;
+                }
+
+                if (index != -1)
+                {
+                    this.copyMeasurements.Add(new Tuple<int, int>(m.RtuAddress, index), Qs[i]);
+                    ++addressPool[m.RtuAddress].Cnt;
+                }
+                else
+                {
+                    return false;
+                }
+
+                try
+                {
+                    index = simulators[m.RtuAddress].AddMeasurement();
+                }
+                catch
+                {
+                    addressPool[m.RtuAddress].IsConnected = false;
+                    return false;
+                }
+
+                if (index != -1)
+                {
+                    this.copyMeasurements.Add(new Tuple<int, int>(m.RtuAddress, index), Vs[i]);
+                    ++addressPool[m.RtuAddress].Cnt;
                 }
                 else
                 {
                     return false;
                 }
             }
+
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Prepare; line: {0}; Finish the EnlistMeas function successful", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             return true;
         }
@@ -249,12 +281,18 @@ namespace SCADA
         {
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Commit; line: {0}; Start the Commit function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             this.measurements.Clear();
-            foreach (KeyValuePair<int, ResourceDescription> kvp in this.copyMeasurements)
+
+            foreach (KeyValuePair<Tuple<int, int>, ResourceDescription> kvp in this.copyMeasurements)
             {
-                this.measurements.Add(kvp.Key, kvp.Value);
+                this.measurements.Add(new Tuple<int, int>(kvp.Key.Item1, kvp.Key.Item2), kvp.Value);
             }
-            Serialize(measurements);
-            cnt = 0;
+
+            //Serialize(measurements);
+            foreach (KeyValuePair<int, RTUAddress> kvp in addressPool)
+            {
+                kvp.Value.Cnt = 0;
+            }
+
             this.copyMeasurements.Clear();
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Commit; line: {0}; Finish the Commit function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
@@ -262,8 +300,13 @@ namespace SCADA
         public void Rollback()
         {
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Rollback; line: {0}; Start the Rollback function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            this.simulators[0].Rollback(cnt);
-            cnt = 0;
+
+            foreach (KeyValuePair<int, RTUAddress> kvp in addressPool)
+            {
+                this.simulators[kvp.Key].Rollback(addressPool[kvp.Key].Cnt);
+                kvp.Value.Cnt = 0;
+            }
+
             this.copyMeasurements.Clear();
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Rollback; line: {0}; Finish the Rollback function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
@@ -338,9 +381,10 @@ namespace SCADA
         public int Connect()
         {
             int ret = 0;
-            foreach (KeyValuePair<int, bool> kvp in addressPool)
+
+            foreach (KeyValuePair<int, RTUAddress> kvp in addressPool)
             {
-                if (!kvp.Value)
+                if (!kvp.Value.IsConnected)
                 {
                     ret = kvp.Key;
                     this.simulators.Add(kvp.Key, OperationContext.Current.GetCallbackChannel<ISimulator>());
@@ -351,9 +395,9 @@ namespace SCADA
             return ret;
         }
 
-        public int GetNumberOfPoints()
+        public int GetNumberOfPoints(int rtuAddress)
         {
-            return this.measurements.Count();
+            return this.measurements[rtuAddress].Count();
         }
     }
 }
