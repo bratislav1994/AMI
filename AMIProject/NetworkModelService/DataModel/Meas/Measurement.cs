@@ -49,6 +49,7 @@ namespace TC57CIM.IEC61970.Meas {
         private UnitSymbol unitSymbol;
         private Direction signalDirection;
         private long powerSystemResource = 0;
+        private int rtuAddress = 0;
 
         public Measurement()
         {
@@ -77,12 +78,25 @@ namespace TC57CIM.IEC61970.Meas {
             set { powerSystemResource = value; }
         }
 
+        public int RtuAddress
+        {
+            get
+            {
+                return rtuAddress;
+            }
+
+            set
+            {
+                rtuAddress = value;
+            }
+        }
+
         public override bool Equals(object obj)
         {
             if (base.Equals(obj))
             {
                 Measurement x = (Measurement)obj;
-                return (x.unitSymbol == this.unitSymbol && x.signalDirection == this.signalDirection && x.powerSystemResource == this.powerSystemResource);
+                return (x.unitSymbol == this.unitSymbol && x.signalDirection == this.signalDirection && x.powerSystemResource == this.powerSystemResource && x.rtuAddress == this.rtuAddress);
             }
             else
             {
@@ -103,6 +117,7 @@ namespace TC57CIM.IEC61970.Meas {
             {
                 case ModelCode.MEASUREMENT_UNITSYMBOL:
                 case ModelCode.MEASUREMENT_DIRECTION:
+                case ModelCode.MEASUREMENT_RTUADDRESS:
                 case ModelCode.MEASUREMENT_PSR:
                     return true;
                 default:
@@ -119,6 +134,9 @@ namespace TC57CIM.IEC61970.Meas {
                     break;
                 case ModelCode.MEASUREMENT_DIRECTION:
                     property.SetValue((int)signalDirection);
+                    break;
+                case ModelCode.MEASUREMENT_RTUADDRESS:
+                    property.SetValue((int)rtuAddress);
                     break;
                 case ModelCode.MEASUREMENT_PSR:
                     property.SetValue(powerSystemResource);
@@ -139,6 +157,9 @@ namespace TC57CIM.IEC61970.Meas {
                     break;
                 case ModelCode.MEASUREMENT_DIRECTION:
                     signalDirection = (Direction)property.AsInt();
+                    break;
+                case ModelCode.MEASUREMENT_RTUADDRESS:
+                    rtuAddress = property.AsInt();
                     break;
                 case ModelCode.MEASUREMENT_PSR:
                     powerSystemResource = property.AsReference();
