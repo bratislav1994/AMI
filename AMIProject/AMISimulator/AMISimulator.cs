@@ -21,6 +21,7 @@ namespace AMISimulator
         private const int numberOfAnalogPointsV = 100;
         private int numberOfInstalledPoints;
         private IChannel channel = null;
+        private int rtuAddress;
 
         private List<IOutstation> outStations = null;
         private List<OutstationStackConfig> configs = null;
@@ -81,13 +82,13 @@ namespace AMISimulator
             channel = mgr.AddTCPServer("master", LogLevels.NORMAL, ChannelRetry.Default, ipAddress, basePort, ChannelListener.Print());
 
             OutstationStackConfig config = new OutstationStackConfig();
-            IOutstation outstation = InitializeOutstation(config, channel, 10);
+            IOutstation outstation = InitializeOutstation(config, channel);
 
             this.outStations.Add(outstation);
             this.configs.Add(config);
         }
 
-        private IOutstation InitializeOutstation(OutstationStackConfig config, IChannel channel, int rtuAddress)
+        private IOutstation InitializeOutstation(OutstationStackConfig config, IChannel channel)
         {
             config.databaseTemplate = new DatabaseTemplate(0, 0, (numberOfAnalogPointsP + numberOfAnalogPointsQ + numberOfAnalogPointsV), 0, 0, 0, 0, 0);
             config.link.responseTimeout = new TimeSpan(0, 0, 0, 1, 0);
@@ -102,15 +103,12 @@ namespace AMISimulator
             config.outstation.config.unsolClassMask.Class1 = true;
             config.outstation.config.unsolClassMask.Class2 = true;
             config.outstation.config.unsolClassMask.Class3 = true;
-            config.link.localAddr = (ushort)rtuAddress;
-            config.link.remoteAddr = 1;
-            var outstation = channel.AddOutstation("outstation", RejectingCommandHandler.Instance, DefaultOutstationApplication.Instance, config);
             Console.WriteLine("Connecting to scada...");
             while (true)
             {
                 try
                 {
-                    ProxyScada.Connect();
+                    rtuAddress = ProxyScada.Connect();
                     factory.Endpoint.Binding.SendTimeout = TimeSpan.FromMinutes(1);
                     break;
                 }
@@ -122,7 +120,11 @@ namespace AMISimulator
             }
 
             Console.WriteLine("Connected to scada");
-            numberOfInstalledPoints = ProxyScada.GetNumberOfPoints();
+            numberOfInstalledPoints = ProxyScada.GetNumberOfPoints(rtuAddress);
+            config.link.localAddr = (ushort)rtuAddress;
+            config.link.remoteAddr = 1;
+            var outstation = channel.AddOutstation("outstation", RejectingCommandHandler.Instance, DefaultOutstationApplication.Instance, config);
+            
             outstation.Enable();
 
             return outstation;
@@ -148,19 +150,19 @@ namespace AMISimulator
                     if(i%3 == 0)
                     {
                         ChangeSet changeset = new ChangeSet();
-                        changeset.Update(new Analog(rnd.Next(70, 170), 1, DateTime.Now), config.databaseTemplate.analogs[i].index);
+                        changeset.Update(new Analog(rnd.Next(70, 170), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index + 1000 * rtuAddress));
                         outstation.Load(changeset);
                     }
                     else if(i%3 == 1)
                     {
                         ChangeSet changeset = new ChangeSet();
-                        changeset.Update(new Analog(rnd.Next(7, 77), 1, DateTime.Now), config.databaseTemplate.analogs[i].index);
+                        changeset.Update(new Analog(rnd.Next(7, 77), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index + 1000 * rtuAddress));
                         outstation.Load(changeset);
                     }
                     else
                     {
                         ChangeSet changeset = new ChangeSet();
-                        changeset.Update(new Analog(rnd.Next(210, 240), 1, DateTime.Now), config.databaseTemplate.analogs[i].index);
+                        changeset.Update(new Analog(rnd.Next(210, 240), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index + 1000 * rtuAddress));
                         outstation.Load(changeset);
                     }
                 }
@@ -181,7 +183,7 @@ namespace AMISimulator
                     return -1;
                 }
 
-                return this.numberOfInstalledPoints - 1;
+                return ((this.numberOfInstalledPoints - 1) + 1000 * rtuAddress);
             }
         }
 
