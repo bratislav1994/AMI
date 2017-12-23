@@ -123,7 +123,7 @@ namespace AMISimulator
             numberOfInstalledPoints = ProxyScada.GetNumberOfPoints(rtuAddress);
             config.link.localAddr = (ushort)rtuAddress;
             config.link.remoteAddr = 1;
-            var outstation = channel.AddOutstation("outstation", RejectingCommandHandler.Instance, DefaultOutstationApplication.Instance, config);
+            var outstation = channel.AddOutstation("outstation" + rtuAddress, RejectingCommandHandler.Instance, DefaultOutstationApplication.Instance, config);
             
             outstation.Enable();
 

@@ -14,11 +14,11 @@ namespace SCADA
     public class SOEHandler : ISOEHandler
     {
         private bool canExecute = false;
-        private Dictionary<Tuple<int, int>, ResourceDescription> measurements;
+        private Dictionary<int, ResourceDescription> measurements;
         public List<DynamicMeasurement> resourcesToSend;
         private object lockObject;
 
-        public SOEHandler(ref Dictionary<Tuple<int, int>, ResourceDescription> measurements, List<DynamicMeasurement> resourcesToSend, ref object lockObject)
+        public SOEHandler(ref Dictionary<int, ResourceDescription> measurements, List<DynamicMeasurement> resourcesToSend, ref object lockObject)
         {
             this.measurements = measurements;
             this.resourcesToSend = resourcesToSend;
@@ -42,10 +42,10 @@ namespace SCADA
                         {
                             TC57CIM.IEC61970.Meas.Analog a = new TC57CIM.IEC61970.Meas.Analog();
                             a.RD2Class(measurements[analog.Index]);
-
+                            
                             if (localDic.ContainsKey(a.PowerSystemResourceRef))
                             {
-                                switch (analog.Index % 3)
+                                switch ((analog.Index % 1000) % 3)
                                 {
                                     case 0:
                                         localDic[a.PowerSystemResourceRef].CurrentP = (float)analog.Value.Value;
@@ -62,7 +62,7 @@ namespace SCADA
                             {
                                 localDic.Add(a.PowerSystemResourceRef, new DynamicMeasurement(a.PowerSystemResourceRef));
 
-                                switch (analog.Index % 3)
+                                switch ((analog.Index % 1000) % 3)
                                 {
                                     case 0:
                                         localDic[a.PowerSystemResourceRef].CurrentP = (float)analog.Value.Value;

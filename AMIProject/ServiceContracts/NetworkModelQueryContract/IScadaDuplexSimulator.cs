@@ -14,6 +14,6 @@ namespace FTN.ServiceContracts
         int Connect();
 
         [OperationContract]
-        int GetNumberOfPoints();
+        int GetNumberOfPoints(int rtuAddress);
     }
 }

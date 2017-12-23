@@ -26,12 +26,12 @@ namespace SCADA
         private Dictionary<int, RTUAddress> addressPool;
         private bool firstTimeCoordinator = true;
         private bool firstTimeCE = true;
-        private Dictionary<Tuple<int, int>, ResourceDescription> measurements;
+        private Dictionary<int, ResourceDescription> measurements;
         private SOEHandler handler;
         private IDNP3Manager mgr;
         private ITransactionDuplexScada proxyCoordinator;
         private List<ResourceDescription> measurementsToEnlist;
-        private Dictionary<Tuple<int, int>, ResourceDescription> copyMeasurements;
+        private Dictionary<int, ResourceDescription> copyMeasurements;
         private List<DynamicMeasurement> resourcesToSend;
         private object lockObject = new object();
         private Thread sendingThread;
@@ -90,13 +90,14 @@ namespace SCADA
         public Scada()
         {
             addressPool = new Dictionary<int, RTUAddress>();
+
             for (int i = 1; i < 10; i++)
             {
                 addressPool.Add(i, new RTUAddress() { IsConnected = false, Cnt = 0 });
             }
 
-            measurements = new Dictionary<Tuple<int, int>, ResourceDescription>();
-            copyMeasurements = new Dictionary<Tuple<int, int>, ResourceDescription>();
+            measurements = new Dictionary<int, ResourceDescription>();
+            copyMeasurements = new Dictionary<int, ResourceDescription>();
             resourcesToSend = new List<DynamicMeasurement>();
             simulators = new Dictionary<int, ISimulator>();
             handler = new SOEHandler(ref measurements, resourcesToSend, ref lockObject);
@@ -160,9 +161,9 @@ namespace SCADA
             Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Start the EnlistMeas function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             this.measurementsToEnlist = meas;
 
-            foreach (KeyValuePair<Tuple<int, int>, ResourceDescription> kvp in this.measurements)
+            foreach (KeyValuePair<int, ResourceDescription> kvp in this.measurements)
             {
-                this.copyMeasurements.Add(new Tuple<int, int>(kvp.Key.Item1, kvp.Key.Item2), kvp.Value);
+                this.copyMeasurements.Add(kvp.Key, kvp.Value);
             }
 
             Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Finish the EnlistMeas function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -224,7 +225,7 @@ namespace SCADA
                 
                 if (index != -1)
                 {
-                    this.copyMeasurements.Add(new Tuple<int, int>(m.RtuAddress, index), Ps[i]);
+                    this.copyMeasurements.Add(index, Ps[i]);
                     ++addressPool[m.RtuAddress].Cnt;
                 }
                 else
@@ -244,7 +245,7 @@ namespace SCADA
 
                 if (index != -1)
                 {
-                    this.copyMeasurements.Add(new Tuple<int, int>(m.RtuAddress, index), Qs[i]);
+                    this.copyMeasurements.Add(index, Qs[i]);
                     ++addressPool[m.RtuAddress].Cnt;
                 }
                 else
@@ -264,7 +265,7 @@ namespace SCADA
 
                 if (index != -1)
                 {
-                    this.copyMeasurements.Add(new Tuple<int, int>(m.RtuAddress, index), Vs[i]);
+                    this.copyMeasurements.Add(index, Vs[i]);
                     ++addressPool[m.RtuAddress].Cnt;
                 }
                 else
@@ -282,9 +283,9 @@ namespace SCADA
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Commit; line: {0}; Start the Commit function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             this.measurements.Clear();
 
-            foreach (KeyValuePair<Tuple<int, int>, ResourceDescription> kvp in this.copyMeasurements)
+            foreach (KeyValuePair<int, ResourceDescription> kvp in this.copyMeasurements)
             {
-                this.measurements.Add(new Tuple<int, int>(kvp.Key.Item1, kvp.Key.Item2), kvp.Value);
+                this.measurements.Add(kvp.Key, kvp.Value);
             }
 
             //Serialize(measurements);
@@ -388,6 +389,7 @@ namespace SCADA
                 {
                     ret = kvp.Key;
                     this.simulators.Add(kvp.Key, OperationContext.Current.GetCallbackChannel<ISimulator>());
+                    kvp.Value.IsConnected = true;
                     break;
                 }
             }
@@ -397,7 +399,17 @@ namespace SCADA
 
         public int GetNumberOfPoints(int rtuAddress)
         {
-            return this.measurements[rtuAddress].Count();
+            int cnt = 0;
+
+            foreach (KeyValuePair<int, ResourceDescription> kvp in measurements)
+            {
+                if (kvp.Key >= rtuAddress * 1000)
+                {
+                    cnt++;
+                }
+            }
+
+            return cnt;
         }
     }
 }
