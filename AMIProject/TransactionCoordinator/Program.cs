@@ -19,6 +19,7 @@ namespace TransactionCoordinator
 
         static void Main(string[] args)
         {
+            Console.Title = "Transaction coordinator";
             Logger.Path = "Coordinator.txt";
             TransactionCoordinator t = new TransactionCoordinator();
             

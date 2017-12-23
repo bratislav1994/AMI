@@ -19,6 +19,7 @@ namespace SCADA
 
         static int Main(string[] args)
         {
+            Console.Title = "SCADA";
             Logger.Path = "Scada.txt";
             Scada scada = new Scada();
             scada.StartIssueCommands();

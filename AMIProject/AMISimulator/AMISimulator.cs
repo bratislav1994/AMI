@@ -33,7 +33,7 @@ namespace AMISimulator
         {
             get
             {
-                if(firstContact)
+                if (firstContact)
                 {
                     while (true)
                     {
@@ -57,6 +57,7 @@ namespace AMISimulator
                         
                     }
                 }
+
                 return proxyScada;
             }
 
@@ -119,6 +120,7 @@ namespace AMISimulator
                     Thread.Sleep(2000);
                 }
             }
+
             Console.WriteLine("Connected to scada");
             numberOfInstalledPoints = ProxyScada.GetNumberOfPoints();
             outstation.Enable();
@@ -138,6 +140,7 @@ namespace AMISimulator
             { }
             Console.WriteLine("Press enter to start sending process");
             Console.ReadKey();
+
             while (true)
             {
                 for (int i = 0; i < numberOfInstalledPoints; i++)

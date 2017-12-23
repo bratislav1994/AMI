@@ -17,6 +17,7 @@ namespace CalculationEngine
         static void Main(string[] args)
         {
             //   CalculationEngine ce = new CalculationEngine();
+            Console.Title = "CE";
             Logger.Path = "CalculationEngnine.txt";
             Start();
             Console.ReadKey(true);

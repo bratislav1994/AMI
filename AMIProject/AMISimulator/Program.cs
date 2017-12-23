@@ -16,6 +16,7 @@ namespace AMISimulator
 
         static void Main(string[] args)
         {
+            Console.Title = "RTU";
             AMISimulator simulator = new AMISimulator();
             simulator.SendPointValues();
         }

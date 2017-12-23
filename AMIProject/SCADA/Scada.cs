@@ -23,21 +23,21 @@ namespace SCADA
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class Scada : IScada, IScadaDuplexSimulator, IDisposable
     {
-        bool firstTimeSimulator = true;
-        bool firstTimeCoordinator = true;
-        bool firstTimeCE = true;
-        Dictionary<int, ResourceDescription> measurements;
-        SOEHandler handler;
-        IDNP3Manager mgr;
-        ITransactionDuplexScada proxyCoordinator;
-        int cnt = 0;
+        private Dictionary<int, bool> addressPool;
+        private bool firstTimeCoordinator = true;
+        private bool firstTimeCE = true;
+        private Dictionary<Tuple<int, int>, ResourceDescription> measurements;
+        private SOEHandler handler;
+        private IDNP3Manager mgr;
+        private ITransactionDuplexScada proxyCoordinator;
+        private int cnt = 0;
         private List<ResourceDescription> measurementsToEnlist;
         private Dictionary<int, ResourceDescription> copyMeasurements;
         private List<DynamicMeasurement> resourcesToSend;
         private object lockObject = new object();
         private Thread sendingThread;
-        ICalculationEngine proxyCE;
-        private List<ISimulator> simulators;
+        private ICalculationEngine proxyCE;
+        private Dictionary<int, ISimulator> simulators;
         
         public ITransactionDuplexScada ProxyCoordinator
         {
@@ -90,10 +90,16 @@ namespace SCADA
 
         public Scada()
         {
-            measurements = new Dictionary<int, ResourceDescription>();
+            addressPool = new Dictionary<int, bool>();
+            for (int i = 1; i < 10; i++)
+            {
+                addressPool.Add(i, false);
+            }
+
+            measurements = new Dictionary<Tuple<int, int>, ResourceDescription>();
             copyMeasurements = new Dictionary<int, ResourceDescription>();
             resourcesToSend = new List<DynamicMeasurement>();
-            simulators = new List<ISimulator>();
+            simulators = new Dictionary<int, ISimulator>();
             handler = new SOEHandler(ref measurements, resourcesToSend, ref lockObject);
             mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
             var channel = mgr.AddTCPClient("outstation", LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", 20000, ChannelListener.Print());
@@ -154,10 +160,12 @@ namespace SCADA
         {
             Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Start the EnlistMeas function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             this.measurementsToEnlist = meas;
+
             foreach (KeyValuePair<int, ResourceDescription> kvp in this.measurements)
             {
                 this.copyMeasurements.Add(kvp.Key, kvp.Value);
             }
+
             Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Finish the EnlistMeas function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
@@ -168,7 +176,7 @@ namespace SCADA
             List<ResourceDescription> Qs = new List<ResourceDescription>();
             List<ResourceDescription> Vs = new List<ResourceDescription>();
 
-            if(this.simulators.Count == 0)
+            if (this.simulators.Count == 0)
             {
                 return false;
             }
@@ -327,9 +335,20 @@ namespace SCADA
             }
         }
 
-        public void Connect()
+        public int Connect()
         {
-            this.simulators.Add(OperationContext.Current.GetCallbackChannel<ISimulator>());
+            int ret = 0;
+            foreach (KeyValuePair<int, bool> kvp in addressPool)
+            {
+                if (!kvp.Value)
+                {
+                    ret = kvp.Key;
+                    this.simulators.Add(kvp.Key, OperationContext.Current.GetCallbackChannel<ISimulator>());
+                    break;
+                }
+            }
+
+            return ret;
         }
 
         public int GetNumberOfPoints()

@@ -14,11 +14,11 @@ namespace SCADA
     public class SOEHandler : ISOEHandler
     {
         private bool canExecute = false;
-        private Dictionary<int, ResourceDescription> measurements;
+        private Dictionary<Tuple<int, int>, ResourceDescription> measurements;
         public List<DynamicMeasurement> resourcesToSend;
         private object lockObject;
 
-        public SOEHandler(ref Dictionary<int, ResourceDescription> measurements, List<DynamicMeasurement> resourcesToSend, ref object lockObject)
+        public SOEHandler(ref Dictionary<Tuple<int, int>, ResourceDescription> measurements, List<DynamicMeasurement> resourcesToSend, ref object lockObject)
         {
             this.measurements = measurements;
             this.resourcesToSend = resourcesToSend;

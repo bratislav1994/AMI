@@ -11,7 +11,7 @@ namespace FTN.ServiceContracts
     public interface IScadaDuplexSimulator
     {
         [OperationContract]
-        void Connect();
+        int Connect();
 
         [OperationContract]
         int GetNumberOfPoints();

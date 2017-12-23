@@ -13,6 +13,8 @@ namespace FTN.Services.NetworkModelService
 		
 		private static void Main(string[] args)
 		{
+            Console.Title = "NMS";
+
 			try
 			{
 				string message = "Starting Network Model Service...";
