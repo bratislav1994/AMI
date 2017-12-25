@@ -246,6 +246,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_1"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_1_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_1_1</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -256,6 +257,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_2"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_2_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_2_1</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -266,6 +268,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_3"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_3_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_3_1</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -276,6 +279,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_4"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_4_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_4_1</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -286,6 +290,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_5"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_5_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_5_1</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -296,6 +301,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_6"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_6_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_6_1</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -306,6 +312,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_7"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_7_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_7_1</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -316,6 +323,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_8"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_8_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_8_1</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -326,6 +334,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_9"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_9_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_9_1</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -336,6 +345,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_10"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_10_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_10_1</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -347,6 +357,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_1"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_1_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_1_2</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -357,6 +368,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_2"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_2_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_2_2</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -367,6 +379,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_3"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_3_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_3_2</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -377,6 +390,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_4"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_4_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_4_2</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -387,6 +401,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_5"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_5_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_5_2</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -397,6 +412,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_6"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_6_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_6_2</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -407,6 +423,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_7"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_7_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_7_2</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -417,6 +434,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_8"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_8_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_8_2</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -427,6 +445,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_9"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_9_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_9_2</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -437,6 +456,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_10"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_10_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_10_2</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -448,6 +468,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_1"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_1_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_1_3</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -458,6 +479,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_2"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_2_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_2_3</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -468,6 +490,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_3"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_3_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_3_3</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -478,6 +501,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_4"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_4_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_4_3</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -488,6 +512,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_5"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_5_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_5_3</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -498,6 +523,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_6"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_6_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_6_3</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -508,6 +534,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_7"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_7_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_7_3</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -518,6 +545,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_8"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_8_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_8_3</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -528,6 +556,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_9"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_9_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_9_3</cim:IdentifiedObject.name>
 	</cim:Analog>
@@ -538,6 +567,7 @@
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_10"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_1_10_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_10_3</cim:IdentifiedObject.name>
 	</cim:Analog>

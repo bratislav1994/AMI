@@ -33,7 +33,7 @@ namespace FTN.Common
         MEASUREMENT                         = 0x1100000000000000,
         MEASUREMENT_UNITSYMBOL              = 0x110000000000010a,
         MEASUREMENT_DIRECTION               = 0x110000000000020a,
-        MEASUREMENT_RTUADDRESS              = 0X1100000000000305,
+        MEASUREMENT_RTUADDRESS              = 0X1100000000000303,
         MEASUREMENT_PSR                     = 0x1100000000000409,
 
         BASEVOLTAGE                         = 0x1200000000030000,

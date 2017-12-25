@@ -21,7 +21,7 @@ namespace AMISimulator
         private const int numberOfAnalogPointsV = 100;
         private int numberOfInstalledPoints;
         private IChannel channel = null;
-        private int rtuAddress;
+        private int address = 0;
 
         private List<IOutstation> outStations = null;
         private List<OutstationStackConfig> configs = null;
@@ -78,19 +78,20 @@ namespace AMISimulator
             this.outStations = new List<IOutstation>();
             this.configs = new List<OutstationStackConfig>();
             
-
-            channel = mgr.AddTCPServer("master", LogLevels.NORMAL, ChannelRetry.Default, ipAddress, basePort, ChannelListener.Print());
+            //channel = mgr.AddTCPServer("master", LogLevels.NORMAL, ChannelRetry.Default, ipAddress, basePort, ChannelListener.Print());
 
             OutstationStackConfig config = new OutstationStackConfig();
-            IOutstation outstation = InitializeOutstation(config, channel);
+
+            
+            IOutstation outstation = InitializeOutstation(config, mgr);
 
             this.outStations.Add(outstation);
             this.configs.Add(config);
         }
 
-        private IOutstation InitializeOutstation(OutstationStackConfig config, IChannel channel)
+        private IOutstation InitializeOutstation(OutstationStackConfig config, IDNP3Manager mgr)
         {
-            config.databaseTemplate = new DatabaseTemplate(0, 0, (numberOfAnalogPointsP + numberOfAnalogPointsQ + numberOfAnalogPointsV), 0, 0, 0, 0, 0);
+            config.databaseTemplate = new DatabaseTemplate(0, 0, 60000/*(numberOfAnalogPointsP + numberOfAnalogPointsQ + numberOfAnalogPointsV)*/, 0, 0, 0, 0, 0);
             config.link.responseTimeout = new TimeSpan(0, 0, 0, 1, 0);
             
             foreach (var analog in config.databaseTemplate.analogs)
@@ -98,17 +99,12 @@ namespace AMISimulator
                 analog.clazz = PointClass.Class2;
             }
 
-            config.outstation.config.allowUnsolicited = true;
-            config.outstation.config.unsolClassMask.Class0 = true;
-            config.outstation.config.unsolClassMask.Class1 = true;
-            config.outstation.config.unsolClassMask.Class2 = true;
-            config.outstation.config.unsolClassMask.Class3 = true;
             Console.WriteLine("Connecting to scada...");
             while (true)
             {
                 try
                 {
-                    rtuAddress = ProxyScada.Connect();
+                    address = ProxyScada.Connect();
                     factory.Endpoint.Binding.SendTimeout = TimeSpan.FromMinutes(1);
                     break;
                 }
@@ -120,10 +116,19 @@ namespace AMISimulator
             }
 
             Console.WriteLine("Connected to scada");
-            numberOfInstalledPoints = ProxyScada.GetNumberOfPoints(rtuAddress);
-            config.link.localAddr = (ushort)rtuAddress;
+            numberOfInstalledPoints = ProxyScada.GetNumberOfPoints(address);
+
+            channel = mgr.AddTCPServer("master", LogLevels.NORMAL, ChannelRetry.Default, ipAddress, (ushort)(basePort + address), ChannelListener.Print());
+
+            config.outstation.config.allowUnsolicited = true;
+            config.outstation.config.unsolClassMask.Class0 = true;
+            config.outstation.config.unsolClassMask.Class1 = true;
+            config.outstation.config.unsolClassMask.Class2 = true;
+            config.outstation.config.unsolClassMask.Class3 = true;
+            config.link.localAddr = (ushort)address;
             config.link.remoteAddr = 1;
-            var outstation = channel.AddOutstation("outstation" + rtuAddress, RejectingCommandHandler.Instance, DefaultOutstationApplication.Instance, config);
+            
+            var outstation = channel.AddOutstation("outstation" + address, RejectingCommandHandler.Instance, DefaultOutstationApplication.Instance, config);
             
             outstation.Enable();
 
@@ -150,19 +155,19 @@ namespace AMISimulator
                     if(i%3 == 0)
                     {
                         ChangeSet changeset = new ChangeSet();
-                        changeset.Update(new Analog(rnd.Next(70, 170), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index + 1000 * rtuAddress));
+                        changeset.Update(new Analog(rnd.Next(70, 170), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index + address * 1000));
                         outstation.Load(changeset);
                     }
                     else if(i%3 == 1)
                     {
                         ChangeSet changeset = new ChangeSet();
-                        changeset.Update(new Analog(rnd.Next(7, 77), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index + 1000 * rtuAddress));
+                        changeset.Update(new Analog(rnd.Next(7, 77), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index + address * 1000));
                         outstation.Load(changeset);
                     }
                     else
                     {
                         ChangeSet changeset = new ChangeSet();
-                        changeset.Update(new Analog(rnd.Next(210, 240), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index + 1000 * rtuAddress));
+                        changeset.Update(new Analog(rnd.Next(210, 240), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index + address * 1000));
                         outstation.Load(changeset);
                     }
                 }
@@ -182,8 +187,8 @@ namespace AMISimulator
                     this.numberOfInstalledPoints--;
                     return -1;
                 }
-
-                return ((this.numberOfInstalledPoints - 1) + 1000 * rtuAddress);
+            
+                return ((this.numberOfInstalledPoints - 1) + address * 1000);
             }
         }
 

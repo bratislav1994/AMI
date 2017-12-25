@@ -37,7 +37,10 @@ namespace SCADA
         private Thread sendingThread;
         private ICalculationEngine proxyCE;
         private Dictionary<int, ISimulator> simulators;
-        
+        private IMaster master;
+        private MasterStackConfig config;
+        private IChannel channel;
+
         public ITransactionDuplexScada ProxyCoordinator
         {
             get
@@ -91,7 +94,7 @@ namespace SCADA
         {
             addressPool = new Dictionary<int, RTUAddress>();
 
-            for (int i = 1; i < 10; i++)
+            for (int i = 10; i <= 20; i++)
             {
                 addressPool.Add(i, new RTUAddress() { IsConnected = false, Cnt = 0 });
             }
@@ -102,7 +105,7 @@ namespace SCADA
             simulators = new Dictionary<int, ISimulator>();
             handler = new SOEHandler(ref measurements, resourcesToSend, ref lockObject);
             mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
-            var channel = mgr.AddTCPClient("outstation", LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", 20000, ChannelListener.Print());
+            /*var channel = mgr.AddTCPClient("outstation", LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", 20000, ChannelListener.Print());
 
             var config = new MasterStackConfig();
             config.link.localAddr = 1;
@@ -111,7 +114,7 @@ namespace SCADA
             var master = channel.AddMaster("master", handler, DefaultMasterApplication.Instance, config);
             config.master.disableUnsolOnStartup = false;
 
-            var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.MaxValue, TaskConfig.Default);
+            var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.MaxValue, TaskConfig.Default);*/
 
             while (true)
             {
@@ -132,7 +135,7 @@ namespace SCADA
 
             //Deserialize(measurements);
 
-            master.Enable();
+           // master.Enable();
             sendingThread = new Thread(() => CheckIfThereIsSomethingToSned());
             sendingThread.Start();
         }
@@ -146,7 +149,7 @@ namespace SCADA
                 switch (Console.ReadLine())
                 {
                     case "a":
-                        ProxySimulator.AddMeasurement();
+                        master.ScanAllObjects(30, 0, TaskConfig.Default);
                         break;
                     case "x":
                         return;
@@ -236,10 +239,10 @@ namespace SCADA
                 try
                 {
                     index = simulators[m.RtuAddress].AddMeasurement();
-                    addressPool[m.RtuAddress].IsConnected = false;
                 }
                 catch
                 {
+                    addressPool[m.RtuAddress].IsConnected = false;
                     return false;
                 }
 
@@ -382,6 +385,7 @@ namespace SCADA
         public int Connect()
         {
             int ret = 0;
+            int temp = -1;
 
             foreach (KeyValuePair<int, RTUAddress> kvp in addressPool)
             {
@@ -389,10 +393,28 @@ namespace SCADA
                 {
                     ret = kvp.Key;
                     this.simulators.Add(kvp.Key, OperationContext.Current.GetCallbackChannel<ISimulator>());
-                    kvp.Value.IsConnected = true;
+                    temp = kvp.Key;
                     break;
                 }
             }
+
+            if( temp != -1 )
+            {
+                addressPool[temp].IsConnected = true;
+            }
+            
+            var channel = mgr.AddTCPClient("outstation" + ret, LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", (ushort)(20000 + ret), ChannelListener.Print());
+
+            var config = new MasterStackConfig();
+            config.link.localAddr = 1;
+            config.link.remoteAddr = (ushort)ret;
+
+            var master = channel.AddMaster("master", handler, DefaultMasterApplication.Instance, config);
+            config.master.disableUnsolOnStartup = false;
+
+            var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.MaxValue, TaskConfig.Default);
+
+            master.Enable();
 
             return ret;
         }
