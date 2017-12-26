@@ -91,7 +91,7 @@ namespace AMISimulator
 
         private IOutstation InitializeOutstation(OutstationStackConfig config, IDNP3Manager mgr)
         {
-            config.databaseTemplate = new DatabaseTemplate(0, 0, 60000/*(numberOfAnalogPointsP + numberOfAnalogPointsQ + numberOfAnalogPointsV)*/, 0, 0, 0, 0, 0);
+            config.databaseTemplate = new DatabaseTemplate(0, 0, (numberOfAnalogPointsP + numberOfAnalogPointsQ + numberOfAnalogPointsV), 0, 0, 0, 0, 0);
             config.link.responseTimeout = new TimeSpan(0, 0, 0, 1, 0);
             
             foreach (var analog in config.databaseTemplate.analogs)
@@ -100,6 +100,7 @@ namespace AMISimulator
             }
 
             Console.WriteLine("Connecting to scada...");
+
             while (true)
             {
                 try
@@ -155,19 +156,19 @@ namespace AMISimulator
                     if(i%3 == 0)
                     {
                         ChangeSet changeset = new ChangeSet();
-                        changeset.Update(new Analog(rnd.Next(70, 170), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index + address * 1000));
+                        changeset.Update(new Analog(rnd.Next(70, 170), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                         outstation.Load(changeset);
                     }
                     else if(i%3 == 1)
                     {
                         ChangeSet changeset = new ChangeSet();
-                        changeset.Update(new Analog(rnd.Next(7, 77), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index + address * 1000));
+                        changeset.Update(new Analog(rnd.Next(7, 77), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                         outstation.Load(changeset);
                     }
                     else
                     {
                         ChangeSet changeset = new ChangeSet();
-                        changeset.Update(new Analog(rnd.Next(210, 240), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index + address * 1000));
+                        changeset.Update(new Analog(rnd.Next(210, 240), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                         outstation.Load(changeset);
                     }
                 }
@@ -188,7 +189,7 @@ namespace AMISimulator
                     return -1;
                 }
             
-                return ((this.numberOfInstalledPoints - 1) + address * 1000);
+                return this.numberOfInstalledPoints - 1;
             }
         }
 

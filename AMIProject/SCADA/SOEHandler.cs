@@ -14,13 +14,28 @@ namespace SCADA
     public class SOEHandler : ISOEHandler
     {
         private bool canExecute = false;
-        private Dictionary<int, ResourceDescription> measurements;
+        private List<MeasurementForScada> measurements;
         public List<DynamicMeasurement> resourcesToSend;
         private object lockObject;
+        private bool hasNewMeas = false;
 
-        public SOEHandler(ref Dictionary<int, ResourceDescription> measurements, List<DynamicMeasurement> resourcesToSend, ref object lockObject)
+        public bool HasNewMeas
+        {
+            get
+            {
+                return hasNewMeas;
+            }
+
+            set
+            {
+                hasNewMeas = value;
+            }
+        }
+
+        public SOEHandler(List<MeasurementForScada> measurements, List<DynamicMeasurement> resourcesToSend, ref object lockObject)
         {
             this.measurements = measurements;
+
             this.resourcesToSend = resourcesToSend;
             this.lockObject = lockObject;
         }
@@ -41,7 +56,7 @@ namespace SCADA
                         if (analog.Value.Value != 0)
                         {
                             TC57CIM.IEC61970.Meas.Analog a = new TC57CIM.IEC61970.Meas.Analog();
-                            a.RD2Class(measurements[analog.Index]);
+                            a.RD2Class(GetResDesc(analog.Index));
                             
                             if (localDic.ContainsKey(a.PowerSystemResourceRef))
                             {
@@ -87,9 +102,27 @@ namespace SCADA
                         resourcesToSend.Add(kvp.Value);
                     }
 
+                    if (localDic.Count > 0)
+                    {
+                        HasNewMeas = true;
+                    }
+                   
                     Logger.LogMessageToFile(string.Format("SCADA.SOEHandler.Process; line: {0}; Finish the Process function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 }
             }
+        }
+
+        private ResourceDescription GetResDesc(int index)
+        {
+            foreach (MeasurementForScada meas in measurements)
+            {
+                if (meas.Index == index)
+                {
+                    return meas.Measurement;
+                }
+            }
+
+            return null;
         }
 
         public void End()

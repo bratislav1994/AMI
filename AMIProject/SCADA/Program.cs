@@ -22,7 +22,6 @@ namespace SCADA
             Console.Title = "SCADA";
             Logger.Path = "Scada.txt";
             Scada scada = new Scada();
-            scada.StartIssueCommands();
             svc = new ServiceHost(scada);
             svc.AddServiceEndpoint(typeof(IScadaDuplexSimulator),
                                    new NetTcpBinding(),

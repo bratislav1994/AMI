@@ -26,20 +26,17 @@ namespace SCADA
         private Dictionary<int, RTUAddress> addressPool;
         private bool firstTimeCoordinator = true;
         private bool firstTimeCE = true;
-        private Dictionary<int, ResourceDescription> measurements;
-        private SOEHandler handler;
+        private Dictionary<int, List<MeasurementForScada>> measurements;
+        private List<SOEHandler> handlers;
         private IDNP3Manager mgr;
         private ITransactionDuplexScada proxyCoordinator;
         private List<ResourceDescription> measurementsToEnlist;
-        private Dictionary<int, ResourceDescription> copyMeasurements;
+        private Dictionary<int, List<MeasurementForScada>> copyMeasurements;
         private List<DynamicMeasurement> resourcesToSend;
         private object lockObject = new object();
         private Thread sendingThread;
         private ICalculationEngine proxyCE;
         private Dictionary<int, ISimulator> simulators;
-        private IMaster master;
-        private MasterStackConfig config;
-        private IChannel channel;
 
         public ITransactionDuplexScada ProxyCoordinator
         {
@@ -99,22 +96,12 @@ namespace SCADA
                 addressPool.Add(i, new RTUAddress() { IsConnected = false, Cnt = 0 });
             }
 
-            measurements = new Dictionary<int, ResourceDescription>();
-            copyMeasurements = new Dictionary<int, ResourceDescription>();
+            handlers = new List<SOEHandler>();
+            measurements = new Dictionary<int, List<MeasurementForScada>>();
+            copyMeasurements = new Dictionary<int, List<MeasurementForScada>>();
             resourcesToSend = new List<DynamicMeasurement>();
             simulators = new Dictionary<int, ISimulator>();
-            handler = new SOEHandler(ref measurements, resourcesToSend, ref lockObject);
             mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
-            /*var channel = mgr.AddTCPClient("outstation", LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", 20000, ChannelListener.Print());
-
-            var config = new MasterStackConfig();
-            config.link.localAddr = 1;
-            config.link.remoteAddr = 10;
-
-            var master = channel.AddMaster("master", handler, DefaultMasterApplication.Instance, config);
-            config.master.disableUnsolOnStartup = false;
-
-            var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.MaxValue, TaskConfig.Default);*/
 
             while (true)
             {
@@ -134,29 +121,8 @@ namespace SCADA
             }
 
             //Deserialize(measurements);
-
-           // master.Enable();
             sendingThread = new Thread(() => CheckIfThereIsSomethingToSned());
             sendingThread.Start();
-        }
-
-        public void StartIssueCommands()
-        {
-            /*Console.WriteLine("Enter a command");
-
-            while (true)
-            {
-                switch (Console.ReadLine())
-                {
-                    case "a":
-                        master.ScanAllObjects(30, 0, TaskConfig.Default);
-                        break;
-                    case "x":
-                        return;
-                    default:
-                        break;
-                }
-            }*/
         }
 
         public void EnlistMeas(List<ResourceDescription> meas)
@@ -164,7 +130,7 @@ namespace SCADA
             Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Start the EnlistMeas function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             this.measurementsToEnlist = meas;
 
-            foreach (KeyValuePair<int, ResourceDescription> kvp in this.measurements)
+            foreach (KeyValuePair<int, List<MeasurementForScada>> kvp in this.measurements)
             {
                 this.copyMeasurements.Add(kvp.Key, kvp.Value);
             }
@@ -215,7 +181,7 @@ namespace SCADA
                 TC57CIM.IEC61970.Meas.Analog m = new TC57CIM.IEC61970.Meas.Analog();
                 m.RD2Class(Ps[i]);
                 int index = -1;
-
+                
                 try
                 {
                     index = simulators[m.RtuAddress].AddMeasurement();
@@ -228,7 +194,12 @@ namespace SCADA
                 
                 if (index != -1)
                 {
-                    this.copyMeasurements.Add(index, Ps[i]);
+                    if (!this.copyMeasurements.ContainsKey(m.RtuAddress))
+                    {
+                        this.copyMeasurements.Add(m.RtuAddress, new List<MeasurementForScada>());
+                    }
+
+                    this.copyMeasurements[m.RtuAddress].Add(new MeasurementForScada() { Index = index, Measurement = Ps[i] });
                     ++addressPool[m.RtuAddress].Cnt;
                 }
                 else
@@ -248,7 +219,12 @@ namespace SCADA
 
                 if (index != -1)
                 {
-                    this.copyMeasurements.Add(index, Qs[i]);
+                    if (!this.copyMeasurements.ContainsKey(m.RtuAddress))
+                    {
+                        this.copyMeasurements.Add(m.RtuAddress, new List<MeasurementForScada>());
+                    }
+
+                    this.copyMeasurements[m.RtuAddress].Add(new MeasurementForScada() { Index = index, Measurement = Qs[i] });
                     ++addressPool[m.RtuAddress].Cnt;
                 }
                 else
@@ -268,7 +244,12 @@ namespace SCADA
 
                 if (index != -1)
                 {
-                    this.copyMeasurements.Add(index, Vs[i]);
+                    if (!this.copyMeasurements.ContainsKey(m.RtuAddress))
+                    {
+                        this.copyMeasurements.Add(m.RtuAddress, new List<MeasurementForScada>());
+                    }
+
+                    this.copyMeasurements[m.RtuAddress].Add(new MeasurementForScada() { Index = index, Measurement = Vs[i] });
                     ++addressPool[m.RtuAddress].Cnt;
                 }
                 else
@@ -286,7 +267,7 @@ namespace SCADA
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Commit; line: {0}; Start the Commit function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             this.measurements.Clear();
 
-            foreach (KeyValuePair<int, ResourceDescription> kvp in this.copyMeasurements)
+            foreach (KeyValuePair<int, List<MeasurementForScada>> kvp in this.copyMeasurements)
             {
                 this.measurements.Add(kvp.Key, kvp.Value);
             }
@@ -321,13 +302,16 @@ namespace SCADA
             {
                 lock(lockObject)
                 {
-                    if (handler.resourcesToSend.Count > 0)
+                    foreach (SOEHandler handler in handlers)
                     {
-                        Logger.LogMessageToFile(string.Format("SCADA.Scada.CheckIfThereIsSomethingToSned; line: {0}; Scada sends data to client if it has data to send", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                        Console.WriteLine("List changed, here will be code for sending measurements to Calculation Engine...");
-                        ProxyCE.DataFromScada(handler.resourcesToSend);
-
-                        handler.resourcesToSend.Clear();
+                        if (handler.HasNewMeas)
+                        {
+                            Logger.LogMessageToFile(string.Format("SCADA.Scada.CheckIfThereIsSomethingToSned; line: {0}; Scada sends data to client if it has data to send", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                            Console.WriteLine("List changed, here will be code for sending measurements to Calculation Engine...");
+                            ProxyCE.DataFromScada(handler.resourcesToSend);
+                            handler.resourcesToSend.Clear();
+                            handler.HasNewMeas = false;
+                        }
                     }
                 }
 
@@ -402,7 +386,10 @@ namespace SCADA
             {
                 addressPool[temp].IsConnected = true;
             }
-            
+
+            measurements.Add(ret, new List<MeasurementForScada>());
+            var handler = new SOEHandler(measurements[ret], resourcesToSend, ref lockObject);
+            handlers.Add(handler);
             var channel = mgr.AddTCPClient("outstation" + ret, LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", (ushort)(20000 + ret), ChannelListener.Print());
 
             var config = new MasterStackConfig();
@@ -421,17 +408,7 @@ namespace SCADA
 
         public int GetNumberOfPoints(int rtuAddress)
         {
-            int cnt = 0;
-
-            foreach (KeyValuePair<int, ResourceDescription> kvp in measurements)
-            {
-                if (kvp.Key >= rtuAddress * 1000)
-                {
-                    cnt++;
-                }
-            }
-
-            return cnt;
+            return measurements[rtuAddress].Count;
         }
     }
 }

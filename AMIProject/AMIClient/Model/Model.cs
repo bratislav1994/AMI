@@ -288,7 +288,7 @@ namespace AMIClient
         public void GetAllAmis()
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllAmis; line: {0}; Start the GetAllAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            ClearAmis();
+            this.ClearPositions();
             GetExtentValues(ModelCode.ENERGYCONS);
             //return Amis;
         }
