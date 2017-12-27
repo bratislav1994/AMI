@@ -35,7 +35,6 @@ namespace SCADA
         public SOEHandler(List<MeasurementForScada> measurements, List<DynamicMeasurement> resourcesToSend, ref object lockObject)
         {
             this.measurements = measurements;
-
             this.resourcesToSend = resourcesToSend;
             this.lockObject = lockObject;
         }

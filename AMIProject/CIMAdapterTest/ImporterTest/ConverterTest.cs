@@ -146,13 +146,13 @@ namespace CIMAdapterTest.ImporterTest
             Converter.PopulateMeasurementProperties(new AMIProfile.Measurement(), resDesc, impHelp, report);
             Assert.AreEqual(resDesc.Properties.Count, 0);
 
-            AMIProfile.Measurement m = new AMIProfile.Measurement() { ID = "M_1" };
+            AMIProfile.Measurement m = new AMIProfile.Measurement() { ID = "M_1", UnitSymbol = AMIProfile.UnitSymbol.P, RtuAddress = 10, SignalDirection = AMIProfile.Direction.READ };
             AMIProfile.PowerSystemResource psr = new AMIProfile.PowerSystemResource() { ID = "psr_1", MRID = "psr_1" };
             m.PowerSystemResource = psr;
             impHelp.DefineIDMapping(m.ID, 1234567);
             impHelp.DefineIDMapping(m.PowerSystemResource.ID, 12345678);
             Converter.PopulateMeasurementProperties(m, resDesc, impHelp, report);
-            Assert.AreEqual(resDesc.Properties.Count, 1);
+            Assert.AreEqual(resDesc.Properties.Count, 4);
 
             Converter.PopulateMeasurementProperties(m, resDesc, new ImportHelper(), report); // gid < 0
         }

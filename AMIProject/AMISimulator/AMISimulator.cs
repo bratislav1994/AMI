@@ -22,9 +22,8 @@ namespace AMISimulator
         private int numberOfInstalledPoints;
         private IChannel channel = null;
         private int address = 0;
-
-        private List<IOutstation> outStations = null;
-        private List<OutstationStackConfig> configs = null;
+        private IOutstation outstation = null;
+        private OutstationStackConfig config = null;
         private object lockObject;
         private IScadaDuplexSimulator proxyScada;
         private bool firstContact = true;
@@ -47,7 +46,6 @@ namespace AMISimulator
                                                                                     new EndpointAddress("net.tcp://localhost:10100/Scada/Simulator"));
                             
                             proxyScada = factory.CreateChannel();
-
                             firstContact = false;
                             break;
                         }
@@ -55,7 +53,6 @@ namespace AMISimulator
                         {
                             Thread.Sleep(2000);
                         }
-                        
                     }
                 }
 
@@ -74,19 +71,11 @@ namespace AMISimulator
             lockObject = new object();
 
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
-
-            this.outStations = new List<IOutstation>();
-            this.configs = new List<OutstationStackConfig>();
             
             //channel = mgr.AddTCPServer("master", LogLevels.NORMAL, ChannelRetry.Default, ipAddress, basePort, ChannelListener.Print());
 
-            OutstationStackConfig config = new OutstationStackConfig();
-
-            
-            IOutstation outstation = InitializeOutstation(config, mgr);
-
-            this.outStations.Add(outstation);
-            this.configs.Add(config);
+            config = new OutstationStackConfig();
+            outstation = InitializeOutstation(config, mgr);
         }
 
         private IOutstation InitializeOutstation(OutstationStackConfig config, IDNP3Manager mgr)
@@ -138,7 +127,7 @@ namespace AMISimulator
 
         public void SendPointValues()
         {
-            SendPointValues(this.configs[0], this.outStations[0]);
+            SendPointValues(this.config, this.outstation);
         }
 
         private void SendPointValues(OutstationStackConfig config, IOutstation outstation)
@@ -146,6 +135,7 @@ namespace AMISimulator
             Random rnd = new Random();
             while (channel.GetChannelStatistics().NumOpen == 0)
             { }
+
             Console.WriteLine("Press enter to start sending process");
             Console.ReadKey();
 
@@ -153,13 +143,13 @@ namespace AMISimulator
             {
                 for (int i = 0; i < numberOfInstalledPoints; i++)
                 {
-                    if(i%3 == 0)
+                    if (i % 3 == 0)
                     {
                         ChangeSet changeset = new ChangeSet();
                         changeset.Update(new Analog(rnd.Next(70, 170), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                         outstation.Load(changeset);
                     }
-                    else if(i%3 == 1)
+                    else if (i % 3 == 1)
                     {
                         ChangeSet changeset = new ChangeSet();
                         changeset.Update(new Analog(rnd.Next(7, 77), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));

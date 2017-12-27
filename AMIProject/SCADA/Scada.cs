@@ -37,6 +37,8 @@ namespace SCADA
         private Thread sendingThread;
         private ICalculationEngine proxyCE;
         private Dictionary<int, ISimulator> simulators;
+        private const int startRtuAddress = 10;
+        private const int maxRtuAddress = 20;
 
         public ITransactionDuplexScada ProxyCoordinator
         {
@@ -54,6 +56,7 @@ namespace SCADA
                     proxyCoordinator = factory.CreateChannel();
                     firstTimeCoordinator = false;
                 }
+
                 Logger.LogMessageToFile(string.Format("SCADA.Scada.ProxyCoordinator; line: {0}; Channel SCADA-Coordinator is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return proxyCoordinator;
             }
@@ -74,9 +77,9 @@ namespace SCADA
                     ChannelFactory<ICalculationEngine> factory = new ChannelFactory<ICalculationEngine>(new NetTcpBinding(),
                                                                                         new EndpointAddress("net.tcp://localhost:10050/ICalculationEngine/Calculation"));
                     proxyCE = factory.CreateChannel();
-
                     firstTimeCE = false;
                 }
+
                 Logger.LogMessageToFile(string.Format("SCADA.Scada.ProxyCE; line: {0}; Channel SCADA-CE is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return proxyCE;
             }
@@ -91,7 +94,7 @@ namespace SCADA
         {
             addressPool = new Dictionary<int, RTUAddress>();
 
-            for (int i = 10; i <= 20; i++)
+            for (int i = startRtuAddress; i <= maxRtuAddress; i++)
             {
                 addressPool.Add(i, new RTUAddress() { IsConnected = false, Cnt = 0 });
             }
@@ -300,7 +303,7 @@ namespace SCADA
         {
             while (true)
             {
-                lock(lockObject)
+                lock (lockObject)
                 {
                     foreach (SOEHandler handler in handlers)
                     {
@@ -346,7 +349,6 @@ namespace SCADA
             try
             {
                 Logger.LogMessageToFile(string.Format("SCADA.Scada.Deserialize; line: {0}; Start the Deserialize function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-
                 TextReader tr = new StreamReader(File.OpenRead("Measurements.xml"));
                 measurements.Clear();
                 XmlSerializer serializer = new XmlSerializer(typeof(List<ClassForSerialization>));
@@ -369,7 +371,6 @@ namespace SCADA
         public int Connect()
         {
             int ret = 0;
-            int temp = -1;
 
             foreach (KeyValuePair<int, RTUAddress> kvp in addressPool)
             {
@@ -377,14 +378,9 @@ namespace SCADA
                 {
                     ret = kvp.Key;
                     this.simulators.Add(kvp.Key, OperationContext.Current.GetCallbackChannel<ISimulator>());
-                    temp = kvp.Key;
+                    addressPool[ret].IsConnected = true;
                     break;
                 }
-            }
-
-            if( temp != -1 )
-            {
-                addressPool[temp].IsConnected = true;
             }
 
             measurements.Add(ret, new List<MeasurementForScada>());
