@@ -10,6 +10,8 @@ using AMISimulator;
 using TC57CIM.IEC61970.Meas;
 using FTN.ServiceContracts;
 using FTN.Common.Logger;
+using System.Data.Entity;
+using SCADA.Access;
 
 namespace SCADA
 {
@@ -21,6 +23,14 @@ namespace SCADA
         {
             Console.Title = "SCADA";
             Logger.Path = "Scada.txt";
+
+            string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string path = System.IO.Path.GetDirectoryName(executable);
+            path = path.Substring(0, path.LastIndexOf("bin")) + "DB";
+            AppDomain.CurrentDomain.SetData("DataDirectory", path);
+
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AccessDB, Configuration>());
+
             Scada scada = new Scada();
             svc = new ServiceHost(scada);
             svc.AddServiceEndpoint(typeof(IScadaDuplexSimulator),

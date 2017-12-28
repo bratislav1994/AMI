@@ -15,8 +15,11 @@ using System.IO;
 using FTN.Common;
 using TC57CIM.IEC61970.Core;
 using System.Runtime.Serialization;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TC57CIM.IEC61970.Meas {
+namespace TC57CIM.IEC61970.Meas
+{
     /// <summary>
     /// A Measurement represents any measured, calculated or non-measured non-
     /// calculated quantity. Any piece of equipment may contain Measurements, e.g. a
@@ -41,7 +44,8 @@ namespace TC57CIM.IEC61970.Meas {
     /// When the sensor location is needed both Measurement-PSR and Measurement-
     /// Terminal are used. The Measurement-Terminal association is never used alone.
     /// </summary>
-    public class Measurement : IdentifiedObject {
+    public class Measurement : IdentifiedObject
+    {
 
         /// <summary>
         /// The unit of measure of the measured quantity.
@@ -50,15 +54,25 @@ namespace TC57CIM.IEC61970.Meas {
         private Direction signalDirection;
         private long powerSystemResource = 0;
         private int rtuAddress = 0;
+        private int idDB;
 
         public Measurement()
         {
         }
 
-		public Measurement(long globalId)
+        public Measurement(long globalId)
             : base(globalId)
-        { 
-		}
+        {
+        }
+
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int IdDB
+        {
+            get { return idDB; }
+            set { idDB = value; }
+        }
+
 
         public UnitSymbol UnitSymbol
         {
