@@ -5,6 +5,7 @@ using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.ServiceModel.Channels;
 using FTN.Common;
+using FTN.Common.Logger;
 
 namespace FTN.Services.NetworkModelService
 {
@@ -13,6 +14,7 @@ namespace FTN.Services.NetworkModelService
 		
 		private static void Main(string[] args)
 		{
+            Logger.Path = "NMS.txt";
             Console.Title = "NMS";
 
 			try

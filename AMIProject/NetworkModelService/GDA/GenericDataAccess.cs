@@ -10,6 +10,7 @@ using System.Collections;
 using FTN.ServiceContracts;
 using TC57CIM.IEC61970.Meas;
 using TC57CIM.IEC61970.Core;
+using FTN.Common.Logger;
 
 namespace FTN.Services.NetworkModelService
 {
@@ -31,14 +32,15 @@ namespace FTN.Services.NetworkModelService
             {
                 try
                 {
-                    //Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS try to connect with Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS try to connect with Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     this.ProxyCoordinator.ConnectNMS();
-                    //Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS is connected to the Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS is connected to the Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     break;
                 }
                 catch
                 {
-                    //Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS faild to connect with Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    firstTimeCoordinator = true;
+                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS faild to connect with Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     Thread.Sleep(1000);
                 }
             }

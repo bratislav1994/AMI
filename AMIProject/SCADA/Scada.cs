@@ -17,6 +17,7 @@ using System.Xml.Serialization;
 using System.Windows.Threading;
 using FTN.Common.Logger;
 using FTN.Services.NetworkModelService.DataModel;
+using SCADA.Access;
 
 namespace SCADA
 {
@@ -39,6 +40,7 @@ namespace SCADA
         private Dictionary<int, ISimulator> simulators;
         private const int startRtuAddress = 10;
         private const int maxRtuAddress = 20;
+        private FunctionDB f = new FunctionDB();
 
         public ITransactionDuplexScada ProxyCoordinator
         {
@@ -123,6 +125,7 @@ namespace SCADA
                 }
             }
 
+            ReadDataFromDB(measurements);
             //Deserialize(measurements);
             sendingThread = new Thread(() => CheckIfThereIsSomethingToSned());
             sendingThread.Start();
@@ -144,9 +147,9 @@ namespace SCADA
         public bool Prepare()
         {
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Prepare; line: {0}; Start the Prepare function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            List<ResourceDescription> Ps = new List<ResourceDescription>();
-            List<ResourceDescription> Qs = new List<ResourceDescription>();
-            List<ResourceDescription> Vs = new List<ResourceDescription>();
+            List<Measurement> Ps = new List<Measurement>();
+            List<Measurement> Qs = new List<Measurement>();
+            List<Measurement> Vs = new List<Measurement>();
 
             if (this.simulators.Count == 0)
             {
@@ -161,13 +164,13 @@ namespace SCADA
                 switch (m.UnitSymbol)
                 {
                     case UnitSymbol.P:
-                        Ps.Add(rd);
+                        Ps.Add(m);
                         break;
                     case UnitSymbol.Q:
-                        Qs.Add(rd);
+                        Qs.Add(m);
                         break;
                     case UnitSymbol.V:
-                        Vs.Add(rd);
+                        Vs.Add(m);
                         break;
                     default:
                         return false;
@@ -181,29 +184,28 @@ namespace SCADA
 
             for (int i = 0; i < Ps.Count; i++)
             {
-                TC57CIM.IEC61970.Meas.Analog m = new TC57CIM.IEC61970.Meas.Analog();
-                m.RD2Class(Ps[i]);
                 int index = -1;
-                
+
                 try
                 {
-                    index = simulators[m.RtuAddress].AddMeasurement();
+                    index = simulators[Ps[i].RtuAddress].AddMeasurement();
                 }
                 catch
                 {
-                    addressPool[m.RtuAddress].IsConnected = false;
+                    addressPool[Ps[i].RtuAddress].IsConnected = false;
                     return false;
                 }
-                
-                if (index != -1)
+
+                int a = f.GetWrapperId(Ps[i].RtuAddress);
+                if (index != -1 && a != -1)
                 {
-                    if (!this.copyMeasurements.ContainsKey(m.RtuAddress))
+                    if (!this.copyMeasurements.ContainsKey(Ps[i].RtuAddress))
                     {
-                        this.copyMeasurements.Add(m.RtuAddress, new List<MeasurementForScada>());
+                        this.copyMeasurements.Add(Ps[i].RtuAddress, new List<MeasurementForScada>());
                     }
 
-                    this.copyMeasurements[m.RtuAddress].Add(new MeasurementForScada() { Index = index, Measurement = Ps[i] });
-                    ++addressPool[m.RtuAddress].Cnt;
+                    this.copyMeasurements[Ps[i].RtuAddress].Add(new MeasurementForScada(a) { Index = index, Measurement = Ps[i] });
+                    ++addressPool[Ps[i].RtuAddress].Cnt;
                 }
                 else
                 {
@@ -212,23 +214,24 @@ namespace SCADA
 
                 try
                 {
-                    index = simulators[m.RtuAddress].AddMeasurement();
+                    index = simulators[Qs[i].RtuAddress].AddMeasurement();
                 }
                 catch
                 {
-                    addressPool[m.RtuAddress].IsConnected = false;
+                    addressPool[Qs[i].RtuAddress].IsConnected = false;
                     return false;
                 }
 
-                if (index != -1)
+                a = f.GetWrapperId(Qs[i].RtuAddress);
+                if (index != -1 && a != -1)
                 {
-                    if (!this.copyMeasurements.ContainsKey(m.RtuAddress))
+                    if (!this.copyMeasurements.ContainsKey(Qs[i].RtuAddress))
                     {
-                        this.copyMeasurements.Add(m.RtuAddress, new List<MeasurementForScada>());
+                        this.copyMeasurements.Add(Qs[i].RtuAddress, new List<MeasurementForScada>());
                     }
 
-                    this.copyMeasurements[m.RtuAddress].Add(new MeasurementForScada() { Index = index, Measurement = Qs[i] });
-                    ++addressPool[m.RtuAddress].Cnt;
+                    this.copyMeasurements[Qs[i].RtuAddress].Add(new MeasurementForScada(a) { Index = index, Measurement = Qs[i] });
+                    ++addressPool[Qs[i].RtuAddress].Cnt;
                 }
                 else
                 {
@@ -237,23 +240,24 @@ namespace SCADA
 
                 try
                 {
-                    index = simulators[m.RtuAddress].AddMeasurement();
+                    index = simulators[Vs[i].RtuAddress].AddMeasurement();
                 }
                 catch
                 {
-                    addressPool[m.RtuAddress].IsConnected = false;
+                    addressPool[Vs[i].RtuAddress].IsConnected = false;
                     return false;
                 }
 
-                if (index != -1)
+                a = f.GetWrapperId(Vs[i].RtuAddress);
+                if (index != -1 && a != -1)
                 {
-                    if (!this.copyMeasurements.ContainsKey(m.RtuAddress))
+                    if (!this.copyMeasurements.ContainsKey(Vs[i].RtuAddress))
                     {
-                        this.copyMeasurements.Add(m.RtuAddress, new List<MeasurementForScada>());
+                        this.copyMeasurements.Add(Vs[i].RtuAddress, new List<MeasurementForScada>());
                     }
 
-                    this.copyMeasurements[m.RtuAddress].Add(new MeasurementForScada() { Index = index, Measurement = Vs[i] });
-                    ++addressPool[m.RtuAddress].Cnt;
+                    this.copyMeasurements[Vs[i].RtuAddress].Add(new MeasurementForScada(a) { Index = index, Measurement = Vs[i] });
+                    ++addressPool[Vs[i].RtuAddress].Cnt;
                 }
                 else
                 {
@@ -273,6 +277,7 @@ namespace SCADA
             foreach (KeyValuePair<int, List<MeasurementForScada>> kvp in this.copyMeasurements)
             {
                 this.measurements.Add(kvp.Key, kvp.Value);
+                f.AddMeasurement(kvp.Value);
             }
 
             //Serialize(measurements);
@@ -332,8 +337,8 @@ namespace SCADA
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Serialize; line: {0}; Start the Serialize function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             TextWriter tw = new StreamWriter("Measurements.xml");
             List<ClassForSerialization> meas = new List<ClassForSerialization>(measurements.Count);
-            
-            foreach(int key in measurements.Keys)
+
+            foreach (int key in measurements.Keys)
             {
                 meas.Add(new ClassForSerialization(key, measurements[key]));
             }
@@ -368,6 +373,24 @@ namespace SCADA
             }
         }
 
+        public void ReadDataFromDB(Dictionary<int, List<MeasurementForScada>> measurements)
+        {
+            try
+            {
+                measurements.Clear();
+                List<WrapperDB> meass = f.ReadMeas();
+
+                foreach (WrapperDB wDB in meass)
+                {
+                    measurements.Add(wDB.RtuAddress, wDB.ListOfMeasurements);
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
         public int Connect()
         {
             int ret = 0;
@@ -383,7 +406,11 @@ namespace SCADA
                 }
             }
 
-            measurements.Add(ret, new List<MeasurementForScada>());
+            if (!measurements.ContainsKey(ret))
+            {
+                measurements.Add(ret, new List<MeasurementForScada>());
+            }
+
             var handler = new SOEHandler(measurements[ret], resourcesToSend, ref lockObject);
             handlers.Add(handler);
             var channel = mgr.AddTCPClient("outstation" + ret, LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", (ushort)(20000 + ret), ChannelListener.Print());
@@ -398,6 +425,8 @@ namespace SCADA
             var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.MaxValue, TaskConfig.Default);
 
             master.Enable();
+
+            f.AddSimulator(new WrapperDB(ret));
 
             return ret;
         }

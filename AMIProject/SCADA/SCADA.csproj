@@ -107,6 +107,7 @@
     <Compile Include="RTUAddress.cs" />
     <Compile Include="Scada.cs" />
     <Compile Include="SOEHandler.cs" />
+    <Compile Include="WrapperDB.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

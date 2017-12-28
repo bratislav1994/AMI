@@ -48,18 +48,17 @@ namespace SCADA
                     Logger.LogMessageToFile(string.Format("SCADA.SOEHandler.Process; line: {0}; Start the Process function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     List<IndexedValue<Automatak.DNP3.Interface.Analog>> analogs = new List<IndexedValue<Automatak.DNP3.Interface.Analog>>();
                     analogs.AddRange(values.ToList());
-                    Dictionary<long, DynamicMeasurement> localDic = new Dictionary<long, DynamicMeasurement>(this.measurements.Count/3);
-                    
+                    Dictionary<long, DynamicMeasurement> localDic = new Dictionary<long, DynamicMeasurement>(this.measurements.Count / 3);
+
                     foreach (IndexedValue<Automatak.DNP3.Interface.Analog> analog in analogs)
                     {
                         if (analog.Value.Value != 0)
                         {
-                            TC57CIM.IEC61970.Meas.Analog a = new TC57CIM.IEC61970.Meas.Analog();
-                            a.RD2Class(GetResDesc(analog.Index));
-                            
+                            TC57CIM.IEC61970.Meas.Analog a = (TC57CIM.IEC61970.Meas.Analog)GetMeasurement(analog.Index);
+
                             if (localDic.ContainsKey(a.PowerSystemResourceRef))
                             {
-                                switch ((analog.Index % 1000) % 3)
+                                switch (analog.Index % 3)
                                 {
                                     case 0:
                                         localDic[a.PowerSystemResourceRef].CurrentP = (float)analog.Value.Value;
@@ -76,7 +75,7 @@ namespace SCADA
                             {
                                 localDic.Add(a.PowerSystemResourceRef, new DynamicMeasurement(a.PowerSystemResourceRef));
 
-                                switch ((analog.Index % 1000) % 3)
+                                switch (analog.Index % 3)
                                 {
                                     case 0:
                                         localDic[a.PowerSystemResourceRef].CurrentP = (float)analog.Value.Value;
@@ -105,13 +104,13 @@ namespace SCADA
                     {
                         HasNewMeas = true;
                     }
-                   
+
                     Logger.LogMessageToFile(string.Format("SCADA.SOEHandler.Process; line: {0}; Finish the Process function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 }
             }
         }
 
-        private ResourceDescription GetResDesc(int index)
+        private Measurement GetMeasurement(int index)
         {
             foreach (MeasurementForScada meas in measurements)
             {
