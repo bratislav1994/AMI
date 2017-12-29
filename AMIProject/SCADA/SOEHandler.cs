@@ -61,13 +61,13 @@ namespace SCADA
                                 switch (analog.Index % 3)
                                 {
                                     case 0:
-                                        localDic[a.PowerSystemResourceRef].CurrentP = (float)analog.Value.Value;
+                                        localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog);// (float)analog.Value.Value;
                                         break;
                                     case 1:
-                                        localDic[a.PowerSystemResourceRef].CurrentQ = (float)analog.Value.Value;
+                                        localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog);//(float)analog.Value.Value;
                                         break;
                                     case 2:
-                                        localDic[a.PowerSystemResourceRef].CurrentV = (float)analog.Value.Value;
+                                        localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog);//(float)analog.Value.Value;
                                         break;
                                 }
                             }
@@ -78,13 +78,13 @@ namespace SCADA
                                 switch (analog.Index % 3)
                                 {
                                     case 0:
-                                        localDic[a.PowerSystemResourceRef].CurrentP = (float)analog.Value.Value;
+                                        localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog);//(float)analog.Value.Value;
                                         break;
                                     case 1:
-                                        localDic[a.PowerSystemResourceRef].CurrentQ = (float)analog.Value.Value;
+                                        localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog);//(float)analog.Value.Value;
                                         break;
                                     case 2:
-                                        localDic[a.PowerSystemResourceRef].CurrentV = (float)analog.Value.Value;
+                                        localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog);//(float)analog.Value.Value;
                                         break;
                                 }
                             }
@@ -108,6 +108,18 @@ namespace SCADA
                     Logger.LogMessageToFile(string.Format("SCADA.SOEHandler.Process; line: {0}; Finish the Process function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 }
             }
+        }
+
+        private float Crunching(IndexedValue<Automatak.DNP3.Interface.Analog> a)
+        {
+            TC57CIM.IEC61970.Meas.Analog analog = (TC57CIM.IEC61970.Meas.Analog)GetMeasurement(a.Index);
+
+            int totalRawValue = analog.MaxRawValue - analog.MinRawValue;
+            float total = analog.MaxValue - analog.MinValue;
+
+            float retVal = (total / totalRawValue) * (float)a.Value.Value;
+
+            return retVal;
         }
 
         private Measurement GetMeasurement(int index)
