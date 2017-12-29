@@ -1,9 +1,11 @@
-﻿using System;
+﻿using FTN.Services.NetworkModelService.DataModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using TC57CIM.IEC61970.Meas;
 
 namespace FTN.ServiceContracts
 {
@@ -14,6 +16,6 @@ namespace FTN.ServiceContracts
         int Connect();
 
         [OperationContract]
-        int GetNumberOfPoints(int rtuAddress);
+        List<MeasurementForScada> GetNumberOfPoints(int rtuAddress);
     }
 }

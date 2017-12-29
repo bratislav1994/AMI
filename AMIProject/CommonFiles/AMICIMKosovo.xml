@@ -281,6 +281,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_1"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -292,6 +295,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_2"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -303,6 +309,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_3"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -314,6 +323,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_4"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -325,6 +337,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_5"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -336,6 +351,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_6"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -347,6 +365,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_7"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -358,6 +379,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_8"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -369,6 +393,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_9"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -380,6 +407,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_10"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -392,6 +422,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_1"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -403,6 +436,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_2"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -414,6 +450,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_3"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -425,6 +464,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_4"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -436,6 +478,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_5"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -447,6 +492,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_6"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -458,6 +506,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_7"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -469,6 +520,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_8"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -480,6 +534,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_9"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -491,6 +548,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_10"/>
 		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -503,6 +563,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_1"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -514,6 +577,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_2"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -525,6 +591,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_3"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -536,6 +605,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_4"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -547,6 +619,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_5"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -558,6 +633,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_6"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -569,6 +647,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_7"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -580,6 +661,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_8"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -591,6 +675,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_9"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -602,6 +689,9 @@
 		<cim:Analog.maxValue>100</cim:Analog.maxValue>
 		<cim:Analog.minValue>7</cim:Analog.minValue>
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
+		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
+		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
+		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_3_10"/>
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>

@@ -11,8 +11,10 @@ using System.Text;
 using System.IO;
 using FTN.Common;
 using System.Runtime.Serialization;
+using TC57CIM.IEC61970.Meas;
 
-namespace TC57CIM.IEC61970.Core {
+namespace TC57CIM.IEC61970.Core
+{
 
     public enum TypeOfReference : short
     {
@@ -25,7 +27,11 @@ namespace TC57CIM.IEC61970.Core {
     /// This is a root class to provide common identification for all classes needing
     /// identification and naming attributes.
     /// </summary>
-    public class IdentifiedObject {
+    [DataContract]
+    [Serializable]
+    [KnownType(typeof(Measurement))]
+    public class IdentifiedObject
+    {
 
         private static ModelResourcesDesc resourcesDescs = new ModelResourcesDesc();
         private long globalId;
@@ -58,14 +64,16 @@ namespace TC57CIM.IEC61970.Core {
         {
             this.globalId = globalId;
         }
-        
-		~IdentifiedObject(){
 
-		}
+        ~IdentifiedObject()
+        {
+
+        }
 
         /// <summary>
         /// Gets or sets global id of the entity (identified object).
-        /// </summary>			
+        /// </summary>	
+        [DataMember]
         public long GlobalId
         {
             get
@@ -82,12 +90,14 @@ namespace TC57CIM.IEC61970.Core {
         /// <summary>
         /// Gets or sets mrid of the entity (identified object).
         /// </summary>			
+        [DataMember]
         public string Mrid
         {
             get { return mRID; }
             set { mRID = value; }
         }
 
+        [DataMember]
         public string Name
         {
             get
@@ -107,7 +117,7 @@ namespace TC57CIM.IEC61970.Core {
             {
                 return true;
             }
-            else if ((Object.ReferenceEquals(x, null) && !Object.ReferenceEquals(y, null)) || 
+            else if ((Object.ReferenceEquals(x, null) && !Object.ReferenceEquals(y, null)) ||
                 (!Object.ReferenceEquals(x, null) && Object.ReferenceEquals(y, null)))
             {
                 return false;
@@ -210,7 +220,7 @@ namespace TC57CIM.IEC61970.Core {
                 return false;
             }
         }
-        
+
         public virtual void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType)
         {
             return;
@@ -305,7 +315,7 @@ namespace TC57CIM.IEC61970.Core {
         //}
 
         #endregion utility methods
-            
+
     }//end IdentifiedObject
 
 }//end namespace Core

@@ -11,39 +11,45 @@ using System.Text;
 using System.IO;
 using TC57CIM.IEC61970.Meas;
 using FTN.Common;
+using System.Runtime.Serialization;
 
-namespace TC57CIM.IEC61970.Meas {
-	/// <summary>
-	/// Discrete represents a discrete Measurement, i.e. a Measurement reprsenting
-	/// discrete values, e.g. a Breaker position.
-	/// </summary>
-	public class Discrete : Measurement {
+namespace TC57CIM.IEC61970.Meas
+{
+    /// <summary>
+    /// Discrete represents a discrete Measurement, i.e. a Measurement reprsenting
+    /// discrete values, e.g. a Breaker position.
+    /// </summary>
+    [DataContract]
+    [Serializable]
+    public class Discrete : Measurement
+    {
 
-		/// <summary>
-		/// Normal value range maximum for any of the MeasurementValue.values. Used for
-		/// scaling, e.g. in bar graphs or of telemetered raw values.
-		/// </summary>
-		public int maxValue;
-		/// <summary>
-		/// Normal value range minimum for any of the MeasurementValue.values. Used for
-		/// scaling, e.g. in bar graphs or of telemetered raw values.
-		/// </summary>
-		public int minValue;
-		/// <summary>
-		/// Normal measurement value, e.g., used for percentage calculations.
-		/// </summary>
-		public int normalValue;
+        /// <summary>
+        /// Normal value range maximum for any of the MeasurementValue.values. Used for
+        /// scaling, e.g. in bar graphs or of telemetered raw values.
+        /// </summary>
+        public int maxValue;
+        /// <summary>
+        /// Normal value range minimum for any of the MeasurementValue.values. Used for
+        /// scaling, e.g. in bar graphs or of telemetered raw values.
+        /// </summary>
+        public int minValue;
+        /// <summary>
+        /// Normal measurement value, e.g., used for percentage calculations.
+        /// </summary>
+        public int normalValue;
 
         public Discrete()
         {
 
         }
 
-		public Discrete(long globalId)
-        :base(globalId)
+        public Discrete(long globalId)
+        : base(globalId)
         {
         }
 
+        [DataMember]
         public int MaxValue
         {
             get { return maxValue; }
@@ -51,6 +57,7 @@ namespace TC57CIM.IEC61970.Meas {
             set { maxValue = value; }
         }
 
+        [DataMember]
         public int MinValue
         {
             get { return minValue; }
@@ -58,6 +65,7 @@ namespace TC57CIM.IEC61970.Meas {
             set { minValue = value; }
         }
 
+        [DataMember]
         public int NormalValue
         {
             get { return normalValue; }

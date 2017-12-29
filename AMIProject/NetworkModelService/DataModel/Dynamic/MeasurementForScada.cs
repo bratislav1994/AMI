@@ -1,16 +1,17 @@
 ﻿using FTN.Common;
-using SCADA;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using TC57CIM.IEC61970.Meas;
 
-namespace SCADA
+namespace FTN.Services.NetworkModelService.DataModel
 {
+    [DataContract]
     public class MeasurementForScada
     {
         private int idDB;
@@ -30,6 +31,7 @@ namespace SCADA
             this.wrapperDbId = wrapperId;
         }
 
+        [IgnoreDataMember]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdDB
@@ -38,6 +40,7 @@ namespace SCADA
             set { idDB = value; }
         }
 
+        [DataMember]
         public int Index
         {
             get
@@ -51,6 +54,7 @@ namespace SCADA
             }
         }
 
+        [DataMember]
         public Measurement Measurement
         {
             get
@@ -64,6 +68,7 @@ namespace SCADA
             }
         }
 
+        [IgnoreDataMember]
         [ForeignKey("Measurement")]
         public int MeasurementId
         {
@@ -78,6 +83,7 @@ namespace SCADA
             }
         }
 
+        [IgnoreDataMember]
         [ForeignKey("WrapperDb")]
         public int WrapperDbId
         {
@@ -92,6 +98,7 @@ namespace SCADA
             }
         }
 
+        [IgnoreDataMember]
         public WrapperDB WrapperDb
         {
             get

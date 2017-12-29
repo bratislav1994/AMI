@@ -8,23 +8,23 @@
     /// ResourceDescription objects using PowerTransformerCIMProfile_Labs objects.
     /// </summary>
     public static class Converter
-	{
-		#region Populate ResourceDescription
-		public static void PopulateIdentifiedObjectProperties(IdentifiedObject cimIdentifiedObject, ResourceDescription rd)
-		{
-			if ((cimIdentifiedObject != null) && (rd != null))
-			{
-				if (cimIdentifiedObject.MRIDHasValue)
-				{
-					rd.AddProperty(new Property(ModelCode.IDOBJ_MRID, cimIdentifiedObject.MRID));
-				}
+    {
+        #region Populate ResourceDescription
+        public static void PopulateIdentifiedObjectProperties(IdentifiedObject cimIdentifiedObject, ResourceDescription rd)
+        {
+            if ((cimIdentifiedObject != null) && (rd != null))
+            {
+                if (cimIdentifiedObject.MRIDHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.IDOBJ_MRID, cimIdentifiedObject.MRID));
+                }
 
                 if (cimIdentifiedObject.NameHasValue)
                 {
                     rd.AddProperty(new Property(ModelCode.IDOBJ_NAME, cimIdentifiedObject.Name));
                 }
             }
-		}
+        }
 
         public static void PopulateConductingEquipmentProperties(ConductingEquipment cimConductingEquipment, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
         {
@@ -106,17 +106,29 @@
             {
                 Converter.PopulateIdentifiedObjectProperties(cimMeas, rd);
 
-                if(cimMeas.UnitSymbolHasValue)
+                if (cimMeas.UnitSymbolHasValue)
                 {
                     rd.AddProperty(new Property(ModelCode.MEASUREMENT_UNITSYMBOL, (int)cimMeas.UnitSymbol));
                 }
-                if(cimMeas.SignalDirectionHasValue)
+                if (cimMeas.SignalDirectionHasValue)
                 {
                     rd.AddProperty(new Property(ModelCode.MEASUREMENT_DIRECTION, (int)cimMeas.SignalDirection));
                 }
-                if(cimMeas.RtuAddressHasValue)
+                if (cimMeas.RtuAddressHasValue)
                 {
                     rd.AddProperty(new Property(ModelCode.MEASUREMENT_RTUADDRESS, (int)cimMeas.RtuAddress));
+                }
+                if (cimMeas.MinRawValueHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.MEASUREMENT_MINRAWVAL, (int)cimMeas.MinRawValue));
+                }
+                if (cimMeas.MaxRawValueHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.MEASUREMENT_MAXRAWVAL, (int)cimMeas.MaxRawValue));
+                }
+                if (cimMeas.NormalRawValueHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.MEASUREMENT_NORMALRAWVAL, (int)cimMeas.NormalRawValue));
                 }
 
                 if (cimMeas.PowerSystemResourceHasValue)
@@ -375,7 +387,7 @@
                 }
             }
         }
-        
+
         #endregion Populate ResourceDescription
 
         #region Enums convert
@@ -390,7 +402,7 @@
                     return FTN.Common.UnitSymbol.Q;
                 case AMIProfile.UnitSymbol.V:
                     return FTN.Common.UnitSymbol.V;
-                
+
                 default: return FTN.Common.UnitSymbol.V;
             }
         }

@@ -1,6 +1,8 @@
 ﻿using Automatak.DNP3.Adapter;
 using Automatak.DNP3.Interface;
+using FTN.Common;
 using FTN.ServiceContracts;
+using FTN.Services.NetworkModelService.DataModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +10,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TC57CIM.IEC61970.Meas;
 
 namespace AMISimulator
 {
@@ -28,6 +31,7 @@ namespace AMISimulator
         private IScadaDuplexSimulator proxyScada;
         private bool firstContact = true;
         private DuplexChannelFactory<IScadaDuplexSimulator> factory;
+        private Dictionary<int, Measurement> measurements;
 
         public IScadaDuplexSimulator ProxyScada
         {
@@ -44,7 +48,7 @@ namespace AMISimulator
                             factory = new DuplexChannelFactory<IScadaDuplexSimulator>(new InstanceContext(this),
                                                                                     binding,
                                                                                     new EndpointAddress("net.tcp://localhost:10100/Scada/Simulator"));
-                            
+
                             proxyScada = factory.CreateChannel();
                             firstContact = false;
                             break;
@@ -67,11 +71,12 @@ namespace AMISimulator
 
         public AMISimulator()
         {
+            measurements = new Dictionary<int, Measurement>();
             this.numberOfInstalledPoints = 0;
             lockObject = new object();
 
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
-            
+
             //channel = mgr.AddTCPServer("master", LogLevels.NORMAL, ChannelRetry.Default, ipAddress, basePort, ChannelListener.Print());
 
             config = new OutstationStackConfig();
@@ -82,7 +87,7 @@ namespace AMISimulator
         {
             config.databaseTemplate = new DatabaseTemplate(0, 0, (numberOfAnalogPointsP + numberOfAnalogPointsQ + numberOfAnalogPointsV), 0, 0, 0, 0, 0);
             config.link.responseTimeout = new TimeSpan(0, 0, 0, 1, 0);
-            
+
             foreach (var analog in config.databaseTemplate.analogs)
             {
                 analog.clazz = PointClass.Class2;
@@ -95,7 +100,7 @@ namespace AMISimulator
                 try
                 {
                     address = ProxyScada.Connect();
-                    factory.Endpoint.Binding.SendTimeout = TimeSpan.FromMinutes(1);
+                    ((IContextChannel)ProxyScada).OperationTimeout = TimeSpan.FromMinutes(1);
                     break;
                 }
                 catch
@@ -106,7 +111,14 @@ namespace AMISimulator
             }
 
             Console.WriteLine("Connected to scada");
-            numberOfInstalledPoints = ProxyScada.GetNumberOfPoints(address);
+
+            List<MeasurementForScada> measForScada = ProxyScada.GetNumberOfPoints(address);
+            numberOfInstalledPoints = measForScada.Count;
+
+            foreach (MeasurementForScada m in measForScada)
+            {
+                this.measurements.Add(m.Index, m.Measurement);
+            }
 
             channel = mgr.AddTCPServer("master", LogLevels.NORMAL, ChannelRetry.Default, ipAddress, (ushort)(basePort + address), ChannelListener.Print());
 
@@ -117,9 +129,9 @@ namespace AMISimulator
             config.outstation.config.unsolClassMask.Class3 = true;
             config.link.localAddr = (ushort)address;
             config.link.remoteAddr = 1;
-            
+
             var outstation = channel.AddOutstation("outstation" + address, RejectingCommandHandler.Instance, DefaultOutstationApplication.Instance, config);
-            
+
             outstation.Enable();
 
             return outstation;
@@ -146,19 +158,19 @@ namespace AMISimulator
                     if (i % 3 == 0)
                     {
                         ChangeSet changeset = new ChangeSet();
-                        changeset.Update(new Analog(rnd.Next(70, 170), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                        changeset.Update(new Automatak.DNP3.Interface.Analog(rnd.Next(measurements[i].MinRawValue, measurements[i].MaxRawValue), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                         outstation.Load(changeset);
                     }
                     else if (i % 3 == 1)
                     {
                         ChangeSet changeset = new ChangeSet();
-                        changeset.Update(new Analog(rnd.Next(7, 77), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                        changeset.Update(new Automatak.DNP3.Interface.Analog(rnd.Next(measurements[i].MinRawValue, measurements[i].MaxRawValue), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                         outstation.Load(changeset);
                     }
                     else
                     {
                         ChangeSet changeset = new ChangeSet();
-                        changeset.Update(new Analog(rnd.Next(210, 240), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                        changeset.Update(new Automatak.DNP3.Interface.Analog(rnd.Next(measurements[i].MinRawValue, measurements[i].MaxRawValue), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                         outstation.Load(changeset);
                     }
                 }
@@ -167,7 +179,7 @@ namespace AMISimulator
             }
         }
 
-        public int AddMeasurement()
+        public int AddMeasurement(Measurement m)
         {
             lock (lockObject)
             {
@@ -178,7 +190,9 @@ namespace AMISimulator
                     this.numberOfInstalledPoints--;
                     return -1;
                 }
-            
+
+                measurements.Add(numberOfInstalledPoints - 1, m);
+
                 return this.numberOfInstalledPoints - 1;
             }
         }

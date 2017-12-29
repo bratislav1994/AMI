@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SCADA
+namespace FTN.Services.NetworkModelService.DataModel
 {
     public class WrapperDB
     {

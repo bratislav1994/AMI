@@ -1,9 +1,11 @@
-﻿using System;
+﻿using FTN.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using TC57CIM.IEC61970.Meas;
 
 namespace FTN.ServiceContracts
 {
@@ -11,7 +13,7 @@ namespace FTN.ServiceContracts
     public interface ISimulator
     {
         [OperationContract]
-        int AddMeasurement();
+        int AddMeasurement(Measurement m);
 
         [OperationContract]
         void Rollback(int decrease);

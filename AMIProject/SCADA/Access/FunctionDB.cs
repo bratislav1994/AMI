@@ -1,4 +1,5 @@
 ﻿using FTN.Common;
+using FTN.Services.NetworkModelService.DataModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,7 +77,7 @@ namespace SCADA.Access
         public List<WrapperDB> ReadMeas()
         {
             List<WrapperDB> measurements = new List<WrapperDB>();
-            
+
             using (var access = new AccessDB())
             {
                 foreach (var meas in access.WrapperMeas.Include("ListOfMeasurements").Include("ListOfMeasurements.Measurement").ToList())

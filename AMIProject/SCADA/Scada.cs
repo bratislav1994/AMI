@@ -188,9 +188,9 @@ namespace SCADA
 
                 try
                 {
-                    index = simulators[Ps[i].RtuAddress].AddMeasurement();
+                    index = simulators[Ps[i].RtuAddress].AddMeasurement(Ps[i]);
                 }
-                catch
+                catch (Exception e)
                 {
                     addressPool[Ps[i].RtuAddress].IsConnected = false;
                     return false;
@@ -214,7 +214,7 @@ namespace SCADA
 
                 try
                 {
-                    index = simulators[Qs[i].RtuAddress].AddMeasurement();
+                    index = simulators[Qs[i].RtuAddress].AddMeasurement(Qs[i]);
                 }
                 catch
                 {
@@ -240,7 +240,7 @@ namespace SCADA
 
                 try
                 {
-                    index = simulators[Vs[i].RtuAddress].AddMeasurement();
+                    index = simulators[Vs[i].RtuAddress].AddMeasurement(Vs[i]);
                 }
                 catch
                 {
@@ -431,9 +431,16 @@ namespace SCADA
             return ret;
         }
 
-        public int GetNumberOfPoints(int rtuAddress)
+        public List<MeasurementForScada> GetNumberOfPoints(int rtuAddress)
         {
-            return measurements[rtuAddress].Count;
+            List<MeasurementForScada> retVal = new List<MeasurementForScada>();
+
+            foreach (MeasurementForScada m in measurements[rtuAddress])
+            {
+                retVal.Add(m);
+            }
+
+            return retVal;
         }
     }
 }

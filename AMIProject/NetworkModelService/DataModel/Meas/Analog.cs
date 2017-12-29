@@ -13,11 +13,15 @@ using TC57CIM.IEC61970.Meas;
 using FTN.Common;
 using System.Runtime.Serialization;
 
-namespace TC57CIM.IEC61970.Meas {
-	/// <summary>
-	/// Analog represents an analog Measurement.
-	/// </summary>
-	public class Analog : Measurement {
+namespace TC57CIM.IEC61970.Meas
+{
+    /// <summary>
+    /// Analog represents an analog Measurement.
+    /// </summary>
+    [DataContract]
+    [Serializable]
+    public class Analog : Measurement
+    {
 
         /// <summary>
         /// Normal value range maximum for any of the MeasurementValue.values. Used for
@@ -40,29 +44,34 @@ namespace TC57CIM.IEC61970.Meas {
         }
 
         public Analog(long globalId)
-            :base(globalId)            
+            : base(globalId)
         {
-		}
+        }
+
+        [DataMember]
         public float MaxValue
         {
-            get{return maxValue;}
+            get { return maxValue; }
 
-            set{maxValue = value; }
+            set { maxValue = value; }
         }
 
+        [DataMember]
         public float MinValue
         {
-            get{return minValue;}
+            get { return minValue; }
 
-            set{minValue = value;}
+            set { minValue = value; }
         }
 
+        [DataMember]
         public float NormalValue
         {
-            get{return normalValue;}
+            get { return normalValue; }
 
-            set{normalValue = value;}
+            set { normalValue = value; }
         }
+
         public override bool Equals(object obj)
         {
             if (base.Equals(obj))
@@ -123,7 +132,7 @@ namespace TC57CIM.IEC61970.Meas {
             switch (property.Id)
             {
                 case ModelCode.ANALOG_MAXVALUE:
-                    
+
                     maxValue = property.AsFloat();
                     break;
                 case ModelCode.ANALOG_MINVALUE:
