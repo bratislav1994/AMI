@@ -83,6 +83,18 @@
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.SharePoint.Client, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePoint.Client.14.0.4762.1000\lib\Microsoft.SharePoint.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePoint.Client.14.0.4762.1000\lib\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=3.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.3.5.8\lib\35\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NSubstitute, Version=3.1.0.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
       <HintPath>..\packages\NSubstitute.3.1.0\lib\net45\NSubstitute.dll</HintPath>
       <Private>True</Private>
@@ -104,6 +116,18 @@
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Windows.Controls.DataVisualization.Toolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFToolkit.DataVisualization.3.5.50211.1\lib\System.Windows.Controls.DataVisualization.Toolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Input.Toolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFToolkit.3.5.50211.1\lib\System.Windows.Controls.Input.Toolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Layout.Toolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFToolkit.3.5.50211.1\lib\System.Windows.Controls.Layout.Toolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -118,9 +142,41 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Toolkit.Charting, Version=1.0.5755.26422, Culture=neutral, PublicKeyToken=c475b86b0b5dd5cb, processorArchitecture=MSIL">
+      <HintPath>..\packages\Toolkit.Charting.1.0.5755.26422\lib\net40\Toolkit.Charting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Toolkit.CodeBase, Version=1.0.5755.26406, Culture=neutral, PublicKeyToken=85a1d6861c984571, processorArchitecture=MSIL">
+      <HintPath>..\packages\Toolkit.CodeBase.1.0.5755.26406\lib\net35\Toolkit.CodeBase.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Toolkit.CommonResources, Version=1.0.5752.28158, Culture=neutral, PublicKeyToken=2899914042019c40, processorArchitecture=MSIL">
+      <HintPath>..\packages\Toolkit.CommonResources.1.0.5752.28158\lib\net35\Toolkit.CommonResources.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Toolkit.Data, Version=1.0.5755.26407, Culture=neutral, PublicKeyToken=629543f4dbd6bd87, processorArchitecture=MSIL">
+      <HintPath>..\packages\Toolkit.Data.1.0.5755.26407\lib\net35\Toolkit.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Toolkit.Drawing, Version=1.0.5755.26408, Culture=neutral, PublicKeyToken=5ff3c7cbdef8f713, processorArchitecture=MSIL">
+      <HintPath>..\packages\Toolkit.Drawing.1.0.5755.26408\lib\net35\Toolkit.Drawing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Toolkit.Runtime, Version=1.0.5755.26410, Culture=neutral, PublicKeyToken=f6792c8416fb80c0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Toolkit.Runtime.1.0.5755.26410\lib\net35\Toolkit.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Toolkit.Scripting, Version=1.0.5755.26411, Culture=neutral, PublicKeyToken=6616acb562ce6d44, processorArchitecture=MSIL">
+      <HintPath>..\packages\Toolkit.Scripting.1.0.5755.26411\lib\net35\Toolkit.Scripting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFToolkit.3.5.50211.1\lib\WPFToolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -137,14 +193,22 @@
     <Compile Include="ViewModels\AddCimXmlViewModel.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Model\Model.cs" />
+    <Compile Include="ViewModels\ChartViewModel.cs" />
     <Compile Include="View\AddCimXmlControl.xaml.cs">
       <DependentUpon>AddCimXmlControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ChartControl.xaml.cs">
+      <DependentUpon>ChartControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\NetworkPreviewControl.xaml.cs">
       <DependentUpon>NetworkPreviewControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="VML\ViewModelLocator.cs" />
     <Page Include="View\AddCimXmlControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ChartControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

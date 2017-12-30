@@ -14,6 +14,7 @@ namespace AMIClient.ViewModels
     {
         private NetworkPreviewViewModel tvm;
         private AddCimXmlViewModel xmlvm;
+        private ChartViewModel chartVM;
         private Model model;
 
         public MasterViewModel()
@@ -24,6 +25,7 @@ namespace AMIClient.ViewModels
             tvm = new NetworkPreviewViewModel();
             tvm.SetModel(Model);
             xmlvm = new AddCimXmlViewModel();
+            chartVM = new ChartViewModel();
             this.CurrentViewModel = Tvm;
         }
 
@@ -50,6 +52,19 @@ namespace AMIClient.ViewModels
             set
             {
                 tvm = value;
+            }
+        }
+
+        public ChartViewModel ChartVM
+        {
+            get
+            {
+                return chartVM;
+            }
+
+            set
+            {
+                chartVM = value;
             }
         }
 
@@ -110,12 +125,31 @@ namespace AMIClient.ViewModels
                 return addCimXmlCommand;
             }
         }
-        
+
         private void AddCimXmlAction()
         {
             this.CurrentViewModel = Xmlvm;
         }
-        
+
+        private DelegateCommand chartCommand;
+        public DelegateCommand ChartCommand
+        {
+            get
+            {
+                if (chartCommand == null)
+                {
+                    chartCommand = new DelegateCommand(ChartAction);
+                }
+
+                return chartCommand;
+            }
+        }
+
+        private void ChartAction()
+        {
+            this.CurrentViewModel = ChartVM;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void RaisePropertyChanged(string propName)

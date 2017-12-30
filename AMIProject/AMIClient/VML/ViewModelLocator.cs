@@ -51,6 +51,10 @@ namespace AMIClient.VML
             {
                 ((FrameworkElement)d).DataContext = AddCimXmlViewModel.Instance;
             }
+            else if (viewTypeName.Contains("ChartViewModel"))
+            {
+                ((FrameworkElement)d).DataContext = ChartViewModel.Instance;
+            }
         }
     }
 }

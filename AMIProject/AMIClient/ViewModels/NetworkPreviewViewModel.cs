@@ -61,6 +61,13 @@ namespace AMIClient.ViewModels
             }
         }
 
+        public void SetModel(Model model)
+        {
+            this.Model = model;
+            RootElements.Add(new RootElement(this.model));
+            this.model.SetRoot(rootElements[0]);
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void RaisePropertyChanged(string propName)
@@ -69,13 +76,6 @@ namespace AMIClient.ViewModels
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propName));
             }
-        }
-
-        public void SetModel(Model model)
-        {
-            this.Model = model;
-            RootElements.Add(new RootElement(this.model));
-            this.model.SetRoot(rootElements[0]);
         }
     }
 }

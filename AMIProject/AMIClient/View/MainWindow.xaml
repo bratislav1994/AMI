@@ -12,31 +12,17 @@
     <Window.Resources>
 
         <DataTemplate DataType="{x:Type local3:NetworkPreviewViewModel }">
-
             <local2:NetworkPreviewControl />
-
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type local3:AddCimXmlViewModel}">
-
             <local2:AddCimXmlControl />
-
         </DataTemplate>
 
-        <!--<Style TargetType="{x:Type DataGrid}">
-        <Setter Property="AlternationCount" Value="2" />
-    </Style>
+        <DataTemplate DataType="{x:Type local3:ChartViewModel}">
+            <local2:ChartControl />
+        </DataTemplate>
 
-    <Style TargetType="{x:Type DataGridRow}">
-        <Style.Triggers>
-            <Trigger Property="AlternationIndex" Value="0">
-                <Setter Property="Background" Value="#999999"></Setter>
-            </Trigger>
-            <Trigger Property="AlternationIndex" Value="1">
-                <Setter Property="Background" Value="#777777"></Setter>
-            </Trigger>
-        </Style.Triggers>
-    </Style>-->
     </Window.Resources>
 
     <Grid Background="#777777">
@@ -49,7 +35,7 @@
         <Menu Grid.Row="0" VerticalAlignment="Top" IsMainMenu="True">
             <MenuItem Header="File">
                 <MenuItem Header="Table view" Command="{Binding NetworkPreviewCommand}" />
-                <MenuItem Header="Probaaa" Command="{Binding NetworkPreviewCommand}" />
+                <MenuItem Header="Chart view" Command="{Binding ChartCommand}" />
             </MenuItem>
             <MenuItem Header="Advanced">
                 <MenuItem Header="Delta" Command="{Binding AddCimXmlCommand}"/>
@@ -57,146 +43,6 @@
         </Menu>
 
         <ContentControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinHeight="515" Height="auto" Width="auto" Grid.Row="1" Content="{Binding Path=CurrentViewModel}"></ContentControl>
-        
-        <!--<TabControl MinHeight="515" Height="auto" Width="auto" TabStripPlacement="Top" HorizontalAlignment="Stretch" Margin="5,0,-13,0" VerticalAlignment="Stretch">
-            <TabControl.Background>
-                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
-            </TabControl.Background>
-
-            <TabControl.Resources>
-                <Style TargetType="TabItem">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="TabItem">
-                                <Border Name="Border" BorderThickness="1,1,1,0" BorderBrush="Gainsboro" CornerRadius="4,4,0,0" Margin="2,0">
-                                    <ContentPresenter x:Name="ContentSite"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"
-                                        ContentSource="Header"
-                                        Margin="10,2"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="Border" Property="Background" Value="#FFD1DEF0" />
-                                    </Trigger>
-                                    <Trigger Property="IsSelected" Value="False">
-                                        <Setter TargetName="Border" Property="Background" Value="GhostWhite" />
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </TabControl.Resources>
-
-            <TabItem Header="Network preview" Height="50" VerticalAlignment="Top" Margin="0,0,0,0">
-
-                <Grid Margin="0,0,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" MinWidth="200"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-
-                    <TreeView Grid.Column="0" ItemsSource="{Binding Tvm.RootElements}">
-                        <TreeView.ItemContainerStyle>
-                            <Style TargetType="{x:Type TreeViewItem}">
-                                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-                                <Setter Property="FontWeight" Value="Normal" />
-                                <Style.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="FontWeight" Value="Bold" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TreeView.ItemContainerStyle>
-
-                        <TreeView.Resources>
-                            <HierarchicalDataTemplate 
-                                DataType="{x:Type local:RootElement}" 
-                                ItemsSource="{Binding Children}">
-
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Name}" />
-                                </StackPanel>
-                            </HierarchicalDataTemplate>
-
-                            <HierarchicalDataTemplate 
-                                DataType="{x:Type local:GeoRegionForTree}" 
-                                ItemsSource="{Binding Children}">
-
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Name}" />
-                                </StackPanel>
-                            </HierarchicalDataTemplate>
-
-                            <HierarchicalDataTemplate 
-                                DataType="{x:Type local:SubGeoRegionForTree}" 
-                                ItemsSource="{Binding Children}">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Name}" />
-                                </StackPanel>
-                            </HierarchicalDataTemplate>
-
-                            <DataTemplate 
-                                DataType="{x:Type local:SubstationForTree}">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Name}" />
-                                </StackPanel>
-                            </DataTemplate>
-
-                        </TreeView.Resources>
-                    </TreeView>
-                    <DataGrid Grid.Column="1" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Tvm.Amis, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
-                        <DataGrid.Columns>
-
-                            <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Mrid}"/>
-                            <DataGridTextColumn MinWidth="100" Width="100" Header="Name" Binding="{Binding Name}"/>
-                            <DataGridTextColumn MinWidth="100" Width="*" Header="Subgeographical region ID" Binding="{Binding EqContainer}"/>
-
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
-            </TabItem>
-
-            <TabItem Header="Add CIM/XML" Height="50" VerticalAlignment="Top" Margin="0,0,0,0">
-
-                <Grid Margin="0,0,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0.5*"></RowDefinition>
-                        <RowDefinition Height="0.5*"></RowDefinition>
-                        <RowDefinition Height="0.5*"></RowDefinition>
-                        <RowDefinition Height="6*"></RowDefinition>
-                        <RowDefinition Height="0.5*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="6*"></ColumnDefinition>
-                        <ColumnDefinition Width="1.7*"></ColumnDefinition>
-                        <ColumnDefinition Width="0.3*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-
-                    <Label x:Name="label" Grid.Column="0" Content="CIM/XML file: " HorizontalAlignment="Left" VerticalAlignment="Center" Height="29" Width="95"/>
-                    <TextBox HorizontalAlignment="Left" Grid.Column="1" Text="{Binding Xmlvm.XMLPath, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="326" Grid.ColumnSpan="2"/>
-                    <Button x:Name="button" Grid.Column="2" HorizontalAlignment="Right" Content="Browse" Command="{Binding Xmlvm.BrowseCommand}" VerticalAlignment="Center" Width="83"/>
-
-                    <Label Grid.Row="1" Grid.Column="0" Content="CIM profile:"  VerticalAlignment="Center"/>
-                    <ComboBox Grid.Row="1" HorizontalAlignment="Left" Grid.Column="1" SelectedItem="{Binding Xmlvm.CIMProfile}" ItemsSource="{Binding Xmlvm.CIMProfiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" Width="326" Grid.ColumnSpan="2" />
-
-                    <Button Grid.Row="2" Content="Convert" HorizontalAlignment="Left" Command="{Binding Xmlvm.ConvertCommand}" VerticalAlignment="Center" Width="83"/>
-                    <Button x:Name="button1" Content="Apply Delta" Command="{Binding Xmlvm.ApplyDeltaCommand}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="2" Width="83"/>
-
-                    <Label x:Name="label1" Content="Report: " HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Top"/>
-                    <ScrollViewer Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalScrollBarVisibility="Visible">
-                        <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Xmlvm.Report, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Background="White" >
-
-                        </TextBlock>
-                    </ScrollViewer>
-
-                </Grid>
-            </TabItem>
-            
-        </TabControl>-->
 
     </Grid>
 </Window>
