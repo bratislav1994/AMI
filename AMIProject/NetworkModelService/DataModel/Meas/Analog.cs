@@ -38,6 +38,9 @@ namespace TC57CIM.IEC61970.Meas
         /// </summary>
         private float normalValue;
 
+        private int alarmHigh;
+        private int alarmLow;
+
         public Analog()
         {
 
@@ -72,12 +75,41 @@ namespace TC57CIM.IEC61970.Meas
             set { normalValue = value; }
         }
 
+        [DataMember]
+        public int AlarmHigh
+        {
+            get
+            {
+                return alarmHigh;
+            }
+
+            set
+            {
+                alarmHigh = value;
+            }
+        }
+
+        [DataMember]
+        public int AlarmLow
+        {
+            get
+            {
+                return alarmLow;
+            }
+
+            set
+            {
+                alarmLow = value;
+            }
+        }
+
         public override bool Equals(object obj)
         {
             if (base.Equals(obj))
             {
                 Analog x = (Analog)obj;
-                return (x.maxValue == this.maxValue && x.minValue == this.minValue && x.normalValue == this.normalValue);
+                return (x.maxValue == this.maxValue && x.minValue == this.minValue && x.normalValue == this.normalValue &&
+                        x.alarmHigh == this.alarmHigh && x.alarmLow == this.alarmLow);
             }
             else
             {
@@ -99,6 +131,8 @@ namespace TC57CIM.IEC61970.Meas
                 case ModelCode.ANALOG_MAXVALUE:
                 case ModelCode.ANALOG_MINVALUE:
                 case ModelCode.ANALOG_NORMALVALUE:
+                case ModelCode.ANALOG_ALARMHIGH:
+                case ModelCode.ANALOG_ALARMLOW:
                     return true;
 
                 default:
@@ -120,7 +154,12 @@ namespace TC57CIM.IEC61970.Meas
                 case ModelCode.ANALOG_NORMALVALUE:
                     property.SetValue(normalValue);
                     break;
-
+                case ModelCode.ANALOG_ALARMHIGH:
+                    property.SetValue(alarmHigh);
+                    break;
+                case ModelCode.ANALOG_ALARMLOW:
+                    property.SetValue(alarmLow);
+                    break;
                 default:
                     base.GetProperty(property);
                     break;
@@ -140,6 +179,12 @@ namespace TC57CIM.IEC61970.Meas
                     break;
                 case ModelCode.ANALOG_NORMALVALUE:
                     normalValue = property.AsFloat();
+                    break;
+                case ModelCode.ANALOG_ALARMHIGH:
+                    alarmHigh = property.AsInt();
+                    break;
+                case ModelCode.ANALOG_ALARMLOW:
+                    alarmLow = property.AsInt();
                     break;
 
                 default:
@@ -171,6 +216,8 @@ namespace TC57CIM.IEC61970.Meas
             analogCopy.UnitSymbol = this.UnitSymbol;
             analogCopy.SignalDirection = this.SignalDirection;
             analogCopy.PowerSystemResourceRef = this.PowerSystemResourceRef;
+            analogCopy.alarmHigh = this.alarmHigh;
+            analogCopy.alarmLow = this.alarmLow;
 
             return analogCopy;
         }

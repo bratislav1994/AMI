@@ -185,10 +185,10 @@ namespace CIMAdapterTest.ImporterTest
             Converter.PopulateAnalogProperties(new AMIProfile.Analog(), resDesc, impHelp, report);
             Assert.AreEqual(resDesc.Properties.Count, 0);
 
-            AMIProfile.Analog a = new AMIProfile.Analog() { ID = "M_1", MaxValue = 15, MinValue = -15, NormalValue = 0 };
+            AMIProfile.Analog a = new AMIProfile.Analog() { ID = "M_1", MaxValue = 15, MinValue = -15, NormalValue = 0, AlarmLow = -5, AlarmHigh = 10 };
             impHelp.DefineIDMapping(a.ID, 1234567);
             Converter.PopulateAnalogProperties(a, resDesc, impHelp, report);
-            Assert.AreEqual(resDesc.Properties.Count, 3);
+            Assert.AreEqual(resDesc.Properties.Count, 5);
 
             Converter.PopulateAnalogProperties(a, resDesc, new ImportHelper(), report); // gid < 0
         }

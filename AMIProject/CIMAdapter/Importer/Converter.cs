@@ -188,6 +188,15 @@
                 {
                     rd.AddProperty(new Property(ModelCode.ANALOG_NORMALVALUE, cimAnalog.NormalValue));
                 }
+
+                if (cimAnalog.AlarmHighHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.ANALOG_ALARMHIGH, cimAnalog.AlarmHigh));
+                }
+                if (cimAnalog.AlarmLowHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.ANALOG_ALARMLOW, cimAnalog.AlarmLow));
+                }
             }
         }
 
