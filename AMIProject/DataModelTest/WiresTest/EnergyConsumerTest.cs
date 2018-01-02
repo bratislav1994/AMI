@@ -61,6 +61,15 @@ namespace DataModelTest.WiresTest
             bool result = consumer.Equals(obj);
 
             Assert.AreEqual(true, result);
+
+            // incorrect
+            obj = new EnergyConsumer() { Pfixed = 1 };
+            result = consumer.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new EnergyConsumer() { Qfixed = 1 };
+            result = consumer.Equals(obj);
+            Assert.AreNotEqual(true, result);
         }
 
         [Test]
@@ -123,7 +132,7 @@ namespace DataModelTest.WiresTest
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.Throws<Exception>(() => consumer.GetProperty(property));
+            Assert.DoesNotThrow(() => consumer.GetProperty(property));
         }
 
         [Test]
@@ -160,7 +169,7 @@ namespace DataModelTest.WiresTest
             property.PropertyValue = new PropertyValue();
             property.SetValue(value);
 
-            Assert.Throws<Exception>(() => consumer.SetProperty(property));
+            Assert.DoesNotThrow(() => consumer.SetProperty(property));
         }
 
         [Test]
@@ -190,6 +199,13 @@ namespace DataModelTest.WiresTest
             Assert.AreNotEqual(hashCode, hashCodeBv);
             ec = ec2;
             Assert.AreEqual(ec.GetHashCode(), ec2.GetHashCode());
+        }
+
+        [Test]
+        public void DeepCopyTest()
+        {
+            EnergyConsumer ec = new EnergyConsumer() { GlobalId = 1234, Mrid = "123" };
+            Assert.AreEqual(ec, ec.DeepCopy());
         }
     }
 }

@@ -60,6 +60,15 @@ namespace DataModelTest.CoreTest
             bool result = voltageLevel.Equals(obj);
 
             Assert.AreEqual(true, result);
+
+            // incorrect
+            obj = new VoltageLevel() { BaseVoltage = 1 };
+            result = voltageLevel.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new VoltageLevel() { Substation = 1 };
+            result = voltageLevel.Equals(obj);
+            Assert.AreNotEqual(true, result);
         }
 
         [Test]
@@ -110,7 +119,7 @@ namespace DataModelTest.CoreTest
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.Throws<Exception>(() => voltageLevel.GetProperty(property));
+            Assert.DoesNotThrow(() => voltageLevel.GetProperty(property));
         }
 
         [Test]
@@ -146,7 +155,7 @@ namespace DataModelTest.CoreTest
             property.PropertyValue = new PropertyValue();
             property.SetValue(value);
 
-            Assert.Throws<Exception>(() => voltageLevel.SetProperty(property));
+            Assert.DoesNotThrow(() => voltageLevel.SetProperty(property));
         }
 
         [Test]
@@ -169,6 +178,13 @@ namespace DataModelTest.CoreTest
             Assert.AreNotEqual(hashCode, hashCodeBv);
             vl = vl2;
             Assert.AreEqual(vl.GetHashCode(), vl2.GetHashCode());
+        }
+
+        [Test]
+        public void DeepCopyTest()
+        {
+            VoltageLevel vl = new VoltageLevel() { GlobalId = 1234, Mrid = "123" };
+            Assert.AreEqual(vl, vl.DeepCopy());
         }
     }
 }

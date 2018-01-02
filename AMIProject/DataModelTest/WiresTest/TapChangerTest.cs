@@ -80,6 +80,23 @@ namespace DataModelTest.WiresTest
             bool result = tapChanger.Equals(obj);
 
             Assert.AreEqual(true, result);
+
+            // incorrect
+            obj = new TapChanger() { HighStep = 1 };
+            result = tapChanger.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new TapChanger() { LowStep = 1 };
+            result = tapChanger.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new TapChanger() { NeutralStep = 1 };
+            result = tapChanger.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new TapChanger() { NormalStep = 1 };
+            result = tapChanger.Equals(obj);
+            Assert.AreNotEqual(true, result);
         }
 
         [Test]
@@ -134,7 +151,7 @@ namespace DataModelTest.WiresTest
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.Throws<Exception>(() => tapChanger.GetProperty(property));
+            Assert.DoesNotThrow(() => tapChanger.GetProperty(property));
         }
 
         [Test]
@@ -178,7 +195,7 @@ namespace DataModelTest.WiresTest
             property.PropertyValue = new PropertyValue();
             property.SetValue(value);
 
-            Assert.Throws<Exception>(() => tapChanger.SetProperty(property));
+            Assert.DoesNotThrow(() => tapChanger.SetProperty(property));
         }
     }
 }

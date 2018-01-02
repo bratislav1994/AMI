@@ -98,7 +98,7 @@ namespace DataModelTest.CoreTest
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.Throws<Exception>(() => psr.GetProperty(property));
+            Assert.DoesNotThrow(() => psr.GetProperty(property));
         }
 
         [Test]
@@ -120,7 +120,7 @@ namespace DataModelTest.CoreTest
             property.PropertyValue = new PropertyValue();
             property.SetValue(value);
 
-            Assert.Throws<Exception>(() => psr.SetProperty(property));
+            Assert.DoesNotThrow(() => psr.SetProperty(property));
         }
 
         [Test]
@@ -149,7 +149,7 @@ namespace DataModelTest.CoreTest
         [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949682115)]
         public void AddReferenceTestFalse(ModelCode referenceId, long globalId)
         {
-            Assert.Throws<Exception>(() => psr.AddReference(referenceId, globalId));
+            Assert.DoesNotThrow(() => psr.AddReference(referenceId, globalId));
         }
 
         [Test]
@@ -164,7 +164,7 @@ namespace DataModelTest.CoreTest
         [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949682115)]
         public void RemoveReferenceTestFalse(ModelCode referenceId, long globalId)
         {
-            Assert.Throws<ModelException>(() => psr.RemoveReference(referenceId, globalId));
+            Assert.DoesNotThrow(() => psr.RemoveReference(referenceId, globalId));
         }
     }
 }

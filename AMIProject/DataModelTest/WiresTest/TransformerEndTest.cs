@@ -61,6 +61,15 @@ namespace DataModelTest.WiresTest
             bool result = transformerEnd.Equals(obj);
 
             Assert.AreEqual(true, result);
+
+            // incorrect
+            obj = new TransformerEnd() { BaseVoltage = 1 };
+            result = transformerEnd.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new TransformerEnd() { RatioTapChanger = new List<long>() };
+            result = transformerEnd.Equals(obj);
+            Assert.AreNotEqual(true, result);
         }
 
         [Test]
@@ -111,7 +120,7 @@ namespace DataModelTest.WiresTest
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.Throws<Exception>(() => transformerEnd.GetProperty(property));
+            Assert.DoesNotThrow(() => transformerEnd.GetProperty(property));
         }
 
         [Test]
@@ -143,7 +152,7 @@ namespace DataModelTest.WiresTest
             property.PropertyValue = new PropertyValue();
             property.SetValue(value);
 
-            Assert.Throws<Exception>(() => transformerEnd.SetProperty(property));
+            Assert.DoesNotThrow(() => transformerEnd.SetProperty(property));
         }
 
         [Test]
@@ -177,7 +186,7 @@ namespace DataModelTest.WiresTest
         [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949682236)]
         public void AddReferenceTestFalse(ModelCode referenceId, long globalId)
         {
-            Assert.Throws<Exception>(() => transformerEnd.AddReference(referenceId, globalId));
+            Assert.DoesNotThrow(() => transformerEnd.AddReference(referenceId, globalId));
         }
 
         [Test]
@@ -192,7 +201,7 @@ namespace DataModelTest.WiresTest
         [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949682236)]
         public void RemoveReferenceTestFalse(ModelCode referenceId, long globalId)
         {
-            Assert.Throws<ModelException>(() => transformerEnd.RemoveReference(referenceId, globalId));
+            Assert.DoesNotThrow(() => transformerEnd.RemoveReference(referenceId, globalId));
         }
     }
 }

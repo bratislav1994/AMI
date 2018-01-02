@@ -99,7 +99,7 @@ namespace DataModelTest.WiresTest
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.Throws<Exception>(() => ratioTapChanger.GetProperty(property));
+            Assert.DoesNotThrow(() => ratioTapChanger.GetProperty(property));
         }
 
         [Test]
@@ -131,7 +131,7 @@ namespace DataModelTest.WiresTest
             property.PropertyValue = new PropertyValue();
             property.SetValue(value);
 
-            Assert.Throws<Exception>(() => ratioTapChanger.SetProperty(property));
+            Assert.DoesNotThrow(() => ratioTapChanger.SetProperty(property));
         }
 
         [Test]
@@ -154,6 +154,13 @@ namespace DataModelTest.WiresTest
             Assert.AreNotEqual(hashCode, hashCodeBv);
             r = r2;
             Assert.AreEqual(r.GetHashCode(), r2.GetHashCode());
+        }
+
+        [Test]
+        public void DeepCopyTest()
+        {
+            RatioTapChanger rtc = new RatioTapChanger() { GlobalId = 1234, Mrid = "123" };
+            Assert.AreEqual(rtc, rtc.DeepCopy());
         }
     }
 }

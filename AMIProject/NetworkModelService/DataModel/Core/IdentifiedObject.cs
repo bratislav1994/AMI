@@ -185,7 +185,8 @@ namespace TC57CIM.IEC61970.Core
                 default:
                     string message = string.Format("Unknown property id = {0} for entity (GID = 0x{1:x16}).", property.Id.ToString(), this.GlobalId);
                     CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-                    throw new Exception(message);
+                    break;
+                    //throw new Exception(message);
             }
         }
 
@@ -205,7 +206,8 @@ namespace TC57CIM.IEC61970.Core
                 default:
                     string message = string.Format("Unknown property id = {0} for entity (GID = 0x{1:x16}).", property.Id.ToString(), this.GlobalId);
                     CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-                    throw new Exception(message);
+                    break;
+                    //throw new Exception(message);
             }
         }
 
@@ -230,14 +232,14 @@ namespace TC57CIM.IEC61970.Core
         {
             string message = string.Format("Can not add reference {0} to entity (GID = 0x{1:x16}).", referenceId, this.GlobalId);
             CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-            throw new Exception(message);
+            //throw new Exception(message);
         }
 
         public virtual void RemoveReference(ModelCode referenceId, long globalId)
         {
             string message = string.Format("Can not remove reference {0} from entity (GID = 0x{1:x16}).", referenceId, this.GlobalId);
             CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-            throw new ModelException(message);
+            //throw new ModelException(message);
         }
 
         #endregion IReference implementation
@@ -266,17 +268,17 @@ namespace TC57CIM.IEC61970.Core
         //    return rd;
         //}
 
-        public ResourceDescription GetAsResourceDescription(List<ModelCode> propIds)
-        {
-            ResourceDescription rd = new ResourceDescription(globalId);
+        //public ResourceDescription GetAsResourceDescription(List<ModelCode> propIds)
+        //{
+        //    ResourceDescription rd = new ResourceDescription(globalId);
 
-            for (int i = 0; i < propIds.Count; i++)
-            {
-                rd.AddProperty(GetProperty(propIds[i]));
-            }
+        //    for (int i = 0; i < propIds.Count; i++)
+        //    {
+        //        rd.AddProperty(GetProperty(propIds[i]));
+        //    }
 
-            return rd;
-        }
+        //    return rd;
+        //}
 
         public virtual Property GetProperty(ModelCode propId)
         {

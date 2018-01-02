@@ -61,6 +61,15 @@ namespace DataModelTest.CoreTest
             bool result = subGeoRegion.Equals(obj);
 
             Assert.AreEqual(true, result);
+
+            // incorrect
+            obj = new SubGeographicalRegion() { GeoRegion = 1 };
+            result = subGeoRegion.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new SubGeographicalRegion() { Substations = new List<long>() };
+            result = subGeoRegion.Equals(obj);
+            Assert.AreNotEqual(true, result);
         }
 
         [Test]
@@ -123,7 +132,7 @@ namespace DataModelTest.CoreTest
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.Throws<Exception>(() => subGeoRegion.GetProperty(property));
+            Assert.DoesNotThrow(() => subGeoRegion.GetProperty(property));
         }
 
         [Test]
@@ -155,7 +164,7 @@ namespace DataModelTest.CoreTest
             property.PropertyValue = new PropertyValue();
             property.SetValue(value);
 
-            Assert.Throws<Exception>(() => subGeoRegion.SetProperty(property));
+            Assert.DoesNotThrow(() => subGeoRegion.SetProperty(property));
         }
 
         [Test]
@@ -189,7 +198,7 @@ namespace DataModelTest.CoreTest
         [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949682346)]
         public void AddReferenceTestFalse(ModelCode referenceId, long globalId)
         {
-            Assert.Throws<Exception>(() => subGeoRegion.AddReference(referenceId, globalId));
+            Assert.DoesNotThrow(() => subGeoRegion.AddReference(referenceId, globalId));
         }
 
         [Test]
@@ -204,7 +213,7 @@ namespace DataModelTest.CoreTest
         [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949682346)]
         public void RemoveReferenceTestFalse(ModelCode referenceId, long globalId)
         {
-            Assert.Throws<ModelException>(() => subGeoRegion.RemoveReference(referenceId, globalId));
+            Assert.DoesNotThrow(() => subGeoRegion.RemoveReference(referenceId, globalId));
         }
 
         [Test]
@@ -220,8 +229,7 @@ namespace DataModelTest.CoreTest
                 rd.AddProperty(new Property(properties[i]));
             }
 
-            //rd.AddProperty(new Property() { Id = ModelCode.SUBSTATION_VOLTLEVELS, PropertyValue = new PropertyValue() { LongValue = 324 } });
-            rd.Properties.First().PropertyValue.LongValue = 424;
+            rd.Properties.Where(x => x.Id == ModelCode.SUBGEOREGION_SUBS).First().PropertyValue.LongValues = new List<long>() { 424 };
             Assert.DoesNotThrow(() => subGeoRegion.RD2Class(rd));
         }
 
@@ -235,6 +243,13 @@ namespace DataModelTest.CoreTest
             Assert.AreNotEqual(hashCode, hashCodeBv);
             gr = gr2;
             Assert.AreEqual(gr.GetHashCode(), gr2.GetHashCode());
+        }
+
+        [Test]
+        public void DeepCopyTest()
+        {
+            SubGeographicalRegion sgr = new SubGeographicalRegion() { GlobalId = 1234, Mrid = "123" };
+            Assert.AreEqual(sgr, sgr.DeepCopy());
         }
     }
 }

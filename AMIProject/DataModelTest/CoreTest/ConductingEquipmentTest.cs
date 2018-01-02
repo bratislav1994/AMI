@@ -98,7 +98,7 @@ namespace DataModelTest.CoreTest
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.Throws<Exception>(() => conductingEquipment.GetProperty(property));
+            Assert.DoesNotThrow(() => conductingEquipment.GetProperty(property));
         }
 
         [Test]
@@ -130,7 +130,7 @@ namespace DataModelTest.CoreTest
             property.PropertyValue = new PropertyValue();
             property.SetValue(value);
 
-            Assert.Throws<Exception>(() => conductingEquipment.SetProperty(property));
+            Assert.DoesNotThrow(() => conductingEquipment.SetProperty(property));
         }
 
         [Test]

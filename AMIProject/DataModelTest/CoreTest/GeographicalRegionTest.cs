@@ -111,7 +111,7 @@ namespace DataModelTest.CoreTest
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.Throws<Exception>(() => geoRegion.GetProperty(property));
+            Assert.DoesNotThrow(() => geoRegion.GetProperty(property));
         }
 
         [Test]
@@ -133,7 +133,7 @@ namespace DataModelTest.CoreTest
             property.PropertyValue = new PropertyValue();
             property.SetValue(value);
 
-            Assert.Throws<Exception>(() => geoRegion.SetProperty(property));
+            Assert.DoesNotThrow(() => geoRegion.SetProperty(property));
         }
 
         [Test]
@@ -174,7 +174,7 @@ namespace DataModelTest.CoreTest
         [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949682335)]
         public void AddReferenceTestFalse(ModelCode referenceId, long globalId)
         {
-            Assert.Throws<Exception>(() => geoRegion.AddReference(referenceId, globalId));
+            Assert.DoesNotThrow(() => geoRegion.AddReference(referenceId, globalId));
         }
 
         [Test]
@@ -189,7 +189,7 @@ namespace DataModelTest.CoreTest
         [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949682335)]
         public void RemoveReferenceTestFalse(ModelCode referenceId, long globalId)
         {
-            Assert.Throws<ModelException>(() => geoRegion.RemoveReference(referenceId, globalId));
+            Assert.DoesNotThrow(() => geoRegion.RemoveReference(referenceId, globalId));
         }
 
         [Test]
@@ -219,6 +219,13 @@ namespace DataModelTest.CoreTest
             Assert.AreNotEqual(hashCode, hashCodeBv);
             gr = gr2;
             Assert.AreEqual(gr.GetHashCode(), gr2.GetHashCode());
+        }
+
+        [Test]
+        public void DeepCopyTest()
+        {
+            GeographicalRegion gr = new GeographicalRegion() { GlobalId = 1234, Mrid = "123" };
+            Assert.AreEqual(gr, gr.DeepCopy());
         }
     }
 }

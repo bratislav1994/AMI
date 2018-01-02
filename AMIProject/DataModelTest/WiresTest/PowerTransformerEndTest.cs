@@ -99,7 +99,7 @@ namespace DataModelTest.WiresTest
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.Throws<Exception>(() => powerTransformerEnd.GetProperty(property));
+            Assert.DoesNotThrow(() => powerTransformerEnd.GetProperty(property));
         }
 
         [Test]
@@ -131,7 +131,7 @@ namespace DataModelTest.WiresTest
             property.PropertyValue = new PropertyValue();
             property.SetValue(value);
 
-            Assert.Throws<Exception>(() => powerTransformerEnd.SetProperty(property));
+            Assert.DoesNotThrow(() => powerTransformerEnd.SetProperty(property));
         }
 
         [Test]
@@ -154,6 +154,13 @@ namespace DataModelTest.WiresTest
             Assert.AreNotEqual(hashCode, hashCodeBv);
             pt = pt2;
             Assert.AreEqual(pt.GetHashCode(), pt2.GetHashCode());
+        }
+
+        [Test]
+        public void DeepCopyTest()
+        {
+            PowerTransformer pt = new PowerTransformer() { GlobalId = 1234, Mrid = "123" };
+            Assert.AreEqual(pt, pt.DeepCopy());
         }
     }
 }

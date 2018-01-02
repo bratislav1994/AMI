@@ -81,6 +81,23 @@ namespace DataModelTest.CoreTest
             bool result = baseVoltage.Equals(obj);
 
             Assert.AreEqual(true, result);
+
+            // incorrect
+            obj = new BaseVoltage() { NominalVoltage = 100 };
+            result = baseVoltage.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new BaseVoltage() { TransformerEnds = new List<long>() };
+            result = baseVoltage.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new BaseVoltage() { VoltageLevels = new List<long>() };
+            result = baseVoltage.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new BaseVoltage() { ConductingEquipments = new List<long>() };
+            result = baseVoltage.Equals(obj);
+            Assert.AreNotEqual(true, result);
         }
 
         [Test]
@@ -135,7 +152,7 @@ namespace DataModelTest.CoreTest
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.Throws<Exception>(() => baseVoltage.GetProperty(property));
+            Assert.DoesNotThrow(() => baseVoltage.GetProperty(property));
         }
 
         [Test]
@@ -167,7 +184,7 @@ namespace DataModelTest.CoreTest
             property.PropertyValue = new PropertyValue();
             property.SetValue(value);
 
-            Assert.Throws<Exception>(() => baseVoltage.SetProperty(property));
+            Assert.DoesNotThrow(() => baseVoltage.SetProperty(property));
         }
 
         [Test]
@@ -200,6 +217,7 @@ namespace DataModelTest.CoreTest
             bv.ConductingEquipments = new List<long>();
             Assert.DoesNotThrow(() => baseVoltage.GetReferences(references, refType));
             bv.ConductingEquipments = conductingEquipments;
+            Assert.DoesNotThrow(() => baseVoltage.GetReferences(references, refType));
             Assert.DoesNotThrow(() => baseVoltage.GetReferences(references, TypeOfReference.Reference));
         }
 
@@ -216,7 +234,7 @@ namespace DataModelTest.CoreTest
         [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949672843)]
         public void AddReferenceTestFalse(ModelCode referenceId, long globalId)
         {
-            Assert.Throws<Exception>(() => baseVoltage.AddReference(referenceId, globalId));
+            Assert.DoesNotThrow(() => baseVoltage.AddReference(referenceId, globalId));
         }
 
         [Test]
@@ -235,7 +253,7 @@ namespace DataModelTest.CoreTest
         [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949672843)]
         public void RemoveReferenceTestFalse(ModelCode referenceId, long globalId)
         {
-            Assert.Throws<ModelException>(() => baseVoltage.RemoveReference(referenceId, globalId));
+            Assert.DoesNotThrow(() => baseVoltage.RemoveReference(referenceId, globalId));
         }
 
         [Test]
@@ -248,6 +266,13 @@ namespace DataModelTest.CoreTest
             Assert.AreNotEqual(hashCode, hashCodeBv);
             bv = bv2;
             Assert.AreEqual(bv.GetHashCode(), bv2.GetHashCode());
+        }
+
+        [Test]
+        public void DeepCopyTest()
+        {
+            BaseVoltage bv = new BaseVoltage() { GlobalId = 1234, Mrid = "123"};
+            Assert.AreEqual(bv, bv.DeepCopy());
         }
     }
 }

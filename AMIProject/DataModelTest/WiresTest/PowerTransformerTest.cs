@@ -99,7 +99,7 @@ namespace DataModelTest.WiresTest
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.Throws<Exception>(() => powerTransformer.GetProperty(property));
+            Assert.DoesNotThrow(() => powerTransformer.GetProperty(property));
         }
 
         [Test]
@@ -121,7 +121,7 @@ namespace DataModelTest.WiresTest
             property.PropertyValue = new PropertyValue();
             property.SetValue(value);
 
-            Assert.Throws<Exception>(() => powerTransformer.SetProperty(property));
+            Assert.DoesNotThrow(() => powerTransformer.SetProperty(property));
         }
 
         [Test]
@@ -162,7 +162,7 @@ namespace DataModelTest.WiresTest
         [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949682125)]
         public void AddReferenceTestFalse(ModelCode referenceId, long globalId)
         {
-            Assert.Throws<Exception>(() => powerTransformer.AddReference(referenceId, globalId));
+            Assert.DoesNotThrow(() => powerTransformer.AddReference(referenceId, globalId));
         }
 
         [Test]
@@ -177,7 +177,7 @@ namespace DataModelTest.WiresTest
         [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949682125)]
         public void RemoveReferenceTestFalse(ModelCode referenceId, long globalId)
         {
-            Assert.Throws<ModelException>(() => powerTransformer.RemoveReference(referenceId, globalId));
+            Assert.DoesNotThrow(() => powerTransformer.RemoveReference(referenceId, globalId));
         }
 
         [Test]
@@ -190,6 +190,13 @@ namespace DataModelTest.WiresTest
             Assert.AreNotEqual(hashCode, hashCodeBv);
             pt = pt2;
             Assert.AreEqual(pt.GetHashCode(), pt2.GetHashCode());
+        }
+
+        [Test]
+        public void DeepCopyTest()
+        {
+            PowerTransformerEnd pte = new PowerTransformerEnd() { GlobalId = 1234, Mrid = "123" };
+            Assert.AreEqual(pte, pte.DeepCopy());
         }
     }
 }

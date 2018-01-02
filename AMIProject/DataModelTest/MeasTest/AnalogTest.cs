@@ -70,6 +70,27 @@ namespace DataModelTest.MeasTest
             bool result = analog.Equals(obj);
 
             Assert.AreEqual(true, result);
+
+            // incorrect
+            obj = new Analog() { MaxValue = 1 };
+            result = analog.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new Analog() { MinValue = 1 };
+            result = analog.Equals(obj);
+            Assert.AreNotEqual(true, result);
+            
+            obj = new Analog() { NormalValue = 1 };
+            result = analog.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new Analog() { AlarmHigh = 1 };
+            result = analog.Equals(obj);
+            Assert.AreNotEqual(true, result);
+            
+            obj = new Analog() { AlarmLow = 1 };
+            result = analog.Equals(obj);
+            Assert.AreNotEqual(true, result);
         }
 
         [Test]
@@ -106,6 +127,8 @@ namespace DataModelTest.MeasTest
         [TestCase(ModelCode.ANALOG_MAXVALUE)]
         [TestCase(ModelCode.ANALOG_MINVALUE)]
         [TestCase(ModelCode.ANALOG_NORMALVALUE)]
+        [TestCase(ModelCode.ANALOG_ALARMHIGH)]
+        [TestCase(ModelCode.ANALOG_ALARMLOW)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void GetPropertyTestCorrect(ModelCode t)
         {
@@ -122,7 +145,7 @@ namespace DataModelTest.MeasTest
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.Throws<Exception>(() => analog.GetProperty(property));
+            Assert.DoesNotThrow(() => analog.GetProperty(property));
         }
 
         [Test]
@@ -162,7 +185,7 @@ namespace DataModelTest.MeasTest
             property.PropertyValue = new PropertyValue();
             property.SetValue(value);
 
-            Assert.Throws<Exception>(() => analog.SetProperty(property));
+            Assert.DoesNotThrow(() => analog.SetProperty(property));
         }
 
         [Test]
@@ -175,6 +198,43 @@ namespace DataModelTest.MeasTest
             Assert.AreNotEqual(hashCode, hashCodeBv);
             a = a2;
             Assert.AreEqual(a.GetHashCode(), a2.GetHashCode());
+        }
+
+        [Test]
+        public void RD2ClassTest()
+        {
+            ResourceDescription rd = new ResourceDescription(235);
+
+            ModelResourcesDesc modelResourcesDesc = new ModelResourcesDesc();
+            List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.ANALOG);
+
+            for (int i = 0; i < properties.Count; i++)
+            {
+                rd.AddProperty(new Property(properties[i]));
+            }
+
+            Assert.DoesNotThrow(() => analog.RD2Class(rd));
+        }
+
+        [Test]
+        public void GetAlarmHighTest()
+        {
+            analog.AlarmHigh = 12;
+            Assert.AreEqual(analog.AlarmHigh, 12);
+        }
+
+        [Test]
+        public void GetAlarmLowTest()
+        {
+            analog.AlarmLow = 12;
+            Assert.AreEqual(analog.AlarmLow, 12);
+        }
+
+        [Test]
+        public void DeepCopyTest()
+        {
+            Analog a = new Analog() { GlobalId = 1234, Mrid = "123" };
+            Assert.AreEqual(a, a.DeepCopy());
         }
     }
 }

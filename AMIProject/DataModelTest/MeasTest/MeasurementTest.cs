@@ -72,6 +72,35 @@ namespace DataModelTest.MeasTest
             bool result = measurement.Equals(obj);
 
             Assert.AreEqual(true, result);
+
+            // incorrect
+            obj = new Measurement() { UnitSymbol = UnitSymbol.P };
+            result = measurement.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new Measurement() { SignalDirection = Direction.READ };
+            result = measurement.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new Measurement() { PowerSystemResourceRef = 1 };
+            result = measurement.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new Measurement() { RtuAddress = 1 };
+            result = measurement.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new Measurement() { MinRawValue = 1 };
+            result = measurement.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new Measurement() { MaxRawValue = 1 };
+            result = measurement.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new Measurement() { NormalRawValue = 1 };
+            result = measurement.Equals(obj);
+            Assert.AreNotEqual(true, result);
         }
 
         [Test]
@@ -108,6 +137,10 @@ namespace DataModelTest.MeasTest
         [TestCase(ModelCode.MEASUREMENT_UNITSYMBOL)]
         [TestCase(ModelCode.MEASUREMENT_DIRECTION)]
         [TestCase(ModelCode.MEASUREMENT_PSR)]
+        [TestCase(ModelCode.MEASUREMENT_RTUADDRESS)]
+        [TestCase(ModelCode.MEASUREMENT_MAXRAWVAL)]
+        [TestCase(ModelCode.MEASUREMENT_MINRAWVAL)]
+        [TestCase(ModelCode.MEASUREMENT_NORMALRAWVAL)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void GetPropertyTestCorrect(ModelCode t)
         {
@@ -124,7 +157,7 @@ namespace DataModelTest.MeasTest
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.Throws<Exception>(() => measurement.GetProperty(property));
+            Assert.DoesNotThrow(() => measurement.GetProperty(property));
         }
 
         [Test]
@@ -164,7 +197,7 @@ namespace DataModelTest.MeasTest
             property.PropertyValue = new PropertyValue();
             property.SetValue(value);
 
-            Assert.Throws<Exception>(() => measurement.SetProperty(property));
+            Assert.DoesNotThrow(() => measurement.SetProperty(property));
         }
         
         [Test]
@@ -194,6 +227,41 @@ namespace DataModelTest.MeasTest
             Assert.AreNotEqual(hashCode, hashCodeBv);
             m = m2;
             Assert.AreEqual(m.GetHashCode(), m2.GetHashCode());
+        }
+
+        [Test]
+        public void GetIdDbTest()
+        {
+            measurement.IdDB = 1;
+            Assert.AreEqual(measurement.IdDB, 1);
+        }
+
+        [Test]
+        public void GetMaxRawValueTest()
+        {
+            measurement.MaxRawValue = 1;
+            Assert.AreEqual(measurement.MaxRawValue, 1);
+        }
+
+        [Test]
+        public void GetMinRawValueTest()
+        {
+            measurement.MinRawValue = 1;
+            Assert.AreEqual(measurement.MinRawValue, 1);
+        }
+
+        [Test]
+        public void GetNormalRawValueTest()
+        {
+            measurement.NormalRawValue = 1;
+            Assert.AreEqual(measurement.NormalRawValue, 1);
+        }
+
+        [Test]
+        public void GetRtuAddressTest()
+        {
+            measurement.RtuAddress = 1;
+            Assert.AreEqual(measurement.RtuAddress, 1);
         }
     }
 }

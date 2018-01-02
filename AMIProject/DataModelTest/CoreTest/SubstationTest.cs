@@ -61,6 +61,15 @@ namespace DataModelTest.CoreTest
             bool result = substation.Equals(obj);
 
             Assert.AreEqual(true, result);
+
+            // incorrect
+            obj = new Substation() { SubGeoRegion = 100 };
+            result = substation.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new Substation() { VoltageLevels = new List<long>() };
+            result = substation.Equals(obj);
+            Assert.AreNotEqual(true, result);
         }
 
         [Test]
@@ -123,7 +132,7 @@ namespace DataModelTest.CoreTest
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.Throws<Exception>(() => substation.GetProperty(property));
+            Assert.DoesNotThrow(() => substation.GetProperty(property));
         }
 
         [Test]
@@ -155,7 +164,7 @@ namespace DataModelTest.CoreTest
             property.PropertyValue = new PropertyValue();
             property.SetValue(value);
 
-            Assert.Throws<Exception>(() => substation.SetProperty(property));
+            Assert.DoesNotThrow(() => substation.SetProperty(property));
         }
 
         [Test]
@@ -189,7 +198,7 @@ namespace DataModelTest.CoreTest
         [TestCase(ModelCode.BASEVOLTAGE_NOMINALVOL, 42949682356)]
         public void AddReferenceTestFalse(ModelCode referenceId, long globalId)
         {
-            Assert.Throws<Exception>(() => substation.AddReference(referenceId, globalId));
+            Assert.DoesNotThrow(() => substation.AddReference(referenceId, globalId));
         }
 
         [Test]
@@ -204,7 +213,7 @@ namespace DataModelTest.CoreTest
         [TestCase(ModelCode.BASEVOLTAGE_NOMINALVOL, 42949682356)]
         public void RemoveReferenceTestFalse(ModelCode referenceId, long globalId)
         {
-            Assert.Throws<ModelException>(() => substation.RemoveReference(referenceId, globalId));
+            Assert.DoesNotThrow(() => substation.RemoveReference(referenceId, globalId));
         }
 
         [Test]
@@ -220,7 +229,7 @@ namespace DataModelTest.CoreTest
                 rd.AddProperty(new Property(properties[i]));
             }
 
-            rd.AddProperty(new Property() { Id = ModelCode.SUBSTATION_SUBGEOREGION, PropertyValue = new PropertyValue() { LongValue = 7890 } });
+            rd.Properties.Where(x => x.Id == ModelCode.SUBSTATION_VOLTLEVELS).First().PropertyValue.LongValues = new List<long>() { 424 };
             //rd.Properties.First().PropertyValue.LongValue = 6378;
             Assert.DoesNotThrow(() => substation.RD2Class(rd));
         }
@@ -235,6 +244,13 @@ namespace DataModelTest.CoreTest
             Assert.AreNotEqual(hashCode, hashCodeBv);
             s = s2;
             Assert.AreEqual(s.GetHashCode(), s2.GetHashCode());
+        }
+
+        [Test]
+        public void DeepCopyTest()
+        {
+            Substation s = new Substation() { GlobalId = 1234, Mrid = "123" };
+            Assert.AreEqual(s, s.DeepCopy());
         }
     }
 }

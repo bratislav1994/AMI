@@ -70,6 +70,19 @@ namespace DataModelTest.MeasTest
             bool result = discrete.Equals(obj);
 
             Assert.AreEqual(true, result);
+
+            // incorrect
+            obj = new Discrete() { MaxValue = 1 };
+            result = discrete.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new Discrete() { MinValue = 1 };
+            result = discrete.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new Discrete() { NormalValue = 1 };
+            result = discrete.Equals(obj);
+            Assert.AreNotEqual(true, result);
         }
 
         [Test]
@@ -122,7 +135,7 @@ namespace DataModelTest.MeasTest
             property.Id = t;
             property.PropertyValue = new PropertyValue();
 
-            Assert.Throws<Exception>(() => discrete.GetProperty(property));
+            Assert.DoesNotThrow(() => discrete.GetProperty(property));
         }
 
         [Test]
@@ -162,7 +175,7 @@ namespace DataModelTest.MeasTest
             property.PropertyValue = new PropertyValue();
             property.SetValue(value);
 
-            Assert.Throws<Exception>(() => discrete.SetProperty(property));
+            Assert.DoesNotThrow(() => discrete.SetProperty(property));
         }
 
         [Test]
@@ -175,6 +188,13 @@ namespace DataModelTest.MeasTest
             Assert.AreNotEqual(hashCode, hashCodeBv);
             d = d2;
             Assert.AreEqual(d.GetHashCode(), d2.GetHashCode());
+        }
+
+        [Test]
+        public void DeepCopyTest()
+        {
+            Discrete d = new Discrete() { GlobalId = 1234, Mrid = "123" };
+            Assert.AreEqual(d, d.DeepCopy());
         }
     }
 }
