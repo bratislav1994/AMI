@@ -21,6 +21,7 @@ namespace AMIClient.ViewModels
         {
             dataHistory = new List<KeyValuePair<DateTime, double>>();
             timePeriods = new ObservableCollection<string>() { "hour", "day", "week" };
+            this.ShowDataCommand.RaiseCanExecuteChanged();
         }
 
         public static ChartViewModel Instance
@@ -64,6 +65,7 @@ namespace AMIClient.ViewModels
             set
             {
                 timePeriod = value;
+                this.ShowDataCommand.RaiseCanExecuteChanged();
                 RaisePropertyChanged("TimePeriod");
             }
         }

@@ -89,8 +89,8 @@
 
         <Label Grid.Row="0" Grid.Column="0" Content="Time period: " HorizontalAlignment="Left" VerticalAlignment="Center" Height="29" Width="95"/>
         <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding TimePeriod}" ItemsSource="{Binding TimePeriods, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" />
-        
-        <Button Grid.Row="1" Grid.Column="0" Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83"/>
+
+        <Button Grid.Row="1" Grid.Column="0" Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
 
         <DVC:Chart Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Background="#FF3F3F3F">
 

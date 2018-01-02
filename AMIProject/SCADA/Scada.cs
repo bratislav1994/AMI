@@ -293,11 +293,14 @@ namespace SCADA
         public void Rollback()
         {
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Rollback; line: {0}; Start the Rollback function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-
+            
             foreach (KeyValuePair<int, RTUAddress> kvp in addressPool)
             {
-                this.simulators[kvp.Key].Rollback(addressPool[kvp.Key].Cnt);
-                kvp.Value.Cnt = 0;
+                if (this.simulators.ContainsKey(kvp.Key))
+                {
+                    this.simulators[kvp.Key].Rollback(addressPool[kvp.Key].Cnt);
+                    kvp.Value.Cnt = 0;
+                }
             }
 
             this.copyMeasurements.Clear();

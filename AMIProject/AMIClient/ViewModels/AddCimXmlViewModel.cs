@@ -33,6 +33,8 @@ namespace AMIClient.ViewModels
             XMLPath = string.Empty;
             CIMProfiles = new BindingList<SupportedProfiles>() { SupportedProfiles.AMIProfile };
             CIMProfile = CIMProfiles[0];
+            this.ConvertCommand.RaiseCanExecuteChanged();
+            this.ApplyDeltaCommand.RaiseCanExecuteChanged();
         }
 
         public static AddCimXmlViewModel Instance
@@ -73,6 +75,8 @@ namespace AMIClient.ViewModels
             {
                 xMLPath = value;
                 RaisePropertyChanged("XMLPath");
+                this.ConvertCommand.RaiseCanExecuteChanged();
+                this.ApplyDeltaCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -102,8 +106,7 @@ namespace AMIClient.ViewModels
                 RaisePropertyChanged("CIMProfiles");
             }
         }
-
-
+        
         private DelegateCommand browseCommand;
         public DelegateCommand BrowseCommand
         {
@@ -125,12 +128,16 @@ namespace AMIClient.ViewModels
             dlg.DefaultExt = ".png";
             dlg.Filter = "XML Files (*.xml)|*.xml";
             Nullable<bool> result = dlg.ShowDialog();
-            //Igrac i = new Igrac() { SLIKA_IGR = }
+
             if (result == true)
             {
                 this.XMLPath = dlg.FileName;
                 ConvertCommand.RaiseCanExecuteChanged();
             }
+
+            this.isOk = false;
+            this.ConvertCommand.RaiseCanExecuteChanged();
+            this.ApplyDeltaCommand.RaiseCanExecuteChanged();
             Logger.LogMessageToFile(string.Format("AMIClient.AddCimXmlViewModel.BrowseCommandAction; line: {0}; Finish browse", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
@@ -175,8 +182,10 @@ namespace AMIClient.ViewModels
                         nmsDelta.ExportToXml(xmlWriter);
                         xmlWriter.Flush();
                     }
+
                     isOk = true;
                 }
+
                 Logger.LogMessageToFile(string.Format("AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: {0}; Convert succeeded", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             }
             catch (Exception e)
@@ -184,20 +193,14 @@ namespace AMIClient.ViewModels
                 Logger.LogMessageToFile(string.Format("AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: {0}; Convert faild", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 MessageBox.Show(string.Format("An error occurred.\n\n{0}", e.Message), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            XMLPath = "";
+
+            XMLPath = string.Empty;
             ApplyDeltaCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanExecuteConvertCommand()
         {
-            if(XMLPath.Equals(""))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return !string.IsNullOrWhiteSpace(XMLPath);
         }
 
         private DelegateCommand applyDeltaCommand;
@@ -242,14 +245,7 @@ namespace AMIClient.ViewModels
 
         private bool CanExecuteApplyDeltaCommand()
         {
-            if (isOk)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return isOk;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
