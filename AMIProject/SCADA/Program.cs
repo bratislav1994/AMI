@@ -21,6 +21,11 @@ namespace SCADA
 
         static int Main(string[] args)
         {
+            String aaa = System.IO.Directory.GetCurrentDirectory();
+            int index = aaa.LastIndexOf("bin");
+            string aaaa = aaa.Substring(0, index);
+            aaaa += "DB";
+            AppDomain.CurrentDomain.SetData("DataDirectory", aaaa);
             Console.Title = "SCADA";
             Logger.Path = "Scada.txt";
 

@@ -1,4 +1,5 @@
-﻿using FTN.Common;
+﻿using CalculationEngine.Access;
+using FTN.Common;
 using FTN.Common.Logger;
 using FTN.ServiceContracts;
 using FTN.Services.NetworkModelService.DataModel;
@@ -9,6 +10,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TC57CIM.IEC61970.Wires;
 
 namespace CalculationEngine
 {
@@ -22,11 +24,13 @@ namespace CalculationEngine
         private List<ResourceDescription> meas;
         private bool firstTimeCoordinator = true;
         private Delta delta;
+        private FunctionDB dataBaseAdapter;
 
         public CalculationEngine()
         {
             clients = new List<IModelForDuplex>();
             clientsForDeleting = new List<IModelForDuplex>();
+            dataBaseAdapter = new FunctionDB();
 
             meas = new List<ResourceDescription>();
 
@@ -92,24 +96,35 @@ namespace CalculationEngine
             this.clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
         }
 
-        public void EnlistDelta(Delta delta)
+        public void EnlistMeas(List<ResourceDescription> measurements)
         {
-            this.delta = delta;
+            foreach(ResourceDescription rd in measurements)
+            {
+                meas.Add(rd);
+            }
         }
 
-        public void Prepare()
+        public bool Prepare()
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public void Commit()
         {
-            throw new NotImplementedException();
+            foreach(ResourceDescription rd in meas)
+            {
+                EnergyConsumer ec = new EnergyConsumer();
+                ec.RD2Class(rd);
+                DynamicMeasurement newMeas = new DynamicMeasurement(rd.Id);
+                newMeas.OperationType = OperationType.INSERT;
+                dataBaseAdapter.AddMeasurement(newMeas);
+            }
+            this.meas.Clear();
         }
 
         public void Rollback()
         {
-            throw new NotImplementedException();
+            this.meas.Clear();
         }
 
         public void DataFromScada(List<DynamicMeasurement> measurements)
@@ -118,6 +133,12 @@ namespace CalculationEngine
             Console.WriteLine("Receive data from SCADA");
 
             Console.WriteLine("Send data to client");
+            foreach(DynamicMeasurement dm in measurements)
+            {
+                dm.OperationType = OperationType.UPDATE;
+            }
+
+            dataBaseAdapter.AddMeasurements(measurements);
 
             clientsForDeleting.Clear();
             foreach (IModelForDuplex client in clients)

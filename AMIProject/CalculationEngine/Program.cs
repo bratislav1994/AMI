@@ -16,6 +16,11 @@ namespace CalculationEngine
 
         static void Main(string[] args)
         {
+            String aaa = System.IO.Directory.GetCurrentDirectory();
+            int index = aaa.LastIndexOf("bin");
+            string aaaa = aaa.Substring(0, index);
+            aaaa += "DB";
+            AppDomain.CurrentDomain.SetData("DataDirectory", aaaa);
             //   CalculationEngine ce = new CalculationEngine();
             Console.Title = "CE";
             Logger.Path = "CalculationEngnine.txt";

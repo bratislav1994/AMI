@@ -20,4 +20,11 @@ namespace FTN.Common
         READWRITE,
         READ
     }//end Direction
+
+    public enum OperationType : int
+    {
+        INSERT = 0,
+        UPDATE,
+        DELETE
+    }
 }

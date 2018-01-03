@@ -60,7 +60,9 @@ namespace TransactionCoordinator
         {
             Logger.LogMessageToFile(string.Format("TranscactionCoordinator.TranscactionCoordinator.ApplyDelta; line: {0}; Coordinator sends data to NMS and SCADA", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             List<ResourceDescription> measurements = new List<ResourceDescription>();
+            List<ResourceDescription> consumers = new List<ResourceDescription>();
             Delta newDelta = null;
+            bool CalculationEnginePrepareSuccess = false;
 
             try
             {
@@ -81,6 +83,10 @@ namespace TransactionCoordinator
                     if (type == DMSType.ANALOG)
                     {
                         measurements.Add(rd);
+                    }
+                    else if(type == DMSType.ENERGYCONS)
+                    {
+                        consumers.Add(rd);
                     }
                 }
 
@@ -104,8 +110,8 @@ namespace TransactionCoordinator
 
                 try
                 {
-                    proxyCE.EnlistDelta(newDelta);
-         //           proxyCE.Prepare();
+                    proxyCE.EnlistMeas(consumers);
+                    CalculationEnginePrepareSuccess = proxyCE.Prepare();
                 }
                 catch
                 {
@@ -132,7 +138,7 @@ namespace TransactionCoordinator
                     return false;
                 }
 
-                if (list.All(x => x == true))
+                if (list.All(x => x == true) && CalculationEnginePrepareSuccess)
                 {
                     foreach (IScada scada in scadas)
                     {
@@ -164,7 +170,7 @@ namespace TransactionCoordinator
 
                     try
                     {
-         //               proxyCE.Commit();
+                        proxyCE.Commit();
                     }
                     catch
                     {
@@ -188,7 +194,7 @@ namespace TransactionCoordinator
 
                     try
                     {
-         //               proxyCE.Rollback();
+                        proxyCE.Rollback();
                     }
                     catch
                     {

@@ -74,7 +74,9 @@
                 <DataGridTextColumn MinWidth="100" Width="100" Header="Subgeographical region ID" Binding="{Binding Ami.EqContainer}"/>
                 <DataGridTextColumn MinWidth="100" Width="100" Header="Current P" Binding="{Binding CurrentP}"/>
                 <DataGridTextColumn MinWidth="100" Width="100" Header="Current Q" Binding="{Binding CurrentQ}"/>
-                <DataGridTextColumn MinWidth="100" Width="*" Header="Current V" Binding="{Binding CurrentV}"/>
+                <DataGridTextColumn MinWidth="100" Width="100" Header="Current V" Binding="{Binding CurrentV}"/>
+                <DataGridTextColumn MinWidth="100" Width="*" Header="TimeStamp" Binding="{Binding TimeStamp}"/>
+                
 
             </DataGrid.Columns>
         </DataGrid>

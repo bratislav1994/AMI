@@ -16,10 +16,10 @@ namespace FTN.ServiceContracts
         void DataFromScada(List<DynamicMeasurement> measurements);
 
         [OperationContract]
-        void EnlistDelta(Delta delta);
+        void EnlistMeas(List<ResourceDescription> measurement);
 
         [OperationContract]
-        void Prepare();
+        bool Prepare();
 
         [OperationContract]
         void Commit();
