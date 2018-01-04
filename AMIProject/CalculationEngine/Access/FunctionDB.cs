@@ -47,19 +47,23 @@ namespace CalculationEngine.Access
                     if (m.CurrentP == -1 || m.CurrentQ == -1 || m.CurrentV == -1)
                     {
                         var lastMeas = access.History.Where(x => x.PsrRef == m.PsrRef).OrderByDescending(x => x.TimeStamp).FirstOrDefault();
+
                         if (m.CurrentP == -1)
                         {
                             m.CurrentP = lastMeas.CurrentP;
                         }
+
                         if (m.CurrentQ == -1)
                         {
                             m.CurrentQ = lastMeas.CurrentQ;
                         }
+
                         if (m.CurrentV == -1)
                         {
                             m.CurrentV = lastMeas.CurrentV;
                         }
                     }
+
                     access.History.Add(m);
                     int i = access.SaveChanges();
 
@@ -77,80 +81,19 @@ namespace CalculationEngine.Access
             }
         }
 
-        /*public bool AddSimulator(WrapperDB listMeas)
+        public List<DynamicMeasurement> GetMeasForChart(long gid, DateTime from, DateTime to)
         {
-            using (var access = new AccessDB())
-            {
-                var wrap = access.WrapperMeas.Where(x => x.RtuAddress == listMeas.RtuAddress).FirstOrDefault();
-
-                if (wrap == null)
-                {
-                    access.WrapperMeas.Add(listMeas);
-                    int i = access.SaveChanges();
-
-                    if (i > 0)
-                    {
-                        return true;
-                    }
-
-                    return false;
-                }
-
-                return false;
-            }
-        }
-
-        public bool AddMeasurement(List<MeasurementForScada> listMeas)
-        {
-            using (var access = new AccessDB())
-            {
-                foreach (MeasurementForScada m in listMeas)
-                {
-                    var cre = access.MeasurementForScada.Where(x => x.MeasurementId == m.Measurement.IdDB).FirstOrDefault();
-
-                    if (cre == null)
-                    {
-                        access.MeasurementForScada.Add(m);
-                        int i = access.SaveChanges();
-
-                        if (i > 0)
-                        {
-
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                }
-
-                return true;
-            }
-        }
-
-        public int GetWrapperId(int rtuAddress)
-        {
-            using (var access = new AccessDB())
-            {
-                var retVal = access.WrapperMeas.Where(x => x.RtuAddress == rtuAddress).FirstOrDefault();
-
-                return retVal == null ? -1 : retVal.IdDB;
-            }
-        }
-
-        public List<WrapperDB> ReadMeas()
-        {
-            List<WrapperDB> measurements = new List<WrapperDB>();
+            List<DynamicMeasurement> measurements = new List<DynamicMeasurement>();
 
             using (var access = new AccessDB())
             {
-                foreach (var meas in access.WrapperMeas.Include("ListOfMeasurements").Include("ListOfMeasurements.Measurement").ToList())
+                foreach (var meas in access.History.Where(x => x.PsrRef == gid && x.TimeStamp >= from && x.TimeStamp <= to && x.OperationType == OperationType.UPDATE).ToList())
                 {
                     measurements.Add(meas);
                 }
 
                 return measurements;
             }
-        }*/
+        }
     }
 }

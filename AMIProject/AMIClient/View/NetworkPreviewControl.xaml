@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AMIClient"
-             xmlns:local2="clr-namespace:AMIClient.ViewModels"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:local2="clr-namespace:AMIClient.ViewModels"
         xmlns:vml="clr-namespace:AMIClient.VML"
         vml:ViewModelLocator.AutoHookedUpViewModel="True"
         mc:Ignorable="d"
@@ -66,7 +67,16 @@
 
             </TreeView.Resources>
         </TreeView>
-        <DataGrid Grid.Column="1" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.Amis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
+        <DataGrid Grid.Column="1" Grid.ColumnSpan="2" SelectedItem="{Binding SelectedAMI}" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.Amis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
+
+            <!--<i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectedItem">
+                    <i:EventTrigger.Actions>
+                        <i:InvokeCommandAction Command="{Binding SelectedAMICommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=Ami.Mrid}" />
+                    </i:EventTrigger.Actions>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>-->
+
             <DataGrid.Columns>
 
                 <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Ami.Mrid}"/>
@@ -75,8 +85,7 @@
                 <DataGridTextColumn MinWidth="100" Width="100" Header="Current P" Binding="{Binding CurrentP}"/>
                 <DataGridTextColumn MinWidth="100" Width="100" Header="Current Q" Binding="{Binding CurrentQ}"/>
                 <DataGridTextColumn MinWidth="100" Width="100" Header="Current V" Binding="{Binding CurrentV}"/>
-                <DataGridTextColumn MinWidth="100" Width="*" Header="TimeStamp" Binding="{Binding TimeStamp}"/>
-                
+                <DataGridTextColumn MinWidth="100" Width="*" Header="TimeStamp" Binding="{Binding TimeStamp, StringFormat=\{0:dd.MM.yy HH:mm:ss\}}"/>
 
             </DataGrid.Columns>
         </DataGrid>

@@ -1,7 +1,9 @@
-﻿using FTN.Common.Logger;
+﻿using CalculationEngine.Access;
+using FTN.Common.Logger;
 using FTN.ServiceContracts;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
@@ -16,12 +18,12 @@ namespace CalculationEngine
 
         static void Main(string[] args)
         {
-            String aaa = System.IO.Directory.GetCurrentDirectory();
-            int index = aaa.LastIndexOf("bin");
-            string aaaa = aaa.Substring(0, index);
-            aaaa += "DB";
-            AppDomain.CurrentDomain.SetData("DataDirectory", aaaa);
-            //   CalculationEngine ce = new CalculationEngine();
+            string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string path = System.IO.Path.GetDirectoryName(executable);
+            path = path.Substring(0, path.LastIndexOf("bin")) + "DB";
+            AppDomain.CurrentDomain.SetData("DataDirectory", path);
+
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AccessDB, Configuration>());
             Console.Title = "CE";
             Logger.Path = "CalculationEngnine.txt";
             Start();

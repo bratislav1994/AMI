@@ -15,6 +15,7 @@ namespace AMIClient
         private float currentP;
         private float currentQ;
         private float currentV;
+        private DateTime timeStamp;
 
         public EnergyConsumerForTable(EnergyConsumer ami)
         {
@@ -76,6 +77,20 @@ namespace AMIClient
             {
                 currentV = value;
                 RaisePropertyChanged("CurrentV");
+            }
+        }
+
+        public DateTime TimeStamp
+        {
+            get
+            {
+                return timeStamp;
+            }
+
+            set
+            {
+                timeStamp = value;
+                RaisePropertyChanged("TimeStamp");
             }
         }
 

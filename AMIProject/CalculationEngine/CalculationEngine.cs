@@ -96,6 +96,11 @@ namespace CalculationEngine
             this.clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
         }
 
+        public List<DynamicMeasurement> GetMeasurementsForChartView(long gid, DateTime from, DateTime to)
+        {
+            return dataBaseAdapter.GetMeasForChart(gid, from, to);
+        }
+
         public void EnlistMeas(List<ResourceDescription> measurements)
         {
             foreach(ResourceDescription rd in measurements)
@@ -113,12 +118,11 @@ namespace CalculationEngine
         {
             foreach(ResourceDescription rd in meas)
             {
-                EnergyConsumer ec = new EnergyConsumer();
-                ec.RD2Class(rd);
                 DynamicMeasurement newMeas = new DynamicMeasurement(rd.Id);
                 newMeas.OperationType = OperationType.INSERT;
                 dataBaseAdapter.AddMeasurement(newMeas);
             }
+
             this.meas.Clear();
         }
 
@@ -157,6 +161,7 @@ namespace CalculationEngine
             {
                 clients.Remove(client);
             }
+
             Logger.LogMessageToFile(string.Format("CE.CalculationEngine.DataFromScada; line: {0}; Finish transport data SCADA-CE-Client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
     }

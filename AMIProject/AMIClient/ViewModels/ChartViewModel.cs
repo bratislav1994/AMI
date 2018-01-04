@@ -1,4 +1,6 @@
-﻿using Prism.Commands;
+﻿using AMIClient.View;
+using FTN.Services.NetworkModelService.DataModel;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,21 +8,30 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace AMIClient.ViewModels
 {
     public class ChartViewModel : INotifyPropertyChanged
     {
         private static ChartViewModel instance;
-        private List<KeyValuePair<DateTime, double>> dataHistory;
-        private string timePeriod;
-        private ObservableCollection<string> timePeriods;
+        private List<KeyValuePair<DateTime, float>> dataHistoryP;
+        private List<KeyValuePair<DateTime, float>> dataHistoryQ;
+        private List<KeyValuePair<DateTime, float>> dataHistoryV;
+        private string fromPeriod;
+        private string toPeriod;
         private DelegateCommand showDataCommand;
+        private ChartWindow chartWin;
+        private Model model;
+        private bool fromPeriodEntered = false;
+        private bool toPeriodEntered = false;
+        private long amiGid;
 
         public ChartViewModel()
         {
-            dataHistory = new List<KeyValuePair<DateTime, double>>();
-            timePeriods = new ObservableCollection<string>() { "hour", "day", "week" };
+            dataHistoryP = new List<KeyValuePair<DateTime, float>>();
+            dataHistoryQ = new List<KeyValuePair<DateTime, float>>();
+            dataHistoryV = new List<KeyValuePair<DateTime, float>>();
             this.ShowDataCommand.RaiseCanExecuteChanged();
         }
 
@@ -37,50 +48,110 @@ namespace AMIClient.ViewModels
             }
         }
 
-        public List<KeyValuePair<DateTime, double>> DataHistory
+        public List<KeyValuePair<DateTime, float>> DataHistoryP
         {
             get
             {
-                if (this.dataHistory == null)
+                if (this.dataHistoryP == null)
                 {
-                    this.dataHistory = new List<KeyValuePair<DateTime, double>>();
+                    this.dataHistoryP = new List<KeyValuePair<DateTime, float>>();
                 }
 
-                return this.dataHistory;
+                return this.dataHistoryP;
             }
 
             set
             {
-                this.dataHistory = value;
+                this.dataHistoryP = value;
+                RaisePropertyChanged("DataHistoryP");
             }
         }
 
-        public string TimePeriod
+        public List<KeyValuePair<DateTime, float>> DataHistoryQ
         {
             get
             {
-                return timePeriod;
+                if (this.dataHistoryQ == null)
+                {
+                    this.dataHistoryQ = new List<KeyValuePair<DateTime, float>>();
+                }
+
+                return this.dataHistoryQ;
             }
 
             set
             {
-                timePeriod = value;
+                this.dataHistoryQ = value;
+                RaisePropertyChanged("DataHistoryQ");
+            }
+        }
+
+        public List<KeyValuePair<DateTime, float>> DataHistoryV
+        {
+            get
+            {
+                if (this.dataHistoryV == null)
+                {
+                    this.dataHistoryV = new List<KeyValuePair<DateTime, float>>();
+                }
+
+                return this.dataHistoryV;
+            }
+
+            set
+            {
+                this.dataHistoryV = value;
+                RaisePropertyChanged("DataHistoryV");
+            }
+        }
+
+        public string FromPeriod
+        {
+            get
+            {
+                return fromPeriod;
+            }
+
+            set
+            {
+                fromPeriod = value;
+
+                if (!string.IsNullOrEmpty(this.fromPeriod))
+                {
+                    this.fromPeriodEntered = true;
+                }
+                else
+                {
+                    this.fromPeriodEntered = false;
+                }
+
                 this.ShowDataCommand.RaiseCanExecuteChanged();
-                RaisePropertyChanged("TimePeriod");
+                RaisePropertyChanged("FromPeriod");
             }
         }
 
-        public ObservableCollection<string> TimePeriods
+        public string ToPeriod
         {
             get
             {
-                return timePeriods;
+                return toPeriod;
             }
 
             set
             {
-                timePeriods = value;
-                RaisePropertyChanged("TimePeriods");
+                toPeriod = value;
+
+                if (!string.IsNullOrEmpty(this.toPeriod))
+                {
+                    this.toPeriodEntered = true;
+                }
+                else
+                {
+                    this.toPeriodEntered = false;
+                }
+
+                this.ShowDataCommand.RaiseCanExecuteChanged();
+                RaisePropertyChanged("ToPeriod");
             }
         }
 
@@ -97,13 +168,90 @@ namespace AMIClient.ViewModels
             }
         }
 
+        public Model Model
+        {
+            get
+            {
+                return model;
+            }
+
+            set
+            {
+                model = value;
+            }
+        }
+
+        public long AmiGid
+        {
+            get
+            {
+                return amiGid;
+            }
+
+            set
+            {
+                amiGid = value;
+            }
+        }
+
         private bool CanShowDataExecute()
         {
-            return !string.IsNullOrWhiteSpace(this.TimePeriod);
+            //return !string.IsNullOrWhiteSpace(this.TimePeriod);
+            return this.fromPeriodEntered || this.toPeriodEntered;
         }
 
         private void ShowCommandAction()
         {
+            DateTime from = new DateTime(), to = new DateTime();
+
+            if (!string.IsNullOrEmpty(FromPeriod))
+            {
+                try
+                {
+                    from = DateTime.Parse(FromPeriod);
+                }
+                catch
+                {
+                    MessageBox.Show("druze ne valja ti datum");
+                }
+            }
+            else
+            {
+                from = DateTime.MinValue;
+            }
+
+            if (!string.IsNullOrEmpty(ToPeriod))
+            {
+                try
+                {
+                    to = DateTime.Parse(ToPeriod);
+                }
+                catch
+                {
+                    MessageBox.Show("druze ne valja ti datum");
+                }
+            }
+            else
+            {
+                to = DateTime.Now;
+            }
+
+            List<DynamicMeasurement> measForChart = this.Model.GetMeasForChart(AmiGid, from, to);
+            List<KeyValuePair<DateTime, float>> tempP = new List<KeyValuePair<DateTime, float>>();
+            List<KeyValuePair<DateTime, float>> tempQ = new List<KeyValuePair<DateTime, float>>();
+            List<KeyValuePair<DateTime, float>> tempV = new List<KeyValuePair<DateTime, float>>();
+
+            foreach (DynamicMeasurement dm in measForChart)
+            {
+                tempP.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.CurrentP));
+                tempQ.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.CurrentQ));
+                tempV.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.CurrentV));
+            }
+
+            this.DataHistoryP = tempP;
+            this.DataHistoryQ = tempQ;
+            this.DataHistoryV = tempV;
+
             //try
             //{
             //    List<KeyValuePair<DateTime, double>> temp = this.Client.GetMeasurements(this.SelectedItem.MRID);
@@ -145,6 +293,18 @@ namespace AMIClient.ViewModels
             //    this.ClickEditCommand.RaiseCanExecuteChanged();
             //    this.RemoveCommand.RaiseCanExecuteChanged();
             //}
+        }
+
+        public void OpenWindow(long amiGid)
+        {
+            this.AmiGid = amiGid;
+            this.chartWin = new ChartWindow(this);
+            this.chartWin.ShowDialog();
+        }
+
+        public void SetModel(Model model)
+        {
+            this.Model = model;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
