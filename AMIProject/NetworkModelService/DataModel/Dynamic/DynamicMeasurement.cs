@@ -32,10 +32,10 @@ namespace FTN.Services.NetworkModelService.DataModel
 
         }
 
-        public DynamicMeasurement(long psrRef)
+        public DynamicMeasurement(long psrRef, DateTime timeStamp)
         {
             this.psrRef = psrRef;
-            this.timeStamp = DateTime.Now;
+            this.timeStamp = timeStamp;
             this.currentP = -1;
             this.currentQ = -1;
             this.currentV = -1;

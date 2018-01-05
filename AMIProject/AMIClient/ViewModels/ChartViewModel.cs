@@ -1,5 +1,6 @@
 ﻿using AMIClient.View;
 using FTN.Services.NetworkModelService.DataModel;
+using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -236,12 +237,12 @@ namespace AMIClient.ViewModels
                 to = DateTime.Now;
             }
 
-            List<DynamicMeasurement> measForChart = this.Model.GetMeasForChart(AmiGid, from, to);
+            Tuple<List<DynamicMeasurement>, Statistics> measForChart = this.Model.GetMeasForChart(AmiGid, from, to);
             List<KeyValuePair<DateTime, float>> tempP = new List<KeyValuePair<DateTime, float>>();
             List<KeyValuePair<DateTime, float>> tempQ = new List<KeyValuePair<DateTime, float>>();
             List<KeyValuePair<DateTime, float>> tempV = new List<KeyValuePair<DateTime, float>>();
 
-            foreach (DynamicMeasurement dm in measForChart)
+            foreach (DynamicMeasurement dm in measForChart.Item1)
             {
                 tempP.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.CurrentP));
                 tempQ.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.CurrentQ));
@@ -251,48 +252,6 @@ namespace AMIClient.ViewModels
             this.DataHistoryP = tempP;
             this.DataHistoryQ = tempQ;
             this.DataHistoryV = tempV;
-
-            //try
-            //{
-            //    List<KeyValuePair<DateTime, double>> temp = this.Client.GetMeasurements(this.SelectedItem.MRID);
-            //    StringBuilder allHist = new StringBuilder();
-
-            //    if (temp.Count > 10)
-            //    {
-            //        List<KeyValuePair<DateTime, double>> lastFive = temp.GetRange(temp.Count - 10, 10);
-
-            //        foreach (KeyValuePair<DateTime, double> kvp in lastFive)
-            //        {
-            //            this.DataHistory.Add(kvp);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        this.DataHistory = temp;
-            //    }
-
-            //    foreach (KeyValuePair<DateTime, double> kvp in temp)
-            //    {
-            //        allHist.AppendLine(kvp.Key + ", " + kvp.Value + "W");
-            //    }
-
-            //    this.AllHistory = allHist.ToString();
-            //    this.showWin = new ShowDataWindow(this.Client.DataContext);
-            //    this.showWin.ShowDialog();
-            //}
-            //catch
-            //{
-            //    if (!this.isTest)
-            //    {
-            //        MessageBox.Show("Error during getting measurement for selected generator.");
-            //    }
-
-            //    // this.SelectedItem = null;
-            //    this.DataHistory = null;
-            //    this.ShowDataCommand.RaiseCanExecuteChanged();
-            //    this.ClickEditCommand.RaiseCanExecuteChanged();
-            //    this.RemoveCommand.RaiseCanExecuteChanged();
-            //}
         }
 
         public void OpenWindow(long amiGid)
@@ -305,6 +264,15 @@ namespace AMIClient.ViewModels
         public void SetModel(Model model)
         {
             this.Model = model;
+        }
+
+        public void OnClosing(object sender, CancelEventArgs e)
+        {
+            this.DataHistoryP.Clear();
+            this.DataHistoryQ.Clear();
+            this.DataHistoryV.Clear();
+            this.FromPeriod = string.Empty;
+            this.ToPeriod = string.Empty;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

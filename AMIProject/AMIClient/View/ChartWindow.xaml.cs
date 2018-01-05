@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AMIClient.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace AMIClient.View
         {
             InitializeComponent();
             this.DataContext = dataContext;
+            Closing += ((ChartViewModel)dataContext).OnClosing;
         }
     }
 }
