@@ -160,6 +160,7 @@ namespace SCADA
             {
                 TC57CIM.IEC61970.Meas.Analog m = new TC57CIM.IEC61970.Meas.Analog();
                 m.RD2Class(rd);
+                m.GlobalId = rd.Id;
 
                 switch (m.UnitSymbol)
                 {
