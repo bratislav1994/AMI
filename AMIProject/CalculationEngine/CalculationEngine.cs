@@ -3,6 +3,7 @@ using FTN.Common;
 using FTN.Common.Logger;
 using FTN.ServiceContracts;
 using FTN.Services.NetworkModelService.DataModel;
+using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -96,9 +97,32 @@ namespace CalculationEngine
             this.clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
         }
 
-        public List<DynamicMeasurement> GetMeasurementsForChartView(long gid, DateTime from, DateTime to)
+        public Tuple<List<DynamicMeasurement>, Statistics> GetMeasurementsForChartView(long gid, DateTime from, DateTime to)
         {
-            return dataBaseAdapter.GetMeasForChart(gid, from, to);
+            List<DynamicMeasurement> retVal = dataBaseAdapter.GetMeasForChart(gid, from, to);
+
+            Statistics statistics = new Statistics();
+            statistics.MaxP = retVal.Max(x => x.CurrentP);
+            statistics.MaxQ = retVal.Max(x => x.CurrentQ);
+            statistics.MaxV = retVal.Max(x => x.CurrentV);
+            statistics.MinP = retVal.Min(x => x.CurrentP);
+            statistics.MinQ = retVal.Min(x => x.CurrentQ);
+            statistics.MinV = retVal.Min(x => x.CurrentV);
+            statistics.AvgP = retVal.Average(x => x.CurrentP);
+            statistics.AvgQ = retVal.Average(x => x.CurrentQ);
+            statistics.AvgV = retVal.Average(x => x.CurrentV);
+            statistics.IntegralP = 0;
+            statistics.IntegralQ = 0;
+            statistics.IntegralV = 0;
+
+            for(int i=0;i<retVal.Count - 1;i++)
+            {
+                statistics.IntegralP += (retVal[i].CurrentP * (((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds)) / 3600) + ((((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds) / 3600) * (retVal[i + 1].CurrentP - retVal[i].CurrentP)) / 2;
+                statistics.IntegralQ += (retVal[i].CurrentQ * (((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds)) / 3600) + ((((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds) / 3600) * (retVal[i + 1].CurrentQ - retVal[i].CurrentQ)) / 2;
+                statistics.IntegralV += (retVal[i].CurrentV * (((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds)) / 3600) + ((((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds) / 3600) * (retVal[i + 1].CurrentV - retVal[i].CurrentV)) / 2;
+            }
+
+            return new Tuple<List<DynamicMeasurement>, Statistics>(retVal, statistics);
         }
 
         public void EnlistMeas(List<ResourceDescription> measurements)
@@ -118,7 +142,7 @@ namespace CalculationEngine
         {
             foreach(ResourceDescription rd in meas)
             {
-                DynamicMeasurement newMeas = new DynamicMeasurement(rd.Id);
+                DynamicMeasurement newMeas = new DynamicMeasurement(rd.Id, DateTime.Now);
                 newMeas.OperationType = OperationType.INSERT;
                 dataBaseAdapter.AddMeasurement(newMeas);
             }

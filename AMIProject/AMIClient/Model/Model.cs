@@ -17,6 +17,7 @@ using TC57CIM.IEC61970.Meas;
 using System.ComponentModel;
 using FTN.Common.Logger;
 using FTN.Services.NetworkModelService.DataModel;
+using FTN.Services.NetworkModelService.DataModel.Dynamic;
 
 namespace AMIClient
 {
@@ -565,7 +566,7 @@ namespace AMIClient
             }
         }
 
-        public List<DynamicMeasurement> GetMeasForChart(long gid, DateTime from, DateTime to)
+        public Tuple<List<DynamicMeasurement>, Statistics> GetMeasForChart(long gid, DateTime from, DateTime to)
         {
             return this.CEQueryProxy.GetMeasurementsForChartView(gid, from, to);
         }

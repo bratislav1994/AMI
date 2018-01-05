@@ -28,7 +28,7 @@ namespace SCADA
         private bool firstTimeCoordinator = true;
         private bool firstTimeCE = true;
         private Dictionary<int, List<MeasurementForScada>> measurements;
-        private List<SOEHandler> handlers;
+        private Dictionary<int, SOEHandler> handlers;
         private IDNP3Manager mgr;
         private ITransactionDuplexScada proxyCoordinator;
         private List<ResourceDescription> measurementsToEnlist;
@@ -101,7 +101,7 @@ namespace SCADA
                 addressPool.Add(i, new RTUAddress() { IsConnected = false, Cnt = 0 });
             }
 
-            handlers = new List<SOEHandler>();
+            handlers = new Dictionary<int, SOEHandler>();
             measurements = new Dictionary<int, List<MeasurementForScada>>();
             copyMeasurements = new Dictionary<int, List<MeasurementForScada>>();
             resourcesToSend = new List<DynamicMeasurement>();
@@ -160,6 +160,7 @@ namespace SCADA
             {
                 TC57CIM.IEC61970.Meas.Analog m = new TC57CIM.IEC61970.Meas.Analog();
                 m.RD2Class(rd);
+                m.GlobalId = rd.Id;
 
                 switch (m.UnitSymbol)
                 {
@@ -313,7 +314,7 @@ namespace SCADA
             {
                 lock (lockObject)
                 {
-                    foreach (SOEHandler handler in handlers)
+                    foreach (SOEHandler handler in handlers.Values)
                     {
                         if (handler.HasNewMeas)
                         {
@@ -333,47 +334,6 @@ namespace SCADA
         public void Dispose()
         {
             sendingThread.Abort();
-        }
-
-        private void Serialize(Dictionary<int, ResourceDescription> measurements)
-        {
-            Logger.LogMessageToFile(string.Format("SCADA.Scada.Serialize; line: {0}; Start the Serialize function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            TextWriter tw = new StreamWriter("Measurements.xml");
-            List<ClassForSerialization> meas = new List<ClassForSerialization>(measurements.Count);
-
-            foreach (int key in measurements.Keys)
-            {
-                meas.Add(new ClassForSerialization(key, measurements[key]));
-            }
-
-            XmlSerializer serializer = new XmlSerializer(typeof(List<ClassForSerialization>));
-            serializer.Serialize(tw, meas);
-            tw.Close();
-            Logger.LogMessageToFile(string.Format("SCADA.Scada.Serialize; line: {0}; Finish the Serialize function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-        }
-
-        private void Deserialize(Dictionary<int, ResourceDescription> measurements)
-        {
-            try
-            {
-                Logger.LogMessageToFile(string.Format("SCADA.Scada.Deserialize; line: {0}; Start the Deserialize function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                TextReader tr = new StreamReader(File.OpenRead("Measurements.xml"));
-                measurements.Clear();
-                XmlSerializer serializer = new XmlSerializer(typeof(List<ClassForSerialization>));
-                List<ClassForSerialization> meas = (List<ClassForSerialization>)serializer.Deserialize(tr);
-                tr.Close();
-
-                foreach (ClassForSerialization cfs in meas)
-                {
-                    measurements.Add(cfs.Key, cfs.Rd);
-                }
-
-                Logger.LogMessageToFile(string.Format("SCADA.Scada.Deserialize; line: {0}; Finish the Deserialize function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            }
-            catch
-            {
-                Logger.LogMessageToFile(string.Format("SCADA.Scada.Deserialize; line: {0}; Deserialization failed", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            }
         }
 
         public void ReadDataFromDB(Dictionary<int, List<MeasurementForScada>> measurements)
@@ -407,29 +367,54 @@ namespace SCADA
                     addressPool[ret].IsConnected = true;
                     break;
                 }
+                else
+                {
+                    try
+                    {
+                        this.simulators[kvp.Key].Ping();
+                    }
+                    catch
+                    {
+                        this.simulators.Remove(kvp.Key);
+                        lock (lockObject)
+                        {
+                            handlers.Remove(kvp.Key);
+                        }
+                        ret = kvp.Key;
+                        this.simulators.Add(kvp.Key, OperationContext.Current.GetCallbackChannel<ISimulator>());
+                        addressPool[ret].IsConnected = true;
+                        break;
+                    }
+                }
             }
 
-            if (!measurements.ContainsKey(ret))
+            if (ret != 0)
             {
-                measurements.Add(ret, new List<MeasurementForScada>());
+                if (!measurements.ContainsKey(ret))
+                {
+                    measurements.Add(ret, new List<MeasurementForScada>());
+                }
+
+                var handler = new SOEHandler(measurements[ret], resourcesToSend, ref lockObject);
+                lock (lockObject)
+                {
+                    handlers.Add(ret, handler);
+                }
+                var channel = mgr.AddTCPClient("outstation" + ret, LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", (ushort)(20000 + ret), ChannelListener.Print());
+
+                var config = new MasterStackConfig();
+                config.link.localAddr = 1;
+                config.link.remoteAddr = (ushort)ret;
+
+                var master = channel.AddMaster("master", handler, DefaultMasterApplication.Instance, config);
+                config.master.disableUnsolOnStartup = false;
+
+                var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.MaxValue, TaskConfig.Default);
+
+                master.Enable();
+
+                f.AddSimulator(new WrapperDB(ret));
             }
-
-            var handler = new SOEHandler(measurements[ret], resourcesToSend, ref lockObject);
-            handlers.Add(handler);
-            var channel = mgr.AddTCPClient("outstation" + ret, LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", (ushort)(20000 + ret), ChannelListener.Print());
-
-            var config = new MasterStackConfig();
-            config.link.localAddr = 1;
-            config.link.remoteAddr = (ushort)ret;
-
-            var master = channel.AddMaster("master", handler, DefaultMasterApplication.Instance, config);
-            config.master.disableUnsolOnStartup = false;
-
-            var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.MaxValue, TaskConfig.Default);
-
-            master.Enable();
-
-            f.AddSimulator(new WrapperDB(ret));
 
             return ret;
         }
