@@ -204,5 +204,10 @@ namespace AMISimulator
                 this.numberOfInstalledPoints -= decrease;
             }
         }
+
+        public bool Ping()
+        {
+            return true;
+        }
     }
 }

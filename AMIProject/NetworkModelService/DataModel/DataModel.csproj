@@ -104,6 +104,7 @@
     <Compile Include="Core\VoltageLevel.cs" />
     <Compile Include="Dynamic\DynamicMeasurement.cs" />
     <Compile Include="Dynamic\MeasurementForScada.cs" />
+    <Compile Include="Dynamic\Statistics.cs" />
     <Compile Include="Dynamic\WrapperDB.cs" />
     <Compile Include="Meas\Analog.cs" />
     <Compile Include="Meas\Discrete.cs" />

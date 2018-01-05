@@ -17,5 +17,8 @@ namespace FTN.ServiceContracts
 
         [OperationContract]
         void Rollback(int decrease);
+
+        [OperationContract]
+        bool Ping();
     }
 }

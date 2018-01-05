@@ -49,6 +49,7 @@ namespace SCADA
                     List<IndexedValue<Automatak.DNP3.Interface.Analog>> analogs = new List<IndexedValue<Automatak.DNP3.Interface.Analog>>();
                     analogs.AddRange(values.ToList());
                     Dictionary<long, DynamicMeasurement> localDic = new Dictionary<long, DynamicMeasurement>(this.measurements.Count / 3);
+                    DateTime timeStamp = DateTime.Now;
 
                     foreach (IndexedValue<Automatak.DNP3.Interface.Analog> analog in analogs)
                     {
@@ -61,30 +62,30 @@ namespace SCADA
                                 switch (analog.Index % 3)
                                 {
                                     case 0:
-                                        localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog);// (float)analog.Value.Value;
+                                        localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog);
                                         break;
                                     case 1:
-                                        localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog);//(float)analog.Value.Value;
+                                        localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog);
                                         break;
                                     case 2:
-                                        localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog);//(float)analog.Value.Value;
+                                        localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog);
                                         break;
                                 }
                             }
                             else
                             {
-                                localDic.Add(a.PowerSystemResourceRef, new DynamicMeasurement(a.PowerSystemResourceRef));
+                                localDic.Add(a.PowerSystemResourceRef, new DynamicMeasurement(a.PowerSystemResourceRef, timeStamp));
 
                                 switch (analog.Index % 3)
                                 {
                                     case 0:
-                                        localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog);//(float)analog.Value.Value;
+                                        localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog);
                                         break;
                                     case 1:
-                                        localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog);//(float)analog.Value.Value;
+                                        localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog);
                                         break;
                                     case 2:
-                                        localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog);//(float)analog.Value.Value;
+                                        localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog);
                                         break;
                                 }
                             }
