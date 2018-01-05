@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Wires;
@@ -19,8 +20,6 @@ namespace AMIClient.ViewModels
         private Model model;
         private ObservableCollection<RootElement> rootElements;
         private static NetworkPreviewViewModel instance;
-        private EnergyConsumerForTable selectedAMI;
-        private ChartWindow chartWin;
         private ChartViewModel cvm;
 
         public NetworkPreviewViewModel()
@@ -76,36 +75,37 @@ namespace AMIClient.ViewModels
             this.cvm.SetModel(model);
         }
 
-        //private ICommand selectedAMICommand;
+        private RelayCommand individualAmiChartCommand;
 
-        //public ICommand SelectedAMICommand
-        //{
-        //    get { return selectedAMICommand ?? (selectedAMICommand = new DelegateCommand<string>(SelectedAMIAction)); }
-        //}
-
-        public EnergyConsumerForTable SelectedAMI
+        public ICommand IndividualAmiChartCommand
         {
             get
             {
-                return selectedAMI;
-            }
-
-            set
-            {
-                selectedAMI = value;
-
-                if (value != null)
-                {
-                    this.SelectedAMIAction();
-                }
-
-                RaisePropertyChanged("SelectedAMI");
+                return this.individualAmiChartCommand ?? (this.individualAmiChartCommand = new RelayCommand(this.SelectedAMIAction, param => true));
             }
         }
 
-        private void SelectedAMIAction()
+        private void SelectedAMIAction(object gid)
         {
-            cvm.OpenWindow(this.SelectedAMI.Ami.GlobalId);
+            cvm.OpenWindow((long)gid);
+        }
+
+        private RelayCommand groupAmiChartCommand;
+
+        public ICommand GroupAMIChartCommand
+        {
+            get
+            {
+                return this.groupAmiChartCommand ?? (this.groupAmiChartCommand = new RelayCommand(this.SelectedAMIsAction, param => true));
+            }
+        }
+
+        private void SelectedAMIsAction(object selectedTreeView)
+        {
+            object o = selectedTreeView;
+            //TreeView selected = (TreeView)selectedTreeView;
+            //RootElement root = (RootElement)selected.Items.CurrentItem;
+            
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
