@@ -97,9 +97,40 @@ namespace CalculationEngine
             this.clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
         }
 
-        public Tuple<List<DynamicMeasurement>, Statistics> GetMeasurementsForChartView(long gid, DateTime from, DateTime to)
+        public Tuple<List<DynamicMeasurement>, Statistics> GetMeasurementsForChartView(List<long> gids, DateTime from, DateTime to)
         {
-            List<DynamicMeasurement> retVal = dataBaseAdapter.GetMeasForChart(gid, from, to);
+            List<DynamicMeasurement> result = dataBaseAdapter.GetMeasForChart(gids, from, to);
+            DateTime min = result.Min(x => x.TimeStamp);
+            DateTime max = result.Max(x => x.TimeStamp);
+            Dictionary<DateTime, DynamicMeasurement> temp = new Dictionary<DateTime, DynamicMeasurement>();
+            
+            for(DateTime t=min; t<=max;t = t.AddSeconds(3))
+            {
+                temp.Add(t, new DynamicMeasurement());
+                temp[t].CurrentP = 0;
+                temp[t].CurrentQ = 0;
+                temp[t].CurrentV = 0;
+                temp[t].TimeStamp = t;
+            }
+
+            if(!temp.ContainsKey(max))
+            {
+                temp.Add(max, new DynamicMeasurement());
+                temp[max].CurrentP = 0;
+                temp[max].CurrentQ = 0;
+                temp[max].CurrentV = 0;
+                temp[max].TimeStamp = max;
+            }
+
+            foreach(DynamicMeasurement dm in result)
+            {
+                DateTime dt = temp.Keys.Where(x => (Math.Abs((x - dm.TimeStamp).TotalSeconds) < 1.5)).FirstOrDefault();
+                temp[dt].CurrentP += dm.CurrentP;
+                temp[dt].CurrentQ += dm.CurrentQ;
+                temp[dt].CurrentV += dm.CurrentV;
+            }
+
+            List<DynamicMeasurement> retVal = temp.Values.ToList();
 
             Statistics statistics = new Statistics();
             statistics.MaxP = retVal.Max(x => x.CurrentP);
@@ -115,13 +146,13 @@ namespace CalculationEngine
             statistics.IntegralQ = 0;
             statistics.IntegralV = 0;
 
-            for(int i=0;i<retVal.Count - 1;i++)
+            for(int i=0;i< retVal.Count - 1;i++)
             {
-                statistics.IntegralP += (retVal[i].CurrentP * (((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds)) / 3600) + ((((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds) / 3600) * (retVal[i + 1].CurrentP - retVal[i].CurrentP)) / 2;
-                statistics.IntegralQ += (retVal[i].CurrentQ * (((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds)) / 3600) + ((((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds) / 3600) * (retVal[i + 1].CurrentQ - retVal[i].CurrentQ)) / 2;
-                statistics.IntegralV += (retVal[i].CurrentV * (((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds)) / 3600) + ((((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds) / 3600) * (retVal[i + 1].CurrentV - retVal[i].CurrentV)) / 2;
+                statistics.IntegralP += (retVal[i].CurrentP * (((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds)) / 3600) + ((((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(retVal[i + 1].CurrentP - retVal[i].CurrentP))) / 2;
+                statistics.IntegralQ += (retVal[i].CurrentQ * (((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds)) / 3600) + ((((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(retVal[i + 1].CurrentQ - retVal[i].CurrentQ))) / 2;
+                statistics.IntegralV += (retVal[i].CurrentV * (((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds)) / 3600) + ((((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(retVal[i + 1].CurrentV - retVal[i].CurrentV))) / 2;
             }
-
+            
             return new Tuple<List<DynamicMeasurement>, Statistics>(retVal, statistics);
         }
 

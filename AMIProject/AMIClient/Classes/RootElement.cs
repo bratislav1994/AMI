@@ -1,4 +1,5 @@
-﻿using FTN.Common.Logger;
+﻿using AMIClient.ViewModels;
+using FTN.Common.Logger;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -78,10 +79,16 @@ namespace AMIClient
                 if (value != base.isSelected)
                 {
                     base.isSelected = value;
-                    base.Model.ClearPositions();
-                    Model.GetAllAmis();
-                    
-                    this.OnPropertyChanged("IsSelected");
+                    if (!NetworkPreviewViewModel.Instance.IsRightClick())
+                    {
+                        if (value)
+                        {
+                            base.Model.ClearPositions();
+                            Model.GetAllAmis(false);
+
+                            this.OnPropertyChanged("IsSelected");
+                        }
+                    }
                 }
             }
         }
@@ -129,7 +136,7 @@ namespace AMIClient
         {
             Logger.LogMessageToFile(string.Format("AMIClient.RootElement.LoadChildren; line: {0}; Start the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             this.Model.GeoRegions.Clear();
-            this.Model.GetAllRegions();
+            this.Model.GetAllRegions(false);
 
             if (this.Model.GeoRegions != null)
             {
@@ -173,7 +180,7 @@ namespace AMIClient
                             base.Model.ClearAmis();
                             if (IsSelected)
                             {
-                                this.Model.GetAllAmis();
+                                this.Model.GetAllAmis(false);
                             }
                             else
                             {

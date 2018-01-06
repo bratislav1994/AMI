@@ -262,39 +262,114 @@ namespace AMIClient
 
         #region GDAQueryService
         
-        public void GetAllRegions()
+        public List<GeographicalRegion> GetAllRegions(bool returnValue)
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllRegions; line: {0}; Start the GetAllRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             GeoRegions.Clear();
-            GetExtentValues(ModelCode.GEOREGION);
-            //return GeoRegions;
+            List<IdentifiedObject> results = GetExtentValues(ModelCode.GEOREGION);
+            if (!returnValue)
+            {
+                foreach (GeographicalRegion gr in results)
+                {
+                    GeoRegions.Add(gr);
+                }
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllRegions; line: {0}; Start the GetAllRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                return null;
+            }
+            else
+            {
+                List<GeographicalRegion> retVal = new List<GeographicalRegion>();
+                foreach (GeographicalRegion gr in results)
+                {
+                    retVal.Add(gr);
+                }
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllRegions; line: {0}; Start the GetAllRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                return retVal;
+            }
         }
 
-        public void GetAllSubRegions()
+        public List<SubGeographicalRegion> GetAllSubRegions(bool returnValue)
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllSubRegions; line: {0}; Start the GetAllSubRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             SubGeoRegions.Clear();
-            GetExtentValues(ModelCode.SUBGEOREGION);
-            //return SubGeoRegions;
+            List<IdentifiedObject> results = GetExtentValues(ModelCode.SUBGEOREGION);
+
+            if (!returnValue)
+            {
+                foreach (SubGeographicalRegion sgr in results)
+                {
+                    SubGeoRegions.Add(sgr);
+                }
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllSubRegions; line: {0}; Start the GetAllSubRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                return null;
+            }
+            else
+            {
+                List<SubGeographicalRegion> retVal = new List<SubGeographicalRegion>();
+                foreach (SubGeographicalRegion sgr in results)
+                {
+                    retVal.Add(sgr);
+                }
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllSubRegions; line: {0}; Start the GetAllSubRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                return retVal;
+            }
         }
 
-        public void GetAllSubstations()
+        public List<Substation> GetAllSubstations(bool returnValue)
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllSubstations; line: {0}; Start the GetAllSubstations function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             Substations.Clear();
-            GetExtentValues(ModelCode.SUBSTATION);
-            //return Substations;
+            List<IdentifiedObject> results = GetExtentValues(ModelCode.SUBSTATION);
+            if (!returnValue)
+            {
+                foreach (Substation ss in results)
+                {
+                    Substations.Add(ss);
+                }
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllSubstations; line: {0}; Start the GetAllSubstations function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                return null;
+            }
+            else
+            {
+                List<Substation> retVal = new List<Substation>();
+                foreach (Substation ss in results)
+                {
+                    retVal.Add(ss);
+                }
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllSubstations; line: {0}; Start the GetAllSubstations function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                return retVal;
+            }
         }
 
-        public void GetAllAmis()
+        public List<EnergyConsumerForTable> GetAllAmis(bool returnValue)
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllAmis; line: {0}; Start the GetAllAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             this.ClearPositions();
-            GetExtentValues(ModelCode.ENERGYCONS);
-            //return Amis;
+            List<IdentifiedObject> results = GetExtentValues(ModelCode.ENERGYCONS);
+
+            if (!returnValue)
+            {
+                foreach (EnergyConsumer ec in results)
+                {
+                    Amis.Add(new EnergyConsumerForTable(ec));
+                    positions.Add(ec.GlobalId, Amis.Count - 1);
+                }
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllAmis; line: {0}; Start the GetAllAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                return null;
+            }
+            else
+            {
+                List<EnergyConsumerForTable> retVal = new List<EnergyConsumerForTable>();
+                foreach (EnergyConsumer ec in results)
+                {
+                    retVal.Add(new EnergyConsumerForTable(ec));
+                }
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllAmis; line: {0}; Start the GetAllAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                return retVal;
+            }
         }
 
-        private void GetExtentValues(ModelCode modelCode)
+        private List<IdentifiedObject> GetExtentValues(ModelCode modelCode)
         {
             Substations.Clear();
             ClearAmis();
@@ -302,7 +377,7 @@ namespace AMIClient
             CommonTrace.WriteTrace(CommonTrace.TraceError, message);
             int iteratorId = 0;
             List<long> ids = new List<long>();
-            
+            List<IdentifiedObject> retVal = new List<IdentifiedObject>();
 
             try
             {
@@ -327,23 +402,27 @@ namespace AMIClient
                             case ModelCode.GEOREGION:
                                 GeographicalRegion gr = new GeographicalRegion();
                                 gr.RD2Class(rds[i]);
-                                GeoRegions.Add(gr);
+                                //GeoRegions.Add(gr);
+                                retVal.Add(gr);
                                 break;
                             case ModelCode.SUBGEOREGION:
                                 SubGeographicalRegion sgr = new SubGeographicalRegion();
                                 sgr.RD2Class(rds[i]);
-                                SubGeoRegions.Add(sgr);
+                                //SubGeoRegions.Add(sgr);
+                                retVal.Add(sgr);
                                 break;
                             case ModelCode.SUBSTATION:
                                 Substation ss = new Substation();
                                 ss.RD2Class(rds[i]);
-                                Substations.Add(ss);
+                                //Substations.Add(ss);
+                                retVal.Add(ss);
                                 break;
                             case ModelCode.ENERGYCONS:
                                 EnergyConsumer ec = new EnergyConsumer();
                                 ec.RD2Class(rds[i]);
-                                Amis.Add(new EnergyConsumerForTable(ec));
-                                positions.Add(ec.GlobalId, Amis.Count - 1);
+                                retVal.Add(ec);
+                                //Amis.Add(new EnergyConsumerForTable(ec));
+                                //positions.Add(ec.GlobalId, Amis.Count - 1);
                                 break;
 
                             default:
@@ -360,7 +439,6 @@ namespace AMIClient
 
                 message = "Getting extent values method successfully finished.";
                 CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-
             }
             catch (Exception e)
             {
@@ -374,6 +452,7 @@ namespace AMIClient
                     new Thread(() => ConnectToNMS()).Start();
                 }
             }
+            return retVal;
         }
 
         public ModelCode GetModelCodeFromDmsType(DMSType type)
@@ -408,7 +487,7 @@ namespace AMIClient
             }
         }
 
-        public void GetSomeSubregions(long regionId)
+        public List<SubGeographicalRegion> GetSomeSubregions(long regionId, bool returnValue)
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubregions; line: {0}; Start the GetSomeSubregions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
 
@@ -416,13 +495,29 @@ namespace AMIClient
             Association associtaion = new Association();
             associtaion.PropertyId = ModelCode.GEOREGION_SUBGEOREGIONS;
             associtaion.Type = ModelCode.SUBGEOREGION;
-            GetRelatedValues(regionId, properties, associtaion, ModelCode.SUBGEOREGION);
-
-            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubregions; line: {0}; Finish the GetSomeSubregions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            //return SubGeoRegions;
+            List<IdentifiedObject> results = GetRelatedValues(regionId, properties, associtaion, ModelCode.SUBGEOREGION);
+            if (!returnValue)
+            {
+                foreach (SubGeographicalRegion sgr in results)
+                {
+                    SubGeoRegions.Add(sgr);
+                }
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubregions; line: {0}; Finish the GetSomeSubregions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                return null;
+            }
+            else
+            {
+                List<SubGeographicalRegion> retVal = new List<SubGeographicalRegion>();
+                foreach (SubGeographicalRegion sgr in results)
+                {
+                    retVal.Add(sgr);
+                }
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubregions; line: {0}; Finish the GetSomeSubregions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                return retVal;
+            }
         }
 
-        public void GetSomeSubstations(long subRegionId)
+        public List<Substation> GetSomeSubstations(long subRegionId, bool returnValue)
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubstation; line: {0}; Start the GetSomeSubstation function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
 
@@ -431,12 +526,29 @@ namespace AMIClient
             associtaion.PropertyId = ModelCode.SUBGEOREGION_SUBS;
             associtaion.Type = ModelCode.SUBSTATION;
             GetRelatedValues(subRegionId, properties, associtaion, ModelCode.SUBSTATION);
-
-            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubstation; line: {0}; Finish the GetSomeSubstations function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            //return Substations;
+            List<IdentifiedObject> results = GetRelatedValues(subRegionId, properties, associtaion, ModelCode.SUBSTATION);
+            if (!returnValue)
+            {
+                foreach (Substation ss in results)
+                {
+                    Substations.Add(ss);
+                }
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubstation; line: {0}; Start the GetSomeSubstation function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                return null;
+            }
+            else
+            {
+                List<Substation> retVal = new List<Substation>();
+                foreach (Substation ss in results)
+                {
+                    retVal.Add(ss);
+                }
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubstation; line: {0}; Start the GetSomeSubstation function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                return retVal;
+            }
         }
 
-        public void GetSomeAmis(long substationId)
+        public List<EnergyConsumerForTable> GetSomeAmis(long substationId, bool returnValue)
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeAmis; line: {0}; Start the GetSomeAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
 
@@ -444,14 +556,32 @@ namespace AMIClient
             Association associtaion = new Association();
             associtaion.PropertyId = ModelCode.EQCONTAINER_EQUIPMENTS;
             associtaion.Type = ModelCode.ENERGYCONS;
-            GetRelatedValues(substationId, properties, associtaion, ModelCode.ENERGYCONS);
-
-            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeAmis; line: {0}; Finish the GetSomeAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            //return Amis;
+            List<IdentifiedObject> results = GetRelatedValues(substationId, properties, associtaion, ModelCode.ENERGYCONS);
+            if (!returnValue)
+            {
+                foreach (EnergyConsumer ec in results)
+                {
+                    Amis.Add(new EnergyConsumerForTable(ec));
+                    positions.Add(ec.GlobalId, Amis.Count - 1);
+                }
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeAmis; line: {0}; Finish the GetSomeAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                return null;
+            }
+            else
+            {
+                List<EnergyConsumerForTable> retVal = new List<EnergyConsumerForTable>();
+                foreach(EnergyConsumer ec in results)
+                {
+                    retVal.Add(new EnergyConsumerForTable(ec));
+                }
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeAmis; line: {0}; Finish the GetSomeAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                return retVal;
+            }
         }
 
-        private void GetRelatedValues(long source, List<ModelCode> propIds, Association association, ModelCode modelCode)
+        private List<IdentifiedObject> GetRelatedValues(long source, List<ModelCode> propIds, Association association, ModelCode modelCode)
         {
+            List<IdentifiedObject> retVal = new List<IdentifiedObject>();
             try
             {
                 int iteratorId = GdaQueryProxy.GetRelatedValues(source, propIds, association);
@@ -474,7 +604,8 @@ namespace AMIClient
                         {
                             SubGeographicalRegion sgr = new SubGeographicalRegion();
                             sgr.RD2Class(rd);
-                            SubGeoRegions.Add(sgr);
+                            //SubGeoRegions.Add(sgr);
+                            retVal.Add(sgr);
                         }
                         break;
                     case ModelCode.SUBSTATION:
@@ -482,7 +613,8 @@ namespace AMIClient
                         {
                             Substation ss = new Substation();
                             ss.RD2Class(rd);
-                            Substations.Add(ss);
+                            //Substations.Add(ss);
+                            retVal.Add(ss);
                         }
                         break;
                     case ModelCode.ENERGYCONS:
@@ -490,14 +622,16 @@ namespace AMIClient
                         {
                             EnergyConsumer ec = new EnergyConsumer();
                             ec.RD2Class(rd);
-                            Amis.Add(new EnergyConsumerForTable(ec));
-                            positions.Add(ec.GlobalId, Amis.Count - 1);
+                            retVal.Add(ec);
+                            //Amis.Add(new EnergyConsumerForTable(ec));
+                            //positions.Add(ec.GlobalId, Amis.Count - 1);
                         }
                         break;
 
                     default:
                         break;
                 }
+               
             }
             catch(Exception e)
             {
@@ -511,6 +645,7 @@ namespace AMIClient
                     new Thread(() => ConnectToNMS()).Start();
                 }
             }
+            return retVal;
         }
 
         #endregion GDAQueryService
@@ -566,9 +701,9 @@ namespace AMIClient
             }
         }
 
-        public Tuple<List<DynamicMeasurement>, Statistics> GetMeasForChart(long gid, DateTime from, DateTime to)
+        public Tuple<List<DynamicMeasurement>, Statistics> GetMeasForChart(List<long> gids, DateTime from, DateTime to)
         {
-            return this.CEQueryProxy.GetMeasurementsForChartView(gid, from, to);
+            return this.CEQueryProxy.GetMeasurementsForChartView(gids, from, to);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

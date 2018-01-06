@@ -114,8 +114,7 @@
             </DVC:Chart.LegendStyle>
 
             <DVC:Chart.Series>
-                <DVC:LineSeries BorderBrush="White" Background="Red" Title="Data history"
-                    DataPointStyle="{StaticResource DataPointStyle1}"
+                <DVC:AreaSeries BorderBrush="White" Background="Red" Title="Data history"
                     ItemsSource="{Binding DataHistoryP, UpdateSourceTrigger=PropertyChanged}"
                     IndependentValueBinding="{Binding Path=Key}"
                     DependentValueBinding="{Binding Path=Value}" Margin="0,0,0,-2"/>
@@ -150,8 +149,7 @@
             </DVC:Chart.LegendStyle>
 
             <DVC:Chart.Series>
-                <DVC:ColumnSeries BorderBrush="White" Background="Red" Title="Data history"
-                    
+                <DVC:AreaSeries BorderBrush="White" Background="Red" Title="Data history"
                     ItemsSource="{Binding DataHistoryV}"
                     IndependentValueBinding="{Binding Path=Key}"
                     DependentValueBinding="{Binding Path=Value}" Margin="0,0,0,-2"/>

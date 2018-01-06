@@ -16,6 +16,6 @@ namespace FTN.ServiceContracts
         void ConnectClient();
 
         [OperationContract]
-        Tuple<List<DynamicMeasurement>, Statistics> GetMeasurementsForChartView(long gid, DateTime from, DateTime to);
+        Tuple<List<DynamicMeasurement>, Statistics> GetMeasurementsForChartView(List<long> gids, DateTime from, DateTime to);
     }
 }

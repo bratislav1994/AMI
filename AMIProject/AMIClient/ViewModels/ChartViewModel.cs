@@ -26,7 +26,7 @@ namespace AMIClient.ViewModels
         private Model model;
         private bool fromPeriodEntered = false;
         private bool toPeriodEntered = false;
-        private long amiGid;
+        private List<long> amiGids;
 
         public ChartViewModel()
         {
@@ -182,16 +182,16 @@ namespace AMIClient.ViewModels
             }
         }
 
-        public long AmiGid
+        public List<long> AmiGids
         {
             get
             {
-                return amiGid;
+                return amiGids;
             }
 
             set
             {
-                amiGid = value;
+                amiGids = value;
             }
         }
 
@@ -237,7 +237,7 @@ namespace AMIClient.ViewModels
                 to = DateTime.Now;
             }
 
-            Tuple<List<DynamicMeasurement>, Statistics> measForChart = this.Model.GetMeasForChart(AmiGid, from, to);
+            Tuple<List<DynamicMeasurement>, Statistics> measForChart = this.Model.GetMeasForChart(AmiGids, from, to);
             List<KeyValuePair<DateTime, float>> tempP = new List<KeyValuePair<DateTime, float>>();
             List<KeyValuePair<DateTime, float>> tempQ = new List<KeyValuePair<DateTime, float>>();
             List<KeyValuePair<DateTime, float>> tempV = new List<KeyValuePair<DateTime, float>>();
@@ -254,9 +254,9 @@ namespace AMIClient.ViewModels
             this.DataHistoryV = tempV;
         }
 
-        public void OpenWindow(long amiGid)
+        public void OpenWindow(List<long> amiGids)
         {
-            this.AmiGid = amiGid;
+            this.AmiGids = amiGids;
             this.chartWin = new ChartWindow(this);
             this.chartWin.ShowDialog();
         }

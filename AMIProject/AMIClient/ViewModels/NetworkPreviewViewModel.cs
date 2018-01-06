@@ -21,11 +21,13 @@ namespace AMIClient.ViewModels
         private ObservableCollection<RootElement> rootElements;
         private static NetworkPreviewViewModel instance;
         private ChartViewModel cvm;
+        private bool rightClick;
 
         public NetworkPreviewViewModel()
         {
             cvm = new ChartViewModel();
             rootElements = new ObservableCollection<RootElement>();
+            RightClick = false;
         }
 
         public static NetworkPreviewViewModel Instance
@@ -87,25 +89,112 @@ namespace AMIClient.ViewModels
 
         private void SelectedAMIAction(object gid)
         {
-            cvm.OpenWindow((long)gid);
+            cvm.OpenWindow(new List<long>() { (long)gid });
         }
 
-        private RelayCommand groupAmiChartCommand;
+        private ICommand groupAmiChartCommand;
 
         public ICommand GroupAMIChartCommand
         {
             get
             {
-                return this.groupAmiChartCommand ?? (this.groupAmiChartCommand = new RelayCommand(this.SelectedAMIsAction, param => true));
+                return this.groupAmiChartCommand ?? (this.groupAmiChartCommand = new DelegateCommand<object>(this.SelectedAMIsAction, param => true));
+            }
+        }
+
+        public bool RightClick
+        {
+            get
+            {
+                return rightClick;
+            }
+
+            set
+            {
+                rightClick = value;
             }
         }
 
         private void SelectedAMIsAction(object selectedTreeView)
         {
             object o = selectedTreeView;
-            //TreeView selected = (TreeView)selectedTreeView;
-            //RootElement root = (RootElement)selected.Items.CurrentItem;
-            
+            TreeView selected = (TreeView)selectedTreeView;
+            TreeClasses selectedItem = (TreeClasses)selected.SelectedItem;
+            Type t = selectedItem.GetType();
+            switch(t.Name)
+            {
+                case "RootElement":
+                    List<GeographicalRegion> geoRegionsC1 = this.Model.GetAllRegions(true);
+                    List<SubGeographicalRegion> subGeoRegionsC1 = this.Model.GetAllSubRegions(true);
+                    List<Substation> substationsC1 = this.Model.GetAllSubstations(true);
+                    List<EnergyConsumerForTable> amisC1 = this.Model.GetAllAmis(true);
+                    List<long> ecsC1 = new List<long>();
+                    foreach (EnergyConsumerForTable ect in amisC1)
+                    {
+                        ecsC1.Add(ect.Ami.GlobalId);
+                    }
+                    cvm.OpenWindow(ecsC1);
+                    break;
+                case "GeoRegionForTree":
+                    List<SubGeographicalRegion> subRegionsC2 = this.Model.GetSomeSubregions(((GeoRegionForTree)selectedItem).GeoRegion.GlobalId, true);
+                    List<Substation> substationsC2 = new List<Substation>();
+                    List<EnergyConsumerForTable> amisC2 = new List<EnergyConsumerForTable>();
+                    List<long> ecsC2 = new List<long>();
+                    foreach(SubGeographicalRegion sgr in subRegionsC2)
+                    {
+                        substationsC2.AddRange(this.Model.GetSomeSubstations(sgr.GlobalId, true));
+                    }
+                    foreach(Substation ss in substationsC2)
+                    {
+                        amisC2.AddRange(this.Model.GetSomeAmis(ss.GlobalId, true));
+                    }
+                    foreach(EnergyConsumerForTable ect in amisC2)
+                    {
+                        ecsC2.Add(ect.Ami.GlobalId);
+                    }
+                    cvm.OpenWindow(ecsC2);
+                    break;
+                case "SubGeoRegionForTree":
+                    List<Substation> substationsC3 = this.Model.GetSomeSubstations(((SubGeoRegionForTree)selectedItem).SubGeoRegion.GlobalId, true);
+                    List<EnergyConsumerForTable> amisC3 = new List<EnergyConsumerForTable>();
+                    List<long> ecsC3 = new List<long>();
+                    foreach (Substation ss in substationsC3)
+                    {
+                        amisC3.AddRange(this.Model.GetSomeAmis(ss.GlobalId, true));
+                    }
+                    foreach (EnergyConsumerForTable ect in amisC3)
+                    {
+                        ecsC3.Add(ect.Ami.GlobalId);
+                    }
+                    cvm.OpenWindow(ecsC3);
+                    break;
+                case "SubstationForTree":
+                    List<EnergyConsumerForTable> amisC4 = this.Model.GetSomeAmis(((SubstationForTree)selectedItem).Substation.GlobalId, true);
+                    List<long> ecsC4 = new List<long>();
+                    foreach (EnergyConsumerForTable ect in amisC4)
+                    {
+                        ecsC4.Add(ect.Ami.GlobalId);
+                    }
+                    cvm.OpenWindow(ecsC4);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void RightClickOn()
+        {
+            this.RightClick = true;
+        }
+
+        public void RightClickOff()
+        {
+            this.RightClick = false;
+        }
+
+        public bool IsRightClick()
+        {
+            return RightClick;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

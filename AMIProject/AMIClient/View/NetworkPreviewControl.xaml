@@ -17,7 +17,7 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <TreeView Grid.Column="0" ItemsSource="{Binding RootElements}" x:Name="tree">
+        <TreeView Grid.Column="0" ItemsSource="{Binding RootElements}" x:Name="tree" PreviewMouseRightButtonDown="tree_PreviewMouseRightButtonDown">
 
             <!--<TreeView.ContextMenu>
                 <ContextMenu >
@@ -55,11 +55,11 @@
                         <TextBlock x:Name="t1" Text="{Binding Name}">
 
                             <TextBlock.ContextMenu>
-                                <ContextMenu >
+                                <ContextMenu DataContext="{x:Reference Name=tree}">
 
                                     <MenuItem Header="Chart" 
-                                                      Command="{Binding DataContext.GroupAMIChartCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                                      CommandParameter="{Binding ElementName=t1, Path=DataContext.Text}"/>
+                                                      Command="{Binding DataContext.GroupAMIChartCommand}"
+                                                      CommandParameter="{Binding}"/>
 
                                 </ContextMenu>
 
@@ -76,7 +76,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Name}" Tag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
 
-                            <!--<TextBlock.ContextMenu>
+                            <TextBlock.ContextMenu>
                                 <ContextMenu DataContext="{x:Reference Name=tree}">
 
                                     <MenuItem Header="Chart" 
@@ -85,7 +85,7 @@
 
                                 </ContextMenu>
 
-                            </TextBlock.ContextMenu>-->
+                            </TextBlock.ContextMenu>
 
                         </TextBlock>
                     </StackPanel>
@@ -97,7 +97,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Name}" Tag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
 
-                            <!--<TextBlock.ContextMenu>
+                            <TextBlock.ContextMenu>
                                 <ContextMenu DataContext="{x:Reference Name=tree}">
 
                                     <MenuItem Header="Chart" 
@@ -106,7 +106,7 @@
 
                                 </ContextMenu>
 
-                            </TextBlock.ContextMenu>-->
+                            </TextBlock.ContextMenu>
 
                         </TextBlock>
                     </StackPanel>
@@ -117,7 +117,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Name}" Tag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
 
-                            <!--<TextBlock.ContextMenu>
+                            <TextBlock.ContextMenu>
                                 <ContextMenu DataContext="{x:Reference Name=tree}">
 
                                     <MenuItem Header="Chart" 
@@ -126,7 +126,7 @@
 
                                 </ContextMenu>
 
-                            </TextBlock.ContextMenu>-->
+                            </TextBlock.ContextMenu>
 
                         </TextBlock>
                     </StackPanel>
@@ -137,15 +137,6 @@
 
         <DataGrid Grid.Column="1" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.Amis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
 
-            <!--<DataGrid.ContextMenu>
-                <ContextMenu >
-                    <ContextMenu.Items>
-                        <MenuItem Header="{Binding DataContext.Column1,RelativeSource={RelativeSource Mode=Self}}"  Click="MenuItem_Click" />
-                        <MenuItem Header="{Binding DataContext.Column2,RelativeSource={RelativeSource Mode=Self}}" />
-                        <MenuItem Header="{Binding DataContext.Column3,RelativeSource={RelativeSource Mode=Self}}" />
-                    </ContextMenu.Items>
-                </ContextMenu>
-            </DataGrid.ContextMenu>-->
 
             <DataGrid.Resources>
                 <ContextMenu x:Key="ticketContextMenu">
@@ -157,20 +148,12 @@
                     </ContextMenu.Items>
                 </ContextMenu>
             </DataGrid.Resources>
-            
+
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
                     <Setter Property="ContextMenu" Value="{StaticResource ticketContextMenu}" />
                 </Style>
             </DataGrid.RowStyle>
-
-            <!--<i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectedItem">
-                    <i:EventTrigger.Actions>
-                        <i:InvokeCommandAction Command="{Binding SelectedAMICommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=Ami.Mrid}" />
-                    </i:EventTrigger.Actions>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>-->
 
             <DataGrid.Columns>
 

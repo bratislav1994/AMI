@@ -48,23 +48,48 @@ namespace CalculationEngine.Access
                     {
                         var lastMeas = access.History.Where(x => x.PsrRef == m.PsrRef).OrderByDescending(x => x.TimeStamp).FirstOrDefault();
 
-                        if (m.CurrentP == -1)
+                        if ((Math.Abs((double)(m.TimeStamp - lastMeas.TimeStamp).TotalSeconds)) < 3)
                         {
-                            m.CurrentP = lastMeas.CurrentP;
-                        }
+                            if (lastMeas.CurrentP == -1)
+                            {
+                                lastMeas.CurrentP = m.CurrentP;
+                            }
 
-                        if (m.CurrentQ == -1)
-                        {
-                            m.CurrentQ = lastMeas.CurrentQ;
-                        }
+                            if (lastMeas.CurrentQ == -1)
+                            {
+                                lastMeas.CurrentQ = m.CurrentQ;
+                            }
 
-                        if (m.CurrentV == -1)
+                            if (lastMeas.CurrentV == -1)
+                            {
+                                lastMeas.CurrentV = m.CurrentV;
+                            }
+                            access.Entry(lastMeas).State = System.Data.Entity.EntityState.Modified;
+                        }
+                        else
                         {
-                            m.CurrentV = lastMeas.CurrentV;
+                            if (m.CurrentP == -1)
+                            {
+                                m.CurrentP = lastMeas.CurrentP;
+                            }
+
+                            if (m.CurrentQ == -1)
+                            {
+                                m.CurrentQ = lastMeas.CurrentQ;
+                            }
+
+                            if (m.CurrentV == -1)
+                            {
+                                m.CurrentV = lastMeas.CurrentV;
+                            }
+                            access.History.Add(m);
                         }
                     }
+                    else
+                    {
+                        access.History.Add(m);
+                    }
 
-                    access.History.Add(m);
                     int i = access.SaveChanges();
 
                     if (i > 0)
@@ -81,13 +106,13 @@ namespace CalculationEngine.Access
             }
         }
 
-        public List<DynamicMeasurement> GetMeasForChart(long gid, DateTime from, DateTime to)
+        public List<DynamicMeasurement> GetMeasForChart(List<long> gids, DateTime from, DateTime to)
         {
             List<DynamicMeasurement> measurements = new List<DynamicMeasurement>();
 
             using (var access = new AccessDB())
             {
-                foreach (var meas in access.History.Where(x => x.PsrRef == gid && x.TimeStamp >= from && x.TimeStamp <= to && x.OperationType == OperationType.UPDATE).ToList())
+                foreach (var meas in access.History.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp <= to && x.OperationType == OperationType.UPDATE).ToList())
                 {
                     measurements.Add(meas);
                 }

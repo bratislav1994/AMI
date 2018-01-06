@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AMIClient.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,27 @@ namespace AMIClient.View
         public NetworkPreviewControl()
         {
             InitializeComponent();
+        }
+
+        private void tree_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            TreeViewItem treeViewItem = VisualUpwardSearch(e.OriginalSource as DependencyObject);
+
+            if (treeViewItem != null)
+            {
+                NetworkPreviewViewModel.Instance.RightClickOn();
+                treeViewItem.Focus();
+                NetworkPreviewViewModel.Instance.RightClickOff();
+                e.Handled = true;
+            }
+        }
+
+        private TreeViewItem VisualUpwardSearch(DependencyObject source)
+        {
+            while (source != null && !(source is TreeViewItem))
+                source = VisualTreeHelper.GetParent(source);
+
+            return source as TreeViewItem;
         }
     }
 }

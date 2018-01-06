@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AMIClient.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -67,10 +68,16 @@ namespace AMIClient
                 if (value != base.isSelected)
                 {
                     base.isSelected = value;
-                    base.Model.ClearAmis();
-                    base.Model.ClearPositions();
-                    base.Model.GetSomeAmis(this.Substation.GlobalId);
-                    this.OnPropertyChanged("IsSelected");
+                    if (!NetworkPreviewViewModel.Instance.IsRightClick())
+                    {
+                        if (value)
+                        {
+                            base.Model.ClearAmis();
+                            base.Model.ClearPositions();
+                            base.Model.GetSomeAmis(this.Substation.GlobalId, false);
+                            this.OnPropertyChanged("IsSelected");
+                        }
+                    }
                 }
             }
         }
@@ -95,7 +102,7 @@ namespace AMIClient
 
             if (IsSelected)
             {
-                base.Model.GetSomeAmis(this.Substation.GlobalId);
+                base.Model.GetSomeAmis(this.Substation.GlobalId, false);
             }
         }
     }
