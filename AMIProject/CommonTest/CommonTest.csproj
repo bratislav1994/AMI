@@ -44,13 +44,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnumDescsTest.cs" />
     <Compile Include="GDATest\AssociationTest.cs" />
     <Compile Include="GDATest\CompareHelperTest.cs" />
     <Compile Include="GDATest\DeltaTest.cs" />
     <Compile Include="GDATest\PropertyTest.cs" />
     <Compile Include="GDATest\PropertyValueTest.cs" />
     <Compile Include="GDATest\UpdateResultTest.cs" />
+    <Compile Include="LoggerTest\LoggerTest.cs" />
+    <Compile Include="ModelCodeHelperTest.cs" />
+    <Compile Include="ModelExceptionTest\ModelExceptionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TraceTest\CommonTraceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
