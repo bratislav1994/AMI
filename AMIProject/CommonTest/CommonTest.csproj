@@ -50,6 +50,7 @@
     <Compile Include="GDATest\DeltaTest.cs" />
     <Compile Include="GDATest\PropertyTest.cs" />
     <Compile Include="GDATest\PropertyValueTest.cs" />
+    <Compile Include="GDATest\ResourceDescriptionTest.cs" />
     <Compile Include="GDATest\UpdateResultTest.cs" />
     <Compile Include="LoggerTest\LoggerTest.cs" />
     <Compile Include="ModelCodeHelperTest.cs" />
