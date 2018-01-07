@@ -15,6 +15,7 @@ namespace AMIClient.ViewModels
         private NetworkPreviewViewModel tvm;
         private AddCimXmlViewModel xmlvm;
         private ChartViewModel chartVM;
+        private DataGridViewModel dgVM;
         private Model model;
 
         public MasterViewModel()
@@ -22,10 +23,11 @@ namespace AMIClient.ViewModels
             Logger.Path = "Client.txt";
             Model = new Model();
             Model.Start();
-            tvm = new NetworkPreviewViewModel();
+            tvm = NetworkPreviewViewModel.Instance;
             tvm.SetModel(Model);
-            xmlvm = new AddCimXmlViewModel();
+            xmlvm = AddCimXmlViewModel.Instance;
             chartVM = new ChartViewModel();
+            this.DgVM = DataGridViewModel.Instance;
             this.CurrentViewModel = Tvm;
         }
 
@@ -142,6 +144,19 @@ namespace AMIClient.ViewModels
                 }
 
                 return chartCommand;
+            }
+        }
+
+        public DataGridViewModel DgVM
+        {
+            get
+            {
+                return dgVM;
+            }
+
+            set
+            {
+                dgVM = value;
             }
         }
 

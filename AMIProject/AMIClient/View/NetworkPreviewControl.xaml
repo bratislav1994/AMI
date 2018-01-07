@@ -5,11 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AMIClient"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        xmlns:local2="clr-namespace:AMIClient.ViewModels"
+        xmlns:local2="clr-namespace:AMIClient.View"
+        xmlns:local3="clr-namespace:AMIClient.ViewModels"
         xmlns:vml="clr-namespace:AMIClient.VML"
-        vml:ViewModelLocator.AutoHookedUpViewModel="True"
+        
         mc:Ignorable="d"
          >
+
+    <UserControl.Resources>
+
+        <DataTemplate DataType="{x:Type local3:ChartViewModel}">
+            <local2:ChartControl />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local3:DataGridViewModel}">
+            <local2:DataGridControl />
+        </DataTemplate>
+
+    </UserControl.Resources>
 
     <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
         <Grid.ColumnDefinitions>
@@ -135,7 +148,47 @@
             </TreeView.Resources>
         </TreeView>
 
-        <DataGrid Grid.Column="1" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.Amis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
+        <Grid Grid.Column="1" Grid.ColumnSpan="2">
+           
+            
+            <TabControl SelectedItem="{Binding SelectedTab}" Name="TabMain" ItemsSource="{Binding TabItems,UpdateSourceTrigger=PropertyChanged}" >
+                <TabControl.ItemTemplate>
+                    <DataTemplate >
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="9*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Header}"/>
+                            <Button Grid.Column="1" Content="x" Visibility="{Binding Exit}" Cursor="Hand" DockPanel.Dock="Right" Focusable="False"
+            FontFamily="Courier" FontSize="9" FontWeight="Bold"  Margin="0,1,0,0" Padding="0" 
+            VerticalContentAlignment="Bottom" Width="16" Height="16"  
+                                    Command="{Binding DataContext.CloseTabCommand,RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" 
+                                    CommandParameter="{Binding }"/>
+                        </Grid>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+
+                <TabControl.ContentTemplate>
+                                    
+                    <DataTemplate>
+                        <ContentControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Content="{Binding Path=CurrentTab}"></ContentControl>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+
+                <TabControl.Resources>
+                    <Style TargetType="TabItem">
+                        <Setter Property="Width" Value="auto" />
+                        <Setter Property="Height" Value="30" />
+                    </Style>
+                </TabControl.Resources>
+
+            </TabControl>
+        </Grid>
+
+        
+        
+        <!--<DataGrid Visibility="{Binding DataGridVisibility}" Margin="0, 20, 0, 0" Grid.Column="1" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.Amis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
 
 
             <DataGrid.Resources>
@@ -166,6 +219,6 @@
                 <DataGridTextColumn MinWidth="100" Width="*" Header="TimeStamp" Binding="{Binding TimeStamp, StringFormat=\{0:dd.MM.yy HH:mm:ss\}}"/>
 
             </DataGrid.Columns>
-        </DataGrid>
+        </DataGrid>-->
     </Grid>
 </UserControl>

@@ -10,7 +10,6 @@
         Title="AMI" Height="550" Width="715" MinHeight="550" MinWidth="715">
 
     <Window.Resources>
-
         <DataTemplate DataType="{x:Type local3:NetworkPreviewViewModel }">
             <local2:NetworkPreviewControl />
         </DataTemplate>

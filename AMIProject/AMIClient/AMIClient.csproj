@@ -215,10 +215,12 @@
     <Compile Include="Classes\TreeClasses.cs" />
     <Compile Include="Model\IModel.cs" />
     <Compile Include="RelayCommand.cs" />
+    <Compile Include="TabItem.cs" />
     <Compile Include="ViewModels\AddCimXmlViewModel.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Model\Model.cs" />
     <Compile Include="ViewModels\ChartViewModel.cs" />
+    <Compile Include="ViewModels\DataGridViewModel.cs" />
     <Compile Include="View\AddCimXmlControl.xaml.cs">
       <DependentUpon>AddCimXmlControl.xaml</DependentUpon>
     </Compile>
@@ -227,6 +229,9 @@
     </Compile>
     <Compile Include="View\ChartWindow.xaml.cs">
       <DependentUpon>ChartWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DataGridControl.xaml.cs">
+      <DependentUpon>DataGridControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\NetworkPreviewControl.xaml.cs">
       <DependentUpon>NetworkPreviewControl.xaml</DependentUpon>
@@ -241,6 +246,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ChartWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DataGridControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -12,6 +12,7 @@
              xmlns:Primitives="clr-namespace:System.Windows.Controls.DataVisualization.Charting.Primitives;assembly=System.Windows.Controls.DataVisualization.Toolkit" 
              xmlns:DV="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
              xmlns:DVC="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+             xmlns:wpfToolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
              >
 
     <UserControl.Resources>
@@ -78,20 +79,34 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="200"></RowDefinition>
+            <RowDefinition Height="200"></RowDefinition>
+            <RowDefinition Height="200"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1.5*"></ColumnDefinition>
-            <ColumnDefinition Width="2.5*"></ColumnDefinition>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
             <ColumnDefinition Width="7*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Content="Time period: " HorizontalAlignment="Left" VerticalAlignment="Center" Height="29" Width="95"/>
-        <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding TimePeriod}" ItemsSource="{Binding TimePeriods, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="20" />
+        <Label Grid.Row="0" Grid.Column="0" Content="From: " HorizontalAlignment="Left" VerticalAlignment="Center" Height="29" Width="95"/>
+        <wpfToolkit:DateTimePicker Grid.Row="0" Grid.Column="1"
+                                   Text="{Binding FromPeriod}"
+                                Format="Custom" FormatString="dd/MMM/yyyy HH:mm:ss.fff" 
+                                   TimeFormat="Custom" TimeFormatString="HH:mm:ss.fff" 
+                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="200"/>
 
-        <Button Grid.Row="1" Grid.Column="0" Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
+        <Label Grid.Row="1" Grid.Column="0" Content="To: " HorizontalAlignment="Left" VerticalAlignment="Center" Height="29" Width="95"/>
+        <wpfToolkit:DateTimePicker Grid.Row="1" Grid.Column="1"
+                                   Text="{Binding ToPeriod}"
+                                Format="Custom" FormatString="dd/MMM/yyyy HH:mm:ss.fff" 
+                                   TimeFormat="Custom" TimeFormatString="HH:mm:ss.fff" 
+                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="200"/>
 
-        <DVC:Chart Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Background="#FF3F3F3F">
+        <Button Grid.Row="2" Grid.Column="0" Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
+
+        <DVC:Chart Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Background="#FF3F3F3F">
 
             <DVC:Chart.LegendStyle>
                 <Style TargetType="Control">
@@ -101,9 +116,43 @@
             </DVC:Chart.LegendStyle>
 
             <DVC:Chart.Series>
-                <DVC:LineSeries BorderBrush="White" Background="Red" Title="Data history"
-                    DataPointStyle="{StaticResource DataPointStyle1}"
-                    ItemsSource="{Binding DataHistory}"
+                <DVC:AreaSeries BorderBrush="White" Background="Red" Title="Data history"
+                    ItemsSource="{Binding DataHistoryP, UpdateSourceTrigger=PropertyChanged}"
+                    IndependentValueBinding="{Binding Path=Key}"
+                    DependentValueBinding="{Binding Path=Value}" Margin="0,0,0,-2"/>
+            </DVC:Chart.Series>
+        </DVC:Chart>
+
+        <DVC:Chart Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Background="#FF3F3F3F">
+
+            <DVC:Chart.LegendStyle>
+                <Style TargetType="Control">
+                    <Setter Property="Width" Value="0"/>
+                    <Setter Property="Height" Value="0"/>
+                </Style>
+            </DVC:Chart.LegendStyle>
+
+            <DVC:Chart.Series>
+                <DVC:AreaSeries BorderBrush="White" Background="Red" Title="Data history"
+                    
+                    ItemsSource="{Binding DataHistoryQ}"
+                    IndependentValueBinding="{Binding Path=Key}"
+                    DependentValueBinding="{Binding Path=Value}" Margin="0,0,0,-2"/>
+            </DVC:Chart.Series>
+        </DVC:Chart>
+
+        <DVC:Chart Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Background="#FF3F3F3F">
+
+            <DVC:Chart.LegendStyle>
+                <Style TargetType="Control">
+                    <Setter Property="Width" Value="0"/>
+                    <Setter Property="Height" Value="0"/>
+                </Style>
+            </DVC:Chart.LegendStyle>
+
+            <DVC:Chart.Series>
+                <DVC:AreaSeries BorderBrush="White" Background="Red" Title="Data history"
+                    ItemsSource="{Binding DataHistoryV}"
                     IndependentValueBinding="{Binding Path=Key}"
                     DependentValueBinding="{Binding Path=Value}" Margin="0,0,0,-2"/>
             </DVC:Chart.Series>

@@ -261,6 +261,13 @@ namespace AMIClient.ViewModels
             this.chartWin.ShowDialog();
         }
 
+        public void OpenWindow2(List<long> amiGids)
+        {
+            this.AmiGids = amiGids;
+            //this.chartWin = new ChartWindow(this);
+            //this.chartWin.ShowDialog();
+        }
+
         public void SetModel(Model model)
         {
             this.Model = model;
