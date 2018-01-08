@@ -129,6 +129,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="DB\TimeSeriesDb.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

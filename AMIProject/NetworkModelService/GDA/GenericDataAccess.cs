@@ -28,6 +28,11 @@ namespace FTN.Services.NetworkModelService
 
         public GenericDataAccess()
 		{
+            
+        }
+
+        public void Run()
+        {
             while (true)
             {
                 try
@@ -39,7 +44,7 @@ namespace FTN.Services.NetworkModelService
                 }
                 catch
                 {
-                    firstTimeCoordinator = true;
+                    FirstTimeCoordinator = true;
                     Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS faild to connect with Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     Thread.Sleep(1000);
                 }
@@ -50,7 +55,7 @@ namespace FTN.Services.NetworkModelService
         {
             get
             {
-                if (firstTimeCoordinator)
+                if (FirstTimeCoordinator)
                 {
                     //Logger.LogMessageToFile(string.Format("NMS.NetworkModel.ProxyCoordinator; line: {0}; Create channel between NMS and Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
@@ -60,7 +65,7 @@ namespace FTN.Services.NetworkModelService
                         binding,
                         new EndpointAddress("net.tcp://localhost:10003/TransactionCoordinator/NMS"));
                     proxyCoordinator = factory.CreateChannel();
-                    firstTimeCoordinator = false;
+                    FirstTimeCoordinator = false;
                 }
                 //Logger.LogMessageToFile(string.Format("NMS.NetworkModel.ProxyCoordinator; line: {0}; Channel NMS-Coordinator is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return proxyCoordinator;
@@ -74,12 +79,30 @@ namespace FTN.Services.NetworkModelService
 
         public NetworkModel NetworkModel
 		{
+            get
+            {
+                return nm;
+            }
+
 			set
 			{
 				nm = value;
                 nmCopy = nm;
 			}
 		}
+
+        public bool FirstTimeCoordinator
+        {
+            get
+            {
+                return firstTimeCoordinator;
+            }
+
+            set
+            {
+                firstTimeCoordinator = value;
+            }
+        }
 
         public void ConnectClient()
         {

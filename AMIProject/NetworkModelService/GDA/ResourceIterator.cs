@@ -10,7 +10,6 @@ namespace FTN.Services.NetworkModelService
 	public class ResourceIterator
 	{
         private static NetworkModel networkModel = null;
-
 		private List<long> globalDs = new List<long>();
 		private Dictionary<DMSType, List<ModelCode>> class2PropertyIDs = new Dictionary<DMSType, List<ModelCode>>(); 	
 		
@@ -19,6 +18,11 @@ namespace FTN.Services.NetworkModelService
         
         public static NetworkModel NetworkModel
         {
+            get
+            {
+                return networkModel;
+            }
+
             set { networkModel = value; }
         }
 
@@ -80,30 +84,7 @@ namespace FTN.Services.NetworkModelService
                 throw new Exception(message);
 			}
 		}
-
-		public List<ResourceDescription> GetRange(int index, int n)
-		{
-			try
-			{
-				if (n > maxReturnNo)
-				{
-					n = maxReturnNo;
-				}
-
-				List<long> resultIDs = globalDs.GetRange(index, n);
-
-				List<ResourceDescription> result = CollectData(resultIDs);
-
-				return result;
-			}
-            catch (Exception ex)
-            {
-                string message = string.Format("Failed to get range of ResourceDescription iterators. index:{0}, count:{1}. {2}", index, n, ex.Message);
-                CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-				throw new Exception(message);
-            }
-		}
-
+        
 		public void Rewind()
 		{
 			lastReadIndex = 0;

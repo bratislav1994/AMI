@@ -85,7 +85,7 @@
             <RowDefinition Height="200"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.5*"></ColumnDefinition>
+            <ColumnDefinition Width="90"></ColumnDefinition>
             <ColumnDefinition Width="3*"></ColumnDefinition>
             <ColumnDefinition Width="7*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
@@ -95,14 +95,14 @@
                                    Text="{Binding FromPeriod}"
                                 Format="Custom" FormatString="dd/MMM/yyyy HH:mm:ss.fff" 
                                    TimeFormat="Custom" TimeFormatString="HH:mm:ss.fff" 
-                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="200"/>
+                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="auto" />
 
         <Label Grid.Row="1" Grid.Column="0" Content="To: " HorizontalAlignment="Left" VerticalAlignment="Center" Height="29" Width="95"/>
         <wpfToolkit:DateTimePicker Grid.Row="1" Grid.Column="1"
                                    Text="{Binding ToPeriod}"
                                 Format="Custom" FormatString="dd/MMM/yyyy HH:mm:ss.fff" 
                                    TimeFormat="Custom" TimeFormatString="HH:mm:ss.fff" 
-                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="200"/>
+                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="auto"/>
 
         <Button Grid.Row="2" Grid.Column="0" Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
 

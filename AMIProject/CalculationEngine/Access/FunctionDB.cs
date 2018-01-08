@@ -10,99 +10,108 @@ namespace CalculationEngine.Access
 {
     public class FunctionDB
     {
+        private static object lockObj = new object();
+
         public FunctionDB()
         { }
 
         public bool AddMeasurement(DynamicMeasurement measurement)
         {
-            using (var access = new AccessDB())
+            lock (lockObj)
             {
-                var meas = access.History.Where(x => x.PsrRef == measurement.PsrRef).FirstOrDefault();
-
-                if (meas == null)
+                using (var access = new AccessDB())
                 {
-                    access.History.Add(measurement);
-                    int i = access.SaveChanges();
+                    var meas = access.History.Where(x => x.PsrRef == measurement.PsrRef).FirstOrDefault();
 
-                    if (i > 0)
+                    if (meas == null)
                     {
+                        access.History.Add(measurement);
+                        int i = access.SaveChanges();
 
+                        if (i > 0)
+                        {
+
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
-                    else
-                    {
-                        return false;
-                    }
+
+                    return true;
                 }
-
-                return true;
             }
         }
 
         public bool AddMeasurements(List<DynamicMeasurement> measurements)
         {
-            using (var access = new AccessDB())
+            lock (lockObj)
             {
-                foreach (DynamicMeasurement m in measurements)
+                using (var access = new AccessDB())
                 {
-                    if (m.CurrentP == -1 || m.CurrentQ == -1 || m.CurrentV == -1)
+                    foreach (DynamicMeasurement m in measurements)
                     {
-                        var lastMeas = access.History.Where(x => x.PsrRef == m.PsrRef).OrderByDescending(x => x.TimeStamp).FirstOrDefault();
-
-                        if ((Math.Abs((double)(m.TimeStamp - lastMeas.TimeStamp).TotalSeconds)) < 3)
+                        if (m.CurrentP == -1 || m.CurrentQ == -1 || m.CurrentV == -1)
                         {
-                            if (lastMeas.CurrentP == -1)
-                            {
-                                lastMeas.CurrentP = m.CurrentP;
-                            }
+                            var lastMeas = access.History.Where(x => x.PsrRef == m.PsrRef).OrderByDescending(x => x.TimeStamp).FirstOrDefault();
 
-                            if (lastMeas.CurrentQ == -1)
+                            if ((Math.Abs((double)(m.TimeStamp - lastMeas.TimeStamp).TotalSeconds)) < 3)
                             {
-                                lastMeas.CurrentQ = m.CurrentQ;
-                            }
+                                if (lastMeas.CurrentP == -1)
+                                {
+                                    lastMeas.CurrentP = m.CurrentP;
+                                }
 
-                            if (lastMeas.CurrentV == -1)
-                            {
-                                lastMeas.CurrentV = m.CurrentV;
+                                if (lastMeas.CurrentQ == -1)
+                                {
+                                    lastMeas.CurrentQ = m.CurrentQ;
+                                }
+
+                                if (lastMeas.CurrentV == -1)
+                                {
+                                    lastMeas.CurrentV = m.CurrentV;
+                                }
+
+                                access.Entry(lastMeas).State = System.Data.Entity.EntityState.Modified;
                             }
-                            access.Entry(lastMeas).State = System.Data.Entity.EntityState.Modified;
+                            else
+                            {
+                                if (m.CurrentP == -1)
+                                {
+                                    m.CurrentP = lastMeas.CurrentP;
+                                }
+
+                                if (m.CurrentQ == -1)
+                                {
+                                    m.CurrentQ = lastMeas.CurrentQ;
+                                }
+
+                                if (m.CurrentV == -1)
+                                {
+                                    m.CurrentV = lastMeas.CurrentV;
+                                }
+                                access.History.Add(m);
+                            }
                         }
                         else
                         {
-                            if (m.CurrentP == -1)
-                            {
-                                m.CurrentP = lastMeas.CurrentP;
-                            }
-
-                            if (m.CurrentQ == -1)
-                            {
-                                m.CurrentQ = lastMeas.CurrentQ;
-                            }
-
-                            if (m.CurrentV == -1)
-                            {
-                                m.CurrentV = lastMeas.CurrentV;
-                            }
                             access.History.Add(m);
                         }
-                    }
-                    else
-                    {
-                        access.History.Add(m);
+
+                        int i = access.SaveChanges();
+
+                        if (i > 0)
+                        {
+
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
 
-                    int i = access.SaveChanges();
-
-                    if (i > 0)
-                    {
-
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    return true;
                 }
-
-                return true;
             }
         }
 
@@ -110,14 +119,17 @@ namespace CalculationEngine.Access
         {
             List<DynamicMeasurement> measurements = new List<DynamicMeasurement>();
 
-            using (var access = new AccessDB())
+            lock (lockObj)
             {
-                foreach (var meas in access.History.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp <= to && x.OperationType == OperationType.UPDATE).ToList())
+                using (var access = new AccessDB())
                 {
-                    measurements.Add(meas);
-                }
+                    foreach (var meas in access.History.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp <= to && x.OperationType == OperationType.UPDATE).ToList())
+                    {
+                        measurements.Add(meas);
+                    }
 
-                return measurements;
+                    return measurements;
+                }
             }
         }
     }

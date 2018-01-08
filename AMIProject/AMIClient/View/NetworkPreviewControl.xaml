@@ -154,18 +154,15 @@
             <TabControl SelectedItem="{Binding SelectedTab}" Name="TabMain" ItemsSource="{Binding TabItems,UpdateSourceTrigger=PropertyChanged}" >
                 <TabControl.ItemTemplate>
                     <DataTemplate >
-                        <Grid >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="9*" />
-                                <ColumnDefinition Width="1*" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Header}"/>
-                            <Button Grid.Column="1" Content="x" Visibility="{Binding Exit}" Cursor="Hand" DockPanel.Dock="Right" Focusable="False"
-            FontFamily="Courier" FontSize="9" FontWeight="Bold"  Margin="0,1,0,0" Padding="0" 
-            VerticalContentAlignment="Bottom" Width="16" Height="16"  
+                        <DockPanel >
+                            
+                            <TextBlock Text="{Binding Header}" Width="90" ToolTip="{Binding Header}" />
+                            <Button Content="X" Visibility="{Binding Exit}" Cursor="Hand" Focusable="False"
+            FontFamily="Courier" FontSize="12" FontWeight="Bold" Padding="0" 
+             HorizontalAlignment="Right" Width="16" Height="14"  
                                     Command="{Binding DataContext.CloseTabCommand,RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" 
                                     CommandParameter="{Binding }"/>
-                        </Grid>
+                        </DockPanel>
                     </DataTemplate>
                 </TabControl.ItemTemplate>
 
@@ -178,6 +175,7 @@
 
                 <TabControl.Resources>
                     <Style TargetType="TabItem">
+                        <Setter Property="MinWidth" Value="100" />
                         <Setter Property="Width" Value="auto" />
                         <Setter Property="Height" Value="30" />
                     </Style>

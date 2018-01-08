@@ -90,7 +90,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Container.cs" />
     <Compile Include="Core\BaseVoltage.cs" />
     <Compile Include="Core\ConductingEquipment.cs" />
     <Compile Include="Core\ConnectivityNodeContainer.cs" />

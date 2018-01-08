@@ -10,67 +10,78 @@ namespace SCADA.Access
 {
     public class FunctionDB
     {
+        private static object lockObj = new object();
+
         public FunctionDB()
         { }
 
         public bool AddSimulator(WrapperDB listMeas)
         {
-            using (var access = new AccessDB())
+            lock (lockObj)
             {
-                var wrap = access.WrapperMeas.Where(x => x.RtuAddress == listMeas.RtuAddress).FirstOrDefault();
-
-                if (wrap == null)
+                using (var access = new AccessDB())
                 {
-                    access.WrapperMeas.Add(listMeas);
-                    int i = access.SaveChanges();
+                    var wrap = access.WrapperMeas.Where(x => x.RtuAddress == listMeas.RtuAddress).FirstOrDefault();
 
-                    if (i > 0)
+                    if (wrap == null)
                     {
-                        return true;
+                        access.WrapperMeas.Add(listMeas);
+                        int i = access.SaveChanges();
+
+                        if (i > 0)
+                        {
+                            return true;
+                        }
+
+                        return false;
                     }
 
                     return false;
                 }
-
-                return false;
             }
         }
 
         public bool AddMeasurement(List<MeasurementForScada> listMeas)
         {
-            using (var access = new AccessDB())
+            lock (lockObj)
             {
-                foreach (MeasurementForScada m in listMeas)
+                using (var access = new AccessDB())
                 {
-                    var cre = access.MeasurementForScada.Where(x => x.MeasurementId == m.Measurement.IdDB).FirstOrDefault();
-
-                    if (cre == null)
+                    foreach (MeasurementForScada m in listMeas)
                     {
-                        access.MeasurementForScada.Add(m);
-                        int i = access.SaveChanges();
+                        var cre = access.MeasurementForScada.Where(x => x.MeasurementId == m.Measurement.IdDB).FirstOrDefault();
 
-                        if (i > 0)
+                        if (cre == null)
                         {
+                            access.MeasurementForScada.Add(m);
+                            int i = access.SaveChanges();
 
-                        }
-                        else
-                        {
-                            return false;
+                            if (i > 0)
+                            {
+
+                            }
+                            else
+                            {
+                                return false;
+                            }
                         }
                     }
-                }
 
-                return true;
+                    return true;
+                }
             }
         }
 
         public int GetWrapperId(int rtuAddress)
         {
-            using (var access = new AccessDB())
+            lock (lockObj)
             {
-                var retVal = access.WrapperMeas.Where(x => x.RtuAddress == rtuAddress).FirstOrDefault();
+                using (var access = new AccessDB())
+                {
+                    var retVal = access.WrapperMeas.Where(x => x.RtuAddress == rtuAddress).FirstOrDefault();
 
-                return retVal == null ? -1 : retVal.IdDB;
+                    return retVal == null ? -1 : retVal.IdDB;
+                }
             }
         }
 
@@ -78,14 +89,17 @@ namespace SCADA.Access
         {
             List<WrapperDB> measurements = new List<WrapperDB>();
 
-            using (var access = new AccessDB())
+            lock (lockObj)
             {
-                foreach (var meas in access.WrapperMeas.Include("ListOfMeasurements").Include("ListOfMeasurements.Measurement").ToList())
+                using (var access = new AccessDB())
                 {
-                    measurements.Add(meas);
-                }
+                    foreach (var meas in access.WrapperMeas.Include("ListOfMeasurements").Include("ListOfMeasurements.Measurement").ToList())
+                    {
+                        measurements.Add(meas);
+                    }
 
-                return measurements;
+                    return measurements;
+                }
             }
         }
     }
