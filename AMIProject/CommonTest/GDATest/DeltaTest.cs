@@ -159,7 +159,7 @@ namespace CommonTest.GDATest
         }
 
         [Test]
-        public void ExportToXml()
+        public void ExportToXmlTest()
         {
             StringWriter stringWriter = new StringWriter();
             XmlTextWriter xmlWriter = new XmlTextWriter(stringWriter);
@@ -168,7 +168,6 @@ namespace CommonTest.GDATest
             Assert.DoesNotThrow(() => delta.ExportToXml(xmlWriter));
 
             xmlWriter.Flush();
-       //     CommonTrace.WriteTrace(CommonTrace.TraceInfo, stringWriter.ToString());
             xmlWriter.Close();
             stringWriter.Close();
         }

@@ -46,7 +46,7 @@ namespace FTN.Common
 	/// </summary>
 	[Serializable]
 	[DataContract]	
-	public class Property : IComparable
+	public class Property //: IComparable
 	{
 		/// <summary>
 		/// Code for property of model type 
@@ -94,19 +94,19 @@ namespace FTN.Common
 			SetValue(boolValue);
 		}
 
-		public Property(ModelCode id, byte byteValue)
-		{
-			this.id = id;
-            this.value = new PropertyValue();
-			SetValue(byteValue);
-		}
+		//public Property(ModelCode id, byte byteValue)
+		//{
+		//	this.id = id;
+  //          this.value = new PropertyValue();
+		//	SetValue(byteValue);
+		//}
 
-		public Property(ModelCode id, short int16Value)
-		{
-			this.id = id;
-            this.value = new PropertyValue();
-			SetValue(int16Value);
-		}
+		//public Property(ModelCode id, short int16Value)
+		//{
+		//	this.id = id;
+  //          this.value = new PropertyValue();
+		//	SetValue(int16Value);
+		//}
 
 		public Property(ModelCode id, int int32Value)
 		{
@@ -136,79 +136,79 @@ namespace FTN.Common
 			SetValue(stringValue);
 		}
 
-		public Property(ModelCode id, List<long> longValues)
-		{
-			this.id = id;
-            this.value = new PropertyValue();
-			if (longValues != null)
-			{
-				SetValue(longValues);
-			}
-		}
+		//public Property(ModelCode id, List<long> longValues)
+		//{
+		//	this.id = id;
+  //          this.value = new PropertyValue();
+		//	if (longValues != null)
+		//	{
+		//		SetValue(longValues);
+		//	}
+		//}
 
-		public Property(ModelCode id, List<int> intValues)
-		{
-			this.id = id;
-            this.value = new PropertyValue();
-			if (intValues != null)
-			{
-				SetValue(intValues);
-			}
-		}
+		//public Property(ModelCode id, List<int> intValues)
+		//{
+		//	this.id = id;
+  //          this.value = new PropertyValue();
+		//	if (intValues != null)
+		//	{
+		//		SetValue(intValues);
+		//	}
+		//}
 
-		public Property(ModelCode id, List<float> floatValues)
-		{
-			this.id = id;
-            this.value = new PropertyValue();
-			if (floatValues != null)
-			{
-				SetValue(floatValues);
-			}
-		}
+		//public Property(ModelCode id, List<float> floatValues)
+		//{
+		//	this.id = id;
+  //          this.value = new PropertyValue();
+		//	if (floatValues != null)
+		//	{
+		//		SetValue(floatValues);
+		//	}
+		//}
 
-		public Property(ModelCode id, List<string> stringValues)
-		{
-			this.id = id;
-            this.value = new PropertyValue();
-			if (stringValues != null)
-			{
-				SetValue(stringValues);
-			}
-		}
+		//public Property(ModelCode id, List<string> stringValues)
+		//{
+		//	this.id = id;
+  //          this.value = new PropertyValue();
+		//	if (stringValues != null)
+		//	{
+		//		SetValue(stringValues);
+		//	}
+		//}
 
-		public Property(ModelCode id, List<bool> boolValues)
-		{
-			this.id = id;
-            this.value = new PropertyValue();
-			if (boolValues != null)
-			{
-				SetValue(boolValues);
-			}
-		}
+		//public Property(ModelCode id, List<bool> boolValues)
+		//{
+		//	this.id = id;
+  //          this.value = new PropertyValue();
+		//	if (boolValues != null)
+		//	{
+		//		SetValue(boolValues);
+		//	}
+		//}
 
-		public Property(ModelCode id, DateTime dateTime)
-		{
-			this.id = id;
-            this.value = new PropertyValue();
-			SetValue(dateTime);
-		}
+		//public Property(ModelCode id, DateTime dateTime)
+		//{
+		//	this.id = id;
+  //          this.value = new PropertyValue();
+		//	SetValue(dateTime);
+		//}
 
-		public Property(ModelCode id, TimeSpan timeSpan)
-		{
-			this.id = id;
-            this.value = new PropertyValue();
-			SetValue(timeSpan);
-		}
+		//public Property(ModelCode id, TimeSpan timeSpan)
+		//{
+		//	this.id = id;
+  //          this.value = new PropertyValue();
+		//	SetValue(timeSpan);
+		//}
 
-		public Property(ModelCode id, List<short> enumValues)
-		{
-			this.id = id;
-			this.value = new PropertyValue();
-			if (enumValues != null)
-			{
-				SetValue(enumValues);
-			}
-		}
+		//public Property(ModelCode id, List<short> enumValues)
+		//{
+		//	this.id = id;
+		//	this.value = new PropertyValue();
+		//	if (enumValues != null)
+		//	{
+		//		SetValue(enumValues);
+		//	}
+		//}
 
 		[DataMember]		
 		public ModelCode Id
@@ -310,153 +310,153 @@ namespace FTN.Common
 			return (PropertyType)((long)propId & (long)ModelCodeMask.MASK_ATTRIBUTE_TYPE);
 		}
 
-		public static PropertyType GetPropertyType(long propId)
-		{
-			return (PropertyType)(propId & (long)ModelCodeMask.MASK_ATTRIBUTE_TYPE);
-		}
+		//public static PropertyType GetPropertyType(long propId)
+		//{
+		//	return (PropertyType)(propId & (long)ModelCodeMask.MASK_ATTRIBUTE_TYPE);
+		//}
 
-		public static Property CreateFromString(ModelCode propId, string stringValue)
-		{
-			Property property = null;
-			PropertyType propType = Property.GetPropertyType(propId);
+		//public static Property CreateFromString(ModelCode propId, string stringValue)
+		//{
+		//	Property property = null;
+		//	PropertyType propType = Property.GetPropertyType(propId);
 
-			switch (propType)
-			{
-				case PropertyType.Bool:
-					long longValue = 0;
-					if (stringValue.ToLower().Trim() == "false")
-					{
-						longValue = 0;
-					}
-					else if (stringValue.ToLower().Trim() == "true")
-					{
-						longValue = 1;
-					}
-					else
-					{
-						longValue = long.Parse(stringValue);
-					}
+		//	switch (propType)
+		//	{
+		//		case PropertyType.Bool:
+		//			long longValue = 0;
+		//			if (stringValue.ToLower().Trim() == "false")
+		//			{
+		//				longValue = 0;
+		//			}
+		//			else if (stringValue.ToLower().Trim() == "true")
+		//			{
+		//				longValue = 1;
+		//			}
+		//			else
+		//			{
+		//				longValue = long.Parse(stringValue);
+		//			}
 
-					bool boolValue = longValue != 0;
+		//			bool boolValue = longValue != 0;
 
-					property = new Property(propId, boolValue);
-					break;
-				case PropertyType.Byte:
-				case PropertyType.Int32:
-				case PropertyType.Int64:
-				case PropertyType.Enum:
-				case PropertyType.TimeSpan:
-				case PropertyType.DateTime:
-				case PropertyType.Reference:
-					property = new Property(propId, long.Parse(stringValue));
-					break;
-				case PropertyType.Float:
-					property = new Property(propId, float.Parse(stringValue));
-					break;
-				case PropertyType.String:
-					property = new Property(propId, stringValue);
-					break;
-				default:
-					throw new Exception("Failed to create property from string. Only single value properties are allowed.");
-			}
+		//			property = new Property(propId, boolValue);
+		//			break;
+		//		case PropertyType.Byte:
+		//		case PropertyType.Int32:
+		//		case PropertyType.Int64:
+		//		case PropertyType.Enum:
+		//		case PropertyType.TimeSpan:
+		//		case PropertyType.DateTime:
+		//		case PropertyType.Reference:
+		//			property = new Property(propId, long.Parse(stringValue));
+		//			break;
+		//		case PropertyType.Float:
+		//			property = new Property(propId, float.Parse(stringValue));
+		//			break;
+		//		case PropertyType.String:
+		//			property = new Property(propId, stringValue);
+		//			break;
+		//		default:
+		//			throw new Exception("Failed to create property from string. Only single value properties are allowed.");
+		//	}
 
-			return property;
-		}
+		//	return property;
+		//}
 
 		public static bool operator !=(Property first, Property second)
 		{
 			return !(first == second);
 		}
 
-		public static bool operator <(Property first, Property second)
-		{
-			if (!first.IsCompatibleWith(second.Type))
-			{
-				throw new Exception("Incompatible property types.");
-			}
+        //public static bool operator <(Property first, Property second)
+        //{
+        //    if (!first.IsCompatibleWith(second.Type))
+        //    {
+        //        throw new Exception("Incompatible property types.");
+        //    }
 
-			bool result = false;
+        //    bool result = false;
 
-			switch (first.Type)
-			{
-				case PropertyType.Bool:
-				case PropertyType.Byte:
-				case PropertyType.Int32:
-				case PropertyType.Int64:
-				case PropertyType.Enum:
-				case PropertyType.TimeSpan:
-				case PropertyType.DateTime:
-				case PropertyType.Reference:
-					if (first.value.LongValue < second.value.LongValue)
-					{
-						result = true;
-					}
+        //    switch (first.Type)
+        //    {
+        //        case PropertyType.Bool:
+        //        case PropertyType.Byte:
+        //        case PropertyType.Int32:
+        //        case PropertyType.Int64:
+        //        case PropertyType.Enum:
+        //        case PropertyType.TimeSpan:
+        //        case PropertyType.DateTime:
+        //        case PropertyType.Reference:
+        //            if (first.value.LongValue < second.value.LongValue)
+        //            {
+        //                result = true;
+        //            }
 
-					break;
-				case PropertyType.Float:
-					if (first.value.FloatValue < second.value.FloatValue)
-					{
-						result = true;
-					}
+        //            break;
+        //        case PropertyType.Float:
+        //            if (first.value.FloatValue < second.value.FloatValue)
+        //            {
+        //                result = true;
+        //            }
 
-					break;
+        //            break;
+
+        //        case PropertyType.String:
+        //            if (string.Compare(first.value.StringValue, second.value.StringValue, StringComparison.Ordinal) < 0)
+        //            {
+        //                result = true;
+        //            }
+
+        //            break;
+        //    }
+
+        //    return result;
+        //}
+
+  //      public static bool operator >(Property first, Property second)
+		//{
+		//	if (!first.IsCompatibleWith(second.Type))
+		//	{
+		//		throw new Exception("Incompatible property types.");
+		//	}
+
+		//	bool result = false;
+
+		//	switch (first.Type)
+		//	{
+		//		case PropertyType.Bool:
+		//		case PropertyType.Byte:
+		//		case PropertyType.Int32:
+		//		case PropertyType.Int64:
+		//		case PropertyType.Enum:
+		//		case PropertyType.TimeSpan:
+		//		case PropertyType.DateTime:
+		//		case PropertyType.Reference:
+		//			if (first.value.LongValue > second.value.LongValue)
+		//			{
+		//				result = true;
+		//			}
+
+		//			break;
+		//		case PropertyType.Float:
+		//			if (first.value.FloatValue > second.value.FloatValue)
+		//			{
+		//				result = true;
+		//			}
+
+		//			break;
 	
-				case PropertyType.String:
-					if (string.Compare(first.value.StringValue, second.value.StringValue, StringComparison.Ordinal) < 0)
-					{
-						result = true;
-					}
+		//		case PropertyType.String:
+		//			if (string.Compare(first.value.StringValue, second.value.StringValue, StringComparison.Ordinal) > 0)
+		//			{
+		//				result = true;
+		//			}
 
-					break;
-			}
+		//			break;
+		//	}
 
-			return result;
-		}
-
-		public static bool operator >(Property first, Property second)
-		{
-			if (!first.IsCompatibleWith(second.Type))
-			{
-				throw new Exception("Incompatible property types.");
-			}
-
-			bool result = false;
-
-			switch (first.Type)
-			{
-				case PropertyType.Bool:
-				case PropertyType.Byte:
-				case PropertyType.Int32:
-				case PropertyType.Int64:
-				case PropertyType.Enum:
-				case PropertyType.TimeSpan:
-				case PropertyType.DateTime:
-				case PropertyType.Reference:
-					if (first.value.LongValue > second.value.LongValue)
-					{
-						result = true;
-					}
-
-					break;
-				case PropertyType.Float:
-					if (first.value.FloatValue > second.value.FloatValue)
-					{
-						result = true;
-					}
-
-					break;
-	
-				case PropertyType.String:
-					if (string.Compare(first.value.StringValue, second.value.StringValue, StringComparison.Ordinal) > 0)
-					{
-						result = true;
-					}
-
-					break;
-			}
-
-			return result;
-		}
+		//	return result;
+		//}
 
 		// Override the Object.Equals(object o) method:
 		public override bool Equals(object o)
@@ -464,30 +464,30 @@ namespace FTN.Common
 			return this == (Property)o;
 		}
 
-		public int CompareTo(object obj)
-		{
-			Property p = obj as Property;
+		//public int CompareTo(object obj)
+		//{
+		//	Property p = obj as Property;
 
-			if (p != null)
-			{
-				if (this > p)
-				{
-					return 1;
-				}
-				else if (this == p)
-				{
-					return 0;
-				}
-				else
-				{
-					return -1;
-				}
-			}
-			else
-			{
-				throw new ArgumentException("Object is not a property");
-			}
-		}
+		//	if (p != null)
+		//	{
+		//		if (this > p)
+		//		{
+		//			return 1;
+		//		}
+		//		else if (this == p)
+		//		{
+		//			return 0;
+		//		}
+		//		else
+		//		{
+		//			return -1;
+		//		}
+		//	}
+		//	else
+		//	{
+		//		throw new ArgumentException("Object is not a property");
+		//	}
+		//}
 
 		public override int GetHashCode()
 		{
@@ -539,21 +539,21 @@ namespace FTN.Common
 			}
 		}
 
-		public void SetValue(byte byteValue)
-		{
-			PropertyType type = this.Type;
-			if ((type == PropertyType.Byte) || (type == PropertyType.Enum) || type == PropertyType.Int32 ||
-				type == PropertyType.Int64 || type == PropertyType.TimeSpan || type == PropertyType.DateTime)
-			{
-				this.value.LongValue = (long)byteValue;
-			}
-			else
-			{
-				string errorMessage = String.Format("Failed to set value for property ({0}) because specified value ({1}) is not compatible with property type ({2}).", this.id, byteValue, type);
-				CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
-				throw new Exception(errorMessage);
-			}
-		}
+		//public void SetValue(byte byteValue)
+		//{
+		//	PropertyType type = this.Type;
+		//	if ((type == PropertyType.Byte) || (type == PropertyType.Enum) || type == PropertyType.Int32 ||
+		//		type == PropertyType.Int64 || type == PropertyType.TimeSpan || type == PropertyType.DateTime)
+		//	{
+		//		this.value.LongValue = (long)byteValue;
+		//	}
+		//	else
+		//	{
+		//		string errorMessage = String.Format("Failed to set value for property ({0}) because specified value ({1}) is not compatible with property type ({2}).", this.id, byteValue, type);
+		//		CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
+		//		throw new Exception(errorMessage);
+		//	}
+		//}
 
 		public void SetValue(short int16Value)
 		{
@@ -636,63 +636,63 @@ namespace FTN.Common
 			}
 		}
 
-		public void SetValue(DateTime dateTime)
-		{
-			PropertyType type = this.Type;
-			if (type == PropertyType.DateTime)
-			{
-				value.LongValue = dateTime.Ticks;
-			}
-			else
-			{
-				string errorMessage = String.Format("Failed to set value for property ({0}) because specified value ({1}) is not compatible with property type ({2}).", this.id, dateTime.ToString(), type);
-				CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
-				throw new Exception(errorMessage);
-			}
-		}
+		//public void SetValue(DateTime dateTime)
+		//{
+		//	PropertyType type = this.Type;
+		//	if (type == PropertyType.DateTime)
+		//	{
+		//		value.LongValue = dateTime.Ticks;
+		//	}
+		//	else
+		//	{
+		//		string errorMessage = String.Format("Failed to set value for property ({0}) because specified value ({1}) is not compatible with property type ({2}).", this.id, dateTime.ToString(), type);
+		//		CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
+		//		throw new Exception(errorMessage);
+		//	}
+		//}
 
-		public void SetValue(TimeSpan timeSpan)
-		{
-			PropertyType type = this.Type;
-			if (type == PropertyType.TimeSpan)
-			{
-				value.LongValue = timeSpan.Ticks;
-			}
-			else
-			{
-				string errorMessage = String.Format("Failed to set value for property ({0}) because specified value ({1}) is not compatible with property type ({2}).", this.id, timeSpan.ToString(), type);
-				CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
-				throw new Exception(errorMessage);
-			}
-		}
+		//public void SetValue(TimeSpan timeSpan)
+		//{
+		//	PropertyType type = this.Type;
+		//	if (type == PropertyType.TimeSpan)
+		//	{
+		//		value.LongValue = timeSpan.Ticks;
+		//	}
+		//	else
+		//	{
+		//		string errorMessage = String.Format("Failed to set value for property ({0}) because specified value ({1}) is not compatible with property type ({2}).", this.id, timeSpan.ToString(), type);
+		//		CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
+		//		throw new Exception(errorMessage);
+		//	}
+		//}
 	
-		public void SetValue(List<bool> boolValues)
-		{
-			PropertyType type = this.Type;
-			if (type == PropertyType.BoolVector)
-			{
-				List<long> longValues = new List<long>();
-				foreach (bool boolValue in boolValues)
-				{
-					if (boolValue == true)
-					{
-						longValues.Add(1);
-					}
-					else
-					{
-						longValues.Add(0);
-					}
-				}
+		//public void SetValue(List<bool> boolValues)
+		//{
+		//	PropertyType type = this.Type;
+		//	if (type == PropertyType.BoolVector)
+		//	{
+		//		List<long> longValues = new List<long>();
+		//		foreach (bool boolValue in boolValues)
+		//		{
+		//			if (boolValue == true)
+		//			{
+		//				longValues.Add(1);
+		//			}
+		//			else
+		//			{
+		//				longValues.Add(0);
+		//			}
+		//		}
 
-				value.LongValues = longValues;
-			}
-			else
-			{
-				string errorMessage = String.Format("Failed to set value for property ({0}) because specified vector value is not compatible with property type ({1}).", this.id, type);
-				CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
-				throw new Exception(errorMessage);
-			}
-		}
+		//		value.LongValues = longValues;
+		//	}
+		//	else
+		//	{
+		//		string errorMessage = String.Format("Failed to set value for property ({0}) because specified vector value is not compatible with property type ({1}).", this.id, type);
+		//		CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
+		//		throw new Exception(errorMessage);
+		//	}
+		//}
 
 		public void SetValue(List<long> longValues)
 		{
@@ -709,77 +709,77 @@ namespace FTN.Common
 			}
 		}
 
-		public void SetValue(List<short> enumValues)
-		{
-			PropertyType type = this.Type;
-			if (type == PropertyType.EnumVector)
-			{
-				List<long> longValues = new List<long>();
-				foreach (short enumValue in enumValues)
-				{
-					longValues.Add(enumValue);
-				}
+		//public void SetValue(List<short> enumValues)
+		//{
+		//	PropertyType type = this.Type;
+		//	if (type == PropertyType.EnumVector)
+		//	{
+		//		List<long> longValues = new List<long>();
+		//		foreach (short enumValue in enumValues)
+		//		{
+		//			longValues.Add(enumValue);
+		//		}
 
-				value.LongValues = longValues;
-			}
-			else
-			{
-				string errorMessage = String.Format("Failed to set value for property ({0}) because specified vector value is not compatible with property type ({1}).", this.id, type);
-				CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
-				throw new Exception(errorMessage);
-			}
-		}
+		//		value.LongValues = longValues;
+		//	}
+		//	else
+		//	{
+		//		string errorMessage = String.Format("Failed to set value for property ({0}) because specified vector value is not compatible with property type ({1}).", this.id, type);
+		//		CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
+		//		throw new Exception(errorMessage);
+		//	}
+		//}
 
-		public void SetValue(List<int> intValues)
-		{
-			PropertyType type = this.Type;
-			if (type == PropertyType.Int32Vector)
-			{
-				List<long> longValues = new List<long>();
-				foreach (int intValue in intValues)
-				{
-					longValues.Add(intValue);
-				}
+		//public void SetValue(List<int> intValues)
+		//{
+		//	PropertyType type = this.Type;
+		//	if (type == PropertyType.Int32Vector)
+		//	{
+		//		List<long> longValues = new List<long>();
+		//		foreach (int intValue in intValues)
+		//		{
+		//			longValues.Add(intValue);
+		//		}
 
-				value.LongValues = longValues;
-			}
-			else
-			{
-				string errorMessage = String.Format("Failed to set value for property ({0}) because specified vector value is not compatible with property type ({1}).", this.id, type);
-				CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
-				throw new Exception(errorMessage);
-			}
-		}
+		//		value.LongValues = longValues;
+		//	}
+		//	else
+		//	{
+		//		string errorMessage = String.Format("Failed to set value for property ({0}) because specified vector value is not compatible with property type ({1}).", this.id, type);
+		//		CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
+		//		throw new Exception(errorMessage);
+		//	}
+		//}
 
-		public void SetValue(List<float> floatValues)
-		{
-			PropertyType type = this.Type;
-			if (type == PropertyType.FloatVector)
-			{
-				value.FloatValues = floatValues.GetRange(0, floatValues.Count);
-			}
-			else
-			{
-				string errorMessage = String.Format("Failed to set value for property ({0}) because specified vector value is not compatible with property type ({1}).", this.id, type);
-				CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
-				throw new Exception(errorMessage);
-			}
-		}
+		//public void SetValue(List<float> floatValues)
+		//{
+		//	PropertyType type = this.Type;
+		//	if (type == PropertyType.FloatVector)
+		//	{
+		//		value.FloatValues = floatValues.GetRange(0, floatValues.Count);
+		//	}
+		//	else
+		//	{
+		//		string errorMessage = String.Format("Failed to set value for property ({0}) because specified vector value is not compatible with property type ({1}).", this.id, type);
+		//		CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
+		//		throw new Exception(errorMessage);
+		//	}
+		//}
 
-		public void SetValue(List<string> stringValues)
-		{
-			PropertyType type = this.Type;
-			if (type == PropertyType.StringVector)
-			{
-				value.StringValues = stringValues.GetRange(0, stringValues.Count);
-			}
-			else
-			{
-				string errorMessage = String.Format("Failed to set value for property ({0}) because specified vector value is not compatible with property type ({1}).", this.id, type);
-				CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
-				throw new Exception(errorMessage);
-			}
-		}		
+		//public void SetValue(List<string> stringValues)
+		//{
+		//	PropertyType type = this.Type;
+		//	if (type == PropertyType.StringVector)
+		//	{
+		//		value.StringValues = stringValues.GetRange(0, stringValues.Count);
+		//	}
+		//	else
+		//	{
+		//		string errorMessage = String.Format("Failed to set value for property ({0}) because specified vector value is not compatible with property type ({1}).", this.id, type);
+		//		CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
+		//		throw new Exception(errorMessage);
+		//	}
+		//}		
 
 		public bool AsBool()
 		{
@@ -796,20 +796,20 @@ namespace FTN.Common
 			}
 		}
 
-		public byte AsByte()
-		{
-			PropertyType type = this.Type;
-			if (type == PropertyType.Byte)
-			{
-				return (byte)value.LongValue;
-			}
-			else
-			{
-				string errorMessage = String.Format("Failed to return value from property for specified type ({0}) because it is incompatible with actual property type ({1})", PropertyType.Byte, type);
-				CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
-				throw new Exception(errorMessage);
-			}
-		}
+		//public byte AsByte()
+		//{
+		//	PropertyType type = this.Type;
+		//	if (type == PropertyType.Byte)
+		//	{
+		//		return (byte)value.LongValue;
+		//	}
+		//	else
+		//	{
+		//		string errorMessage = String.Format("Failed to return value from property for specified type ({0}) because it is incompatible with actual property type ({1})", PropertyType.Byte, type);
+		//		CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
+		//		throw new Exception(errorMessage);
+		//	}
+		//}
 
 		public short AsEnum()
 		{
@@ -924,20 +924,20 @@ namespace FTN.Common
 			}
 		}
 
-		public TimeSpan AsTimeSpan()
-		{
-			PropertyType type = this.Type;
-			if (type == PropertyType.TimeSpan)
-			{
-				return new TimeSpan(value.LongValue);
-			}
-			else
-			{
-				string errorMessage = String.Format("Failed to return value from property for specified type ({0}) because it is incompatible with actual property type ({1})", PropertyType.TimeSpan, type);
-				CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
-				throw new Exception(errorMessage);
-			}
-		}	
+		//public TimeSpan AsTimeSpan()
+		//{
+		//	PropertyType type = this.Type;
+		//	if (type == PropertyType.TimeSpan)
+		//	{
+		//		return new TimeSpan(value.LongValue);
+		//	}
+		//	else
+		//	{
+		//		string errorMessage = String.Format("Failed to return value from property for specified type ({0}) because it is incompatible with actual property type ({1})", PropertyType.TimeSpan, type);
+		//		CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
+		//		throw new Exception(errorMessage);
+		//	}
+		//}	
 
 		public List<long> AsLongs()
 		{
@@ -999,30 +999,30 @@ namespace FTN.Common
 			}
 		}
 
-		public List<long> AsReferences(bool alsoGetSingleReference)
-		{
-			if (alsoGetSingleReference)
-			{
-				switch (this.Type)
-				{
-					case PropertyType.ReferenceVector:
-						return this.AsReferences();
+		//public List<long> AsReferences(bool alsoGetSingleReference)
+		//{
+		//	if (alsoGetSingleReference)
+		//	{
+		//		switch (this.Type)
+		//		{
+		//			case PropertyType.ReferenceVector:
+		//				return this.AsReferences();
 
 
-					case PropertyType.Reference:
-						List<long> references = new List<long>();
-						references.Add(this.AsReference());
-						return references;
+		//			case PropertyType.Reference:
+		//				List<long> references = new List<long>();
+		//				references.Add(this.AsReference());
+		//				return references;
 
-					default:
-						return null;
-				}
-			}
-			else
-			{
-				return this.AsReferences();
-			}
-		}
+		//			default:
+		//				return null;
+		//		}
+		//	}
+		//	else
+		//	{
+		//		return this.AsReferences();
+		//	}
+		//}
 
 		public List<string> AsStrings()
 		{
@@ -1117,26 +1117,26 @@ namespace FTN.Common
 			}
 		}
 
-		public List<byte> AsBytes()
-		{
-			PropertyType type = this.Type;
-			if (type == PropertyType.ByteVector)
-			{
-				List<byte> byteValues = new List<byte>();
-				foreach (long longValue in value.LongValues)
-				{
-					byteValues.Add((byte)longValue);
-				}
+		//public List<byte> AsBytes()
+		//{
+		//	PropertyType type = this.Type;
+		//	if (type == PropertyType.ByteVector)
+		//	{
+		//		List<byte> byteValues = new List<byte>();
+		//		foreach (long longValue in value.LongValues)
+		//		{
+		//			byteValues.Add((byte)longValue);
+		//		}
 
-				return byteValues;
-			}
-			else
-			{
-				string errorMessage = String.Format("Failed to return value from property for specified type ({0}) because it is incompatible with actual property type ({1})", PropertyType.Int32Vector, type);
-				CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
-				throw new Exception(errorMessage);
-			}
-		}
+		//		return byteValues;
+		//	}
+		//	else
+		//	{
+		//		string errorMessage = String.Format("Failed to return value from property for specified type ({0}) because it is incompatible with actual property type ({1})", PropertyType.Int32Vector, type);
+		//		CommonTrace.WriteTrace(CommonTrace.TraceError, errorMessage);
+		//		throw new Exception(errorMessage);
+		//	}
+		//}
 
 		#endregion Set-Get
 
@@ -1160,63 +1160,63 @@ namespace FTN.Common
 		}
 
 
-		public object GetValue()
-		{
-			switch (Type)
-			{
-				case PropertyType.Bool:
-				case PropertyType.Byte:
-				case PropertyType.Int32:
-				case PropertyType.Int64:
-				case PropertyType.Enum:
-				case PropertyType.TimeSpan:
-				case PropertyType.DateTime:
-				case PropertyType.Reference:
-					return value.LongValue;
-				case PropertyType.Float:
-					return value.FloatValue;
-				case PropertyType.String:
-					return value.StringValue;				
-				case PropertyType.BoolVector:
-				case PropertyType.ByteVector:
-				case PropertyType.Int32Vector:
-				case PropertyType.Int64Vector:
-				case PropertyType.EnumVector:
-				case PropertyType.TimeSpanVector:
-				case PropertyType.DateTimeVector:
-				case PropertyType.ReferenceVector:
-					return value.LongValues;
-				case PropertyType.FloatVector:
-					return value.FloatValues;
-				case PropertyType.StringVector:
-					return value.StringValues;							
-				default:
-					return null;
-			}
-		}
+		//public object GetValue()
+		//{
+		//	switch (Type)
+		//	{
+		//		case PropertyType.Bool:
+		//		case PropertyType.Byte:
+		//		case PropertyType.Int32:
+		//		case PropertyType.Int64:
+		//		case PropertyType.Enum:
+		//		case PropertyType.TimeSpan:
+		//		case PropertyType.DateTime:
+		//		case PropertyType.Reference:
+		//			return value.LongValue;
+		//		case PropertyType.Float:
+		//			return value.FloatValue;
+		//		case PropertyType.String:
+		//			return value.StringValue;				
+		//		case PropertyType.BoolVector:
+		//		case PropertyType.ByteVector:
+		//		case PropertyType.Int32Vector:
+		//		case PropertyType.Int64Vector:
+		//		case PropertyType.EnumVector:
+		//		case PropertyType.TimeSpanVector:
+		//		case PropertyType.DateTimeVector:
+		//		case PropertyType.ReferenceVector:
+		//			return value.LongValues;
+		//		case PropertyType.FloatVector:
+		//			return value.FloatValues;
+		//		case PropertyType.StringVector:
+		//			return value.StringValues;							
+		//		default:
+		//			return null;
+		//	}
+		//}
 	}
 
-	public class PropertyComparer : IComparer<Property>
-	{
-		private bool ascending;
+	//public class PropertyComparer : IComparer<Property>
+	//{
+	//	private bool ascending;
 
-		public PropertyComparer(bool ascending)
-		{
-			this.ascending = ascending;
-		}
+	//	public PropertyComparer(bool ascending)
+	//	{
+	//		this.ascending = ascending;
+	//	}
 
-		#region IComparer<Property> Members
+	//	#region IComparer<Property> Members
 
-		public int Compare(Property x, Property y)
-		{
-			if (x < y)
-				return ascending ? -1 : 1;
-			else if (x == y)
-				return 0;
-			else
-				return ascending ? 1 : -1;
-		}
+	//	public int Compare(Property x, Property y)
+	//	{
+	//		if (x < y)
+	//			return ascending ? -1 : 1;
+	//		else if (x == y)
+	//			return 0;
+	//		else
+	//			return ascending ? 1 : -1;
+	//	}
 
-		#endregion
-	}
+	//	#endregion
+	//}
 }

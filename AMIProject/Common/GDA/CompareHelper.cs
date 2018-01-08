@@ -234,97 +234,97 @@ namespace FTN.Common
 			}
 		}		
 		
-		public static bool CompareArrays<T>(T[] a1, T[] a2)
-		{
-			if (Object.ReferenceEquals(a1, null) && Object.ReferenceEquals(a2, null))
-			{
-				return true;
-			}
-			else if ((Object.ReferenceEquals(a1, null) && !Object.ReferenceEquals(a2, null)) || (!Object.ReferenceEquals(a1, null) && Object.ReferenceEquals(a2, null)))
-			{
-				return false;
-			}
-			else
-			{
-				if (a1.Length == a2.Length)
-				{
-					for (int i = 0; i < a1.Length; i++)
-					{
-						if (!a1[i].Equals(a2[i]))
-						{
-							return false;
-						}
-					}
+		//public static bool CompareArrays<T>(T[] a1, T[] a2)
+		//{
+		//	if (Object.ReferenceEquals(a1, null) && Object.ReferenceEquals(a2, null))
+		//	{
+		//		return true;
+		//	}
+		//	else if ((Object.ReferenceEquals(a1, null) && !Object.ReferenceEquals(a2, null)) || (!Object.ReferenceEquals(a1, null) && Object.ReferenceEquals(a2, null)))
+		//	{
+		//		return false;
+		//	}
+		//	else
+		//	{
+		//		if (a1.Length == a2.Length)
+		//		{
+		//			for (int i = 0; i < a1.Length; i++)
+		//			{
+		//				if (!a1[i].Equals(a2[i]))
+		//				{
+		//					return false;
+		//				}
+		//			}
 
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
-		}
+		//			return true;
+		//		}
+		//		else
+		//		{
+		//			return false;
+		//		}
+		//	}
+		//}
 
-		public static bool CompareHashSets(HashSet<int> xSet, HashSet<int> ySet)
-		{
-			if (Object.ReferenceEquals(xSet, null) && Object.ReferenceEquals(ySet, null))
-			{
-				return true;
-			}
-			else if ((Object.ReferenceEquals(xSet, null) && !Object.ReferenceEquals(ySet, null)) || (!Object.ReferenceEquals(xSet, null) && Object.ReferenceEquals(ySet, null)))
-			{
-				return false;
-			}
-			else
-			{
-				if (xSet.Count == ySet.Count)
-				{
-					foreach (int x in xSet)
-					{
-						if (!ySet.Contains(x))
-						{
-							return false;
-						}
-					}
+		//public static bool CompareHashSets(HashSet<int> xSet, HashSet<int> ySet)
+		//{
+		//	if (Object.ReferenceEquals(xSet, null) && Object.ReferenceEquals(ySet, null))
+		//	{
+		//		return true;
+		//	}
+		//	else if ((Object.ReferenceEquals(xSet, null) && !Object.ReferenceEquals(ySet, null)) || (!Object.ReferenceEquals(xSet, null) && Object.ReferenceEquals(ySet, null)))
+		//	{
+		//		return false;
+		//	}
+		//	else
+		//	{
+		//		if (xSet.Count == ySet.Count)
+		//		{
+		//			foreach (int x in xSet)
+		//			{
+		//				if (!ySet.Contains(x))
+		//				{
+		//					return false;
+		//				}
+		//			}
 
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
-		}
+		//			return true;
+		//		}
+		//		else
+		//		{
+		//			return false;
+		//		}
+		//	}
+		//}
 
-		public static bool CompareHashSets(HashSet<long> xSet, HashSet<long> ySet)
-		{
-			if (Object.ReferenceEquals(xSet, null) && Object.ReferenceEquals(ySet, null))
-			{
-				return true;
-			}
-			else if ((Object.ReferenceEquals(xSet, null) && !Object.ReferenceEquals(ySet, null)) || (!Object.ReferenceEquals(xSet, null) && Object.ReferenceEquals(ySet, null)))
-			{
-				return false;
-			}
-			else
-			{
-				if (xSet.Count == ySet.Count)
-				{
-					foreach (long x in xSet)
-					{
-						if (!ySet.Contains(x))
-						{
-							return false;
-						}
-					}
+		//public static bool CompareHashSets(HashSet<long> xSet, HashSet<long> ySet)
+		//{
+		//	if (Object.ReferenceEquals(xSet, null) && Object.ReferenceEquals(ySet, null))
+		//	{
+		//		return true;
+		//	}
+		//	else if ((Object.ReferenceEquals(xSet, null) && !Object.ReferenceEquals(ySet, null)) || (!Object.ReferenceEquals(xSet, null) && Object.ReferenceEquals(ySet, null)))
+		//	{
+		//		return false;
+		//	}
+		//	else
+		//	{
+		//		if (xSet.Count == ySet.Count)
+		//		{
+		//			foreach (long x in xSet)
+		//			{
+		//				if (!ySet.Contains(x))
+		//				{
+		//					return false;
+		//				}
+		//			}
 
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
-		}
+		//			return true;
+		//		}
+		//		else
+		//		{
+		//			return false;
+		//		}
+		//	}
+		//}
 	}
 }

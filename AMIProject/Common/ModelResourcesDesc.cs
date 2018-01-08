@@ -92,25 +92,25 @@ namespace FTN.Common
 		/// </summary>
 		/// <param name="propertyId">Property code</param>
 		/// <returns>Name of the property</returns>
-		public string GetPropertyName(ModelCode propertyId)
-		{
-			if (propertyIds.ContainsKey(propertyId))
-			{
-				// if this is true, the property ID is from core
-				if (propertyIds[propertyId] == null)
-				{
-					return ((ModelCode)propertyId).ToString();
-				}
-				else // if this is true, the property ID is from extensibility
-				{
-					return propertyIds[propertyId];
-				}
-			}
+		//public string GetPropertyName(ModelCode propertyId)
+		//{
+		//	if (propertyIds.ContainsKey(propertyId))
+		//	{
+		//		// if this is true, the property ID is from core
+		//		if (propertyIds[propertyId] == null)
+		//		{
+		//			return ((ModelCode)propertyId).ToString();
+		//		}
+		//		else // if this is true, the property ID is from extensibility
+		//		{
+		//			return propertyIds[propertyId];
+		//		}
+		//	}
 
-			string message = String.Format("Specified property ( ID = {0} ) does not exists for {1} resource.", (ModelCode)propertyId, resourceName);
-			CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-			throw new Exception(message);
-		}
+		//	string message = String.Format("Specified property ( ID = {0} ) does not exists for {1} resource.", (ModelCode)propertyId, resourceName);
+		//	CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+		//	throw new Exception(message);
+		//}
 
 		/// <summary>
 		/// Checks if property with specified code exists in class type.
@@ -170,15 +170,15 @@ namespace FTN.Common
 		/// </summary>
 		private HashSet<DMSType> allDMSTypes = new HashSet<DMSType>(new DMSTypeComparer());
 
-		public HashSet<ModelCode> AllModelCodes
-		{
-			get { return allModelCodes; }
-		}
+		//public HashSet<ModelCode> AllModelCodes
+		//{
+		//	get { return allModelCodes; }
+		//}
 
-		public HashSet<DMSType> AllDMSTypes
-		{
-			get { return allDMSTypes; }
-		}
+		//public HashSet<DMSType> AllDMSTypes
+		//{
+		//	get { return allDMSTypes; }
+		//}
 
 		/// <summary>
 		/// Initializes a new instance of the ModelResourcesDesc class.
@@ -343,132 +343,132 @@ namespace FTN.Common
 		/// <summary>
 		/// Gets dictionary of not accessible property Ids.
 		/// </summary>
-		public Dictionary<ModelCode, bool> NotAccessiblePropertyIds
-		{
-			get { return notAccessiblePropertyIds; }
-			set { notAccessiblePropertyIds = value; }
-		}
+		//public Dictionary<ModelCode, bool> NotAccessiblePropertyIds
+		//{
+		//	get { return notAccessiblePropertyIds; }
+		//	set { notAccessiblePropertyIds = value; }
+		//}
 
 		public static DMSType GetTypeFromModelCode(ModelCode code)
 		{
 			return (DMSType)((long)((long)code & (long)ModelCodeMask.MASK_TYPE) >> 16);
 		}
 
-		public static ModelCode GetPropertyOwnerFromProperty(ModelCode propertyCode)
-		{
-			return (ModelCode)GetPropertyOwnerFromProperty((long)propertyCode);
-		}
+		//public static ModelCode GetPropertyOwnerFromProperty(ModelCode propertyCode)
+		//{
+		//	return (ModelCode)GetPropertyOwnerFromProperty((long)propertyCode);
+		//}
 
-		public static long GetPropertyOwnerFromProperty(long propertyCode)
-		{
-			ulong propertyOwnerMask = 0xffffffffffff0000;
-			long propertyOwner = (long)(propertyOwnerMask & (ulong)propertyCode);
+		//public static long GetPropertyOwnerFromProperty(long propertyCode)
+		//{
+		//	ulong propertyOwnerMask = 0xffffffffffff0000;
+		//	long propertyOwner = (long)(propertyOwnerMask & (ulong)propertyCode);
 
-			return propertyOwner;
-		}
+		//	return propertyOwner;
+		//}
 
 		/// <summary>
 		/// Finds model code of the parent class, according to the given ModelCode of the class
 		/// </summary>
 		/// <param name="typeId">entity type identifier</param>
 		/// <returns>identifier of the parent class</returns>
-		public static ModelCode FindFirstParent(ModelCode typeId)
-		{
-			return (ModelCode)FindFirstParent((long)typeId);
-		}
+		//public static ModelCode FindFirstParent(ModelCode typeId)
+		//{
+		//	return (ModelCode)FindFirstParent((long)typeId);
+		//}
 
-		public static long FindFirstParent(long typeId)
-		{
-			ulong firstNullMask = (ulong)0xf000000000000000;
-			ulong parentMask = 0;
-			while (((firstNullMask / 16) & (ulong)typeId) != 0)
-			{
-				parentMask += firstNullMask;
-				firstNullMask = firstNullMask / 16;
-			}
+		//public static long FindFirstParent(long typeId)
+		//{
+		//	ulong firstNullMask = (ulong)0xf000000000000000;
+		//	ulong parentMask = 0;
+		//	while (((firstNullMask / 16) & (ulong)typeId) != 0)
+		//	{
+		//		parentMask += firstNullMask;
+		//		firstNullMask = firstNullMask / 16;
+		//	}
 
-			ulong parentModelCode = (parentMask & (ulong)typeId);
+		//	ulong parentModelCode = (parentMask & (ulong)typeId);
 
-			firstNullMask *= 16;
+		//	firstNullMask *= 16;
 
-			while (parentModelCode != 0 && (firstNullMask & parentModelCode) == firstNullMask)
-			{
-				if ((firstNullMask & parentModelCode) == firstNullMask)
-				{
-					parentModelCode &= ~firstNullMask;
-				}
+		//	while (parentModelCode != 0 && (firstNullMask & parentModelCode) == firstNullMask)
+		//	{
+		//		if ((firstNullMask & parentModelCode) == firstNullMask)
+		//		{
+		//			parentModelCode &= ~firstNullMask;
+		//		}
 
-				firstNullMask *= 16;
-			}
+		//		firstNullMask *= 16;
+		//	}
 
-			return (long)parentModelCode;
-		}
+		//	return (long)parentModelCode;
+		//}
 
 		/// <summary>
 		/// Gets all leaves which inherit specified entity type  
 		/// </summary>
 		/// <param name="entityType">ModelCode that represents entity type</param>
 		/// <returns>List of leaves (DMSType)</returns>
-		public static List<DMSType> GetLeavesForCoreEntities(ModelCode entityType)
-		{
-			List<DMSType> children = new List<DMSType>();
+		//public static List<DMSType> GetLeavesForCoreEntities(ModelCode entityType)
+		//{
+		//	List<DMSType> children = new List<DMSType>();
 
-			foreach (ModelCode leafCM in Enum.GetValues(typeof(ModelCode)))
-			{
-				//// if it is not property code and it is leaf code and it is inhereted from submited type
-				if (((long)leafCM & (long)ModelCodeMask.MASK_ATTRIBUTE_TYPE) == 0 && ((long)leafCM & (long)ModelCodeMask.MASK_TYPE) != 0 && InheritsFrom(entityType, leafCM))
-				{
-					children.Add(GetTypeFromModelCode(leafCM));
-				}
-			}
+		//	foreach (ModelCode leafCM in Enum.GetValues(typeof(ModelCode)))
+		//	{
+		//		//// if it is not property code and it is leaf code and it is inhereted from submited type
+		//		if (((long)leafCM & (long)ModelCodeMask.MASK_ATTRIBUTE_TYPE) == 0 && ((long)leafCM & (long)ModelCodeMask.MASK_TYPE) != 0 && InheritsFrom(entityType, leafCM))
+		//		{
+		//			children.Add(GetTypeFromModelCode(leafCM));
+		//		}
+		//	}
 
-			return children;
-		}
+		//	return children;
+		//}
 
-		public List<DMSType> GetLeaves(ModelCode entityType)
-		{
-			List<DMSType> children = new List<DMSType>();
+		//public List<DMSType> GetLeaves(ModelCode entityType)
+		//{
+		//	List<DMSType> children = new List<DMSType>();
 
-			foreach (ModelCode leafCM in allModelCodes)
-			{
-				//// if it is not property code and it is leaf code and it is inhereted from submited type
-				if (((long)leafCM & (long)ModelCodeMask.MASK_ATTRIBUTE_TYPE) == 0 && ((long)leafCM & (long)ModelCodeMask.MASK_TYPE) != 0 && InheritsFrom(entityType, leafCM))
-				{
-					children.Add(GetTypeFromModelCode(leafCM));
-				}
-			}
+		//	foreach (ModelCode leafCM in allModelCodes)
+		//	{
+		//		//// if it is not property code and it is leaf code and it is inhereted from submited type
+		//		if (((long)leafCM & (long)ModelCodeMask.MASK_ATTRIBUTE_TYPE) == 0 && ((long)leafCM & (long)ModelCodeMask.MASK_TYPE) != 0 && InheritsFrom(entityType, leafCM))
+		//		{
+		//			children.Add(GetTypeFromModelCode(leafCM));
+		//		}
+		//	}
 
-			return children;
-		}
+		//	return children;
+		//}
 
-		public static bool InheritsFrom(ModelCode parentModelCode, ModelCode childModelCode)
-		{
-			ulong nibbleMask = (ulong)0xf000000000000000;
-			bool zeroAtStart = ((ulong)parentModelCode & nibbleMask) == 0;
+		//public static bool InheritsFrom(ModelCode parentModelCode, ModelCode childModelCode)
+		//{
+		//	ulong nibbleMask = (ulong)0xf000000000000000;
+		//	bool zeroAtStart = ((ulong)parentModelCode & nibbleMask) == 0;
 
-			while (nibbleMask > (ulong)0x00000000f0000000)
-			{
-				ulong childNibbleExt = ((ulong)childModelCode) & nibbleMask;
-				ulong parentNibbleExt = ((ulong)parentModelCode) & nibbleMask;
+		//	while (nibbleMask > (ulong)0x00000000f0000000)
+		//	{
+		//		ulong childNibbleExt = ((ulong)childModelCode) & nibbleMask;
+		//		ulong parentNibbleExt = ((ulong)parentModelCode) & nibbleMask;
 
-				if (parentNibbleExt == 0 && !zeroAtStart)
-				{
-					return true;
-				}
-				else if (parentNibbleExt != childNibbleExt)
-				{
-					return false;
-				}
-				else if (parentNibbleExt != 0)
-				{
-					zeroAtStart = false;
-				}
+		//		if (parentNibbleExt == 0 && !zeroAtStart)
+		//		{
+		//			return true;
+		//		}
+		//		else if (parentNibbleExt != childNibbleExt)
+		//		{
+		//			return false;
+		//		}
+		//		else if (parentNibbleExt != 0)
+		//		{
+		//			zeroAtStart = false;
+		//		}
 
-				nibbleMask /= 16;
-			}
+		//		nibbleMask /= 16;
+		//	}
 
-			return true;
-		}
+		//	return true;
+		//}
 
 		/// <summary>
 		/// Adds new model type description to collection.
@@ -482,32 +482,32 @@ namespace FTN.Common
 			return desc;
 		}
 
-		public ResourcePropertiesDesc AddResourceDesc(ModelCode resourceId, string resourceName)
-		{
-			ResourcePropertiesDesc desc = new ResourcePropertiesDesc(resourceId, resourceName);
-			this.resourceDescs[((long)resourceId & (long)ModelCodeMask.MASK_INHERITANCE_ONLY)] = desc;
-			return desc;
-		}
+		//public ResourcePropertiesDesc AddResourceDesc(ModelCode resourceId, string resourceName)
+		//{
+		//	ResourcePropertiesDesc desc = new ResourcePropertiesDesc(resourceId, resourceName);
+		//	this.resourceDescs[((long)resourceId & (long)ModelCodeMask.MASK_INHERITANCE_ONLY)] = desc;
+		//	return desc;
+		//}
 
 		/// <summary>
 		/// Adds new model type description to collection.
 		/// </summary>
 		/// <param name="resourceId">Code of the model type</param>
 		/// <param name="desc">Model type description</param>
-		public void AddResourceDesc(ModelCode resourceId, ResourcePropertiesDesc desc)
-		{
-			this.resourceDescs[((long)resourceId & (long)ModelCodeMask.MASK_INHERITANCE_ONLY)] = desc;
-		}
+		//public void AddResourceDesc(ModelCode resourceId, ResourcePropertiesDesc desc)
+		//{
+		//	this.resourceDescs[((long)resourceId & (long)ModelCodeMask.MASK_INHERITANCE_ONLY)] = desc;
+		//}
 
 		/// <summary>
 		/// Checks if the model type description exists in collection for specified model type code.
 		/// </summary>
 		/// <param name="resourceId">Code of the model type</param>
 		/// <returns>TRUE if model type description exists in collection, FALSE otherwise</returns>
-		public bool ResourceExists(ModelCode resourceId)
-		{
-			return ResourceExistsForType(((long)resourceId & (long)ModelCodeMask.MASK_INHERITANCE_ONLY));
-		}
+		//public bool ResourceExists(ModelCode resourceId)
+		//{
+		//	return ResourceExistsForType(((long)resourceId & (long)ModelCodeMask.MASK_INHERITANCE_ONLY));
+		//}
 
 		/// <summary>
 		/// Gets model type description for specified model type code.
@@ -635,82 +635,82 @@ namespace FTN.Common
 			return properties;
 		}
 
-		public List<ModelCode> GetAllPropertyIdsWithNotAccessibleProperties(ModelCode code)
-		{
-			List<ModelCode> properties = new List<ModelCode>();
-			List<ModelCode> ancestorIds = new List<ModelCode>();
+		//public List<ModelCode> GetAllPropertyIdsWithNotAccessibleProperties(ModelCode code)
+		//{
+		//	List<ModelCode> properties = new List<ModelCode>();
+		//	List<ModelCode> ancestorIds = new List<ModelCode>();
 
-			this.GetResourceAncestors(code, ref ancestorIds);
+		//	this.GetResourceAncestors(code, ref ancestorIds);
 
-			properties.AddRange(this.GetResourcePropertiesDesc(code).PropertyIds);
-			foreach (ModelCode ancestorId in ancestorIds)
-			{
-				properties.AddRange(this.GetResourcePropertiesDesc(ancestorId).PropertyIds);
-			}
+		//	properties.AddRange(this.GetResourcePropertiesDesc(code).PropertyIds);
+		//	foreach (ModelCode ancestorId in ancestorIds)
+		//	{
+		//		properties.AddRange(this.GetResourcePropertiesDesc(ancestorId).PropertyIds);
+		//	}
 
-			return properties;
-		}
+		//	return properties;
+		//}
 
 		/// <summary>
 		/// Gets property ids that corresponds to all attributes of the entity of specified type.
 		/// </summary>
 		/// <param name="typeId">DMS type code representing entity type.</param>
 		/// <returns>List of property ids that corresponds to entity attributes.</returns>
-		public List<ModelCode> GetAllPropertyIds(DMSType typeId)
-		{
-			return GetAllPropertyIds(GetModelCodeFromType(typeId));
-		}
+		//public List<ModelCode> GetAllPropertyIds(DMSType typeId)
+		//{
+		//	return GetAllPropertyIds(GetModelCodeFromType(typeId));
+		//}
 
-		public List<ModelCode> GetAllPropertyIds(short type)
-		{
-			return GetAllPropertyIds((DMSType)type);
-		}
+        //public List<ModelCode> GetAllPropertyIds(short type)
+        //{
+        //	return GetAllPropertyIds((DMSType)type);
+        //}
 
-		/// <summary>
-		/// Gets property ids defined for entity type and that satisfy specified property type
-		/// </summary>
-		/// <param name="typeId">DMS type code representing entity type.</param>
-		/// <param name="propertyType">Type of properties that should be returned.</param>
-		/// <returns>List of property ids that corresponds to entity attributes that satisfy entity type.</returns>		
-		public List<ModelCode> GetPropertyIds(DMSType typeId, PropertyType propertyType)
-		{
-			List<ModelCode> propertyIds = GetAllPropertyIds(GetModelCodeFromType(typeId));
-			List<ModelCode> propertyIdsFiltered = new List<ModelCode>();
+        /// <summary>
+        /// Gets property ids defined for entity type and that satisfy specified property type
+        /// </summary>
+        /// <param name="typeId">DMS type code representing entity type.</param>
+        /// <param name="propertyType">Type of properties that should be returned.</param>
+        /// <returns>List of property ids that corresponds to entity attributes that satisfy entity type.</returns>		
+        //public List<ModelCode> GetPropertyIds(DMSType typeId, PropertyType propertyType)
+        //{
+        //	List<ModelCode> propertyIds = GetAllPropertyIds(GetModelCodeFromType(typeId));
+        //	List<ModelCode> propertyIdsFiltered = new List<ModelCode>();
 
-			int i = 0;
-			while (i < propertyIds.Count)
-			{
-				//if (ModelCodeHelper.ExtractPropertyTypeFromModelCode(propertyIds[i]) != propertyType)
-				if (Property.GetPropertyType(propertyIds[i]) != propertyType)
-				{
-					propertyIds.RemoveAt(i);
-				}
-				else
-				{
-					i++;
-				}
-			}
+        //	int i = 0;
+        //	while (i < propertyIds.Count)
+        //	{
+        //		//if (ModelCodeHelper.ExtractPropertyTypeFromModelCode(propertyIds[i]) != propertyType)
+        //		if (Property.GetPropertyType(propertyIds[i]) != propertyType)
+        //		{
+        //			propertyIds.RemoveAt(i);
+        //		}
+        //		else
+        //		{
+        //			i++;
+        //		}
+        //	}
 
-			return propertyIds;
-		}
+        //	return propertyIds;
+        //}
 
-		/// <summary>
-		/// Gets property ids that corresponds to all attributes of the entity.
-		/// </summary>
-		/// <param name="globalId">GlobalId</param>
-		/// <returns>List of property ids that corresponds to entity attributes.</returns>
-		public List<ModelCode> GetAllPropertyIdsForEntityId(long globalId)
-		{
-			DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(globalId);
-			return GetAllPropertyIds(type);
-		}
+        /// <summary>
+        /// Gets property ids that corresponds to all attributes of the entity.
+        /// </summary>
+        /// <param name="globalId">GlobalId</param>
+        /// <returns>List of property ids that corresponds to entity attributes.</returns>
+        //public List<ModelCode> GetAllPropertyIdsForEntityId(long globalId)
+        //{
+        //    DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(globalId);
+        //    return GetAllPropertyIds(type);
+        //}
 
-		/// <summary>
-		/// Gets property ids that corresponds to all settable attributes of the entity.
-		/// </summary>
-		/// <param name="typeId">ModelCode representing entity type.</param>
-		/// <returns>List of property ids that corresponds to settable entity attributes.</returns>
-		public List<ModelCode> GetAllSettablePropertyIds(ModelCode typeId, bool includeInherited)
+        /// <summary>
+        /// Gets property ids that corresponds to all settable attributes of the entity.
+        /// </summary>
+        /// <param name="typeId">ModelCode representing entity type.</param>
+        /// <returns>List of property ids that corresponds to settable entity attributes.</returns>
+        public List<ModelCode> GetAllSettablePropertyIds(ModelCode typeId, bool includeInherited)
 		{
 			List<ModelCode> properties = (includeInherited) ? GetAllPropertyIds(typeId) : GetClassPropertyIds(typeId);
 
@@ -747,11 +747,11 @@ namespace FTN.Common
 		/// </summary>
 		/// <param name="type">DMSType representing entity type.</param>
 		/// <returns>List of property ids that corresponds to settable entity attributes.</returns>
-		public List<ModelCode> GetAllSettablePropertyIds(short type)
-		{
-			ModelCode code = GetModelCodeFromType((DMSType)type);
-			return GetAllSettablePropertyIds(code, true);
-		}
+		//public List<ModelCode> GetAllSettablePropertyIds(short type)
+		//{
+		//	ModelCode code = GetModelCodeFromType((DMSType)type);
+		//	return GetAllSettablePropertyIds(code, true);
+		//}
 
 		/// <summary>
 		/// Gets property ids that corresponds to all settable attributes of the entity.
@@ -767,10 +767,10 @@ namespace FTN.Common
 		/// <summary>
 		/// Clears all resources from collection.
 		/// </summary>
-		public void Clear()
-		{
-			resourceDescs.Clear();
-		}
+		//public void Clear()
+		//{
+		//	resourceDescs.Clear();
+		//}
 
 		/// <summary>
 		/// Gets model type code for specified DMS type.
@@ -792,55 +792,55 @@ namespace FTN.Common
 			}
 		}
 
-		public bool TypeHasModelCode(DMSType type)
-		{
-			return this.type2modelCode.ContainsKey(type);
-		}	
+		//public bool TypeHasModelCode(DMSType type)
+		//{
+		//	return this.type2modelCode.ContainsKey(type);
+		//}	
 
 		/// <summary>
 		/// Gets model type code for specified entity id.
 		/// </summary>
 		/// <param name="id">entity id</param>
 		/// <returns>Model type code</returns>		
-		public ModelCode GetModelCodeFromId(long id)
-		{
-			DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(id);
+		//public ModelCode GetModelCodeFromId(long id)
+		//{
+		//	DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(id);
 
-			ModelCode modelCode;
-			if (this.type2modelCode.TryGetValue(type, out modelCode))
-			{
-				return modelCode;
-			}
-			else
-			{
-				string message = string.Format("Failed to get model type code for DMS type: {0}. Invalid DMS type. ID = 0x{1:x16}", type, id);
-				CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-				throw new Exception(message);
-			}
-		}
+		//	ModelCode modelCode;
+		//	if (this.type2modelCode.TryGetValue(type, out modelCode))
+		//	{
+		//		return modelCode;
+		//	}
+		//	else
+		//	{
+		//		string message = string.Format("Failed to get model type code for DMS type: {0}. Invalid DMS type. ID = 0x{1:x16}", type, id);
+		//		CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+		//		throw new Exception(message);
+		//	}
+		//}
 
-		public ModelCode GetModelCodeFromModelCodeName(string modelCodeName)
-		{
-			ModelCode modelCode;
+		//public ModelCode GetModelCodeFromModelCodeName(string modelCodeName)
+		//{
+		//	ModelCode modelCode;
 
-			// Call Enum.TryParse method.
-			if (Enum.TryParse(modelCodeName, true, out modelCode) && Enum.IsDefined(typeof(ModelCode), modelCode))
-			{
-				return modelCode;
-			}
+		//	// Call Enum.TryParse method.
+		//	if (Enum.TryParse(modelCodeName, true, out modelCode) && Enum.IsDefined(typeof(ModelCode), modelCode))
+		//	{
+		//		return modelCode;
+		//	}
 
-			throw new Exception(string.Format("ModelCode with name {0} dose not exist.", modelCodeName));
-		}
+		//	throw new Exception(string.Format("ModelCode with name {0} dose not exist.", modelCodeName));
+		//}
 				
-		public bool ContainsModelCode(ModelCode modelCode)
-		{
-			return allModelCodes.Contains(modelCode);
-		}
+		//public bool ContainsModelCode(ModelCode modelCode)
+		//{
+		//	return allModelCodes.Contains(modelCode);
+		//}
 
-		public bool ContainsModelCode(DMSType dmsType)
-		{
-			return allDMSTypes.Contains(dmsType);
-		}
+		//public bool ContainsModelCode(DMSType dmsType)
+		//{
+		//	return allDMSTypes.Contains(dmsType);
+		//}
 
 		/// <summary>
 		/// Checks if the model type description exists in collection for specified model type code.
@@ -897,65 +897,65 @@ namespace FTN.Common
 
 		# region Switching between enums and values
 
-		private List<ModelCode> SwitchLongsToModelCodes(List<long> longValues)
-		{
-			List<ModelCode> result = new List<ModelCode>();
+		//private List<ModelCode> SwitchLongsToModelCodes(List<long> longValues)
+		//{
+		//	List<ModelCode> result = new List<ModelCode>();
 
-			if (longValues != null)
-			{
-				foreach (long value in longValues)
-				{
-					result.Add((ModelCode)value);
-				}
-			}
+		//	if (longValues != null)
+		//	{
+		//		foreach (long value in longValues)
+		//		{
+		//			result.Add((ModelCode)value);
+		//		}
+		//	}
 
-			return result;
-		}
+		//	return result;
+		//}
 
-		private List<long> SwitchModelCodesToLongs(List<ModelCode> modelCodeValues)
-		{
-			List<long> result = new List<long>();
+		//private List<long> SwitchModelCodesToLongs(List<ModelCode> modelCodeValues)
+		//{
+		//	List<long> result = new List<long>();
 
-			if (modelCodeValues != null)
-			{
-				foreach (ModelCode value in modelCodeValues)
-				{
-					result.Add((long)value);
-				}
-			}
+		//	if (modelCodeValues != null)
+		//	{
+		//		foreach (ModelCode value in modelCodeValues)
+		//		{
+		//			result.Add((long)value);
+		//		}
+		//	}
 
-			return result;
-		}
+		//	return result;
+		//}
 
-		private List<DMSType> SwitchShortsToDMSTypes(List<short> shortValues)
-		{
-			List<DMSType> result = new List<DMSType>();
+		//private List<DMSType> SwitchShortsToDMSTypes(List<short> shortValues)
+		//{
+		//	List<DMSType> result = new List<DMSType>();
 
-			if (shortValues != null)
-			{
-				foreach (long value in shortValues)
-				{
-					result.Add((DMSType)value);
-				}
-			}
+		//	if (shortValues != null)
+		//	{
+		//		foreach (long value in shortValues)
+		//		{
+		//			result.Add((DMSType)value);
+		//		}
+		//	}
 
-			return result;
-		}
+		//	return result;
+		//}
 
-		private List<short> SwitchDMSTypesToShorts(List<DMSType> modelCodeValues)
-		{
-			List<short> result = new List<short>();
+		//private List<short> SwitchDMSTypesToShorts(List<DMSType> modelCodeValues)
+		//{
+		//	List<short> result = new List<short>();
 
-			if (modelCodeValues != null)
-			{
-				foreach (DMSType value in modelCodeValues)
-				{
-					result.Add((short)value);
-				}
-			}
+		//	if (modelCodeValues != null)
+		//	{
+		//		foreach (DMSType value in modelCodeValues)
+		//		{
+		//			result.Add((short)value);
+		//		}
+		//	}
 
-			return result;
-		}
+		//	return result;
+		//}
 
 		# endregion Switching between enums and values
 

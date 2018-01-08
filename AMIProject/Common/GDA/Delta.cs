@@ -54,57 +54,57 @@ namespace FTN.Common
 			this.positiveIdsAllowed = false;
 		}
 
-		public Delta(long id)
-		{
-			this.id = id;
-			this.positiveIdsAllowed = false;
-		}		
+		//public Delta(long id)
+		//{
+		//	this.id = id;
+		//	this.positiveIdsAllowed = false;
+		//}		
 
-		public Delta(Delta toCopy)
-		{
-			this.id = toCopy.id;			
-			foreach (ResourceDescription resDesc in toCopy.insertOps)
-			{
-				ResourceDescription toAdd = new ResourceDescription(resDesc);
-				this.AddDeltaOperation(DeltaOpType.Insert, toAdd, true);
-			}
+		//public Delta(Delta toCopy)
+		//{
+		//	this.id = toCopy.id;			
+		//	foreach (ResourceDescription resDesc in toCopy.insertOps)
+		//	{
+		//		ResourceDescription toAdd = new ResourceDescription(resDesc);
+		//		this.AddDeltaOperation(DeltaOpType.Insert, toAdd, true);
+		//	}
 			
-			foreach (ResourceDescription resDesc in toCopy.updateOps)
-			{
-				ResourceDescription toAdd = new ResourceDescription(resDesc);
-				this.AddDeltaOperation(DeltaOpType.Update, toAdd, true);
-			}
+		//	foreach (ResourceDescription resDesc in toCopy.updateOps)
+		//	{
+		//		ResourceDescription toAdd = new ResourceDescription(resDesc);
+		//		this.AddDeltaOperation(DeltaOpType.Update, toAdd, true);
+		//	}
 			
-			foreach (ResourceDescription resDesc in toCopy.deleteOps)
-			{
-				ResourceDescription toAdd = new ResourceDescription(resDesc);
-				this.AddDeltaOperation(DeltaOpType.Delete, toAdd, true);
-			}
+		//	foreach (ResourceDescription resDesc in toCopy.deleteOps)
+		//	{
+		//		ResourceDescription toAdd = new ResourceDescription(resDesc);
+		//		this.AddDeltaOperation(DeltaOpType.Delete, toAdd, true);
+		//	}
 
-			this.positiveIdsAllowed = toCopy.positiveIdsAllowed;
-		}
+		//	this.positiveIdsAllowed = toCopy.positiveIdsAllowed;
+		//}
 
-		public Delta(long id, byte[] deltaBinary)
-		{
-			Delta delta = Delta.Deserialize(deltaBinary);
+		//public Delta(long id, byte[] deltaBinary)
+		//{
+		//	Delta delta = Delta.Deserialize(deltaBinary);
 
-			this.id = id;
-			this.insertOps = delta.insertOps;
-			this.updateOps = delta.updateOps;
-			this.deleteOps = delta.deleteOps;
-			this.positiveIdsAllowed = delta.positiveIdsAllowed;
-		}
+		//	this.id = id;
+		//	this.insertOps = delta.insertOps;
+		//	this.updateOps = delta.updateOps;
+		//	this.deleteOps = delta.deleteOps;
+		//	this.positiveIdsAllowed = delta.positiveIdsAllowed;
+		//}
 
-		public Delta(byte[] deltaBinary)
-		{
-			Delta delta = Delta.Deserialize(deltaBinary);
+		//public Delta(byte[] deltaBinary)
+		//{
+		//	Delta delta = Delta.Deserialize(deltaBinary);
 
-			this.id = delta.id;
-			this.insertOps = delta.insertOps;
-			this.updateOps = delta.updateOps;
-			this.deleteOps = delta.deleteOps;
-			this.positiveIdsAllowed = delta.positiveIdsAllowed;
-		}
+		//	this.id = delta.id;
+		//	this.insertOps = delta.insertOps;
+		//	this.updateOps = delta.updateOps;
+		//	this.deleteOps = delta.deleteOps;
+		//	this.positiveIdsAllowed = delta.positiveIdsAllowed;
+		//}
 
 		[DataMember]		
 		public long Id
@@ -146,101 +146,101 @@ namespace FTN.Common
 			get { return insertOps.Count + updateOps.Count + deleteOps.Count; }
 		}
 		
-		public bool ContainsDeltaOperation(DeltaOpType type, long id)
-		{
-			switch (type)
-			{
-				case DeltaOpType.Insert:
-				{
-					foreach (ResourceDescription resDesc in this.InsertOperations)
-					{
-						if (resDesc.Id == id)
-						{
-							return true;
-						}
-					}
+		//public bool ContainsDeltaOperation(DeltaOpType type, long id)
+		//{
+		//	switch (type)
+		//	{
+		//		case DeltaOpType.Insert:
+		//		{
+		//			foreach (ResourceDescription resDesc in this.InsertOperations)
+		//			{
+		//				if (resDesc.Id == id)
+		//				{
+		//					return true;
+		//				}
+		//			}
 
-					break;
-				}
+		//			break;
+		//		}
 
-				case DeltaOpType.Update:
-				{
-					foreach (ResourceDescription resDesc in this.UpdateOperations)
-					{
-						if (resDesc.Id == id)
-						{
-							return true;
-						}
-					}
+		//		case DeltaOpType.Update:
+		//		{
+		//			foreach (ResourceDescription resDesc in this.UpdateOperations)
+		//			{
+		//				if (resDesc.Id == id)
+		//				{
+		//					return true;
+		//				}
+		//			}
 
-					break;
-				}
+		//			break;
+		//		}
 
-				case DeltaOpType.Delete:
-				{
-					foreach (ResourceDescription resDesc in this.DeleteOperations)
-					{
-						if (resDesc.Id == id)
-						{
-							return true;
-						}
-					}
+		//		case DeltaOpType.Delete:
+		//		{
+		//			foreach (ResourceDescription resDesc in this.DeleteOperations)
+		//			{
+		//				if (resDesc.Id == id)
+		//				{
+		//					return true;
+		//				}
+		//			}
 
-					break;
-				}
-			}
+		//			break;
+		//		}
+		//	}
 
-			return false;
-		}
+		//	return false;
+		//}
 
-		public ResourceDescription GetDeltaOperation(DeltaOpType type, long id)
-		{
-			switch (type)
-			{
-				case DeltaOpType.Insert:
-				{
-					foreach (ResourceDescription resDesc in this.InsertOperations)
-					{
-						if (resDesc.Id == id)
-						{
-							return resDesc;
-						}
-					}
+		//public ResourceDescription GetDeltaOperation(DeltaOpType type, long id)
+		//{
+		//	switch (type)
+		//	{
+		//		case DeltaOpType.Insert:
+		//		{
+		//			foreach (ResourceDescription resDesc in this.InsertOperations)
+		//			{
+		//				if (resDesc.Id == id)
+		//				{
+		//					return resDesc;
+		//				}
+		//			}
 
-					break;
-				}
+		//			break;
+		//		}
 
-				case DeltaOpType.Update:
-				{
-					foreach (ResourceDescription resDesc in this.UpdateOperations)
-					{
-						if (resDesc.Id == id)
-						{
-							return resDesc;
-						}
-					}
+		//		case DeltaOpType.Update:
+		//		{
+		//			foreach (ResourceDescription resDesc in this.UpdateOperations)
+		//			{
+		//				if (resDesc.Id == id)
+		//				{
+		//					return resDesc;
+		//				}
+		//			}
 
-					break;
-				}
+		//			break;
+		//		}
 
-				case DeltaOpType.Delete:
-				{
-					foreach (ResourceDescription resDesc in this.DeleteOperations)
-					{
-						if (resDesc.Id == id)
-						{
-							return resDesc;
-						}
-					}
+		//		case DeltaOpType.Delete:
+		//		{
+		//			foreach (ResourceDescription resDesc in this.DeleteOperations)
+		//			{
+		//				if (resDesc.Id == id)
+		//				{
+		//					return resDesc;
+		//				}
+		//			}
 
-					break;
-				}
-			}
+		//			break;
+		//		}
+		//	}
 
-			string message = string.Format("There is no {0} delta operation with GID = 0x{1:x16}.", type.ToString(), id);
-			CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-			throw new Exception(message);
-		}
+		//	string message = string.Format("There is no {0} delta operation with GID = 0x{1:x16}.", type.ToString(), id);
+		//	CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+		//	throw new Exception(message);
+		//}
 
 		public void AddDeltaOperation(DeltaOpType type, ResourceDescription rd, bool addAtEnd)
 		{
@@ -589,12 +589,12 @@ namespace FTN.Common
 		/// <summary>
 		/// Reverses order of delta operations for each type of operation (insert, update, delete)
 		/// </summary>
-		public void ReverseOrderOfOperations()
-		{
-			this.insertOps.Reverse();
-			this.updateOps.Reverse();
-			this.deleteOps.Reverse();
-		}		
+		//public void ReverseOrderOfOperations()
+		//{
+		//	this.insertOps.Reverse();
+		//	this.updateOps.Reverse();
+		//	this.deleteOps.Reverse();
+		//}		
 	
 		public byte[] Serialize()
 		{			
@@ -684,49 +684,49 @@ namespace FTN.Common
 			xmlWriter.WriteEndElement(); // delta
 		}	
 
-		public bool RemoveResourceDescription(long id, DeltaOpType opType)
-		{
-			bool removed = false;
+		//public bool RemoveResourceDescription(long id, DeltaOpType opType)
+		//{
+		//	bool removed = false;
 			
-			switch (opType)
-			{
-				case DeltaOpType.Insert:
-					for (int i = 0; i < this.insertOps.Count; i++)
-					{
-						if (this.insertOps[i].Id == id)
-						{
-							this.insertOps.RemoveAt(i--);
-							removed = true;
-						}
-					}
+		//	switch (opType)
+		//	{
+		//		case DeltaOpType.Insert:
+		//			for (int i = 0; i < this.insertOps.Count; i++)
+		//			{
+		//				if (this.insertOps[i].Id == id)
+		//				{
+		//					this.insertOps.RemoveAt(i--);
+		//					removed = true;
+		//				}
+		//			}
 
-					break;
-				case DeltaOpType.Update:
-					for (int i = 0; i < this.updateOps.Count; i++)
-					{
-						if (this.updateOps[i].Id == id)
-						{
-							this.updateOps.RemoveAt(i--);
-							removed = true;
-						}
-					}
+		//			break;
+		//		case DeltaOpType.Update:
+		//			for (int i = 0; i < this.updateOps.Count; i++)
+		//			{
+		//				if (this.updateOps[i].Id == id)
+		//				{
+		//					this.updateOps.RemoveAt(i--);
+		//					removed = true;
+		//				}
+		//			}
 
-					break;
-				case DeltaOpType.Delete:
-					for (int i = 0; i < this.deleteOps.Count; i++)
-					{
-						if (this.deleteOps[i].Id == id)
-						{
-							this.deleteOps.RemoveAt(i--);
-							removed = true;
-						}
-					}
+		//			break;
+		//		case DeltaOpType.Delete:
+		//			for (int i = 0; i < this.deleteOps.Count; i++)
+		//			{
+		//				if (this.deleteOps[i].Id == id)
+		//				{
+		//					this.deleteOps.RemoveAt(i--);
+		//					removed = true;
+		//				}
+		//			}
 
-					break;
-			}
+		//			break;
+		//	}
 
-			return removed;
-		}
+		//	return removed;
+		//}
 
 		public void ClearDeltaOperations()
 		{

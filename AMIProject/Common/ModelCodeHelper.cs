@@ -13,15 +13,15 @@ namespace FTN.Common
 		/// </summary>
 		/// <param name="globalId"></param>
 		/// <returns></returns>
-		public static short ExtractSystemIdFromGlobalId(long globalId)
-		{
-			unchecked
-			{
-				globalId >>= 48;
-				globalId &= 0x000000000000ffff;
-				return (short)globalId;
-			}
-		}
+		//public static short ExtractSystemIdFromGlobalId(long globalId)
+		//{
+		//	unchecked
+		//	{
+		//		globalId >>= 48;
+		//		globalId &= 0x000000000000ffff;
+		//		return (short)globalId;
+		//	}
+		//}
 
 		/// <summary>
 		/// Extracts type global id of an entity
@@ -84,14 +84,14 @@ namespace FTN.Common
 			return (DMSType)((long)((long)code & (long)ModelCodeMask.MASK_TYPE) >> 16);
 		}	
 
-		public static bool GetModelCodeFromString(string strModelCode, out ModelCode modelCode)
-		{
-			return Enum.TryParse(strModelCode, true, out modelCode);
-		}
+		//public static bool GetModelCodeFromString(string strModelCode, out ModelCode modelCode)
+		//{
+		//	return Enum.TryParse(strModelCode, true, out modelCode);
+		//}
 
-		public static bool GetDMSTypeFromString(string strDmsType, out DMSType dmsType)
-		{
-			return Enum.TryParse(strDmsType, true, out dmsType);
-		}				
+		//public static bool GetDMSTypeFromString(string strDmsType, out DMSType dmsType)
+		//{
+		//	return Enum.TryParse(strDmsType, true, out dmsType);
+		//}				
 	}
 }

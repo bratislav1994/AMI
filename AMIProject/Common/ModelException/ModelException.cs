@@ -7,84 +7,84 @@ using System.Runtime.Serialization;
 namespace FTN.Common
 {
 	
-	[DataContract]
-	public class ModelFault
-	{
-		private ErrorCode code = ErrorCode.Unknown;		
-		private long globalId = 0;
-		private string message = String.Empty;		
+	//[DataContract]
+	//public class ModelFault
+	//{
+	//	private ErrorCode code = ErrorCode.Unknown;		
+	//	private long globalId = 0;
+	//	private string message = String.Empty;		
 
-		public ModelFault()
-		{
-		}
+		//public ModelFault()
+		//{
+		//}
 
-		public ModelFault(ModelException modelException)
-		{
+		//public ModelFault(ModelException modelException)
+		//{
 			
-			globalId = modelException.GlobalID;
-			code = modelException.Code;
-			message = modelException.Message;			
-		}
+		//	globalId = modelException.GlobalID;
+		//	code = modelException.Code;
+		//	message = modelException.Message;			
+		//}
 
-		public ModelFault(Exception exception)
-		{			
-			message = exception.Message;
-		}
+		//public ModelFault(Exception exception)
+		//{			
+		//	message = exception.Message;
+		//}
 
-		public ModelFault(string message)
-		{
-			this.message = message;
-		}
+		//public ModelFault(string message)
+		//{
+		//	this.message = message;
+		//}
 
-		public ModelFault(ModelFault modelFault)
-		{			
-			globalId = modelFault.GlobalID;
-			code = modelFault.Code;
-			message = modelFault.Message;			
-		}
+		//public ModelFault(ModelFault modelFault)
+		//{			
+		//	globalId = modelFault.GlobalID;
+		//	code = modelFault.Code;
+		//	message = modelFault.Message;			
+		//}
 
-		[DataMember]
-		public ErrorCode Code
-		{
-			get
-			{
-				return code;
-			}
+	//	[DataMember]
+	//	public ErrorCode Code
+	//	{
+	//		get
+	//		{
+	//			return code;
+	//		}
 
-			set
-			{
-				code = value;
-			}
-		}
+	//		set
+	//		{
+	//			code = value;
+	//		}
+	//	}
 		
-		[DataMember]
-		public string Message
-		{
-			get 
-			{
-				return message; 
-			}
+	//	[DataMember]
+	//	public string Message
+	//	{
+	//		get 
+	//		{
+	//			return message; 
+	//		}
 
-			set 
-			{ 
-				message = value;
-			}
-		}
+	//		set 
+	//		{ 
+	//			message = value;
+	//		}
+	//	}
 
-		[DataMember]
-		public long GlobalID
-		{
-			get
-			{
-				return globalId;
-			}
+	//	[DataMember]
+	//	public long GlobalID
+	//	{
+	//		get
+	//		{
+	//			return globalId;
+	//		}
 
-			set
-			{
-				globalId = value;
-			}
-		}		
-	}
+	//		set
+	//		{
+	//			globalId = value;
+	//		}
+	//	}		
+	//}
 	
 	public class ModelException : Exception
 	{

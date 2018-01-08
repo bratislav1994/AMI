@@ -36,14 +36,14 @@ namespace FTN.Common
 			}
 		}
 
-		public ResourceDescription(long id, List<ModelCode> propIds)
-		{
-			this.id = id;
-			foreach (ModelCode propId in propIds)
-			{
-				this.properties.Add(new Property(propId));
-			}
-		}
+		//public ResourceDescription(long id, List<ModelCode> propIds)
+		//{
+		//	this.id = id;
+		//	foreach (ModelCode propId in propIds)
+		//	{
+		//		this.properties.Add(new Property(propId));
+		//	}
+		//}
 
 		public ResourceDescription(ResourceDescription toCopy)
 		{
@@ -78,64 +78,64 @@ namespace FTN.Common
 		/// <param name="addNewProperties">Indicates whether to add new properties to difference.</param>
 		/// <param name="ignoredPropertyIds">IDs of ignored properties.</param>
 		/// <returns>ResourceDescription with different properties.</returns>
-		public static ResourceDescription GetDifference(ResourceDescription resDesc1, ResourceDescription resDesc2, bool addNewProperties, HashSet<ModelCode> ignoredPropertyIds = null)
-		{
-			if (resDesc1.Id != resDesc2.Id)
-			{
-				throw new Exception(string.Format("Failed to generate difference between resource descriptions. IDs are different. First ID = {0}. Second ID = {1}", resDesc1.Id, resDesc2.Id));
-			}
-			else
-			{
-				ResourceDescription difference = new ResourceDescription(resDesc1.Id);
+		//public static ResourceDescription GetDifference(ResourceDescription resDesc1, ResourceDescription resDesc2, bool addNewProperties, HashSet<ModelCode> ignoredPropertyIds = null)
+		//{
+		//	if (resDesc1.Id != resDesc2.Id)
+		//	{
+		//		throw new Exception(string.Format("Failed to generate difference between resource descriptions. IDs are different. First ID = {0}. Second ID = {1}", resDesc1.Id, resDesc2.Id));
+		//	}
+		//	else
+		//	{
+		//		ResourceDescription difference = new ResourceDescription(resDesc1.Id);
 
-				foreach (Property secondProperty in resDesc2.Properties)
-				{
-					if (ignoredPropertyIds != null && ignoredPropertyIds.Contains(secondProperty.Id))
-					{
-						continue;
-					}
-					else
-					{
-						bool isNew = true;
+		//		foreach (Property secondProperty in resDesc2.Properties)
+		//		{
+		//			if (ignoredPropertyIds != null && ignoredPropertyIds.Contains(secondProperty.Id))
+		//			{
+		//				continue;
+		//			}
+		//			else
+		//			{
+		//				bool isNew = true;
 
-						for (int i = 0; i < resDesc1.Properties.Count; i++)
-						{
-							if (resDesc1.Properties[i].Id == secondProperty.Id)
-							{
-								if (resDesc1.Properties[i] != secondProperty)
-								{
-									difference.AddProperty(secondProperty);
-								}
+		//				for (int i = 0; i < resDesc1.Properties.Count; i++)
+		//				{
+		//					if (resDesc1.Properties[i].Id == secondProperty.Id)
+		//					{
+		//						if (resDesc1.Properties[i] != secondProperty)
+		//						{
+		//							difference.AddProperty(secondProperty);
+		//						}
 
-								isNew = false;
-							}
-						}
+		//						isNew = false;
+		//					}
+		//				}
 
-						if (isNew == true && addNewProperties == true)
-						{
-							difference.AddProperty(secondProperty);
-						}
-					}
-				}
+		//				if (isNew == true && addNewProperties == true)
+		//				{
+		//					difference.AddProperty(secondProperty);
+		//				}
+		//			}
+		//		}
 
-				return difference;
-			}
-		}
+		//		return difference;
+		//	}
+		//}
 
-		public void Update(ResourceDescription updateRD)
-		{
-			if (this.Id != updateRD.Id)
-			{
-				throw new Exception(string.Format("Failed to update resource description. IDs are different. Original ID = {0} . Update ID = {1}", this.Id, updateRD.Id));
-			}
-			else
-			{
-				foreach (Property updateProp in updateRD.Properties)
-				{
-					this.AddProperty(updateProp);
-				}
-			}
-		}
+		//public void Update(ResourceDescription updateRD)
+		//{
+		//	if (this.Id != updateRD.Id)
+		//	{
+		//		throw new Exception(string.Format("Failed to update resource description. IDs are different. Original ID = {0} . Update ID = {1}", this.Id, updateRD.Id));
+		//	}
+		//	else
+		//	{
+		//		foreach (Property updateProp in updateRD.Properties)
+		//		{
+		//			this.AddProperty(updateProp);
+		//		}
+		//	}
+		//}
 
 		public void AddProperty(Property property)
 		{
@@ -156,21 +156,21 @@ namespace FTN.Common
 			}
 		}
 
-		public void AddProperty(ModelCode pid, PropertyValue value)
-		{
-			Property property = new Property(pid, value);
-			this.AddProperty(property);
-		}
+		//public void AddProperty(ModelCode pid, PropertyValue value)
+		//{
+		//	Property property = new Property(pid, value);
+		//	this.AddProperty(property);
+		//}
 
-		public void InsertProperty(int index, Property property)
-		{
-			while (index > properties.Count - 1)
-			{
-				properties.Add(null);
-			}
+		//public void InsertProperty(int index, Property property)
+		//{
+		//	while (index > properties.Count - 1)
+		//	{
+		//		properties.Add(null);
+		//	}
 
-			properties[index] = property;
-		}
+		//	properties[index] = property;
+		//}
 
 		public void ExportToXml(XmlTextWriter xmlWriter)
 		{
@@ -394,316 +394,316 @@ namespace FTN.Common
 			xmlWriter.WriteEndElement(); // ResourceDescription
 		}
 
-        public string ExportToTextBox()
-        {
-            StringBuilder sb = new StringBuilder();
+  //      public string ExportToTextBox()
+  //      {
+  //          StringBuilder sb = new StringBuilder();
 
-            sb.Append("type: " + ((DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(this.Id)).ToString());
-            sb.AppendLine();
-            sb.Append("gid: ");
-            sb.Append(string.Format("0x{0:x16}", this.Id));
-            sb.AppendLine();
-            sb.AppendLine();
-            sb.Append("Properties:");
-            sb.AppendLine();
-            sb.AppendLine();
+  //          sb.Append("type: " + ((DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(this.Id)).ToString());
+  //          sb.AppendLine();
+  //          sb.Append("gid: ");
+  //          sb.Append(string.Format("0x{0:x16}", this.Id));
+  //          sb.AppendLine();
+  //          sb.AppendLine();
+  //          sb.Append("Properties:");
+  //          sb.AppendLine();
+  //          sb.AppendLine();
 
-            for (int i = 0; i < this.Properties.Count; i++)
-            {
-                sb.Append("id: " + this.Properties[i].Id.ToString()).AppendLine();
-                sb.Append("value: ");
+  //          for (int i = 0; i < this.Properties.Count; i++)
+  //          {
+  //              sb.Append("id: " + this.Properties[i].Id.ToString()).AppendLine();
+  //              sb.Append("value: ");
                 
-                switch (Properties[i].Type)
-                {
-                    case PropertyType.Float:
-                        sb.Append(this.Properties[i].AsFloat());
-                        sb.AppendLine();
-                        break;
-                    case PropertyType.Bool:
-                    case PropertyType.Byte:
-                    case PropertyType.Int32:
-                    case PropertyType.Int64:
-                    case PropertyType.TimeSpan:
-                    case PropertyType.DateTime:
-                        if (this.Properties[i].Id == ModelCode.IDOBJ_GID)
-                        {
-                            sb.Append(String.Format("0x{0:x16}", this.Properties[i].AsLong()));
-                            sb.AppendLine();
-                        }
-                        else
-                        {
-                            sb.Append(this.Properties[i].AsLong()).AppendLine();
-                        }
+  //              switch (Properties[i].Type)
+  //              {
+  //                  case PropertyType.Float:
+  //                      sb.Append(this.Properties[i].AsFloat());
+  //                      sb.AppendLine();
+  //                      break;
+  //                  case PropertyType.Bool:
+  //                  case PropertyType.Byte:
+  //                  case PropertyType.Int32:
+  //                  case PropertyType.Int64:
+  //                  case PropertyType.TimeSpan:
+  //                  case PropertyType.DateTime:
+  //                      if (this.Properties[i].Id == ModelCode.IDOBJ_GID)
+  //                      {
+  //                          sb.Append(String.Format("0x{0:x16}", this.Properties[i].AsLong()));
+  //                          sb.AppendLine();
+  //                      }
+  //                      else
+  //                      {
+  //                          sb.Append(this.Properties[i].AsLong()).AppendLine();
+  //                      }
 
-                        break;
-                    case PropertyType.Enum:
-                        try
-                        {
-                            EnumDescs enumDescs = new EnumDescs();
-                            sb.Append(enumDescs.GetStringFromEnum(this.Properties[i].Id, this.Properties[i].AsEnum())).AppendLine();
-                        }
-                        catch (Exception)
-                        {
-                            sb.Append(this.Properties[i].AsEnum()).AppendLine();
-                        }
+  //                      break;
+  //                  case PropertyType.Enum:
+  //                      try
+  //                      {
+  //                          EnumDescs enumDescs = new EnumDescs();
+  //                          sb.Append(enumDescs.GetStringFromEnum(this.Properties[i].Id, this.Properties[i].AsEnum())).AppendLine();
+  //                      }
+  //                      catch (Exception)
+  //                      {
+  //                          sb.Append(this.Properties[i].AsEnum()).AppendLine();
+  //                      }
 
-                        break;
-                    case PropertyType.Reference:
-                        sb.Append(String.Format("0x{0:x16}", this.Properties[i].AsReference())).AppendLine();
-                        break;
-                    case PropertyType.String:
-                        if (this.Properties[i].PropertyValue.StringValue == null)
-                        {
-                            this.Properties[i].PropertyValue.StringValue = String.Empty;
-                        }
-                        sb.Append(this.Properties[i].AsString()).AppendLine();
-                        break;
+  //                      break;
+  //                  case PropertyType.Reference:
+  //                      sb.Append(String.Format("0x{0:x16}", this.Properties[i].AsReference())).AppendLine();
+  //                      break;
+  //                  case PropertyType.String:
+  //                      if (this.Properties[i].PropertyValue.StringValue == null)
+  //                      {
+  //                          this.Properties[i].PropertyValue.StringValue = String.Empty;
+  //                      }
+  //                      sb.Append(this.Properties[i].AsString()).AppendLine();
+  //                      break;
 
-                    case PropertyType.Int64Vector:
-                    case PropertyType.ReferenceVector:
-                        if (this.Properties[i].AsLongs().Count > 0)
-                        {
-                            //sb = new StringBuilder(100);
-                            for (int j = 0; j < this.Properties[i].AsLongs().Count; j++)
-                            {
-                                sb.Append(String.Format("0x{0:x16}", this.Properties[i].AsLongs()[j])).Append(", ");
-                            }
+  //                  case PropertyType.Int64Vector:
+  //                  case PropertyType.ReferenceVector:
+  //                      if (this.Properties[i].AsLongs().Count > 0)
+  //                      {
+  //                          //sb = new StringBuilder(100);
+  //                          for (int j = 0; j < this.Properties[i].AsLongs().Count; j++)
+  //                          {
+  //                              sb.Append(String.Format("0x{0:x16}", this.Properties[i].AsLongs()[j])).Append(", ");
+  //                          }
 
-                            sb.AppendLine();
-                        }
-                        else
-                        {
-                            sb.Append("empty long/reference vector").AppendLine();
-                        }
+  //                          sb.AppendLine();
+  //                      }
+  //                      else
+  //                      {
+  //                          sb.Append("empty long/reference vector").AppendLine();
+  //                      }
 
-                        break;
-                    case PropertyType.TimeSpanVector:
-                        if (this.Properties[i].AsLongs().Count > 0)
-                        {
-                            sb = new StringBuilder(100);
-                            for (int j = 0; j < this.Properties[i].AsLongs().Count; j++)
-                            {
-                                sb.Append(String.Format("0x{0:x16}", this.Properties[i].AsTimeSpans()[j])).Append(", ");
-                            }
+  //                      break;
+  //                  case PropertyType.TimeSpanVector:
+  //                      if (this.Properties[i].AsLongs().Count > 0)
+  //                      {
+  //                          sb = new StringBuilder(100);
+  //                          for (int j = 0; j < this.Properties[i].AsLongs().Count; j++)
+  //                          {
+  //                              sb.Append(String.Format("0x{0:x16}", this.Properties[i].AsTimeSpans()[j])).Append(", ");
+  //                          }
 
-                            sb.Append(sb.ToString(0, sb.Length - 2)).AppendLine();
-                        }
-                        else
-                        {
-                            sb.Append("empty long/reference vector").AppendLine();
-                        }
+  //                          sb.Append(sb.ToString(0, sb.Length - 2)).AppendLine();
+  //                      }
+  //                      else
+  //                      {
+  //                          sb.Append("empty long/reference vector").AppendLine();
+  //                      }
 
-                        break;
-                    case PropertyType.Int32Vector:
-                        if (this.Properties[i].AsInts().Count > 0)
-                        {
-                            sb = new StringBuilder(100);
-                            for (int j = 0; j < this.Properties[i].AsInts().Count; j++)
-                            {
-                                sb.Append(String.Format("{0}", this.Properties[i].AsInts()[j])).Append(", ");
-                            }
+  //                      break;
+  //                  case PropertyType.Int32Vector:
+  //                      if (this.Properties[i].AsInts().Count > 0)
+  //                      {
+  //                          sb = new StringBuilder(100);
+  //                          for (int j = 0; j < this.Properties[i].AsInts().Count; j++)
+  //                          {
+  //                              sb.Append(String.Format("{0}", this.Properties[i].AsInts()[j])).Append(", ");
+  //                          }
 
-                            sb.Append(sb.ToString(0, sb.Length - 2)).AppendLine();
-                        }
-                        else
-                        {
-                            sb.Append("empty int vector").AppendLine();
-                        }
+  //                          sb.Append(sb.ToString(0, sb.Length - 2)).AppendLine();
+  //                      }
+  //                      else
+  //                      {
+  //                          sb.Append("empty int vector").AppendLine();
+  //                      }
 
-                        break;
+  //                      break;
 
-                    case PropertyType.DateTimeVector:
-                        if (this.Properties[i].AsDateTimes().Count > 0)
-                        {
-                            sb = new StringBuilder(100);
-                            for (int j = 0; j < this.Properties[i].AsDateTimes().Count; j++)
-                            {
-                                sb.Append(String.Format("{0}", this.Properties[i].AsDateTimes()[j])).Append(", ");
-                            }
+  //                  case PropertyType.DateTimeVector:
+  //                      if (this.Properties[i].AsDateTimes().Count > 0)
+  //                      {
+  //                          sb = new StringBuilder(100);
+  //                          for (int j = 0; j < this.Properties[i].AsDateTimes().Count; j++)
+  //                          {
+  //                              sb.Append(String.Format("{0}", this.Properties[i].AsDateTimes()[j])).Append(", ");
+  //                          }
 
-                            sb.Append(sb.ToString(0, sb.Length - 2)).AppendLine();
-                        }
-                        else
-                        {
-                            sb.Append("empty DateTime vector").AppendLine();
-                        }
+  //                          sb.Append(sb.ToString(0, sb.Length - 2)).AppendLine();
+  //                      }
+  //                      else
+  //                      {
+  //                          sb.Append("empty DateTime vector").AppendLine();
+  //                      }
 
-                        break;
+  //                      break;
 
-                    case PropertyType.BoolVector:
-                        if (this.Properties[i].AsBools().Count > 0)
-                        {
-                            sb = new StringBuilder(100);
-                            for (int j = 0; j < this.Properties[i].AsBools().Count; j++)
-                            {
-                                sb.Append(String.Format("{0}", this.Properties[i].AsBools()[j])).Append(", ");
-                            }
+  //                  case PropertyType.BoolVector:
+  //                      if (this.Properties[i].AsBools().Count > 0)
+  //                      {
+  //                          sb = new StringBuilder(100);
+  //                          for (int j = 0; j < this.Properties[i].AsBools().Count; j++)
+  //                          {
+  //                              sb.Append(String.Format("{0}", this.Properties[i].AsBools()[j])).Append(", ");
+  //                          }
 
-                            sb.Append(sb.ToString(0, sb.Length - 2)).AppendLine();
-                        }
-                        else
-                        {
-                            sb.Append("empty int vector").AppendLine();
-                        }
+  //                          sb.Append(sb.ToString(0, sb.Length - 2)).AppendLine();
+  //                      }
+  //                      else
+  //                      {
+  //                          sb.Append("empty int vector").AppendLine();
+  //                      }
 
-                        break;
-                    case PropertyType.FloatVector:
-                        if (this.Properties[i].AsFloats().Count > 0)
-                        {
-                            sb = new StringBuilder(100);
-                            for (int j = 0; j < this.Properties[i].AsFloats().Count; j++)
-                            {
-                                sb.Append(this.Properties[i].AsFloats()[j]).Append(", ");
-                            }
+  //                      break;
+  //                  case PropertyType.FloatVector:
+  //                      if (this.Properties[i].AsFloats().Count > 0)
+  //                      {
+  //                          sb = new StringBuilder(100);
+  //                          for (int j = 0; j < this.Properties[i].AsFloats().Count; j++)
+  //                          {
+  //                              sb.Append(this.Properties[i].AsFloats()[j]).Append(", ");
+  //                          }
 
-                            sb.Append(sb.ToString(0, sb.Length - 2)).AppendLine();
-                        }
-                        else
-                        {
-                            sb.Append("empty float vector").AppendLine();
-                        }
+  //                          sb.Append(sb.ToString(0, sb.Length - 2)).AppendLine();
+  //                      }
+  //                      else
+  //                      {
+  //                          sb.Append("empty float vector").AppendLine();
+  //                      }
 
-                        break;
-                    case PropertyType.StringVector:
-                        if (this.Properties[i].AsStrings().Count > 0)
-                        {
-                            sb = new StringBuilder(100);
-                            for (int j = 0; j < this.Properties[i].AsStrings().Count; j++)
-                            {
-                                sb.Append(this.Properties[i].AsStrings()[j]).Append(", ");
-                            }
+  //                      break;
+  //                  case PropertyType.StringVector:
+  //                      if (this.Properties[i].AsStrings().Count > 0)
+  //                      {
+  //                          sb = new StringBuilder(100);
+  //                          for (int j = 0; j < this.Properties[i].AsStrings().Count; j++)
+  //                          {
+  //                              sb.Append(this.Properties[i].AsStrings()[j]).Append(", ");
+  //                          }
 
-                            sb.Append(sb.ToString(0, sb.Length - 2)).AppendLine();
-                        }
-                        else
-                        {
-                            sb.Append("empty string vector").AppendLine();
-                        }
+  //                          sb.Append(sb.ToString(0, sb.Length - 2)).AppendLine();
+  //                      }
+  //                      else
+  //                      {
+  //                          sb.Append("empty string vector").AppendLine();
+  //                      }
 
-                        break;
-                    case PropertyType.EnumVector:
-                        if (this.Properties[i].AsEnums().Count > 0)
-                        {
-                            sb = new StringBuilder(100);
-                            EnumDescs enumDescs = new EnumDescs();
+  //                      break;
+  //                  case PropertyType.EnumVector:
+  //                      if (this.Properties[i].AsEnums().Count > 0)
+  //                      {
+  //                          sb = new StringBuilder(100);
+  //                          EnumDescs enumDescs = new EnumDescs();
 
-                            for (int j = 0; j < this.Properties[i].AsEnums().Count; j++)
-                            {
-                                try
-                                {
-                                    sb.Append(String.Format("{0}", enumDescs.GetStringFromEnum(this.Properties[i].Id, this.Properties[i].AsEnums()[j]))).Append(", ");
-                                }
-                                catch (Exception)
-                                {
-                                    sb.Append(String.Format("{0}", this.Properties[i].AsEnums()[j])).Append(", ");
-                                }
-                            }
+  //                          for (int j = 0; j < this.Properties[i].AsEnums().Count; j++)
+  //                          {
+  //                              try
+  //                              {
+  //                                  sb.Append(String.Format("{0}", enumDescs.GetStringFromEnum(this.Properties[i].Id, this.Properties[i].AsEnums()[j]))).Append(", ");
+  //                              }
+  //                              catch (Exception)
+  //                              {
+  //                                  sb.Append(String.Format("{0}", this.Properties[i].AsEnums()[j])).Append(", ");
+  //                              }
+  //                          }
 
-                            sb.Append(sb.ToString(0, sb.Length - 2)).AppendLine();
-                        }
-                        else
-                        {
-                            sb.Append("empty enum vector").AppendLine();
-                        }
+  //                          sb.Append(sb.ToString(0, sb.Length - 2)).AppendLine();
+  //                      }
+  //                      else
+  //                      {
+  //                          sb.Append("empty enum vector").AppendLine();
+  //                      }
 
-                        break;
+  //                      break;
 
-                    default:
-                        throw new Exception("Failed to export Resource Description as XML. Invalid property type.");
-                }
-                sb.AppendLine();
-            }
+  //                  default:
+  //                      throw new Exception("Failed to export Resource Description as XML. Invalid property type.");
+  //              }
+  //              sb.AppendLine();
+  //          }
 
-            sb.Append("-------------------------------------------------------------------------------------------").AppendLine();
-            return sb.ToString();
-        }
+  //          sb.Append("-------------------------------------------------------------------------------------------").AppendLine();
+  //          return sb.ToString();
+  //      }
 
-        public bool ContainsProperty(ModelCode propertyID)
-		{
-			foreach (Property property in this.Properties)
-			{
-				if (property.Id == propertyID)
-				{
-					return true;
-				}
-			}
+  //      public bool ContainsProperty(ModelCode propertyID)
+		//{
+		//	foreach (Property property in this.Properties)
+		//	{
+		//		if (property.Id == propertyID)
+		//		{
+		//			return true;
+		//		}
+		//	}
 
-			return false;
-		}
+		//	return false;
+		//}
 
-		public Property GetProperty(ModelCode propertyID)
-		{
-			foreach (Property p in this.Properties)
-			{
-				if (p.Id == propertyID)
-				{
-					return p;
-				}
-			}
+		//public Property GetProperty(ModelCode propertyID)
+		//{
+		//	foreach (Property p in this.Properties)
+		//	{
+		//		if (p.Id == propertyID)
+		//		{
+		//			return p;
+		//		}
+		//	}
 
-			return null;
-		}
+		//	return null;
+		//}
 
-		public Property GetProperty(long propertyID)
-		{
-			foreach (Property p in this.Properties)
-			{
-				if ((long)p.Id == propertyID)
-				{
-					return p;
-				}
-			}
+		//public Property GetProperty(long propertyID)
+		//{
+		//	foreach (Property p in this.Properties)
+		//	{
+		//		if ((long)p.Id == propertyID)
+		//		{
+		//			return p;
+		//		}
+		//	}
 
-			return null;
-		}
+		//	return null;
+		//}
 
-		public bool UpdateProperty(Property updateProperty)
-		{
-			bool updated = false;
+		//public bool UpdateProperty(Property updateProperty)
+		//{
+		//	bool updated = false;
 
-			for (int i = 0; i < this.Properties.Count; i++)
-			{
-				if (this.Properties[i].Id == updateProperty.Id)
-				{
-					this.Properties[i] = updateProperty;
-					updated = true;
-				}
-			}
+		//	for (int i = 0; i < this.Properties.Count; i++)
+		//	{
+		//		if (this.Properties[i].Id == updateProperty.Id)
+		//		{
+		//			this.Properties[i] = updateProperty;
+		//			updated = true;
+		//		}
+		//	}
 
-			return updated;
-		}
+		//	return updated;
+		//}
 
-		public bool RemoveProperty(ModelCode propertyId)
-		{
-			bool removed = false;
+		//public bool RemoveProperty(ModelCode propertyId)
+		//{
+		//	bool removed = false;
 
-			for (int i = 0; i < this.Properties.Count; i++)
-			{
-				if (this.Properties[i].Id == propertyId)
-				{
-					this.properties.RemoveAt(i--);
-					removed = true;
-				}
-			}
+		//	for (int i = 0; i < this.Properties.Count; i++)
+		//	{
+		//		if (this.Properties[i].Id == propertyId)
+		//		{
+		//			this.properties.RemoveAt(i--);
+		//			removed = true;
+		//		}
+		//	}
 
-			return removed;
-		}
+		//	return removed;
+		//}
 
-		public bool RemoveProperties(HashSet<ModelCode> propertyIds)
-		{
-			bool removed = false;
+		//public bool RemoveProperties(HashSet<ModelCode> propertyIds)
+		//{
+		//	bool removed = false;
 
-			for (int i = 0; i < this.Properties.Count; i++)
-			{
-				if (propertyIds.Contains(this.Properties[i].Id))
-				{
-					this.properties.RemoveAt(i--);
-					removed = true;
-				}
-			}
+		//	for (int i = 0; i < this.Properties.Count; i++)
+		//	{
+		//		if (propertyIds.Contains(this.Properties[i].Id))
+		//		{
+		//			this.properties.RemoveAt(i--);
+		//			removed = true;
+		//		}
+		//	}
 
-			return removed;
-		}
+		//	return removed;
+		//}
 
 		public class EqualityComparer : IEqualityComparer<ResourceDescription>
 		{

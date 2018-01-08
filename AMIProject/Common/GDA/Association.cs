@@ -49,42 +49,42 @@ namespace FTN.Common
 			this.type = type;
 		}
 
-		public Association(string property, string type)
-		{
-			if ((property != "") && (type != ""))
-			{
-				this.propertyId = (ModelCode)Enum.Parse(typeof(ModelCode), property);
-				this.type = (ModelCode)Enum.Parse(typeof(ModelCode), type);
-			}
-			else if ((property != "") && (type == ""))
-			{
-				this.propertyId = (ModelCode)Enum.Parse(typeof(ModelCode), property);
-			}
-		}
+		//public Association(string property, string type)
+		//{
+		//	if ((property != "") && (type != ""))
+		//	{
+		//		this.propertyId = (ModelCode)Enum.Parse(typeof(ModelCode), property);
+		//		this.type = (ModelCode)Enum.Parse(typeof(ModelCode), type);
+		//	}
+		//	else if ((property != "") && (type == ""))
+		//	{
+		//		this.propertyId = (ModelCode)Enum.Parse(typeof(ModelCode), property);
+		//	}
+		//}
 
-		public Association(string property, string type, string inverse)
-		{
-			if (type != null && type != "")
-			{
-				this.type = (ModelCode)Enum.Parse(typeof(ModelCode), type);
-			}
+		//public Association(string property, string type, string inverse)
+		//{
+		//	if (type != null && type != "")
+		//	{
+		//		this.type = (ModelCode)Enum.Parse(typeof(ModelCode), type);
+		//	}
 
-			if (property != null && property != "")
-			{
-				this.propertyId = (ModelCode)Enum.Parse(typeof(ModelCode), property);
-			}
+		//	if (property != null && property != "")
+		//	{
+		//		this.propertyId = (ModelCode)Enum.Parse(typeof(ModelCode), property);
+		//	}
 
-			if (inverse != null && inverse != "")
-			{
-				this.inverse = Boolean.Parse(inverse);
-			}
-			else if ((property == "") && (type == "") && (inverse == ""))
-			{
-				this.inverse = false;
-				this.propertyId = 0;
-				this.type = 0;
-			}
-		}
+		//	if (inverse != null && inverse != "")
+		//	{
+		//		this.inverse = Boolean.Parse(inverse);
+		//	}
+		//	else if ((property == "") && (type == "") && (inverse == ""))
+		//	{
+		//		this.inverse = false;
+		//		this.propertyId = 0;
+		//		this.type = 0;
+		//	}
+		//}
 
 		[DataMember]
 		public bool Inverse

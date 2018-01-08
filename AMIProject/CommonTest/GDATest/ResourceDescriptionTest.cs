@@ -2,9 +2,11 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using static FTN.Common.ResourceDescription;
 
 namespace CommonTest.GDATest
@@ -66,6 +68,23 @@ namespace CommonTest.GDATest
             Assert.DoesNotThrow(() => rd.AddProperty(new Property(ModelCode.ANALOG_MINVALUE, new PropertyValue(50))));
         }
 
+        [Test]
+        public void ExportToXmlTest()
+        {
+            string value = null;
+            this.rd.Properties = new List<Property> { new Property(ModelCode.ANALOG_MAXVALUE, new PropertyValue(100)), new Property(ModelCode.ANALOG_ALARMHIGH, new PropertyValue(150)), new Property(ModelCode.MEASUREMENT_DIRECTION, new PropertyValue()), new Property(ModelCode.MEASUREMENT_PSR, new PropertyValue()), new Property(ModelCode.IDOBJ_NAME, new PropertyValue(value)), new Property(ModelCode.GEOREGION_SUBGEOREGIONS, new PropertyValue(39483726353526)), new Property(ModelCode.SUBGEOREGION_SUBS, new PropertyValue()), new Property(ModelCode.IDOBJ_GID, new PropertyValue()) };
+
+            StringWriter stringWriter = new StringWriter();
+            XmlTextWriter xmlWriter = new XmlTextWriter(stringWriter);
+            xmlWriter.Formatting = Formatting.Indented;
+
+            Assert.DoesNotThrow(() => rd.ExportToXml(xmlWriter));
+
+            xmlWriter.Flush();
+            xmlWriter.Close();
+            stringWriter.Close();
+        }
+
         #region EqualityComparerTest
 
         [Test]
@@ -75,6 +94,7 @@ namespace CommonTest.GDATest
             Assert.Throws<NullReferenceException>(() => ec.Equals(rd, rd1));
 
             ResourceDescription rd2 = null;
+            Assert.Throws<NullReferenceException>(() => ec.Equals(rd1, rd2));
             rd1 = rd;
             Assert.Throws<NullReferenceException>(() => ec.Equals(rd1, rd2));
 
@@ -101,6 +121,11 @@ namespace CommonTest.GDATest
 
             rd2.Properties = rd.Properties;
             result = ec.Equals(rd, rd2);
+            Assert.AreEqual(true, result);
+
+            rd1 = rd;
+            rd2 = rd;
+            result = ec.Equals(rd1, rd2);
             Assert.AreEqual(true, result);
         }
 

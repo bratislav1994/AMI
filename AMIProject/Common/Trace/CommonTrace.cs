@@ -65,14 +65,14 @@ namespace FTN.Common
 			Trace.WriteLineIf(doTrace, string.Format("{0} : {1}", DateTime.Now, string.Format(message, arg1, arg2)));
 		}
 
-		public static void WriteTrace(bool doTrace, string message, object arg1, object arg2, object arg3)
-		{
-			Trace.WriteLineIf(doTrace, string.Format("{0} : {1}", DateTime.Now, string.Format(message, arg1, arg2, arg3)));
-		}
+		//public static void WriteTrace(bool doTrace, string message, object arg1, object arg2, object arg3)
+		//{
+		//	Trace.WriteLineIf(doTrace, string.Format("{0} : {1}", DateTime.Now, string.Format(message, arg1, arg2, arg3)));
+		//}
 
-		public static void WriteTrace(bool doTrace, string message, params object[] args)
-		{
-			Trace.WriteLineIf(doTrace, string.Format("{0} : {1}", DateTime.Now, string.Format(message, args)));
-		}
+		//public static void WriteTrace(bool doTrace, string message, params object[] args)
+		//{
+		//	Trace.WriteLineIf(doTrace, string.Format("{0} : {1}", DateTime.Now, string.Format(message, args)));
+		//}
 	}
 }

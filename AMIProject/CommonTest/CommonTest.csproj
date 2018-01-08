@@ -55,6 +55,7 @@
     <Compile Include="LoggerTest\LoggerTest.cs" />
     <Compile Include="ModelCodeHelperTest.cs" />
     <Compile Include="ModelExceptionTest\ModelExceptionTest.cs" />
+    <Compile Include="ModelResourcesDescTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TraceTest\CommonTraceTest.cs" />
   </ItemGroup>

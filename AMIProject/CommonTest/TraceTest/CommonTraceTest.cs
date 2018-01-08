@@ -54,12 +54,9 @@ namespace CommonTest.TraceTest
             message = string.Format("Trace level: {0}", CommonTrace.TraceLevel);
             Assert.DoesNotThrow(() => CommonTrace.WriteTrace(CommonTrace.TraceInfo, message));
 
-            //message = "Test - Updating entity with GID ({ 0:x16}) {0}";
-            //Assert.DoesNotThrow(() => CommonTrace.WriteTrace(CommonTrace.TraceVerbose, message, globalId));
-
-            //message = "Test - Updating entity with GID ({ 0:x16})";
-            //Assert.DoesNotThrow(() => CommonTrace.WriteTrace(CommonTrace.TraceInfo, message, globalId));
-
+            message = "Test - Updating entity with GID (0x{0:x16})";
+            Assert.DoesNotThrow(() => CommonTrace.WriteTrace(CommonTrace.TraceVerbose, message, globalId));
+            
             message = "Test - Entity (GID = 0x{0:x16}) doesn't contain reference 0x{1:x16}";
             Assert.DoesNotThrow(() => CommonTrace.WriteTrace(CommonTrace.TraceWarning, message, globalId, refGlobalId)); 
         }
