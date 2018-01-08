@@ -28,6 +28,7 @@ namespace AMIClient.ViewModels
             xmlvm = AddCimXmlViewModel.Instance;
             chartVM = new ChartViewModel();
             this.DgVM = DataGridViewModel.Instance;
+            this.DgVM.SetModel(Model);
             this.CurrentViewModel = Tvm;
         }
 

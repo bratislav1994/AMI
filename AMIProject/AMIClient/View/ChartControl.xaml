@@ -118,6 +118,7 @@
             <DVC:Chart.Series>
                 <DVC:AreaSeries BorderBrush="White" Background="Red" Title="Data history"
                     ItemsSource="{Binding DataHistoryP, UpdateSourceTrigger=PropertyChanged}"
+                    DataContext="{Binding}"
                     IndependentValueBinding="{Binding Path=Key}"
                     DependentValueBinding="{Binding Path=Value}" Margin="0,0,0,-2"/>
             </DVC:Chart.Series>
@@ -136,6 +137,7 @@
                 <DVC:AreaSeries BorderBrush="White" Background="Red" Title="Data history"
                     
                     ItemsSource="{Binding DataHistoryQ}"
+                    DataContext="{Binding}"
                     IndependentValueBinding="{Binding Path=Key}"
                     DependentValueBinding="{Binding Path=Value}" Margin="0,0,0,-2"/>
             </DVC:Chart.Series>
@@ -153,6 +155,7 @@
             <DVC:Chart.Series>
                 <DVC:AreaSeries BorderBrush="White" Background="Red" Title="Data history"
                     ItemsSource="{Binding DataHistoryV}"
+                    DataContext="{Binding}"
                     IndependentValueBinding="{Binding Path=Key}"
                     DependentValueBinding="{Binding Path=Value}" Margin="0,0,0,-2"/>
             </DVC:Chart.Series>

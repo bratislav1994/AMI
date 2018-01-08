@@ -22,7 +22,6 @@ namespace AMIClient.ViewModels
         private string fromPeriod;
         private string toPeriod;
         private DelegateCommand showDataCommand;
-        private ChartWindow chartWin;
         private Model model;
         private bool fromPeriodEntered = false;
         private bool toPeriodEntered = false;
@@ -116,16 +115,7 @@ namespace AMIClient.ViewModels
             set
             {
                 fromPeriod = value;
-
-                if (!string.IsNullOrEmpty(this.fromPeriod))
-                {
-                    this.fromPeriodEntered = true;
-                }
-                else
-                {
-                    this.fromPeriodEntered = false;
-                }
-
+                this.fromPeriodEntered = !string.IsNullOrEmpty(this.fromPeriod) ? true : false;
                 this.ShowDataCommand.RaiseCanExecuteChanged();
                 RaisePropertyChanged("FromPeriod");
             }
@@ -141,16 +131,7 @@ namespace AMIClient.ViewModels
             set
             {
                 toPeriod = value;
-
-                if (!string.IsNullOrEmpty(this.toPeriod))
-                {
-                    this.toPeriodEntered = true;
-                }
-                else
-                {
-                    this.toPeriodEntered = false;
-                }
-
+                this.toPeriodEntered = !string.IsNullOrEmpty(this.toPeriod) ? true : false;
                 this.ShowDataCommand.RaiseCanExecuteChanged();
                 RaisePropertyChanged("ToPeriod");
             }
@@ -197,7 +178,6 @@ namespace AMIClient.ViewModels
 
         private bool CanShowDataExecute()
         {
-            //return !string.IsNullOrWhiteSpace(this.TimePeriod);
             return this.fromPeriodEntered || this.toPeriodEntered;
         }
 
@@ -254,23 +234,9 @@ namespace AMIClient.ViewModels
             this.DataHistoryV = tempV;
         }
 
-        public void OpenWindow(List<long> amiGids)
+        public void SetGids(List<long> amiGids)
         {
             this.AmiGids = amiGids;
-            this.chartWin = new ChartWindow(this);
-            this.chartWin.ShowDialog();
-        }
-
-        public void OpenWindow2(List<long> amiGids)
-        {
-            this.AmiGids = amiGids;
-            //this.chartWin = new ChartWindow(this);
-            //this.chartWin.ShowDialog();
-        }
-
-        public void SetModel(Model model)
-        {
-            this.Model = model;
         }
 
         public void OnClosing(object sender, CancelEventArgs e)

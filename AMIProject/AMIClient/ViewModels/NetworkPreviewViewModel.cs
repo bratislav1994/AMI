@@ -21,27 +21,22 @@ namespace AMIClient.ViewModels
         private Model model;
         private ObservableCollection<RootElement> rootElements;
         private static NetworkPreviewViewModel instance;
-        private ChartViewModel cvm;
-        private DataGridViewModel dgVM;
         private bool rightClick;
         private ObservableCollection<TabItem> tabItems = new ObservableCollection<TabItem>();
+        private object selectedTab;
 
         public NetworkPreviewViewModel()
         {
-            cvm = new ChartViewModel();
-            dgVM = new DataGridViewModel();
             rootElements = new ObservableCollection<RootElement>();
             RightClick = false;
             TabItems.Add(new TabItem()
             {
                 Header = "Table",
-                CurrentTab = dgVM,
+                CurrentTab = DataGridViewModel.Instance,
                 Exit = Visibility.Hidden
             });
 
             SelectedTab = TabItems.First();
-
-            CurrentTab = dgVM;
         }
         
         public static NetworkPreviewViewModel Instance
@@ -82,30 +77,7 @@ namespace AMIClient.ViewModels
                 model = value;
             }
         }
-
-        public void SetModel(Model model)
-        {
-            this.Model = model;
-            RootElements.Add(new RootElement(this.model));
-            this.model.SetRoot(rootElements[0]);
-            this.cvm.SetModel(model);
-            this.dgVM.SetModel(model);
-        }
         
-        private object currentTab;
-
-        public object CurrentTab
-        {
-            get { return currentTab; }
-            set
-            {
-                currentTab = value;
-                this.RaisePropertyChanged("CurrentTab");
-            }
-        }
-
-        private object selectedTab;
-
         public object SelectedTab
         {
             get { return selectedTab; }
@@ -148,6 +120,13 @@ namespace AMIClient.ViewModels
             }
         }
 
+        public void SetModel(Model model)
+        {
+            this.Model = model;
+            RootElements.Add(new RootElement(this.model));
+            this.model.SetRoot(rootElements[0]);
+        }
+
         private ICommand closeTabCommand;
 
         public ICommand CloseTabCommand
@@ -159,7 +138,7 @@ namespace AMIClient.ViewModels
         {
             EnergyConsumer ec = (EnergyConsumer)ami;
             ChartViewModel chartVM = new ChartViewModel() { Model = this.Model };
-            chartVM.OpenWindow2(new List<long>() { ec.GlobalId });
+            chartVM.SetGids(new List<long>() { ec.GlobalId });
 
             TabItems.Add(new TabItem()
             {
@@ -168,7 +147,6 @@ namespace AMIClient.ViewModels
             });
 
             SelectedTab = TabItems.Last();
-            CurrentTab = chartVM;
         }
 
         private ICommand groupAmiChartCommand;
@@ -204,7 +182,7 @@ namespace AMIClient.ViewModels
 
                     //cvm.OpenWindow(ecsC1);
                     ChartViewModel chartVM = new ChartViewModel() { Model = this.Model };
-                    chartVM.OpenWindow2(ecsC1);
+                    chartVM.SetGids(ecsC1);
                     TabItems.Add(new TabItem()
                     {
                         Header = "All",
@@ -212,7 +190,6 @@ namespace AMIClient.ViewModels
                     });
 
                     SelectedTab = TabItems.Last();
-                    CurrentTab = chartVM;
 
                     break;
                 case "GeoRegionForTree":
@@ -234,7 +211,7 @@ namespace AMIClient.ViewModels
                     }
                     //cvm.OpenWindow(ecsC2);
                     ChartViewModel chartVM2 = new ChartViewModel() { Model = this.Model };
-                    chartVM2.OpenWindow2(ecsC2);
+                    chartVM2.SetGids(ecsC2);
                     TabItems.Add(new TabItem()
                     {
                         Header = ((GeoRegionForTree)selectedItem).GeoRegion.Name,
@@ -242,7 +219,6 @@ namespace AMIClient.ViewModels
                     });
 
                     SelectedTab = TabItems.Last();
-                    CurrentTab = chartVM2;
 
                     break;
                 case "SubGeoRegionForTree":
@@ -259,7 +235,7 @@ namespace AMIClient.ViewModels
                     }
                     //cvm.OpenWindow(ecsC3);
                     ChartViewModel chartVM3 = new ChartViewModel() { Model = this.Model };
-                    chartVM3.OpenWindow2(ecsC3);
+                    chartVM3.SetGids(ecsC3);
                     TabItems.Add(new TabItem()
                     {
                         Header = ((SubGeoRegionForTree)selectedItem).SubGeoRegion.Name,
@@ -267,7 +243,6 @@ namespace AMIClient.ViewModels
                     });
 
                     SelectedTab = TabItems.Last();
-                    CurrentTab = chartVM3;
 
                     break;
                 case "SubstationForTree":
@@ -279,7 +254,7 @@ namespace AMIClient.ViewModels
                     }
                     //cvm.OpenWindow(ecsC4);
                     ChartViewModel chartVM4 = new ChartViewModel() { Model = this.Model };
-                    chartVM4.OpenWindow2(ecsC4);
+                    chartVM4.SetGids(ecsC4);
                     TabItems.Add(new TabItem()
                     {
                         Header = ((SubstationForTree)selectedItem).Substation.Name,
@@ -287,7 +262,6 @@ namespace AMIClient.ViewModels
                     });
 
                     SelectedTab = TabItems.Last();
-                    CurrentTab = chartVM4;
 
                     break;
                 default:
