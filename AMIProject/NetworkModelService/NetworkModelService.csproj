@@ -80,6 +80,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Container.cs" />
     <Compile Include="NetworkModel.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="GDA\GenericDataAccess.cs" />

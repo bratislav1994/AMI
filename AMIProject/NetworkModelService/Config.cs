@@ -9,19 +9,18 @@ namespace FTN.Services.NetworkModelService
 {
 	public class Config 
 	{
-
 		private string connectionString = string.Empty;
 
-		public string ConnectionString
+        private Config()
+        {
+            connectionString = ConfigurationManager.ConnectionStrings["networkModelconnectionString"].ConnectionString;
+        }
+
+        public string ConnectionString
 		{
 			get { return connectionString; }			
 		}
-
-		private Config()
-		{
-			connectionString = ConfigurationManager.ConnectionStrings["networkModelconnectionString"].ConnectionString;
-		}
-
+        
 		#region Static members
 
 		private static Config instance = null;	
@@ -46,9 +45,7 @@ namespace FTN.Services.NetworkModelService
 			string systemId = (Math.Abs(valueWithSystemId) >> 48).ToString();
 			string valueWithoutSystemId = (Math.Abs(valueWithSystemId) & 0x0000FFFFFFFFFFFF).ToString();
 
-			return String.Format("{0}{1}.{2}", valueWithSystemId < 0 ? "-" : "", systemId, valueWithoutSystemId);
+			return string.Format("{0}{1}.{2}", valueWithSystemId < 0 ? "-" : "", systemId, valueWithoutSystemId);
 		}
-
-		
 	}
 }

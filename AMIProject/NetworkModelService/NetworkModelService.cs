@@ -17,13 +17,14 @@ namespace FTN.Services.NetworkModelService
 		private NetworkModel nm = null;
 		private List<ServiceHost> hosts = null;
         private ServiceHost svcDuplexClient = null;
-        private ServiceHost svcDuplexScada = null;
         private ServiceHost svc = null;
 
         public NetworkModelService()
 		{			
 			nm = new NetworkModel();
-            GenericDataAccess gda = new GenericDataAccess();			
+            nm.Initialize();
+            GenericDataAccess gda = new GenericDataAccess();
+            gda.Run();			
 			gda.NetworkModel = nm;
             ResourceIterator.NetworkModel = nm;
             svcDuplexClient = new ServiceHost(gda);

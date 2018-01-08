@@ -36,6 +36,21 @@ namespace FTN.Services.NetworkModelService
         private object lockObjectClient;
         private object lockObjectScada;
 
+        /// <summary>
+        /// Initializes a new instance of the Model class.
+        /// </summary>
+        public NetworkModel()
+        {
+            LockObjectClient = new object();
+            LockObjectScada = new object();
+            networkDataModel = new Dictionary<DMSType, Container>();
+            ResourcesDescs = new ModelResourcesDesc();
+            Clients = new List<IModelForDuplex>();
+            ClientsForDeleting = new List<IModelForDuplex>();
+            UpdateThreadClient = new Thread(() => InformClients());
+            UpdateThreadClient.Start();
+        }
+
         public ModelResourcesDesc ResourcesDescs
         {
             get
@@ -126,23 +141,7 @@ namespace FTN.Services.NetworkModelService
                 lockObjectScada = value;
             }
         }
-
-        /// <summary>
-        /// Initializes a new instance of the Model class.
-        /// </summary>
-        public NetworkModel()
-        {
-            LockObjectClient = new object();
-            LockObjectScada = new object();
-            networkDataModel = new Dictionary<DMSType, Container>();
-            ResourcesDescs = new ModelResourcesDesc();
-            Clients = new List<IModelForDuplex>();
-            ClientsForDeleting = new List<IModelForDuplex>();
-            UpdateThreadClient = new Thread(() => InformClients());
-            UpdateThreadClient.Start();
-            Initialize();
-        }
-
+        
         public void ConnectClient()
         {
             this.Clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
@@ -751,7 +750,7 @@ namespace FTN.Services.NetworkModelService
 			}
 		}
 
-		private void Initialize()
+		public void Initialize()
 		{
 			List<Delta> result = ReadAllDeltas();
 
@@ -977,5 +976,27 @@ namespace FTN.Services.NetworkModelService
 
             return retVal;
         }
+
+        public void Dispose()
+        {
+            UpdateThreadClient.Abort();
+        }
+
+        #region test methods
+
+        public void CreateContainer(long gid)
+        {
+            DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(gid);
+            Container c = new Container();
+            networkDataModel.Add(type, c);
+        }
+
+        public void FillContainer(ResourceDescription rd)
+        {
+            DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(rd.Id);
+            networkDataModel[type].CreateEntity(rd.Id);
+        }
+
+        #endregion
     }
 }
