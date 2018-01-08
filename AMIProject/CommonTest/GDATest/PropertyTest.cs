@@ -99,6 +99,7 @@ namespace CommonTest.GDATest
         [Test]
         public void TypeTest()
         {
+            this.property.Id = ModelCode.ANALOG_MAXVALUE;
             Assert.AreEqual(PropertyType.Float, property.Type);
         }
 
@@ -172,6 +173,183 @@ namespace CommonTest.GDATest
         public void EqualTest()
         {
             Assert.AreEqual(true, property.Equals(property));
+        }
+
+        [Test]
+        public void SetValueTest()
+        {
+            int valueI = 1000;
+            Assert.Throws<Exception>(() => property.SetValue(valueI));
+            this.property.Id = ModelCode.MEASUREMENT_MAXRAWVAL;
+            Assert.DoesNotThrow(() => property.SetValue(valueI));
+            this.property.Id = ModelCode.IDOBJ_GID;
+            Assert.DoesNotThrow(() => property.SetValue(valueI));
+            this.property.Id = ModelCode.MEASUREMENT_DIRECTION;
+            Assert.DoesNotThrow(() => property.SetValue(valueI));
+
+            float valueF = 1000;
+            Assert.Throws<Exception>(() => property.SetValue(valueF));
+            this.property.Id = ModelCode.ANALOG_MINVALUE;
+            Assert.DoesNotThrow(() => property.SetValue(valueF));
+
+            long valueL = 1000;
+            Assert.Throws<Exception>(() => property.SetValue(valueL));
+            this.property.Id = ModelCode.IDOBJ_GID;
+            Assert.DoesNotThrow(() => property.SetValue(valueL));
+            this.property.Id = ModelCode.MEASUREMENT_MAXRAWVAL;
+            Assert.DoesNotThrow(() => property.SetValue(valueL));
+            this.property.Id = ModelCode.MEASUREMENT_DIRECTION;
+            Assert.DoesNotThrow(() => property.SetValue(valueL));
+            this.property.Id = ModelCode.MEASUREMENT_PSR;
+            Assert.DoesNotThrow(() => property.SetValue(valueL));
+
+            string valueS = "NameID";
+            Assert.Throws<Exception>(() => property.SetValue(valueS));
+            this.property.Id = ModelCode.IDOBJ_NAME;
+            Assert.DoesNotThrow(() => property.SetValue(valueS));
+
+            short valueSh = 1;
+            Assert.Throws<Exception>(() => property.SetValue(valueSh));
+            this.property.Id = ModelCode.MEASUREMENT_DIRECTION;
+            Assert.DoesNotThrow(() => property.SetValue(valueSh));
+            this.property.Id = ModelCode.MEASUREMENT_MAXRAWVAL;
+            Assert.DoesNotThrow(() => property.SetValue(valueSh));
+            this.property.Id = ModelCode.IDOBJ_GID;
+            Assert.DoesNotThrow(() => property.SetValue(valueSh));
+            
+            Assert.Throws<Exception>(() => property.SetValue(true));
+
+            List<long> value = new List<long>() { 837437837463, 5933625738 };
+            Assert.Throws<Exception>(() => property.SetValue(value));
+            this.property.Id = ModelCode.GEOREGION_SUBGEOREGIONS;
+            Assert.DoesNotThrow(() => property.SetValue(value));
+        }
+
+        [Test]
+        public void AsBoolTest()
+        {
+            Assert.Throws<Exception>(() => property.AsBool());
+        }
+
+        [Test]
+        public void AsEnumTest()
+        {
+            short value = 1;
+            this.property.Id = ModelCode.MEASUREMENT_DIRECTION;
+            property.SetValue(value);
+            short result = property.AsEnum();
+            Assert.AreEqual(value, result);
+            
+            this.property.Id = ModelCode.ANALOG_ALARMHIGH;
+            Assert.Throws<Exception>(() => property.AsEnum());
+        }
+
+        [Test]
+        public void AsIntTest()
+        {
+            int value = 100;
+            this.property.Id = ModelCode.ANALOG_ALARMHIGH;
+            property.SetValue(value);
+            int result = property.AsInt();
+            Assert.AreEqual(value, result);
+
+            value = 1;
+            this.property.Id = ModelCode.MEASUREMENT_DIRECTION;
+            property.SetValue(value);
+            result = property.AsInt();
+            Assert.AreEqual(value, result);
+
+            this.property.Id = ModelCode.MEASUREMENT_PSR;
+            Assert.Throws<Exception>(() => property.AsInt());
+        }
+
+        [Test]
+        public void AsLongTest()
+        {
+            long value = 100;
+            this.property.Id = ModelCode.IDOBJ_GID;
+            property.SetValue(value);
+            long result = property.AsLong();
+            Assert.AreEqual(value, result);
+
+            value = 1;
+            this.property.Id = ModelCode.MEASUREMENT_DIRECTION;
+            property.SetValue(value);
+            result = property.AsLong();
+            Assert.AreEqual(value, result);
+
+            value = 100;
+            this.property.Id = ModelCode.MEASUREMENT_RTUADDRESS;
+            property.SetValue(value);
+            result = property.AsLong();
+            Assert.AreEqual(value, result);
+
+            value = 1;
+            this.property.Id = ModelCode.MEASUREMENT_PSR;
+            property.SetValue(value);
+            result = property.AsLong();
+            Assert.AreEqual(value, result);
+
+            this.property.Id = ModelCode.IDOBJ_NAME;
+            Assert.Throws<Exception>(() => property.AsLong());
+        }
+
+        [Test]
+        public void AsFloatTest()
+        {
+            float value = 100;
+            this.property.Id = ModelCode.ANALOG_MINVALUE;
+            property.SetValue(value);
+            float result = property.AsFloat();
+            Assert.AreEqual(value, result);
+
+            this.property.Id = ModelCode.IDOBJ_NAME;
+            Assert.Throws<Exception>(() => property.AsFloat());
+        }
+
+        [Test]
+        public void AsStringTest()
+        {
+            string value = null;
+            this.property.Id = ModelCode.IDOBJ_NAME;
+            property.SetValue(value);
+            string result = property.AsString();
+            Assert.AreEqual(string.Empty, result);
+
+            value = "IDOBJ";
+            this.property.Id = ModelCode.IDOBJ_NAME;
+            property.SetValue(value);
+            result = property.AsString();
+            Assert.AreEqual(value, result);
+
+            this.property.Id = ModelCode.MEASUREMENT_MAXRAWVAL;
+            Assert.Throws<Exception>(() => property.AsString());
+        }
+
+        [Test]
+        public void AsReferenceTest()
+        {
+            long value = 8273627645382;
+            this.property.Id = ModelCode.MEASUREMENT_PSR;
+            property.SetValue(value);
+            long result = property.AsReference();
+            Assert.AreEqual(value, result);
+
+            this.property.Id = ModelCode.ANALOG_ALARMHIGH;
+            Assert.Throws<Exception>(() => property.AsReference());
+        }
+
+        [Test]
+        public void AsReferencesTest()
+        {
+            List<long> value = new List<long>() { 837437837463, 5933625738 };
+            this.property.Id = ModelCode.GEOREGION_SUBGEOREGIONS;
+            property.SetValue(value);
+            List<long> result = property.AsReferences();
+            Assert.AreEqual(value, result);
+
+            this.property.Id = ModelCode.ANALOG_ALARMHIGH;
+            Assert.Throws<Exception>(() => property.AsReferences());
         }
     }
 }
