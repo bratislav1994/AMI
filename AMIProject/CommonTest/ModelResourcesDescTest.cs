@@ -18,7 +18,7 @@ namespace CommonTest
         IEnumerable<ModelCode> propertyIds;
 
         private ModelResourcesDesc modelResDesc;
-        private Dictionary<long, ResourcePropertiesDesc> resourceDescs;
+        //private Dictionary<long, ResourcePropertiesDesc> resourceDescs;
         private Dictionary<DMSType, ModelCode> type2modelCode = new Dictionary<DMSType, ModelCode>(new DMSTypeComparer());
         private List<ModelCode> typeIdsInInsertOrder = new List<ModelCode>();
         private List<ModelCode> nonAbstractClassIds = new List<ModelCode>();

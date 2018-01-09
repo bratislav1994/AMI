@@ -176,8 +176,48 @@ namespace CommonTest.GDATest
         }
 
         [Test]
+        public void ToStringTest()
+        {
+            this.property.Id = ModelCode.MEASUREMENT_DIRECTION;
+            this.property.PropertyValue = new PropertyValue(1);
+            string result = property.ToString();
+            Assert.AreEqual("1", result);
+
+            this.property.Id = ModelCode.ANALOG_ALARMHIGH;
+            this.property.PropertyValue = new PropertyValue(150);
+            result = property.ToString();
+            Assert.AreEqual("150", result);
+
+            this.property.Id = ModelCode.IDOBJ_GID;
+            this.property.PropertyValue = new PropertyValue(2947647382947);
+            result = property.ToString();
+            Assert.AreEqual("2947647382947", result);
+
+            this.property.Id = ModelCode.MEASUREMENT_PSR;
+            this.property.PropertyValue = new PropertyValue(49584662738463);
+            result = property.ToString();
+            Assert.AreEqual("49584662738463", result);
+
+            this.property.Id = ModelCode.IDOBJ_NAME;
+            this.property.PropertyValue = new PropertyValue("IDObj");
+            result = property.ToString();
+            Assert.AreEqual("IDObj", result);
+
+            this.property.Id = ModelCode.GEOREGION_SUBGEOREGIONS;
+            this.property.PropertyValue = new PropertyValue();
+            result = property.ToString();
+            Assert.AreEqual(null, result);
+
+            this.property.Id = ModelCode.ANALOG_NORMALVALUE;
+            this.property.PropertyValue = new PropertyValue(100);
+            result = property.ToString();
+            Assert.AreEqual("0", result);
+        }
+
+        [Test]
         public void SetValueTest()
         {
+            this.property.Id = ModelCode.IDOBJ_MRID;
             int valueI = 1000;
             Assert.Throws<Exception>(() => property.SetValue(valueI));
             this.property.Id = ModelCode.MEASUREMENT_MAXRAWVAL;
@@ -350,6 +390,79 @@ namespace CommonTest.GDATest
 
             this.property.Id = ModelCode.ANALOG_ALARMHIGH;
             Assert.Throws<Exception>(() => property.AsReferences());
+        }
+
+        [Test]
+        public void IsCompatibleWithTest()
+        {
+            Property newProp = new Property();
+            newProp.Id = ModelCode.ANALOG_NORMALVALUE;
+            newProp.PropertyValue = new PropertyValue(100);
+            PropertyType newType = newProp.Type;
+            bool result = property.IsCompatibleWith(newType);
+            Assert.AreEqual(true, result);
+
+            this.property.Id = ModelCode.ANALOG_ALARMHIGH;
+            newProp.Id = ModelCode.IDOBJ_GID;
+            newType = newProp.Type;
+            result = property.IsCompatibleWith(newType);
+            Assert.AreEqual(true, result);
+            newProp.Id = ModelCode.MEASUREMENT_DIRECTION;
+            newType = newProp.Type;
+            result = property.IsCompatibleWith(newType);
+            Assert.AreEqual(true, result);
+            newProp.Id = ModelCode.BASEVOLTAGE_CONDEQS;
+            newType = newProp.Type;
+            result = property.IsCompatibleWith(newType);
+            Assert.AreEqual(false, result);
+
+            this.property.Id = ModelCode.IDOBJ_GID;
+            newProp.Id = ModelCode.ANALOG_ALARMHIGH;
+            newType = newProp.Type;
+            result = property.IsCompatibleWith(newType);
+            Assert.AreEqual(true, result);
+            newProp.Id = ModelCode.MEASUREMENT_DIRECTION;
+            newType = newProp.Type;
+            result = property.IsCompatibleWith(newType);
+            Assert.AreEqual(true, result);
+            newProp.Id = ModelCode.BASEVOLTAGE_CONDEQS;
+            newType = newProp.Type;
+            result = property.IsCompatibleWith(newType);
+            Assert.AreEqual(false, result);
+
+            this.property.Id = ModelCode.MEASUREMENT_DIRECTION;
+            newProp.Id = ModelCode.IDOBJ_GID;
+            newType = newProp.Type;
+            result = property.IsCompatibleWith(newType);
+            Assert.AreEqual(true, result);
+            newProp.Id = ModelCode.ANALOG_ALARMHIGH;
+            newType = newProp.Type;
+            result = property.IsCompatibleWith(newType);
+            Assert.AreEqual(true, result);
+            newProp.Id = ModelCode.BASEVOLTAGE_CONDEQS;
+            newType = newProp.Type;
+            result = property.IsCompatibleWith(newType);
+            Assert.AreEqual(false, result);
+
+            this.property.Id = ModelCode.BASEVOLTAGE_CONDEQS;
+            newProp.Id = ModelCode.IDOBJ_GID;
+            newType = newProp.Type;
+            result = property.IsCompatibleWith(newType);
+            Assert.AreEqual(false, result);
+            newProp.Id = ModelCode.ANALOG_ALARMHIGH;
+            newType = newProp.Type;
+            result = property.IsCompatibleWith(newType);
+            Assert.AreEqual(false, result);
+            newProp.Id = ModelCode.MEASUREMENT_DIRECTION;
+            newType = newProp.Type;
+            result = property.IsCompatibleWith(newType);
+            Assert.AreEqual(false, result);
+
+            this.property.Id = ModelCode.ANALOG_ALARMHIGH;
+            newProp.Id = ModelCode.BASEVOLTAGE_CONDEQS;
+            newType = newProp.Type;
+            result = property.IsCompatibleWith(newType);
+            Assert.AreEqual(false, result);
         }
     }
 }
