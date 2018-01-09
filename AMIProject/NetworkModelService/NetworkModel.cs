@@ -41,6 +41,7 @@ namespace FTN.Services.NetworkModelService
         /// </summary>
         public NetworkModel()
         {
+            IsTest = false;
             LockObjectClient = new object();
             LockObjectScada = new object();
             networkDataModel = new Dictionary<DMSType, Container>();
@@ -141,61 +142,61 @@ namespace FTN.Services.NetworkModelService
                 lockObjectScada = value;
             }
         }
-        
+
         public void ConnectClient()
         {
             this.Clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
         }
-        
+
         #region Find
-        
-		public bool EntityExists(long globalId)
-		{
-			DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(globalId);
 
-		    if (ContainerExists(type))
-		    {
-				Container container = GetContainer(type);
+        public bool EntityExists(long globalId)
+        {
+            DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(globalId);
 
-				if (container.EntityExists(globalId))
-				{
-					return true;
-				}
-		    }
+            if (ContainerExists(type))
+            {
+                Container container = GetContainer(type);
 
-		    return false;
-		}
+                if (container.EntityExists(globalId))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         public IdentifiedObject GetEntity(long globalId)
-		{
-			if (EntityExists(globalId))
-			{
-				DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(globalId);
-				IdentifiedObject io = GetContainer(type).GetEntity(globalId);
+        {
+            if (EntityExists(globalId))
+            {
+                DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(globalId);
+                IdentifiedObject io = GetContainer(type).GetEntity(globalId);
 
-				return io;
-			}
-			else
-			{
-				string message = string.Format("Entity  (GID = 0x{0:x16}) does not exist.", globalId);
-				throw new Exception(message);
-			}
-		}
-        
+                return io;
+            }
+            else
+            {
+                string message = string.Format("Entity  (GID = 0x{0:x16}) does not exist.", globalId);
+                throw new Exception(message);
+            }
+        }
+
         /// <summary>
         /// Checks if container exists in model.
         /// </summary>
         /// <param name="type">Type of container.</param>
         /// <returns>True if container exists, otherwise FALSE.</returns>
         private bool ContainerExists(DMSType type)
-		{
-			if (networkDataModel.ContainsKey(type))
-			{
-				return true;
-			}
-			
-			return false;			
-		}
+        {
+            if (networkDataModel.ContainsKey(type))
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Gets container of specified type.
@@ -203,9 +204,9 @@ namespace FTN.Services.NetworkModelService
         /// <param name="type">Type of container.</param>
         /// <returns>Container for specified local id</returns>
         private Container GetContainer(DMSType type)
-		{
-		    return ContainerExists(type) ? networkDataModel[type] : null;
-		}
+        {
+            return ContainerExists(type) ? networkDataModel[type] : null;
+        }
 
         #endregion Find
 
@@ -218,35 +219,35 @@ namespace FTN.Services.NetworkModelService
         /// <param name="properties">List of requested properties</param>		
         /// <returns>Resource description of the specified entity</returns>
         public ResourceDescription GetValues(long globalId, List<ModelCode> properties)
-		{
-			CommonTrace.WriteTrace(CommonTrace.TraceVerbose, String.Format("Getting values for GID = 0x{0:x16}.", globalId));
+        {
+            CommonTrace.WriteTrace(CommonTrace.TraceVerbose, String.Format("Getting values for GID = 0x{0:x16}.", globalId));
 
-			try
-			{
-				IdentifiedObject io = GetEntity(globalId);
+            try
+            {
+                IdentifiedObject io = GetEntity(globalId);
 
-				ResourceDescription rd = new ResourceDescription(globalId);
+                ResourceDescription rd = new ResourceDescription(globalId);
 
-				Property property = null;
+                Property property = null;
 
-				// insert specified properties
-				foreach (ModelCode propId in properties)
-				{
-					property = new Property(propId);
-					io.GetProperty(property);
-					rd.AddProperty(property);
-				}
+                // insert specified properties
+                foreach (ModelCode propId in properties)
+                {
+                    property = new Property(propId);
+                    io.GetProperty(property);
+                    rd.AddProperty(property);
+                }
 
-				CommonTrace.WriteTrace(CommonTrace.TraceVerbose, String.Format("Getting values for GID = 0x{0:x16} succedded.", globalId));
+                CommonTrace.WriteTrace(CommonTrace.TraceVerbose, String.Format("Getting values for GID = 0x{0:x16} succedded.", globalId));
 
-				return rd;
-			}			
-			catch (Exception ex)
-			{
-				string message = string.Format("Failed to get values for entity with GID = 0x{0:x16}. {1}", globalId, ex.Message);				
-				throw new Exception(message);
-			}
-		}
+                return rd;
+            }
+            catch (Exception ex)
+            {
+                string message = string.Format("Failed to get values for entity with GID = 0x{0:x16}. {1}", globalId, ex.Message);
+                throw new Exception(message);
+            }
+        }
 
         public List<long> GetGlobalIds()
         {
@@ -271,91 +272,91 @@ namespace FTN.Services.NetworkModelService
             return globalIds;
         }
 
-		/// <summary>
-		/// Gets resource iterator that holds descriptions for all entities of the specified type.
-		/// </summary>		
-		/// <param name="type">Type of entity that is requested</param>
-		/// <param name="properties">List of requested properties</param>		
-		/// <returns>Resource iterator for the requested entities</returns>
-		public ResourceIterator GetExtentValues(ModelCode entityType, List<ModelCode> properties)
-		{			
-			CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Getting extent values for entity type = {0} .", entityType);
+        /// <summary>
+        /// Gets resource iterator that holds descriptions for all entities of the specified type.
+        /// </summary>		
+        /// <param name="type">Type of entity that is requested</param>
+        /// <param name="properties">List of requested properties</param>		
+        /// <returns>Resource iterator for the requested entities</returns>
+        public ResourceIterator GetExtentValues(ModelCode entityType, List<ModelCode> properties)
+        {
+            CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Getting extent values for entity type = {0} .", entityType);
 
-			try
-			{
-				List<long> globalIds = new List<long>();
-				Dictionary<DMSType, List<ModelCode>> class2PropertyIDs = new Dictionary<DMSType, List<ModelCode>>();
-		
-				DMSType entityDmsType = ModelCodeHelper.GetTypeFromModelCode(entityType);
-				
-				if (ContainerExists(entityDmsType))
-				{
-					Container container = GetContainer(entityDmsType);
-					globalIds = container.GetEntitiesGlobalIds();					
-					class2PropertyIDs.Add(entityDmsType, properties);					
-				}
+            try
+            {
+                List<long> globalIds = new List<long>();
+                Dictionary<DMSType, List<ModelCode>> class2PropertyIDs = new Dictionary<DMSType, List<ModelCode>>();
 
-				ResourceIterator ri = new ResourceIterator(globalIds, class2PropertyIDs);
+                DMSType entityDmsType = ModelCodeHelper.GetTypeFromModelCode(entityType);
 
-				CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Getting extent values for entity type = {0} succedded.", entityType);
+                if (ContainerExists(entityDmsType))
+                {
+                    Container container = GetContainer(entityDmsType);
+                    globalIds = container.GetEntitiesGlobalIds();
+                    class2PropertyIDs.Add(entityDmsType, properties);
+                }
 
-				return ri;
-			}		
-			catch (Exception ex)
-			{
-				string message = string.Format("Failed to get extent values for entity type = {0}. {1}", entityType, ex.Message);				
-				throw new Exception(message);
-			}			
-		}
-		
-		/// <summary>
-		/// Gets resource iterator that holds descriptions for all entities related to specified source.
-		/// </summary>
-		/// <param name="contextId">Context Id</param>
-		/// <param name="properties">List of requested properties</param>
-		/// <param name="association">Relation between source and entities that should be returned</param>
-		/// <param name="source">Id of entity that is start for association search</param>
-		/// <param name="typeOfQuery">Query type choice(global or local)</param>
-		/// <returns>Resource iterator for the requested entities</returns>
-		public ResourceIterator GetRelatedValues(long source, List<ModelCode> properties, Association association)
-		{
-			CommonTrace.WriteTrace(CommonTrace.TraceVerbose, String.Format("Getting related values for source = 0x{0:x16}.", source));
-		
-			try
-			{
-				List<long> relatedGids = ApplyAssocioationOnSource(source, association);
-			
-				
-				Dictionary<DMSType, List<ModelCode>> class2PropertyIDs = new Dictionary<DMSType, List<ModelCode>>();
+                ResourceIterator ri = new ResourceIterator(globalIds, class2PropertyIDs);
 
-				foreach (long relatedGid in relatedGids)
-				{
-					DMSType entityDmsType = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(relatedGid);
+                CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Getting extent values for entity type = {0} succedded.", entityType);
 
-					if (!class2PropertyIDs.ContainsKey(entityDmsType))
-					{
-						class2PropertyIDs.Add(entityDmsType, properties);
-					}
-				}
+                return ri;
+            }
+            catch (Exception ex)
+            {
+                string message = string.Format("Failed to get extent values for entity type = {0}. {1}", entityType, ex.Message);
+                throw new Exception(message);
+            }
+        }
 
-				ResourceIterator ri = new ResourceIterator(relatedGids, class2PropertyIDs);
+        /// <summary>
+        /// Gets resource iterator that holds descriptions for all entities related to specified source.
+        /// </summary>
+        /// <param name="contextId">Context Id</param>
+        /// <param name="properties">List of requested properties</param>
+        /// <param name="association">Relation between source and entities that should be returned</param>
+        /// <param name="source">Id of entity that is start for association search</param>
+        /// <param name="typeOfQuery">Query type choice(global or local)</param>
+        /// <returns>Resource iterator for the requested entities</returns>
+        public ResourceIterator GetRelatedValues(long source, List<ModelCode> properties, Association association)
+        {
+            CommonTrace.WriteTrace(CommonTrace.TraceVerbose, String.Format("Getting related values for source = 0x{0:x16}.", source));
 
-				CommonTrace.WriteTrace(CommonTrace.TraceVerbose, String.Format("Getting related values for source = 0x{0:x16} succeeded.", source));
+            try
+            {
+                List<long> relatedGids = ApplyAssocioationOnSource(source, association);
 
-				return ri;
-			}
-			catch (Exception ex)
-			{
-				string message = String.Format("Failed to get related values for source GID = 0x{0:x16}. {1}.", source, ex.Message);
-				CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-				throw new Exception(message);
-			}
-		}
+
+                Dictionary<DMSType, List<ModelCode>> class2PropertyIDs = new Dictionary<DMSType, List<ModelCode>>();
+
+                foreach (long relatedGid in relatedGids)
+                {
+                    DMSType entityDmsType = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(relatedGid);
+
+                    if (!class2PropertyIDs.ContainsKey(entityDmsType))
+                    {
+                        class2PropertyIDs.Add(entityDmsType, properties);
+                    }
+                }
+
+                ResourceIterator ri = new ResourceIterator(relatedGids, class2PropertyIDs);
+
+                CommonTrace.WriteTrace(CommonTrace.TraceVerbose, String.Format("Getting related values for source = 0x{0:x16} succeeded.", source));
+
+                return ri;
+            }
+            catch (Exception ex)
+            {
+                string message = String.Format("Failed to get related values for source GID = 0x{0:x16}. {1}.", source, ex.Message);
+                CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+                throw new Exception(message);
+            }
+        }
 
         #endregion GDA query	
 
         public Delta ApplyDelta(Delta delta)
-		{
+        {
             try
             {
                 CommonTrace.WriteTrace(CommonTrace.TraceInfo, "Applying  delta to network model.");
@@ -384,6 +385,7 @@ namespace FTN.Services.NetworkModelService
             {
                 string message = string.Format("Applying delta to network model failed. {0}.", ex.Message);
                 CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+                return null;
             }
 
             return delta;
@@ -393,19 +395,13 @@ namespace FTN.Services.NetworkModelService
         {
             SaveDelta(delta);
         }
-        
+
         /// <summary>
         /// Inserts entity into the network model.
         /// </summary>
         /// <param name="rd">Description of the resource that should be inserted</param>        
         private void InsertEntity(ResourceDescription rd)
         {
-            if (rd == null)
-            {
-                CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Insert entity is not done because update operation is empty.");
-                return;
-            }
-
             long globalId = rd.Id;
 
             CommonTrace.WriteTrace(CommonTrace.TraceInfo, "Inserting entity with GID ({0:x16}).", globalId);
@@ -460,7 +456,7 @@ namespace FTN.Services.NetworkModelService
 
                                 if (!EntityExists(targetGlobalId))
                                 {
-                                    string message = string.Format("Failed to get target entity with GID: 0x{0:X16}. {1}", targetGlobalId);
+                                    string message = string.Format("Failed to get target entity with GID: 0x{0:X16}. {0}", targetGlobalId);
                                     throw new Exception(message);
                                 }
 
@@ -482,7 +478,7 @@ namespace FTN.Services.NetworkModelService
             }
             catch (Exception ex)
             {
-                string message = String.Format("Failed to insert entity (GID = 0x{0:x16}) into model. {1}", rd.Id, ex.Message);
+                string message = string.Format("Failed to insert entity (GID = 0x{0:x16}) into model. {1}", rd.Id, ex.Message);
                 CommonTrace.WriteTrace(CommonTrace.TraceError, message);
                 throw new Exception(message);
             }
@@ -493,114 +489,102 @@ namespace FTN.Services.NetworkModelService
         /// </summary>
         /// <param name="rd">Description of the resource that should be updated</param>		
         private void UpdateEntity(ResourceDescription rd)
-		{
-			if (rd == null || rd.Properties == null && rd.Properties.Count == 0)
-			{	
-				CommonTrace.WriteTrace(CommonTrace.TraceInfo, "Update entity is not done because update operation is empty.");			
-				return;
-			}
-			
-			try
-			{
-					long globalId = rd.Id;
+        {
+            try
+            {
+                long globalId = rd.Id;
 
-					CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Updating entity with GID ({0:x16}).", globalId);
+                CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Updating entity with GID ({0:x16}).", globalId);
 
-					if (!this.EntityExists(globalId))
-					{
-						string message = String.Format("Failed to update entity because entity with specified GID ({0:x16}) does not exist in network model.", globalId);
-						CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-						throw new Exception(message);
-					}
+                if (!this.EntityExists(globalId))
+                {
+                    string message = String.Format("Failed to update entity because entity with specified GID ({0:x16}) does not exist in network model.", globalId);
+                    CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+                    throw new Exception(message);
+                }
 
-					IdentifiedObject io = GetEntity(globalId);					
+                IdentifiedObject io = GetEntity(globalId);
 
-					// updating properties of entity
-					foreach (Property property in rd.Properties)
-					{
-						if (property.Type == PropertyType.Reference)
-						{
-                            long oldTargetGlobalId = io.GetProperty(property.Id).AsReference();
-                            
-                            if (oldTargetGlobalId != 0)
+                // updating properties of entity
+                foreach (Property property in rd.Properties)
+                {
+                    if (property.Type == PropertyType.Reference)
+                    {
+                        long oldTargetGlobalId = io.GetProperty(property.Id).AsReference();
+
+                        if (oldTargetGlobalId != 0)
+                        {
+                            IdentifiedObject oldTargetEntity = GetEntity(oldTargetGlobalId);
+                            oldTargetEntity.RemoveReference(property.Id, globalId);
+                        }
+
+                        // updating reference of entity
+                        long targetGlobalId = property.AsReference();
+
+                        if (targetGlobalId != 0)
+                        {
+                            if (!EntityExists(targetGlobalId))
                             {
-                                IdentifiedObject oldTargetEntity = GetEntity(oldTargetGlobalId);
-                                oldTargetEntity.RemoveReference(property.Id, globalId);
+                                string message = string.Format("Failed to get target entity with GID: 0x{0:X16}.", targetGlobalId);
+                                throw new Exception(message);
                             }
 
-							// updating reference of entity
-							long targetGlobalId = property.AsReference();
+                            IdentifiedObject targetEntity = GetEntity(targetGlobalId);
+                            targetEntity.AddReference(property.Id, globalId);
+                        }
 
-							if (targetGlobalId != 0)
-							{								
-								if (!EntityExists(targetGlobalId))
-								{
-									string message = string.Format("Failed to get target entity with GID: 0x{0:X16}.", targetGlobalId);
-									throw new Exception(message);
-								}
+                        // update value of the property in specified entity
+                        io.SetProperty(property);
+                    }
+                    else
+                    {
+                        // update value of the property in specified entity
+                        io.SetProperty(property);
+                    }
+                }
 
-                                IdentifiedObject targetEntity = GetEntity(targetGlobalId);
-                                targetEntity.AddReference(property.Id, globalId);
-							}
+                CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Updating entity with GID ({0:x16}) successfully finished.", globalId);
+            }
+            catch (Exception ex)
+            {
+                string message = String.Format("Failed to update entity (GID = 0x{0:x16}) in model. {1} ", rd.Id, ex.Message);
+                CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+                throw new Exception(message);
+            }
+        }
 
-							// update value of the property in specified entity
-							io.SetProperty(property);
-						}
-						else
-						{
-							// update value of the property in specified entity
-							io.SetProperty(property);
-						}							
-					}
+        /// <summary>
+        /// Deletes resource from the netowrk model.
+        /// </summary>
+        /// <param name="rd">Description of the resource that should be deleted</param>		
+        private void DeleteEntity(ResourceDescription rd)
+        {
+            try
+            {
+                long globalId = rd.Id;
 
-					CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Updating entity with GID ({0:x16}) successfully finished.", globalId);
-			}						
-			catch (Exception ex)
-			{
-				string message = String.Format("Failed to update entity (GID = 0x{0:x16}) in model. {1} ", rd.Id, ex.Message);
-				CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-				throw new Exception(message);
-			}
-		}
+                CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Deleting entity with GID ({0:x16}).", globalId);
 
-		/// <summary>
-		/// Deletes resource from the netowrk model.
-		/// </summary>
-		/// <param name="rd">Description of the resource that should be deleted</param>		
-		private void DeleteEntity(ResourceDescription rd)
-		{
-			if (rd == null)
-			{
-				CommonTrace.WriteTrace(CommonTrace.TraceInfo, "Delete entity is not done because update operation is empty.");
-				return;
-			}
+                // check if entity exists
+                if (!this.EntityExists(globalId))
+                {
+                    string message = String.Format("Failed to delete entity because entity with specified GID ({0:x16}) does not exist in network model.", globalId);
+                    CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+                    throw new Exception(message);
+                }
 
-			try
-			{
-				long globalId = rd.Id;
+                // get entity to be deleted
+                IdentifiedObject io = GetEntity(globalId);
 
-				CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Deleting entity with GID ({0:x16}).", globalId);
-
-				// check if entity exists
-				if (!this.EntityExists(globalId))
-				{
-					string message = String.Format("Failed to delete entity because entity with specified GID ({0:x16}) does not exist in network model.", globalId);
-					CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-					throw new Exception(message);
-				}
-
-				// get entity to be deleted
-				IdentifiedObject io = GetEntity(globalId);
-
-				// check if entity could be deleted (if it is not referenced by any other entity)
-				if (io.IsReferenced)
-				{
-                    Dictionary<ModelCode, List<long>> references = new Dictionary<ModelCode,List<long>>();
+                // check if entity could be deleted (if it is not referenced by any other entity)
+                if (io.IsReferenced)
+                {
+                    Dictionary<ModelCode, List<long>> references = new Dictionary<ModelCode, List<long>>();
                     io.GetReferences(references, TypeOfReference.Target);
 
                     StringBuilder sb = new StringBuilder();
-                    
-                    foreach(KeyValuePair<ModelCode, List<long>> kvp in references)
+
+                    foreach (KeyValuePair<ModelCode, List<long>> kvp in references)
                     {
                         foreach (long referenceGlobalId in kvp.Value)
                         {
@@ -608,242 +592,247 @@ namespace FTN.Services.NetworkModelService
                         }
                     }
 
-					string message = String.Format("Failed to delete entity (GID = 0x{0:x16}) because it is referenced by entities with GIDs: {1}.", globalId, sb.ToString());
-					CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-					throw new Exception(message);
-				}
-							
-				// find property ids
-				List<ModelCode> propertyIds = ResourcesDescs.GetAllSettablePropertyIdsForEntityId(io.GlobalId);
+                    string message = String.Format("Failed to delete entity (GID = 0x{0:x16}) because it is referenced by entities with GIDs: {1}.", globalId, sb.ToString());
+                    CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+                    throw new Exception(message);
+                }
 
-				// remove references
-				Property property = null;
-				foreach (ModelCode propertyId in propertyIds)
-				{
-					PropertyType propertyType = Property.GetPropertyType(propertyId);
+                // find property ids
+                List<ModelCode> propertyIds = ResourcesDescs.GetAllSettablePropertyIdsForEntityId(io.GlobalId);
 
-					if (propertyType == PropertyType.Reference)
-					{
-						property = io.GetProperty(propertyId);
+                // remove references
+                Property property = null;
+                foreach (ModelCode propertyId in propertyIds)
+                {
+                    PropertyType propertyType = Property.GetPropertyType(propertyId);
 
-						if (propertyType == PropertyType.Reference)
-						{
-							// get target entity and remove reference to another entity
-							long targetGlobalId = property.AsReference();
+                    if (propertyType == PropertyType.Reference)
+                    {
+                        property = io.GetProperty(propertyId);
 
-							if (targetGlobalId != 0)
-							{
-								// get target entity
-								IdentifiedObject targetEntity = GetEntity(targetGlobalId);
+                        if (propertyType == PropertyType.Reference)
+                        {
+                            // get target entity and remove reference to another entity
+                            long targetGlobalId = property.AsReference();
 
-								// remove reference to another entity
-								targetEntity.RemoveReference(propertyId, globalId);
-							}
-						}						                        
-					}
-				}
+                            if (targetGlobalId != 0)
+                            {
+                                // get target entity
+                                IdentifiedObject targetEntity = GetEntity(targetGlobalId);
 
-				// remove entity form netowrk model
-				DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(globalId);
-				Container container = GetContainer(type);
-				container.RemoveEntity(globalId);
+                                // remove reference to another entity
+                                targetEntity.RemoveReference(propertyId, globalId);
+                            }
+                        }
+                    }
+                }
 
-				CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Deleting entity with GID ({0:x16}) successfully finished.", globalId);
-			}			
-			catch (Exception ex)
-			{
-				string message = String.Format("Failed to delete entity (GID = 0x{0:x16}) from model. {1}", rd.Id, ex.Message);
-				CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-				throw new Exception(message);
-			}
-		}
+                // remove entity form netowrk model
+                DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(globalId);
+                Container container = GetContainer(type);
+                container.RemoveEntity(globalId);
 
-		/// <summary>
-		/// Returns related gids with source according to the association 
-		/// </summary>
-		/// <param name="source">source id</param>		
-		/// <param name="association">desinition of association</param>
-		/// <returns>related gids</returns>
-		private List<long> ApplyAssocioationOnSource(long source, Association association)
-		{
-			List<long> relatedGids = new List<long>();
+                CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Deleting entity with GID ({0:x16}) successfully finished.", globalId);
+            }
+            catch (Exception ex)
+            {
+                string message = String.Format("Failed to delete entity (GID = 0x{0:x16}) from model. {1}", rd.Id, ex.Message);
+                CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+                throw new Exception(message);
+            }
+        }
 
-			if (association == null)
-			{
-				association = new Association();
-			}
+        /// <summary>
+        /// Returns related gids with source according to the association 
+        /// </summary>
+        /// <param name="source">source id</param>		
+        /// <param name="association">desinition of association</param>
+        /// <returns>related gids</returns>
+        private List<long> ApplyAssocioationOnSource(long source, Association association)
+        {
+            List<long> relatedGids = new List<long>();
 
-			IdentifiedObject io = GetEntity(source);
+            if (association == null)
+            {
+                association = new Association();
+            }
 
-			if (!io.HasProperty(association.PropertyId))
-			{
-				throw new Exception(string.Format("Entity with GID = 0x{0:x16} does not contain prperty with Id = {1}.", source, association.PropertyId));
-			}
+            IdentifiedObject io = GetEntity(source);
 
-			Property propertyRef = null;
-			if (Property.GetPropertyType(association.PropertyId) == PropertyType.Reference)
-			{
-				propertyRef = io.GetProperty(association.PropertyId);
-				long relatedGidFromProperty = propertyRef.AsReference();
+            if (!io.HasProperty(association.PropertyId))
+            {
+                throw new Exception(string.Format("Entity with GID = 0x{0:x16} does not contain prperty with Id = {1}.", source, association.PropertyId));
+            }
 
-				if (relatedGidFromProperty != 0)
-				{
-					if (association.Type == 0 || (short)ModelCodeHelper.GetTypeFromModelCode(association.Type) == ModelCodeHelper.ExtractTypeFromGlobalId(relatedGidFromProperty))
-					{
-						relatedGids.Add(relatedGidFromProperty);
-					}
-				}
-			}
-			else if (Property.GetPropertyType(association.PropertyId) == PropertyType.ReferenceVector)
-			{
-				propertyRef = io.GetProperty(association.PropertyId);
-				List<long> relatedGidsFromProperty = propertyRef.AsReferences();
+            Property propertyRef = null;
+            if (Property.GetPropertyType(association.PropertyId) == PropertyType.Reference)
+            {
+                propertyRef = io.GetProperty(association.PropertyId);
+                long relatedGidFromProperty = propertyRef.AsReference();
 
-				if (relatedGidsFromProperty != null)
-				{
-					foreach (long relatedGidFromProperty in relatedGidsFromProperty)
-					{
-						if (association.Type == 0 || (short)ModelCodeHelper.GetTypeFromModelCode(association.Type) == ModelCodeHelper.ExtractTypeFromGlobalId(relatedGidFromProperty))
-						{
-							relatedGids.Add(relatedGidFromProperty);
-						}
-					}
-				}
-			}
-			else
-			{
-				throw new Exception(string.Format("Association propertyId = {0} is not reference or reference vector type.", association.PropertyId));
-			}
+                if (relatedGidFromProperty != 0)
+                {
+                    if (association.Type == 0 || (short)ModelCodeHelper.GetTypeFromModelCode(association.Type) == ModelCodeHelper.ExtractTypeFromGlobalId(relatedGidFromProperty))
+                    {
+                        relatedGids.Add(relatedGidFromProperty);
+                    }
+                }
+            }
+            else if (Property.GetPropertyType(association.PropertyId) == PropertyType.ReferenceVector)
+            {
+                propertyRef = io.GetProperty(association.PropertyId);
+                List<long> relatedGidsFromProperty = propertyRef.AsReferences();
 
-			return relatedGids;
-		}
+                if (relatedGidsFromProperty != null)
+                {
+                    foreach (long relatedGidFromProperty in relatedGidsFromProperty)
+                    {
+                        if (association.Type == 0 || (short)ModelCodeHelper.GetTypeFromModelCode(association.Type) == ModelCodeHelper.ExtractTypeFromGlobalId(relatedGidFromProperty))
+                        {
+                            relatedGids.Add(relatedGidFromProperty);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception(string.Format("Association propertyId = {0} is not reference or reference vector type.", association.PropertyId));
+            }
 
-		public void Initialize()
-		{
-			List<Delta> result = ReadAllDeltas();
+            return relatedGids;
+        }
 
-			foreach (Delta delta in result)
-			{
-				try
-				{
-					foreach (ResourceDescription rd in delta.InsertOperations)
-					{
-						InsertEntity(rd);
-					}
+        public void Initialize()
+        {
+            List<Delta> result = ReadAllDeltas();
 
-					foreach (ResourceDescription rd in delta.UpdateOperations)
-					{
-						UpdateEntity(rd);
-					}
+            foreach (Delta delta in result)
+            {
+                try
+                {
+                    foreach (ResourceDescription rd in delta.InsertOperations)
+                    {
+                        InsertEntity(rd);
+                    }
 
-					foreach (ResourceDescription rd in delta.DeleteOperations)
-					{
-						DeleteEntity(rd);
-					}
-				}
-				catch(Exception ex)
-				{
-					CommonTrace.WriteTrace(CommonTrace.TraceError, "Error while applying delta (id = {0}) during service initialization. {1}", delta.Id, ex.Message);
-				}
-			}		
-		}
-        
-		private void SaveDelta(Delta delta)
-		{
-			bool fileExisted = false;
+                    foreach (ResourceDescription rd in delta.UpdateOperations)
+                    {
+                        UpdateEntity(rd);
+                    }
 
-			if (File.Exists(Config.Instance.ConnectionString))
-			{
-				fileExisted = true;
-			}
+                    foreach (ResourceDescription rd in delta.DeleteOperations)
+                    {
+                        DeleteEntity(rd);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    CommonTrace.WriteTrace(CommonTrace.TraceError, "Error while applying delta (id = {0}) during service initialization. {1}", delta.Id, ex.Message);
+                }
+            }
+        }
 
-			FileStream fs = new FileStream(Config.Instance.ConnectionString, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-			fs.Seek(0, SeekOrigin.Begin);
+        public bool IsTest { get; set; }
 
-			BinaryReader br = null;
-			int deltaCount = 0;
+        private void SaveDelta(Delta delta)
+        {
+            bool fileExisted = false;
 
-			if (fileExisted)
-			{
-				br = new BinaryReader(fs);
-				deltaCount = br.ReadInt32();
-			}
+            if (!IsTest)
+            {
+                if (File.Exists(Config.Instance.ConnectionString))
+                {
+                    fileExisted = true;
+                }
 
-			BinaryWriter bw = new BinaryWriter(fs);
-			fs.Seek(0, SeekOrigin.Begin);
+                FileStream fs = new FileStream(Config.Instance.ConnectionString, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                fs.Seek(0, SeekOrigin.Begin);
 
-			delta.Id = ++deltaCount;
-			byte[] deltaSerialized = delta.Serialize();
-			int deltaLength = deltaSerialized.Length;
+                BinaryReader br = null;
+                int deltaCount = 0;
 
-			bw.Write(deltaCount);
-			fs.Seek(0, SeekOrigin.End);
-			bw.Write(deltaLength);
-			bw.Write(deltaSerialized);
+                if (fileExisted)
+                {
+                    br = new BinaryReader(fs);
+                    deltaCount = br.ReadInt32();
+                }
 
-			if (br != null)
-			{
-				br.Close();
-			}
+                BinaryWriter bw = new BinaryWriter(fs);
+                fs.Seek(0, SeekOrigin.Begin);
 
-			bw.Close();			
-			fs.Close(); 
-		}
+                delta.Id = ++deltaCount;
+                byte[] deltaSerialized = delta.Serialize();
+                int deltaLength = deltaSerialized.Length;
 
-		private List<Delta> ReadAllDeltas()
-		{
-			List<Delta> result = new List<Delta>();
-            
+                bw.Write(deltaCount);
+                fs.Seek(0, SeekOrigin.End);
+                bw.Write(deltaLength);
+                bw.Write(deltaSerialized);
+
+                if (br != null)
+                {
+                    br.Close();
+                }
+
+                bw.Close();
+                fs.Close();
+            }
+        }
+
+        private List<Delta> ReadAllDeltas()
+        {
+            List<Delta> result = new List<Delta>();
+
             if (!File.Exists(Config.Instance.ConnectionString))
             {
                 return result;
             }
 
-			FileStream fs = new FileStream(Config.Instance.ConnectionString, FileMode.OpenOrCreate, FileAccess.Read);
-			fs.Seek(0, SeekOrigin.Begin);
+            FileStream fs = new FileStream(Config.Instance.ConnectionString, FileMode.OpenOrCreate, FileAccess.Read);
+            fs.Seek(0, SeekOrigin.Begin);
 
-			if (fs.Position < fs.Length) // if it is not empty stream
-			{
-				BinaryReader br = new BinaryReader(fs);
-				
-				int deltaCount = br.ReadInt32();
-				int deltaLength = 0;
-				byte[] deltaSerialized = null;
-				Delta delta = null;
+            if (fs.Position < fs.Length) // if it is not empty stream
+            {
+                BinaryReader br = new BinaryReader(fs);
 
-				for (int i = 0; i < deltaCount; i++)
-				{
-					deltaLength = br.ReadInt32();
-					deltaSerialized = new byte[deltaLength];
-					br.Read(deltaSerialized, 0, deltaLength);
-					delta = Delta.Deserialize(deltaSerialized);
-					result.Add(delta);
-				}
+                int deltaCount = br.ReadInt32();
+                int deltaLength = 0;
+                byte[] deltaSerialized = null;
+                Delta delta = null;
 
-				br.Close();
-			}
+                for (int i = 0; i < deltaCount; i++)
+                {
+                    deltaLength = br.ReadInt32();
+                    deltaSerialized = new byte[deltaLength];
+                    br.Read(deltaSerialized, 0, deltaLength);
+                    delta = Delta.Deserialize(deltaSerialized);
+                    result.Add(delta);
+                }
 
-			fs.Close();
+                br.Close();
+            }
 
-			return result;
-		}
-        
-		private Dictionary<short, int> GetCounters()
-		{
-			Dictionary<short, int> typesCounters = new Dictionary<short, int>();
+            fs.Close();
 
-			foreach (DMSType type in Enum.GetValues(typeof(DMSType)))
-			{
-				typesCounters[(short)type] = 0;
+            return result;
+        }
 
-				if (networkDataModel.ContainsKey(type))
-				{
-					typesCounters[(short)type] = GetContainer(type).Count;
-				}
-			}
+        private Dictionary<short, int> GetCounters()
+        {
+            Dictionary<short, int> typesCounters = new Dictionary<short, int>();
 
-			return typesCounters;
-		}
+            foreach (DMSType type in Enum.GetValues(typeof(DMSType)))
+            {
+                typesCounters[(short)type] = 0;
+
+                if (networkDataModel.ContainsKey(type))
+                {
+                    typesCounters[(short)type] = GetContainer(type).Count;
+                }
+            }
+
+            return typesCounters;
+        }
 
         private void InformClients()
         {
@@ -878,7 +867,7 @@ namespace FTN.Services.NetworkModelService
 
         public void UpdateClients()
         {
-            lock(LockObjectClient)
+            lock (LockObjectClient)
             {
                 ClientsNeedToUpdate = true;
             }
@@ -887,12 +876,12 @@ namespace FTN.Services.NetworkModelService
         public Dictionary<DMSType, Container> DeepCopy()
         {
             Dictionary<DMSType, Container> retVal = new Dictionary<DMSType, Container>();
-            foreach(KeyValuePair<DMSType, Container> kvp in networkDataModel)
+            foreach (KeyValuePair<DMSType, Container> kvp in networkDataModel)
             {
                 retVal.Add(kvp.Key, new Container());
-                foreach(KeyValuePair<long, IdentifiedObject> kvp2 in kvp.Value.Entities)
+                foreach (KeyValuePair<long, IdentifiedObject> kvp2 in kvp.Value.Entities)
                 {
-                    switch(kvp.Key)
+                    switch (kvp.Key)
                     {
                         case DMSType.ANALOG:
                             Analog analogCopy = ((Analog)kvp2.Value).DeepCopy();
@@ -968,12 +957,6 @@ namespace FTN.Services.NetworkModelService
             {
                 foreach (Property property in rd.Properties)
                 {
-                    // globalId must not be set as property
-                    if (property.Id == ModelCode.IDOBJ_GID)
-                    {
-                        continue;
-                    }
-
                     if (property.Type == PropertyType.Reference)
                     {
                         // if property is a reference to another entity 
@@ -981,13 +964,6 @@ namespace FTN.Services.NetworkModelService
 
                         if (targetGlobalId != 0)
                         {
-
-                            if (!EntityExists(targetGlobalId))
-                            {
-                                string message = string.Format("Failed to get target entity with GID: 0x{0:X16}. {1}", targetGlobalId);
-                                throw new Exception(message);
-                            }
-
                             // get referenced entity for update
                             IdentifiedObject targetEntity = GetEntity(targetGlobalId);
                             targetEntity.AddReference(property.Id, io.GlobalId);

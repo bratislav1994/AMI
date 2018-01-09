@@ -43,7 +43,7 @@ namespace AMIClient.ViewModels
             {
                 if (instance == null)
                 {
-                    instance = new AddCimXmlViewModel();   
+                    instance = new AddCimXmlViewModel();
                 }
 
                 return instance;
@@ -106,7 +106,7 @@ namespace AMIClient.ViewModels
                 RaisePropertyChanged("CIMProfiles");
             }
         }
-        
+
         private DelegateCommand browseCommand;
         public DelegateCommand BrowseCommand
         {
@@ -175,14 +175,6 @@ namespace AMIClient.ViewModels
                 }
                 if (nmsDelta != null)
                 {
-                    //// export delta to file
-                    using (XmlTextWriter xmlWriter = new XmlTextWriter(".\\deltaExport.xml", Encoding.UTF8))
-                    {
-                        xmlWriter.Formatting = Formatting.Indented;
-                        nmsDelta.ExportToXml(xmlWriter);
-                        xmlWriter.Flush();
-                    }
-
                     isOk = true;
                 }
 

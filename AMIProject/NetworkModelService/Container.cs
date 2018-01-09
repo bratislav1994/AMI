@@ -160,7 +160,7 @@ namespace FTN.Services.NetworkModelService
                     break;
 
                 default:
-                    string message = String.Format("Failed to create entity because specified type ({0}) is not supported.", type);
+                    string message = string.Format("Failed to create entity because specified type ({0}) is not supported.", type);
                     CommonTrace.WriteTrace(CommonTrace.TraceError, message);
                     throw new Exception(message);
             }

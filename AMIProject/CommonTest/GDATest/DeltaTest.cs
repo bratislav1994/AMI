@@ -54,7 +54,7 @@ namespace CommonTest.GDATest
         public void ResDescNullTest()
         {
             Delta.ResourceDescs = resDesc;
-            
+
             Assert.AreNotEqual(resDesc, Delta.ResourceDescs);
         }
 
@@ -63,7 +63,7 @@ namespace CommonTest.GDATest
         {
             resDesc = new ModelResourcesDesc();
             Delta.ResourceDescs = resDesc;
-            
+
             Assert.AreEqual(resDesc, Delta.ResourceDescs);
         }
 
@@ -170,20 +170,6 @@ namespace CommonTest.GDATest
             resultSerialize = delta.Serialize();
             result = Delta.Deserialize(resultSerialize);
             Assert.IsNotNull(result);
-        }
-
-        [Test]
-        public void ExportToXmlTest()
-        {
-            StringWriter stringWriter = new StringWriter();
-            XmlTextWriter xmlWriter = new XmlTextWriter(stringWriter);
-            xmlWriter.Formatting = Formatting.Indented;
-
-            Assert.DoesNotThrow(() => delta.ExportToXml(xmlWriter));
-
-            xmlWriter.Flush();
-            xmlWriter.Close();
-            stringWriter.Close();
         }
 
         [Test]

@@ -68,23 +68,6 @@ namespace CommonTest.GDATest
             Assert.DoesNotThrow(() => rd.AddProperty(new Property(ModelCode.ANALOG_MINVALUE, new PropertyValue(50))));
         }
 
-        [Test]
-        public void ExportToXmlTest()
-        {
-            string value = null;
-            this.rd.Properties = new List<Property> { new Property(ModelCode.ANALOG_MAXVALUE, new PropertyValue(100)), new Property(ModelCode.ANALOG_ALARMHIGH, new PropertyValue(150)), new Property(ModelCode.MEASUREMENT_DIRECTION, new PropertyValue()), new Property(ModelCode.MEASUREMENT_PSR, new PropertyValue()), new Property(ModelCode.IDOBJ_NAME, new PropertyValue(value)), new Property(ModelCode.GEOREGION_SUBGEOREGIONS, new PropertyValue(39483726353526)), new Property(ModelCode.SUBGEOREGION_SUBS, new PropertyValue()), new Property(ModelCode.IDOBJ_GID, new PropertyValue()) };
-
-            StringWriter stringWriter = new StringWriter();
-            XmlTextWriter xmlWriter = new XmlTextWriter(stringWriter);
-            xmlWriter.Formatting = Formatting.Indented;
-
-            Assert.DoesNotThrow(() => rd.ExportToXml(xmlWriter));
-
-            xmlWriter.Flush();
-            xmlWriter.Close();
-            stringWriter.Close();
-        }
-
         #region EqualityComparerTest
 
         [Test]
@@ -101,7 +84,7 @@ namespace CommonTest.GDATest
             rd2 = new ResourceDescription();
             rd2.Id = 8476485947364;
             rd2.Properties = new List<Property>() { new Property(ModelCode.BASEVOLTAGE, new PropertyValue(293837288274)), new Property(ModelCode.BASEVOLTAGE_NOMINALVOL, new PropertyValue(100)) };
-            
+
             bool result = ec.Equals(rd, rd2);
             Assert.AreNotEqual(true, result);
 

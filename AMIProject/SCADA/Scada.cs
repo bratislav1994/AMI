@@ -29,7 +29,6 @@ namespace SCADA
         private bool firstTimeCE = true;
         private Dictionary<int, List<MeasurementForScada>> measurements;
         private Dictionary<int, SOEHandler> handlers;
-        private IDNP3Manager mgr;
         private ITransactionDuplexScada proxyCoordinator;
         private List<ResourceDescription> measurementsToEnlist;
         private Dictionary<int, List<MeasurementForScada>> copyMeasurements;
@@ -38,9 +37,13 @@ namespace SCADA
         private Thread sendingThread;
         private ICalculationEngine proxyCE;
         private Dictionary<int, ISimulator> simulators;
+        private object lockObjectForSimulators = new object();
         private const int startRtuAddress = 10;
         private const int maxRtuAddress = 20;
         private FunctionDB f = new FunctionDB();
+        private Dictionary<int, IMaster> masters;
+        private Dictionary<int, IChannel> channels;
+        private Dictionary<int, IDNP3Manager> managers;
 
         public ITransactionDuplexScada ProxyCoordinator
         {
@@ -106,7 +109,9 @@ namespace SCADA
             copyMeasurements = new Dictionary<int, List<MeasurementForScada>>();
             resourcesToSend = new List<DynamicMeasurement>();
             simulators = new Dictionary<int, ISimulator>();
-            mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
+            masters = new Dictionary<int, IMaster>();
+            channels = new Dictionary<int, IChannel>();
+            managers = new Dictionary<int, IDNP3Manager>();
 
             while (true)
             {
@@ -151,9 +156,12 @@ namespace SCADA
             List<Measurement> Qs = new List<Measurement>();
             List<Measurement> Vs = new List<Measurement>();
 
-            if (this.simulators.Count == 0)
+            lock (lockObjectForSimulators)
             {
-                return false;
+                if (this.simulators.Count == 0)
+                {
+                    return false;
+                }
             }
 
             foreach (ResourceDescription rd in measurementsToEnlist)
@@ -189,7 +197,10 @@ namespace SCADA
 
                 try
                 {
-                    index = simulators[Ps[i].RtuAddress].AddMeasurement(Ps[i]);
+                    lock (lockObjectForSimulators)
+                    {
+                        index = simulators[Ps[i].RtuAddress].AddMeasurement(Ps[i]);
+                    }
                 }
                 catch (Exception e)
                 {
@@ -215,7 +226,10 @@ namespace SCADA
 
                 try
                 {
-                    index = simulators[Qs[i].RtuAddress].AddMeasurement(Qs[i]);
+                    lock (lockObjectForSimulators)
+                    {
+                        index = simulators[Qs[i].RtuAddress].AddMeasurement(Qs[i]);
+                    }
                 }
                 catch
                 {
@@ -241,7 +255,10 @@ namespace SCADA
 
                 try
                 {
-                    index = simulators[Vs[i].RtuAddress].AddMeasurement(Vs[i]);
+                    lock (lockObjectForSimulators)
+                    {
+                        index = simulators[Vs[i].RtuAddress].AddMeasurement(Vs[i]);
+                    }
                 }
                 catch
                 {
@@ -297,10 +314,13 @@ namespace SCADA
             
             foreach (KeyValuePair<int, RTUAddress> kvp in addressPool)
             {
-                if (this.simulators.ContainsKey(kvp.Key))
+                lock (lockObjectForSimulators)
                 {
-                    this.simulators[kvp.Key].Rollback(addressPool[kvp.Key].Cnt);
-                    kvp.Value.Cnt = 0;
+                    if (this.simulators.ContainsKey(kvp.Key))
+                    {
+                        this.simulators[kvp.Key].Rollback(addressPool[kvp.Key].Cnt);
+                        kvp.Value.Cnt = 0;
+                    }
                 }
             }
 
@@ -363,7 +383,10 @@ namespace SCADA
                 if (!kvp.Value.IsConnected)
                 {
                     ret = kvp.Key;
-                    this.simulators.Add(kvp.Key, OperationContext.Current.GetCallbackChannel<ISimulator>());
+                    lock (lockObjectForSimulators)
+                    {
+                        this.simulators.Add(kvp.Key, OperationContext.Current.GetCallbackChannel<ISimulator>());
+                    }
                     addressPool[ret].IsConnected = true;
                     break;
                 }
@@ -371,18 +394,32 @@ namespace SCADA
                 {
                     try
                     {
-                        this.simulators[kvp.Key].Ping();
+                        lock (lockObjectForSimulators)
+                        {
+                            this.simulators[kvp.Key].Ping();
+                        }
                     }
                     catch
                     {
-                        this.simulators.Remove(kvp.Key);
+                        lock (lockObjectForSimulators)
+                        {
+                            this.simulators.Remove(kvp.Key);
+                        }
                         lock (lockObject)
                         {
                             handlers.Remove(kvp.Key);
+                            channels[kvp.Key].Shutdown();
+                            channels.Remove(kvp.Key);
+                            masters[kvp.Key].Disable();
+                            masters.Remove(kvp.Key);
+                            managers[kvp.Key].Shutdown();
+                            managers.Remove(kvp.Key);
                         }
                         ret = kvp.Key;
-                        this.simulators.Add(kvp.Key, OperationContext.Current.GetCallbackChannel<ISimulator>());
-                        addressPool[ret].IsConnected = true;
+                        lock (lockObjectForSimulators)
+                        {
+                            this.simulators.Add(kvp.Key, OperationContext.Current.GetCallbackChannel<ISimulator>());
+                        }
                         break;
                     }
                 }
@@ -396,17 +433,25 @@ namespace SCADA
                 }
 
                 var handler = new SOEHandler(measurements[ret], resourcesToSend, ref lockObject);
-                lock (lockObject)
-                {
-                    handlers.Add(ret, handler);
-                }
+
+                var mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
+
                 var channel = mgr.AddTCPClient("outstation" + ret, LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", (ushort)(20000 + ret), ChannelListener.Print());
 
                 var config = new MasterStackConfig();
                 config.link.localAddr = 1;
                 config.link.remoteAddr = (ushort)ret;
 
-                var master = channel.AddMaster("master", handler, DefaultMasterApplication.Instance, config);
+                var master = channel.AddMaster("master" + ret, handler, DefaultMasterApplication.Instance, config);
+
+                lock (lockObject)
+                {
+                    handlers.Add(ret, handler);
+                    masters.Add(ret, master);
+                    channels.Add(ret, channel);
+                    managers.Add(ret, mgr);
+                }
+
                 config.master.disableUnsolOnStartup = false;
 
                 var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.MaxValue, TaskConfig.Default);

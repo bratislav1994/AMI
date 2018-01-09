@@ -44,7 +44,7 @@ namespace AMISimulator
                         try
                         {
                             NetTcpBinding binding = new NetTcpBinding();
-                            binding.SendTimeout = TimeSpan.FromSeconds(3);
+                            binding.SendTimeout = TimeSpan.FromMinutes(3);
                             factory = new DuplexChannelFactory<IScadaDuplexSimulator>(new InstanceContext(this),
                                                                                     binding,
                                                                                     new EndpointAddress("net.tcp://localhost:10100/Scada/Simulator"));
@@ -120,7 +120,7 @@ namespace AMISimulator
                 this.measurements.Add(m.Index, m.Measurement);
             }
 
-            channel = mgr.AddTCPServer("master", LogLevels.NORMAL, ChannelRetry.Default, ipAddress, (ushort)(basePort + address), ChannelListener.Print());
+            channel = mgr.AddTCPServer("master" + address, LogLevels.NORMAL, ChannelRetry.Default, ipAddress, (ushort)(basePort + address), ChannelListener.Print());
 
             config.outstation.config.allowUnsolicited = true;
             config.outstation.config.unsolClassMask.Class0 = true;
