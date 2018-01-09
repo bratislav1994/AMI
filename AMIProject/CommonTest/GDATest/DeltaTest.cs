@@ -122,9 +122,23 @@ namespace CommonTest.GDATest
         //[Test]
         //public void FixNegativeToPositiveIdsTest()
         //{
-        //    Dictionary<short, int> typesCounters = NetworkModel.GetCounters();
-        //    Dictionary<long, long> globalIdPairs = new Dictionary<long, long>();
-        //    delta.FixNegativeToPositiveIds(ref typesCounters, ref globalIdPairs);
+        //    Dictionary<long, long> globalIdPairs = null;
+
+        //    Dictionary<short, int> typesCounters = new Dictionary<short, int>();
+        //    foreach (DMSType type in Enum.GetValues(typeof(DMSType)))
+        //    {
+        //        typesCounters[(short)type] = 0;
+
+        //        int i = 2;
+        //        if (i == 5)
+        //        {
+        //            i = 2;
+        //        }
+        //        typesCounters[(short)type] = i;
+        //        i++;
+        //    }
+
+        //    Assert.DoesNotThrow(() => delta.FixNegativeToPositiveIds(ref typesCounters, ref globalIdPairs));
         //}
 
         [Test]
