@@ -26,6 +26,7 @@ namespace AMIClient.ViewModels
         private bool fromPeriodEntered = false;
         private bool toPeriodEntered = false;
         private List<long> amiGids;
+        private Statistics statistics;
 
         public ChartViewModel()
         {
@@ -163,6 +164,20 @@ namespace AMIClient.ViewModels
             }
         }
 
+        public Statistics Statistics
+        {
+            get
+            {
+                return statistics;
+            }
+
+            set
+            {
+                statistics = value;
+                RaisePropertyChanged("Statistics");
+            }
+        }
+
         public DelegateCommand ShowDataCommand
         {
             get
@@ -250,6 +265,7 @@ namespace AMIClient.ViewModels
             this.DataHistoryP = tempP;
             this.DataHistoryQ = tempQ;
             this.DataHistoryV = tempV;
+            this.Statistics = measForChart.Item2;
         }
 
         public void SetGids(List<long> amiGids)
