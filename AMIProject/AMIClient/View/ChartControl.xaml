@@ -15,65 +15,6 @@
              xmlns:wpfToolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
              >
 
-    <UserControl.Resources>
-
-        <Color x:Key="WindowBackgroundColor">#FF2D2D30</Color>
-        <Color x:Key="HighlightColor">#EB2F2F</Color>
-        <Color x:Key="BlueColor">#7C0000</Color>
-        <Color x:Key="ForegroundColor">#222222</Color>
-
-        <SolidColorBrush x:Key="WindowBackgroundColorBrush" Color="{StaticResource WindowBackgroundColor}"/>
-        <SolidColorBrush x:Key="HighlightColorBrush" Color="{StaticResource HighlightColor}"/>
-        <SolidColorBrush x:Key="BlueColorBrush" Color="{StaticResource BlueColor}"/>
-        <SolidColorBrush x:Key="ForegroundColorBrush" Color="{StaticResource ForegroundColor}"/>
-
-        <Style x:Key="WindowButtonStyle" TargetType="{x:Type Button}">
-            <Setter Property="Foreground" Value="{DynamicResource ForegroundColorBrush}" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="Padding" Value="1" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid Background="{TemplateBinding Background}">
-                            <ContentPresenter x:Name="contentPresenter"
-                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                          Margin="{TemplateBinding Padding}"
-                          RecognizesAccessKey="True" />
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="{StaticResource HighlightColorBrush}" />
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="{DynamicResource BlueColorBrush}" />
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter TargetName="contentPresenter" Property="Opacity" Value=".5" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="DataPointStyle1" TargetType="{x:Type chartingToolkit:LineDataPoint}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="chartingToolkit:LineDataPoint">
-                        <Grid>
-                            <Ellipse Fill="{TemplateBinding Background}"/>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-    </UserControl.Resources>
-
     <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
 
         <Grid.RowDefinitions>
@@ -92,14 +33,14 @@
 
         <Label Grid.Row="0" Grid.Column="0" Content="From: " HorizontalAlignment="Left" VerticalAlignment="Center" Height="29" Width="95"/>
         <wpfToolkit:DateTimePicker Grid.Row="0" Grid.Column="1"
-                                   Text="{Binding FromPeriod}"
+                                   Text="{Binding FromPeriod, UpdateSourceTrigger=PropertyChanged}"
                                 Format="Custom" FormatString="dd/MMM/yyyy HH:mm:ss.fff" 
                                    TimeFormat="Custom" TimeFormatString="HH:mm:ss.fff" 
                                    HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="auto" />
 
         <Label Grid.Row="1" Grid.Column="0" Content="To: " HorizontalAlignment="Left" VerticalAlignment="Center" Height="29" Width="95"/>
         <wpfToolkit:DateTimePicker Grid.Row="1" Grid.Column="1"
-                                   Text="{Binding ToPeriod}"
+                                   Text="{Binding ToPeriod, UpdateSourceTrigger=PropertyChanged}"
                                 Format="Custom" FormatString="dd/MMM/yyyy HH:mm:ss.fff" 
                                    TimeFormat="Custom" TimeFormatString="HH:mm:ss.fff" 
                                    HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="auto"/>

@@ -204,16 +204,7 @@ namespace FTN.Services.NetworkModelService
         /// <returns>Container for specified local id</returns>
         private Container GetContainer(DMSType type)
 		{
-			if (ContainerExists(type))
-			{
-				return networkDataModel[type];
-			}
-			else
-			{
-				string message = string.Format("Container does not exist for type {0}.", type);
-				throw new Exception(message);
-			}
-			
+		    return ContainerExists(type) ? networkDataModel[type] : null;
 		}
 
         #endregion Find
@@ -727,29 +718,6 @@ namespace FTN.Services.NetworkModelService
 			return relatedGids;
 		}
 
-		/// <summary>
-		/// Writes delta to log
-		/// </summary>
-		/// <param name="delta">delta instance which will be logged</param>
-		public static void TraceDelta(Delta delta)
-		{
-			try
-			{
-				StringWriter stringWriter = new StringWriter();
-				XmlTextWriter xmlWriter = new XmlTextWriter(stringWriter);
-				xmlWriter.Formatting = Formatting.Indented;
-				delta.ExportToXml(xmlWriter);
-				xmlWriter.Flush();
-				CommonTrace.WriteTrace(CommonTrace.TraceInfo, stringWriter.ToString());				
-				xmlWriter.Close();
-				stringWriter.Close();
-			}
-			catch (Exception ex)
-			{
-				CommonTrace.WriteTrace(CommonTrace.TraceError, "Failed to trace delta with ID = {0}. Reason: {1}", delta.Id, ex.Message);
-			}
-		}
-
 		public void Initialize()
 		{
 			List<Delta> result = ReadAllDeltas();
@@ -994,7 +962,45 @@ namespace FTN.Services.NetworkModelService
         public void FillContainer(ResourceDescription rd)
         {
             DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(rd.Id);
-            networkDataModel[type].CreateEntity(rd.Id);
+            IdentifiedObject io = networkDataModel[type].CreateEntity(rd.Id);
+
+            if (rd.Properties != null)
+            {
+                foreach (Property property in rd.Properties)
+                {
+                    // globalId must not be set as property
+                    if (property.Id == ModelCode.IDOBJ_GID)
+                    {
+                        continue;
+                    }
+
+                    if (property.Type == PropertyType.Reference)
+                    {
+                        // if property is a reference to another entity 
+                        long targetGlobalId = property.AsReference();
+
+                        if (targetGlobalId != 0)
+                        {
+
+                            if (!EntityExists(targetGlobalId))
+                            {
+                                string message = string.Format("Failed to get target entity with GID: 0x{0:X16}. {1}", targetGlobalId);
+                                throw new Exception(message);
+                            }
+
+                            // get referenced entity for update
+                            IdentifiedObject targetEntity = GetEntity(targetGlobalId);
+                            targetEntity.AddReference(property.Id, io.GlobalId);
+                        }
+
+                        io.SetProperty(property);
+                    }
+                    else
+                    {
+                        io.SetProperty(property);
+                    }
+                }
+            }
         }
 
         #endregion

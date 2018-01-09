@@ -137,19 +137,6 @@ namespace AMIClient.ViewModels
             }
         }
 
-        public DelegateCommand ShowDataCommand
-        {
-            get
-            {
-                if (this.showDataCommand == null)
-                {
-                    this.showDataCommand = new DelegateCommand(this.ShowCommandAction, this.CanShowDataExecute);
-                }
-
-                return this.showDataCommand;
-            }
-        }
-
         public Model Model
         {
             get
@@ -176,46 +163,77 @@ namespace AMIClient.ViewModels
             }
         }
 
+        public DelegateCommand ShowDataCommand
+        {
+            get
+            {
+                if (this.showDataCommand == null)
+                {
+                    this.showDataCommand = new DelegateCommand(this.ShowCommandAction, this.CanShowDataExecute);
+                }
+
+                return this.showDataCommand;
+            }
+        }
+
         private bool CanShowDataExecute()
         {
-            return this.fromPeriodEntered || this.toPeriodEntered;
+            fromPeriodEntered = DateTimeValidation(FromPeriod) ? true : false;
+            toPeriodEntered = DateTimeValidation(ToPeriod) ? true : false;
+
+            if (!fromPeriodEntered && !toPeriodEntered)
+            {
+                return false;
+            }
+
+            if (fromPeriodEntered && toPeriodEntered)
+            {
+                return DateTime.Compare(DateTime.Parse(FromPeriod), DateTime.Parse(ToPeriod)) <= 0;
+            }
+            else if (fromPeriodEntered)
+            {
+                if (!string.IsNullOrEmpty(ToPeriod))
+                {
+                    return false;
+                }
+
+                return DateTime.Compare(DateTime.Parse(FromPeriod), DateTime.Now) <= 0;
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(FromPeriod))
+                {
+                    return false;
+                }
+
+                return DateTime.Compare(DateTime.MinValue, DateTime.Parse(ToPeriod)) <= 0;
+            }
+        }
+
+        private bool DateTimeValidation(string dt)
+        {
+            if (string.IsNullOrEmpty(dt))
+            {
+                return false;
+            }
+
+            try
+            {
+                DateTime.Parse(dt);
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private void ShowCommandAction()
         {
             DateTime from = new DateTime(), to = new DateTime();
-
-            if (!string.IsNullOrEmpty(FromPeriod))
-            {
-                try
-                {
-                    from = DateTime.Parse(FromPeriod);
-                }
-                catch
-                {
-                    MessageBox.Show("druze ne valja ti datum");
-                }
-            }
-            else
-            {
-                from = DateTime.MinValue;
-            }
-
-            if (!string.IsNullOrEmpty(ToPeriod))
-            {
-                try
-                {
-                    to = DateTime.Parse(ToPeriod);
-                }
-                catch
-                {
-                    MessageBox.Show("druze ne valja ti datum");
-                }
-            }
-            else
-            {
-                to = DateTime.Now;
-            }
+            from = fromPeriodEntered ? DateTime.Parse(FromPeriod) : DateTime.MinValue;
+            to = toPeriodEntered ? DateTime.Parse(ToPeriod) : DateTime.Now;
 
             Tuple<List<DynamicMeasurement>, Statistics> measForChart = this.Model.GetMeasForChart(AmiGids, from, to);
             List<KeyValuePair<DateTime, float>> tempP = new List<KeyValuePair<DateTime, float>>();
