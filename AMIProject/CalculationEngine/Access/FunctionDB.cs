@@ -49,7 +49,6 @@ namespace CalculationEngine.Access
             {
                 using (var access = new AccessDB())
                 {
-                    Console.WriteLine("Adding data from SCADA with date {0}", measurements[0].TimeStamp);
                     foreach (DynamicMeasurement m in measurements)
                     {
                         if (m.CurrentP == -1 || m.CurrentQ == -1 || m.CurrentV == -1)

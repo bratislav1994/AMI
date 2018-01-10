@@ -200,9 +200,8 @@ namespace CalculationEngine
         public void DataFromScada(List<DynamicMeasurement> measurements)
         {
             Logger.LogMessageToFile(string.Format("CE.CalculationEngine.DataFromScada; line: {0}; CE receive data from scada and send this data to client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            Console.WriteLine("Receive data from SCADA with date {0}", measurements[0].TimeStamp);
-
             Console.WriteLine("Send data to client");
+
             foreach (DynamicMeasurement dm in measurements)
             {
                 dm.OperationType = OperationType.UPDATE;
