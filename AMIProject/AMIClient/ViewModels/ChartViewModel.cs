@@ -251,6 +251,10 @@ namespace AMIClient.ViewModels
             to = toPeriodEntered ? DateTime.Parse(ToPeriod) : DateTime.Now;
 
             Tuple<List<DynamicMeasurement>, Statistics> measForChart = this.Model.GetMeasForChart(AmiGids, from, to);
+            if(measForChart == null)
+            {
+                return;
+            }
             List<KeyValuePair<DateTime, float>> tempP = new List<KeyValuePair<DateTime, float>>();
             List<KeyValuePair<DateTime, float>> tempQ = new List<KeyValuePair<DateTime, float>>();
             List<KeyValuePair<DateTime, float>> tempV = new List<KeyValuePair<DateTime, float>>();

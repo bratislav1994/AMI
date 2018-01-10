@@ -100,6 +100,11 @@ namespace CalculationEngine
         public Tuple<List<DynamicMeasurement>, Statistics> GetMeasurementsForChartView(List<long> gids, DateTime from, DateTime to)
         {
             List<DynamicMeasurement> result = dataBaseAdapter.GetMeasForChart(gids, from, to);
+            if (result.Count == 0)
+            {
+                return null;
+            }
+
             DateTime min = result.Min(x => x.TimeStamp);
             DateTime max = result.Max(x => x.TimeStamp);
             Dictionary<DateTime, DynamicMeasurement> temp = new Dictionary<DateTime, DynamicMeasurement>();
