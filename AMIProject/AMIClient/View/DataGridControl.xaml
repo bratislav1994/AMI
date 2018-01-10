@@ -33,7 +33,7 @@
 
                 <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Ami.Mrid}"/>
                 <DataGridTextColumn MinWidth="100" Width="100" Header="Name" Binding="{Binding Ami.Name}"/>
-                <DataGridTextColumn MinWidth="100" Width="100" Header="Subgeographical region ID" Binding="{Binding Ami.EqContainer}"/>
+                <DataGridTextColumn MinWidth="100" Width="100" Header="Substation id" Binding="{Binding Ami.EqContainer}"/>
                 <DataGridTextColumn MinWidth="100" Width="100" Header="Current P" Binding="{Binding CurrentP}"/>
                 <DataGridTextColumn MinWidth="100" Width="100" Header="Current Q" Binding="{Binding CurrentQ}"/>
                 <DataGridTextColumn MinWidth="100" Width="100" Header="Current V" Binding="{Binding CurrentV}"/>

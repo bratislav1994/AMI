@@ -4,6 +4,7 @@ using FTN.Common.Logger;
 using FTN.Services.NetworkModelService.DataModel;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,15 +50,15 @@ namespace SCADA
                     List<IndexedValue<Automatak.DNP3.Interface.Analog>> analogs = new List<IndexedValue<Automatak.DNP3.Interface.Analog>>();
                     analogs.AddRange(values.ToList());
                     Dictionary<long, DynamicMeasurement> localDic = new Dictionary<long, DynamicMeasurement>(this.measurements.Count / 3);
+                    string timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
                     DateTime timeStamp = DateTime.Now;
-
-                    for(int i = 0; i < measurements.Count; i++)
-                    {
-                        if(!localDic.ContainsKey(measurements[i].Measurement.PowerSystemResourceRef))
-                        {
-                            localDic.Add(measurements[i].Measurement.PowerSystemResourceRef, new DynamicMeasurement(measurements[i].Measurement.PowerSystemResourceRef, timeStamp));
-                        }
-                    }
+                    //for(int i = 0; i < measurements.Count; i++)
+                    //{
+                    //    if(!localDic.ContainsKey(measurements[i].Measurement.PowerSystemResourceRef))
+                    //    {
+                    //        localDic.Add(measurements[i].Measurement.PowerSystemResourceRef, new DynamicMeasurement(measurements[i].Measurement.PowerSystemResourceRef, timeStamp));
+                    //    }
+                    //}
 
                     foreach (IndexedValue<Automatak.DNP3.Interface.Analog> analog in analogs)
                     {
@@ -65,17 +66,36 @@ namespace SCADA
                         {
                             TC57CIM.IEC61970.Meas.Analog a = (TC57CIM.IEC61970.Meas.Analog)GetMeasurement(analog.Index);
 
-                            switch (analog.Index % 3)
+                            if (localDic.ContainsKey(a.PowerSystemResourceRef))
                             {
-                                case 0:
-                                    localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog);
-                                    break;
-                                case 1:
-                                    localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog);
-                                    break;
-                                case 2:
-                                    localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog);
-                                    break;
+                                switch (analog.Index % 3)
+                                {
+                                    case 0:
+                                        localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog);
+                                        break;
+                                    case 1:
+                                        localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog);
+                                        break;
+                                    case 2:
+                                        localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog);
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                localDic.Add(a.PowerSystemResourceRef, new DynamicMeasurement(a.PowerSystemResourceRef, timeStamp));
+                                switch (analog.Index % 3)
+                                {
+                                    case 0:
+                                        localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog);
+                                        break;
+                                    case 1:
+                                        localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog);
+                                        break;
+                                    case 2:
+                                        localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog);
+                                        break;
+                                }
                             }
                         }
                         else

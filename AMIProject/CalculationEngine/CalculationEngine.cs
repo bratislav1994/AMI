@@ -107,9 +107,10 @@ namespace CalculationEngine
 
             DateTime min = result.Min(x => x.TimeStamp);
             DateTime max = result.Max(x => x.TimeStamp);
+            
             Dictionary<DateTime, DynamicMeasurement> temp = new Dictionary<DateTime, DynamicMeasurement>();
             
-            for(DateTime t=min; t<=max;t = t.AddSeconds(3))
+            for (DateTime t = min; t <= max; t = t.AddSeconds(3))
             {
                 temp.Add(t, new DynamicMeasurement());
                 temp[t].CurrentP = 0;
@@ -118,7 +119,12 @@ namespace CalculationEngine
                 temp[t].TimeStamp = t;
             }
 
-            if(!temp.ContainsKey(max))
+            DateTime dt2 = temp.Keys.Last().AddMilliseconds(-temp.Keys.Last().Millisecond);
+            temp.Remove(temp.Keys.Last());
+            temp.Add(dt2, new DynamicMeasurement() { CurrentP = 0, CurrentQ = 0, CurrentV = 0, TimeStamp = dt2 });
+            max = max.AddMilliseconds(-max.Millisecond);
+
+            if (DateTime.Compare(temp.Keys.Last(), max) < 0)
             {
                 temp.Add(max, new DynamicMeasurement());
                 temp[max].CurrentP = 0;
@@ -127,7 +133,7 @@ namespace CalculationEngine
                 temp[max].TimeStamp = max;
             }
 
-            foreach(DynamicMeasurement dm in result)
+            foreach (DynamicMeasurement dm in result)
             {
                 DateTime dt = temp.Keys.Where(x => (Math.Abs((x - dm.TimeStamp).TotalSeconds) < 1.5)).FirstOrDefault();
                 temp[dt].CurrentP += dm.CurrentP;
@@ -151,7 +157,7 @@ namespace CalculationEngine
             statistics.IntegralQ = 0;
             statistics.IntegralV = 0;
 
-            for(int i=0;i< retVal.Count - 1;i++)
+            for (int i = 0; i < retVal.Count - 1; i++)
             {
                 statistics.IntegralP += (retVal[i].CurrentP * (((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds)) / 3600) + ((((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(retVal[i + 1].CurrentP - retVal[i].CurrentP))) / 2;
                 statistics.IntegralQ += (retVal[i].CurrentQ * (((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds)) / 3600) + ((((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(retVal[i + 1].CurrentQ - retVal[i].CurrentQ))) / 2;
@@ -163,7 +169,7 @@ namespace CalculationEngine
 
         public void EnlistMeas(List<ResourceDescription> measurements)
         {
-            foreach(ResourceDescription rd in measurements)
+            foreach (ResourceDescription rd in measurements)
             {
                 meas.Add(rd);
             }
@@ -176,7 +182,7 @@ namespace CalculationEngine
 
         public void Commit()
         {
-            foreach(ResourceDescription rd in meas)
+            foreach (ResourceDescription rd in meas)
             {
                 DynamicMeasurement newMeas = new DynamicMeasurement(rd.Id, DateTime.Now);
                 newMeas.OperationType = OperationType.INSERT;
@@ -197,7 +203,7 @@ namespace CalculationEngine
             Console.WriteLine("Receive data from SCADA with date {0}", measurements[0].TimeStamp);
 
             Console.WriteLine("Send data to client");
-            foreach(DynamicMeasurement dm in measurements)
+            foreach (DynamicMeasurement dm in measurements)
             {
                 dm.OperationType = OperationType.UPDATE;
             }

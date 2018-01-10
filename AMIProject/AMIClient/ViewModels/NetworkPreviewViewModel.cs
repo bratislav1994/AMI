@@ -169,9 +169,6 @@ namespace AMIClient.ViewModels
             switch(t.Name)
             {
                 case "RootElement":
-                    List<GeographicalRegion> geoRegionsC1 = this.Model.GetAllRegions(true);
-                    List<SubGeographicalRegion> subGeoRegionsC1 = this.Model.GetAllSubRegions(true);
-                    List<Substation> substationsC1 = this.Model.GetAllSubstations(true);
                     List<EnergyConsumerForTable> amisC1 = this.Model.GetAllAmis(true);
                     List<long> ecsC1 = new List<long>();
 

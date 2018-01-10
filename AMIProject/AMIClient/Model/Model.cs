@@ -265,10 +265,10 @@ namespace AMIClient
         public List<GeographicalRegion> GetAllRegions(bool returnValue)
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllRegions; line: {0}; Start the GetAllRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            GeoRegions.Clear();
             List<IdentifiedObject> results = GetExtentValues(ModelCode.GEOREGION);
             if (!returnValue)
             {
+                GeoRegions.Clear();
                 foreach (GeographicalRegion gr in results)
                 {
                     GeoRegions.Add(gr);
@@ -291,11 +291,11 @@ namespace AMIClient
         public List<SubGeographicalRegion> GetAllSubRegions(bool returnValue)
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllSubRegions; line: {0}; Start the GetAllSubRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            SubGeoRegions.Clear();
             List<IdentifiedObject> results = GetExtentValues(ModelCode.SUBGEOREGION);
 
             if (!returnValue)
             {
+                SubGeoRegions.Clear();
                 foreach (SubGeographicalRegion sgr in results)
                 {
                     SubGeoRegions.Add(sgr);
@@ -322,6 +322,7 @@ namespace AMIClient
             List<IdentifiedObject> results = GetExtentValues(ModelCode.SUBSTATION);
             if (!returnValue)
             {
+                Substations.Clear();
                 foreach (Substation ss in results)
                 {
                     Substations.Add(ss);
@@ -349,6 +350,9 @@ namespace AMIClient
 
             if (!returnValue)
             {
+                ClearAmis();
+                ClearPositions();
+
                 foreach (EnergyConsumer ec in results)
                 {
                     Amis.Add(new EnergyConsumerForTable(ec));
@@ -371,8 +375,6 @@ namespace AMIClient
 
         private List<IdentifiedObject> GetExtentValues(ModelCode modelCode)
         {
-            Substations.Clear();
-            ClearAmis();
             string message = "Getting extent values method started.";
             CommonTrace.WriteTrace(CommonTrace.TraceError, message);
             int iteratorId = 0;
@@ -490,28 +492,31 @@ namespace AMIClient
         public List<SubGeographicalRegion> GetSomeSubregions(long regionId, bool returnValue)
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubregions; line: {0}; Start the GetSomeSubregions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-
             List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.SUBGEOREGION);
             Association associtaion = new Association();
             associtaion.PropertyId = ModelCode.GEOREGION_SUBGEOREGIONS;
             associtaion.Type = ModelCode.SUBGEOREGION;
             List<IdentifiedObject> results = GetRelatedValues(regionId, properties, associtaion, ModelCode.SUBGEOREGION);
+
             if (!returnValue)
             {
                 foreach (SubGeographicalRegion sgr in results)
                 {
                     SubGeoRegions.Add(sgr);
                 }
+
                 Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubregions; line: {0}; Finish the GetSomeSubregions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return null;
             }
             else
             {
                 List<SubGeographicalRegion> retVal = new List<SubGeographicalRegion>();
+
                 foreach (SubGeographicalRegion sgr in results)
                 {
                     retVal.Add(sgr);
                 }
+
                 Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubregions; line: {0}; Finish the GetSomeSubregions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return retVal;
             }
@@ -520,19 +525,20 @@ namespace AMIClient
         public List<Substation> GetSomeSubstations(long subRegionId, bool returnValue)
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubstation; line: {0}; Start the GetSomeSubstation function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-
             List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.SUBSTATION);
             Association associtaion = new Association();
             associtaion.PropertyId = ModelCode.SUBGEOREGION_SUBS;
             associtaion.Type = ModelCode.SUBSTATION;
             GetRelatedValues(subRegionId, properties, associtaion, ModelCode.SUBSTATION);
             List<IdentifiedObject> results = GetRelatedValues(subRegionId, properties, associtaion, ModelCode.SUBSTATION);
+
             if (!returnValue)
             {
                 foreach (Substation ss in results)
                 {
                     Substations.Add(ss);
                 }
+
                 Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubstation; line: {0}; Start the GetSomeSubstation function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return null;
             }
@@ -551,12 +557,12 @@ namespace AMIClient
         public List<EnergyConsumerForTable> GetSomeAmis(long substationId, bool returnValue)
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeAmis; line: {0}; Start the GetSomeAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-
             List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.ENERGYCONS);
             Association associtaion = new Association();
             associtaion.PropertyId = ModelCode.EQCONTAINER_EQUIPMENTS;
             associtaion.Type = ModelCode.ENERGYCONS;
             List<IdentifiedObject> results = GetRelatedValues(substationId, properties, associtaion, ModelCode.ENERGYCONS);
+
             if (!returnValue)
             {
                 foreach (EnergyConsumer ec in results)
