@@ -57,17 +57,17 @@ namespace CalculationEngine.Access
 
                             if ((Math.Abs((double)(m.TimeStamp - lastMeas.TimeStamp).TotalSeconds)) < 3)
                             {
-                                if (lastMeas.CurrentP == -1)
+                                if(m.CurrentP != -1)
                                 {
                                     lastMeas.CurrentP = m.CurrentP;
                                 }
 
-                                if (lastMeas.CurrentQ == -1)
+                                if (m.CurrentQ != -1)
                                 {
                                     lastMeas.CurrentQ = m.CurrentQ;
                                 }
 
-                                if (lastMeas.CurrentV == -1)
+                                if (m.CurrentV != -1)
                                 {
                                     lastMeas.CurrentV = m.CurrentV;
                                 }
