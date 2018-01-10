@@ -49,6 +49,7 @@ namespace CalculationEngine.Access
             {
                 using (var access = new AccessDB())
                 {
+                    Console.WriteLine("Adding data from SCADA with date {0}, number of elements {1}", measurements[0].TimeStamp, measurements.Count);
                     foreach (DynamicMeasurement m in measurements)
                     {
                         if (m.CurrentP == -1 || m.CurrentQ == -1 || m.CurrentV == -1)
@@ -95,19 +96,43 @@ namespace CalculationEngine.Access
                         }
                         else
                         {
-                            access.History.Add(m);
-                        }
+                            var lastMeas = access.History.Where(x => x.PsrRef == m.PsrRef).OrderByDescending(x => x.TimeStamp).FirstOrDefault();
 
-                        int i = access.SaveChanges();
+                            if ((Math.Abs((double)(m.TimeStamp - lastMeas.TimeStamp).TotalSeconds)) < 3)
+                            {
+                                if (m.CurrentP != -1)
+                                {
+                                    lastMeas.CurrentP = m.CurrentP;
+                                }
 
-                        if (i > 0)
-                        {
+                                if (m.CurrentQ != -1)
+                                {
+                                    lastMeas.CurrentQ = m.CurrentQ;
+                                }
 
+                                if (m.CurrentV != -1)
+                                {
+                                    lastMeas.CurrentV = m.CurrentV;
+                                }
+
+                                access.Entry(lastMeas).State = System.Data.Entity.EntityState.Modified;
+                            }
+                            else
+                            {
+                                access.History.Add(m);
+                            }
                         }
-                        else
-                        {
-                            return false;
-                        }
+                    }
+
+                    int i = access.SaveChanges();
+
+                    if (i > 0)
+                    {
+                        Console.WriteLine("Number of changes {0}", i);
+                    }
+                    else
+                    {
+                        return false;
                     }
 
                     return true;
