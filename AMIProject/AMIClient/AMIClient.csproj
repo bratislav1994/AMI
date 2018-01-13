@@ -213,6 +213,8 @@
     <Compile Include="Classes\SubGeoRegionForTree.cs" />
     <Compile Include="Classes\SubstationForTree.cs" />
     <Compile Include="Classes\TreeClasses.cs" />
+    <Compile Include="HelperClasses\ClientEnums.cs" />
+    <Compile Include="HelperClasses\EnumDescriptionTypeConverter.cs" />
     <Compile Include="Model\IModel.cs" />
     <Compile Include="TabItem.cs" />
     <Compile Include="ViewModels\AddCimXmlViewModel.cs" />
