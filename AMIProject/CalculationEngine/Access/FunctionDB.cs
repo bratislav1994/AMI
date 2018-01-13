@@ -1,5 +1,6 @@
 ﻿using FTN.Common;
 using FTN.Services.NetworkModelService.DataModel;
+using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -152,6 +153,52 @@ namespace CalculationEngine.Access
                     }
 
                     return measurements;
+                }
+            }
+        }
+
+        public List<DynamicMeasurement> GetMeasForHour(DateTime from, DateTime to)
+        {
+            List<DynamicMeasurement> measurements = new List<DynamicMeasurement>();
+
+            lock (lockObj)
+            {
+                using (var access = new AccessDB())
+                {
+                    foreach (var meas in access.History.Where(x => x.TimeStamp >= from && x.TimeStamp <= to && x.OperationType == OperationType.UPDATE).ToList())
+                    {
+                        measurements.Add(meas);
+                    }
+
+                    return measurements;
+                }
+            }
+        }
+
+        public bool AddStatisticsForHour(Statistics statisticsForHour)
+        {
+            lock (lockObj)
+            {
+                using (var access = new AccessDB())
+                {
+                    //  var meas = access.History.Where(x => x.PsrRef == measurement.PsrRef).FirstOrDefault();
+
+                    //   if (meas == null)
+                    //   {
+                    access.StatisticsForHour.Add(statisticsForHour);
+                    int i = access.SaveChanges();
+
+                    if (i > 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                    //      }
+
+                    //  return true;
                 }
             }
         }

@@ -1,5 +1,6 @@
 ﻿using FTN.Common;
 using FTN.Services.NetworkModelService.DataModel;
+using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -15,6 +16,7 @@ namespace CalculationEngine.Access
         public AccessDB() : base("tsDB") { }
 
         public DbSet<DynamicMeasurement> History { get; set; }
+        public DbSet<Statistics> StatisticsForHour { get; set; }
 
     }
 }

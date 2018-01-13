@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FTN.Services.NetworkModelService.DataModel.Dynamic
 {
+    [DataContract]
     public class Statistics
     {
+        private int idDB;
         private float maxP;
         private float minP;
         private float maxQ;
@@ -20,9 +25,11 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
         private float integralP;
         private float integralQ;
         private float integralV;
+        private DateTime forTimeSpan;
 
         public Statistics() { }
 
+        [DataMember]
         public float MaxP
         {
             get
@@ -36,6 +43,7 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             }
         }
 
+        [DataMember]
         public float MinP
         {
             get
@@ -49,6 +57,7 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             }
         }
 
+        [DataMember]
         public float MaxQ
         {
             get
@@ -62,6 +71,7 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             }
         }
 
+        [DataMember]
         public float MinQ
         {
             get
@@ -75,6 +85,7 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             }
         }
 
+        [DataMember]
         public float MaxV
         {
             get
@@ -88,6 +99,7 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             }
         }
 
+        [DataMember]
         public float MinV
         {
             get
@@ -101,6 +113,7 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             }
         }
 
+        [DataMember]
         public float AvgP
         {
             get
@@ -114,6 +127,7 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             }
         }
 
+        [DataMember]
         public float AvgQ
         {
             get
@@ -127,6 +141,7 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             }
         }
 
+        [DataMember]
         public float AvgV
         {
             get
@@ -140,6 +155,7 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             }
         }
 
+        [DataMember]
         public float IntegralP
         {
             get
@@ -153,6 +169,7 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             }
         }
 
+        [DataMember]
         public float IntegralQ
         {
             get
@@ -166,6 +183,7 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             }
         }
 
+        [DataMember]
         public float IntegralV
         {
             get
@@ -176,6 +194,36 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             set
             {
                 integralV = value;
+            }
+        }
+
+        [DataMember]
+        public DateTime ForTimeSpan
+        {
+            get
+            {
+                return forTimeSpan;
+            }
+
+            set
+            {
+                forTimeSpan = value;
+            }
+        }
+
+        [IgnoreDataMember]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int IdDB
+        {
+            get
+            {
+                return idDB;
+            }
+
+            set
+            {
+                idDB = value;
             }
         }
     }
