@@ -68,15 +68,12 @@ namespace AMIClient
                 if (value != base.isSelected)
                 {
                     base.isSelected = value;
-                    if (!NetworkPreviewViewModel.Instance.IsRightClick())
+                    if (!NetworkPreviewViewModel.Instance.IsRightClick() && value)
                     {
-                        if (value)
-                        {
-                            base.Model.ClearAmis();
-                            base.Model.ClearPositions();
-                            base.Model.GetSomeAmis(this.Substation.GlobalId, false);
-                            this.OnPropertyChanged("IsSelected");
-                        }
+                        base.Model.ClearTableItems();
+                        base.Model.ClearPositions();
+                        base.Model.GetSomeTableItems(this.Substation.GlobalId, false);
+                        this.OnPropertyChanged("IsSelected");
                     }
                 }
             }
@@ -97,12 +94,12 @@ namespace AMIClient
 
         public override void CheckIfSeleacted()
         {
-            base.Model.ClearAmis();
+            base.Model.ClearTableItems();
             base.Model.ClearPositions();
 
             if (IsSelected)
             {
-                base.Model.GetSomeAmis(this.Substation.GlobalId, false);
+                base.Model.GetSomeTableItems(this.Substation.GlobalId, false);
             }
         }
     }

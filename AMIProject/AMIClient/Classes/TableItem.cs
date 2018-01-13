@@ -6,40 +6,44 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Meas;
 using TC57CIM.IEC61970.Wires;
 
 namespace AMIClient
 {
-    public class EnergyConsumerForTable : INotifyPropertyChanged
+    public class TableItem : INotifyPropertyChanged
     {
-        private EnergyConsumer ami;
+        private IdentifiedObject io;
         private float currentP;
         private float currentQ;
         private float currentV;
         private Brush status;
         private DataGridType type;
+        private bool contextMenuEnabled;
+        private Visibility contextMenuVisibility;
 
-        public EnergyConsumerForTable(EnergyConsumer ami)
+        public TableItem(IdentifiedObject io)
         {
-            this.Ami = ami;
+            this.Io = io;
             this.CurrentP = 0;
             this.currentQ = 0;
             this.CurrentV = 0;
-            this.Status = new SolidColorBrush(Colors.Green);
         }
 
-        public EnergyConsumer Ami
+        public IdentifiedObject Io
         {
             get
             {
-                return ami;
+                return io;
             }
 
             set
             {
-                ami = value;
+                io = value;
             }
         }
 
@@ -108,8 +112,48 @@ namespace AMIClient
 
             set
             {
+                if(value == DataGridType.ENERGY_CONSUMER)
+                {
+                    this.Status = new SolidColorBrush(Colors.Green);
+                    this.ContextMenuEnabled = true;
+                    this.ContextMenuVisibility = Visibility.Visible;
+                }
+                else
+                {
+                    this.Status = new SolidColorBrush(Colors.Transparent);
+                    this.ContextMenuEnabled = false;
+                    this.ContextMenuVisibility = Visibility.Hidden;
+                }
                 type = value;
                 RaisePropertyChanged("Type");
+            }
+        }
+
+        public bool ContextMenuEnabled
+        {
+            get
+            {
+                return contextMenuEnabled;
+            }
+
+            set
+            {
+                contextMenuEnabled = value;
+                RaisePropertyChanged("ContextMenuEnabled");
+            }
+        }
+
+        public Visibility ContextMenuVisibility
+        {
+            get
+            {
+                return contextMenuVisibility;
+            }
+
+            set
+            {
+                contextMenuVisibility = value;
+                RaisePropertyChanged("ContextMenuVisibility");
             }
         }
 

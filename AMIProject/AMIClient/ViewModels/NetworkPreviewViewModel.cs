@@ -136,7 +136,7 @@ namespace AMIClient.ViewModels
 
         public void SelectedAMIAction(object ami)
         {
-            EnergyConsumer ec = (EnergyConsumer)ami;
+            IdentifiedObject ec = (IdentifiedObject)ami;
             ChartViewModel chartVM = new ChartViewModel() { Model = this.Model };
             chartVM.SetGids(new List<long>() { ec.GlobalId });
 
@@ -165,19 +165,18 @@ namespace AMIClient.ViewModels
             TreeView selected = (TreeView)selectedTreeView;
             TreeClasses selectedItem = (TreeClasses)selected.SelectedItem;
             Type t = selectedItem.GetType();
-
+            
             switch (t.Name)
             {
                 case "RootElement":
-                    List<EnergyConsumerForTable> amisC1 = this.Model.GetAllAmis(true);
+                    List<IdentifiedObject> amisC1 = this.Model.GetAllAmis();
                     List<long> ecsC1 = new List<long>();
 
-                    foreach (EnergyConsumerForTable ect in amisC1)
+                    foreach (EnergyConsumer ec in amisC1)
                     {
-                        ecsC1.Add(ect.Ami.GlobalId);
+                        ecsC1.Add(ec.GlobalId);
                     }
-
-                    //cvm.OpenWindow(ecsC1);
+                    
                     ChartViewModel chartVM = new ChartViewModel() { Model = this.Model };
                     chartVM.SetGids(ecsC1);
                     TabItems.Add(new TabItem()
@@ -190,23 +189,26 @@ namespace AMIClient.ViewModels
 
                     break;
                 case "GeoRegionForTree":
-                    List<SubGeographicalRegion> subRegionsC2 = this.Model.GetSomeSubregions(((GeoRegionForTree)selectedItem).GeoRegion.GlobalId, true);
-                    List<Substation> substationsC2 = new List<Substation>();
-                    List<EnergyConsumerForTable> amisC2 = new List<EnergyConsumerForTable>();
+                    List<IdentifiedObject> subRegionsC2 = this.Model.GetSomeSubregions(((GeoRegionForTree)selectedItem).GeoRegion.GlobalId, true);
+                    List<IdentifiedObject> substationsC2 = new List<IdentifiedObject>();
+                    List<IdentifiedObject> amisC2 = new List<IdentifiedObject>();
                     List<long> ecsC2 = new List<long>();
+
                     foreach (SubGeographicalRegion sgr in subRegionsC2)
                     {
                         substationsC2.AddRange(this.Model.GetSomeSubstations(sgr.GlobalId, true));
                     }
+
                     foreach (Substation ss in substationsC2)
                     {
-                        amisC2.AddRange(this.Model.GetSomeAmis(ss.GlobalId, true));
+                        amisC2.AddRange(this.Model.GetSomeAmis(ss.GlobalId));
                     }
-                    foreach (EnergyConsumerForTable ect in amisC2)
+
+                    foreach (EnergyConsumer ec in amisC2)
                     {
-                        ecsC2.Add(ect.Ami.GlobalId);
+                        ecsC2.Add(ec.GlobalId);
                     }
-                    //cvm.OpenWindow(ecsC2);
+
                     ChartViewModel chartVM2 = new ChartViewModel() { Model = this.Model };
                     chartVM2.SetGids(ecsC2);
                     TabItems.Add(new TabItem()
@@ -219,18 +221,20 @@ namespace AMIClient.ViewModels
 
                     break;
                 case "SubGeoRegionForTree":
-                    List<Substation> substationsC3 = this.Model.GetSomeSubstations(((SubGeoRegionForTree)selectedItem).SubGeoRegion.GlobalId, true);
-                    List<EnergyConsumerForTable> amisC3 = new List<EnergyConsumerForTable>();
+                    List<IdentifiedObject> substationsC3 = this.Model.GetSomeSubstations(((SubGeoRegionForTree)selectedItem).SubGeoRegion.GlobalId, true);
+                    List<IdentifiedObject> amisC3 = new List<IdentifiedObject>();
                     List<long> ecsC3 = new List<long>();
+
                     foreach (Substation ss in substationsC3)
                     {
-                        amisC3.AddRange(this.Model.GetSomeAmis(ss.GlobalId, true));
+                        amisC3.AddRange(this.Model.GetSomeAmis(ss.GlobalId));
                     }
-                    foreach (EnergyConsumerForTable ect in amisC3)
+
+                    foreach (EnergyConsumer ec in amisC3)
                     {
-                        ecsC3.Add(ect.Ami.GlobalId);
+                        ecsC3.Add(ec.GlobalId);
                     }
-                    //cvm.OpenWindow(ecsC3);
+                    
                     ChartViewModel chartVM3 = new ChartViewModel() { Model = this.Model };
                     chartVM3.SetGids(ecsC3);
                     TabItems.Add(new TabItem()
@@ -243,13 +247,14 @@ namespace AMIClient.ViewModels
 
                     break;
                 case "SubstationForTree":
-                    List<EnergyConsumerForTable> amisC4 = this.Model.GetSomeAmis(((SubstationForTree)selectedItem).Substation.GlobalId, true);
+                    List<IdentifiedObject> amisC4 = this.Model.GetSomeAmis(((SubstationForTree)selectedItem).Substation.GlobalId);
                     List<long> ecsC4 = new List<long>();
-                    foreach (EnergyConsumerForTable ect in amisC4)
+
+                    foreach (EnergyConsumer ec in amisC4)
                     {
-                        ecsC4.Add(ect.Ami.GlobalId);
+                        ecsC4.Add(ec.GlobalId);
                     }
-                    //cvm.OpenWindow(ecsC4);
+
                     ChartViewModel chartVM4 = new ChartViewModel() { Model = this.Model };
                     chartVM4.SetGids(ecsC4);
                     TabItems.Add(new TabItem()

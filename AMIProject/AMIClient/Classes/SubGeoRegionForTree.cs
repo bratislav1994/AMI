@@ -77,24 +77,14 @@ namespace AMIClient
                 {
                     
                     base.isSelected = value;
-                    if (!NetworkPreviewViewModel.Instance.IsRightClick())
+                    if (!NetworkPreviewViewModel.Instance.IsRightClick() && value)
                     {
-                        if (value)
-                        {
-                            Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.IsSelected; line: {0}; Start - get all ami for the selected region", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-
-                            base.Model.Substations.Clear();
-                            base.Model.ClearPositions();
-                            base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId, false);
-                            base.Model.ClearAmis();
-                            foreach (Substation ss in base.Model.Substations)
-                            {
-                                base.Model.GetSomeAmis(ss.GlobalId, false);
-                            }
-                            this.OnPropertyChanged("IsSelected");
-
-                            Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.IsSelected; line: {0}; Finish - get all ami for the selected region", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                        }
+                        Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.IsSelected; line: {0}; Start - get all ami for the selected region", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                        base.Model.ClearPositions();
+                        base.Model.ClearTableItems();
+                        base.Model.GetSomeTableItemsForSubGeoRegion(this.SubGeoRegion.GlobalId);
+                        this.OnPropertyChanged("IsSelected");
+                        Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.IsSelected; line: {0}; Finish - get all ami for the selected region", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     }
                 }
             }
@@ -129,12 +119,12 @@ namespace AMIClient
         public override void LoadChildren()
         {
             Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.LoadChildren; line: {0}; Start the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            base.Model.Substations.Clear();
-            base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId, false);
+            List<IdentifiedObject> Substations = new List<IdentifiedObject>();
+            Substations = base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId, false);
 
-            if (base.Model.Substations != null)
+            if (Substations != null)
             {
-                foreach (Substation ss in base.Model.Substations)
+                foreach (Substation ss in Substations)
                 {
                     if (!allTreeElements.ContainsKey(ss.GlobalId))
                     {
@@ -151,13 +141,13 @@ namespace AMIClient
         {
             if (IsSelected)
             {
-                base.Model.Substations.Clear();
-                base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId, false);
-                base.Model.ClearAmis();
+                List<IdentifiedObject> Substations = new List<IdentifiedObject>();
+                Substations = base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId, false);
+                base.Model.ClearTableItems();
                 base.Model.ClearPositions();
-                foreach (Substation ss in base.Model.Substations)
+                foreach (Substation ss in Substations)
                 {
-                    base.Model.GetSomeAmis(ss.GlobalId, false);
+                    base.Model.GetSomeTableItems(ss.GlobalId, false);
                 }
             }
         }

@@ -14,6 +14,7 @@ namespace AMIClient.ViewModels
     {
         private static DataGridViewModel instance;
         private Model model;
+        private object tableItem;
 
         public DataGridViewModel()
         {
@@ -58,6 +59,27 @@ namespace AMIClient.ViewModels
             get
             {
                 return this.individualAmiChartCommand ?? (this.individualAmiChartCommand = new DelegateCommand<object>(this.SelectedAMIAction, param => true));
+            }
+        }
+
+        public object TableItem
+        {
+            get
+            {
+                return tableItem;
+            }
+
+            set
+            {
+                if (((TableItem)value).Type == HelperClasses.DataGridType.ENERGY_CONSUMER)
+                {
+                    tableItem = value;
+                }
+                else
+                {
+                    tableItem = null;
+                }
+                RaisePropertyChanged("TableItem");
             }
         }
 

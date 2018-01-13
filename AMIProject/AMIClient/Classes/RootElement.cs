@@ -79,15 +79,11 @@ namespace AMIClient
                 if (value != base.isSelected)
                 {
                     base.isSelected = value;
-                    if (!NetworkPreviewViewModel.Instance.IsRightClick())
+                    if (!NetworkPreviewViewModel.Instance.IsRightClick() && value)
                     {
-                        if (value)
-                        {
-                            base.Model.ClearPositions();
-                            Model.GetAllAmis(false);
-
-                            this.OnPropertyChanged("IsSelected");
-                        }
+                        base.Model.ClearPositions();
+                        Model.GetAllTableItems(false);
+                        this.OnPropertyChanged("IsSelected");
                     }
                 }
             }
@@ -135,12 +131,12 @@ namespace AMIClient
         public override void LoadChildren()
         {
             Logger.LogMessageToFile(string.Format("AMIClient.RootElement.LoadChildren; line: {0}; Start the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            this.Model.GeoRegions.Clear();
-            this.Model.GetAllRegions(false);
+            List<GeographicalRegion> GeoRegions = new List<GeographicalRegion>();
+            GeoRegions = this.Model.GetAllRegions(false);
 
-            if (this.Model.GeoRegions != null)
+            if (GeoRegions != null)
             {
-                foreach (GeographicalRegion gr in this.Model.GeoRegions)
+                foreach (GeographicalRegion gr in GeoRegions)
                 {
                     if (!AllTreeElements.ContainsKey(gr.GlobalId))
                     {
@@ -152,19 +148,6 @@ namespace AMIClient
 
             Logger.LogMessageToFile(string.Format("AMIClient.RootElement.LoadChildren; line: {0}; Finish the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
-        
-        //public Dispatcher Dispatcher
-        //{
-        //    get
-        //    {
-        //        return this.dispatcher;
-        //    }
-
-        //    set
-        //    {
-        //        this.dispatcher = value;
-        //    }
-        //}
 
         private void CheckForUpdates()
         {
@@ -177,10 +160,10 @@ namespace AMIClient
                         App.Current.Dispatcher.Invoke((Action)(() =>
                         {
                             LoadChildren();
-                            base.Model.ClearAmis();
+                            base.Model.ClearTableItems();
                             if (IsSelected)
                             {
-                                this.Model.GetAllAmis(false);
+                                this.Model.GetAllTableItems(false);
                             }
                             else
                             {

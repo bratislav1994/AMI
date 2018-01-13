@@ -9,16 +9,16 @@
              mc:Ignorable="d" 
              >
     <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
-        <DataGrid SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.Amis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
+        <DataGrid SelectionMode="Single" SelectedItem="{ Binding TableItem }" GridLinesVisibility="None" ItemsSource="{Binding Model.TableItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
 
 
             <DataGrid.Resources>
-                <ContextMenu x:Key="ticketContextMenu">
+                <ContextMenu x:Key="ticketContextMenu" Visibility="{Binding ContextMenuVisibility}">
                     <ContextMenu.Items>
                         <MenuItem
                             Header="Chart"
                             Command="{Binding DataContext.IndividualAmiChartCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
-                            CommandParameter="{Binding DataContext.Ami, RelativeSource={RelativeSource Mode=Self}}"/>
+                            CommandParameter="{Binding DataContext.Io, RelativeSource={RelativeSource Mode=Self}}"/>
                     </ContextMenu.Items>
                 </ContextMenu>
             </DataGrid.Resources>
@@ -26,6 +26,7 @@
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
                     <Setter Property="ContextMenu" Value="{StaticResource ticketContextMenu}" />
+                    <Setter Property="Focusable" Value="{Binding ContextMenuEnabled}" />
                 </Style>
             </DataGrid.RowStyle>
 
@@ -42,8 +43,8 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTextColumn MinWidth="135" Width="135" Header="Type" Binding="{Binding Type}"/>
-                <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Ami.Mrid}"/>
-                <DataGridTextColumn MinWidth="100" Width="100" Header="Name" Binding="{Binding Ami.Name}"/>
+                <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Io.Mrid}"/>
+                <DataGridTextColumn MinWidth="100" Width="100" Header="Name" Binding="{Binding Io.Name}"/>
                 <DataGridTextColumn MinWidth="100" Width="100" Header="P [kW]" Binding="{Binding CurrentP}"/>
                 <DataGridTextColumn MinWidth="100" Width="100" Header="Q [kVAr]" Binding="{Binding CurrentQ}"/>
                 <DataGridTextColumn MinWidth="100" Width="*" Header="V [V]" Binding="{Binding CurrentV}"/>
