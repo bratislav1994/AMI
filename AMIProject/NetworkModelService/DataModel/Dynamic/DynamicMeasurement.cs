@@ -14,18 +14,11 @@ namespace FTN.Services.NetworkModelService.DataModel
     public class DynamicMeasurement
     {
         private int idDB;
-
         private long psrRef;
-
         private float currentP;
-
         private float currentQ;
-
         private float currentV;
-
         private DateTime timeStamp;
-
-        private OperationType operationType;
 
         public DynamicMeasurement()
         {
@@ -97,7 +90,7 @@ namespace FTN.Services.NetworkModelService.DataModel
             }
         }
 
-        [DataMember]
+        [IgnoreDataMember]
         public DateTime TimeStamp
         {
             get
@@ -108,20 +101,6 @@ namespace FTN.Services.NetworkModelService.DataModel
             set
             {
                 timeStamp = value;
-            }
-        }
-
-        [IgnoreDataMember]
-        public OperationType OperationType
-        {
-            get
-            {
-                return operationType;
-            }
-
-            set
-            {
-                operationType = value;
             }
         }
 

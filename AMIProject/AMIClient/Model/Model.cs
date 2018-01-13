@@ -685,7 +685,6 @@ namespace AMIClient
                         Amis[positions[dm.PsrRef]].CurrentP = dm.CurrentP != -1 ? dm.CurrentP : Amis[positions[dm.PsrRef]].CurrentP;
                         Amis[positions[dm.PsrRef]].CurrentQ = dm.CurrentQ != -1 ? dm.CurrentQ : Amis[positions[dm.PsrRef]].CurrentQ;
                         Amis[positions[dm.PsrRef]].CurrentV = dm.CurrentV != -1 ? dm.CurrentV : Amis[positions[dm.PsrRef]].CurrentV;
-                        Amis[positions[dm.PsrRef]].TimeStamp = dm.TimeStamp;
                     }
                 }
             }

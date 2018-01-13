@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace FTN.Common
 {
@@ -20,11 +21,4 @@ namespace FTN.Common
         READWRITE,
         READ
     }//end Direction
-
-    public enum OperationType : int
-    {
-        INSERT = 0,
-        UPDATE,
-        DELETE
-    }
 }

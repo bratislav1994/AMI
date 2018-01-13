@@ -166,7 +166,7 @@ namespace AMIClient.ViewModels
             TreeClasses selectedItem = (TreeClasses)selected.SelectedItem;
             Type t = selectedItem.GetType();
 
-            switch(t.Name)
+            switch (t.Name)
             {
                 case "RootElement":
                     List<EnergyConsumerForTable> amisC1 = this.Model.GetAllAmis(true);
@@ -194,15 +194,15 @@ namespace AMIClient.ViewModels
                     List<Substation> substationsC2 = new List<Substation>();
                     List<EnergyConsumerForTable> amisC2 = new List<EnergyConsumerForTable>();
                     List<long> ecsC2 = new List<long>();
-                    foreach(SubGeographicalRegion sgr in subRegionsC2)
+                    foreach (SubGeographicalRegion sgr in subRegionsC2)
                     {
                         substationsC2.AddRange(this.Model.GetSomeSubstations(sgr.GlobalId, true));
                     }
-                    foreach(Substation ss in substationsC2)
+                    foreach (Substation ss in substationsC2)
                     {
                         amisC2.AddRange(this.Model.GetSomeAmis(ss.GlobalId, true));
                     }
-                    foreach(EnergyConsumerForTable ect in amisC2)
+                    foreach (EnergyConsumerForTable ect in amisC2)
                     {
                         ecsC2.Add(ect.Ami.GlobalId);
                     }

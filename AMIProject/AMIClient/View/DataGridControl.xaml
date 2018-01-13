@@ -31,13 +31,22 @@
 
             <DataGrid.Columns>
 
+                <DataGridTemplateColumn Header="Status" MinWidth="50" Width="50">
+                    
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Ellipse Width="10" Height="10" Fill="{Binding Status}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn MinWidth="135" Width="135" Header="Type" Binding="{Binding Type}"/>
                 <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Ami.Mrid}"/>
                 <DataGridTextColumn MinWidth="100" Width="100" Header="Name" Binding="{Binding Ami.Name}"/>
-                <DataGridTextColumn MinWidth="100" Width="100" Header="Substation id" Binding="{Binding Ami.EqContainer}"/>
-                <DataGridTextColumn MinWidth="100" Width="100" Header="Current P" Binding="{Binding CurrentP}"/>
-                <DataGridTextColumn MinWidth="100" Width="100" Header="Current Q" Binding="{Binding CurrentQ}"/>
-                <DataGridTextColumn MinWidth="100" Width="100" Header="Current V" Binding="{Binding CurrentV}"/>
-                <DataGridTextColumn MinWidth="100" Width="*" Header="TimeStamp" Binding="{Binding TimeStamp, StringFormat=\{0:dd.MM.yy HH:mm:ss\}}"/>
+                <DataGridTextColumn MinWidth="100" Width="100" Header="P [kW]" Binding="{Binding CurrentP}"/>
+                <DataGridTextColumn MinWidth="100" Width="100" Header="Q [kVAr]" Binding="{Binding CurrentQ}"/>
+                <DataGridTextColumn MinWidth="100" Width="*" Header="V [V]" Binding="{Binding CurrentV}"/>
 
             </DataGrid.Columns>
         </DataGrid>

@@ -1,9 +1,12 @@
-﻿using System;
+﻿using AMIClient.HelperClasses;
+using FTN.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using TC57CIM.IEC61970.Meas;
 using TC57CIM.IEC61970.Wires;
 
@@ -15,7 +18,8 @@ namespace AMIClient
         private float currentP;
         private float currentQ;
         private float currentV;
-        private DateTime timeStamp;
+        private Brush status;
+        private DataGridType type;
 
         public EnergyConsumerForTable(EnergyConsumer ami)
         {
@@ -23,6 +27,7 @@ namespace AMIClient
             this.CurrentP = 0;
             this.currentQ = 0;
             this.CurrentV = 0;
+            this.Status = new SolidColorBrush(Colors.Green);
         }
 
         public EnergyConsumer Ami
@@ -80,17 +85,31 @@ namespace AMIClient
             }
         }
 
-        public DateTime TimeStamp
+        public Brush Status
         {
             get
             {
-                return timeStamp;
+                return status;
             }
 
             set
             {
-                timeStamp = value;
-                RaisePropertyChanged("TimeStamp");
+                status = value;
+                RaisePropertyChanged("Status");
+            }
+        }
+
+        public DataGridType Type
+        {
+            get
+            {
+                return type;
+            }
+
+            set
+            {
+                type = value;
+                RaisePropertyChanged("Type");
             }
         }
 
