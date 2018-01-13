@@ -26,6 +26,7 @@ namespace CalculationEngine
         private bool firstTimeCoordinator = true;
         private Delta delta;
         private FunctionDB dataBaseAdapter;
+        private DateTime currentHour = new DateTime(2018, 1, 1, 0, 0, 0);
 
         public CalculationEngine()
         {
@@ -99,7 +100,16 @@ namespace CalculationEngine
 
         public Tuple<List<DynamicMeasurement>, Statistics> GetMeasurementsForChartView(List<long> gids, DateTime from, DateTime to)
         {
-            List<DynamicMeasurement> result = dataBaseAdapter.GetMeasForChart(gids, from, to);
+            List<DynamicMeasurement> result = new List<DynamicMeasurement>();
+            if (gids.Count == 0)
+            {
+                result = dataBaseAdapter.GetMeasForHour(from, to);
+            }
+            else
+            {
+                result = dataBaseAdapter.GetMeasForChart(gids, from, to);
+            }
+
             if (result.Count == 0)
             {
                 return null;
@@ -153,6 +163,7 @@ namespace CalculationEngine
             statistics.AvgP = retVal.Average(x => x.CurrentP);
             statistics.AvgQ = retVal.Average(x => x.CurrentQ);
             statistics.AvgV = retVal.Average(x => x.CurrentV);
+            statistics.ForTimeSpan = from;
             statistics.IntegralP = 0;
             statistics.IntegralQ = 0;
             statistics.IntegralV = 0;
@@ -163,6 +174,8 @@ namespace CalculationEngine
                 statistics.IntegralQ += (retVal[i].CurrentQ * (((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds)) / 3600) + ((((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(retVal[i + 1].CurrentQ - retVal[i].CurrentQ))) / 2;
                 statistics.IntegralV += (retVal[i].CurrentV * (((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds)) / 3600) + ((((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(retVal[i + 1].CurrentV - retVal[i].CurrentV))) / 2;
             }
+
+            dataBaseAdapter.AddStatisticsForHour(statistics);
             
             return new Tuple<List<DynamicMeasurement>, Statistics>(retVal, statistics);
         }
@@ -196,7 +209,7 @@ namespace CalculationEngine
         {
             this.meas.Clear();
         }
-
+        
         public void DataFromScada(List<DynamicMeasurement> measurements)
         {
             Logger.LogMessageToFile(string.Format("CE.CalculationEngine.DataFromScada; line: {0}; CE receive data from scada and send this data to client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -205,6 +218,20 @@ namespace CalculationEngine
             foreach (DynamicMeasurement dm in measurements)
             {
                 dm.OperationType = OperationType.UPDATE;
+            }
+
+            if (currentHour.Minute == 0)
+            {
+                currentHour = measurements[0].TimeStamp;
+            }
+            else if (measurements[0].TimeStamp.Minute > currentHour.Minute || measurements[0].TimeStamp.Minute == 0)
+            {
+                GetMeasurementsForChartView(new List<long>(), currentHour, measurements[0].TimeStamp);
+                currentHour = measurements[0].TimeStamp;
+            }
+            else if(measurements[0].TimeStamp.Hour > currentHour.Hour || measurements[0].TimeStamp.Date > currentHour.Date)
+            {
+                currentHour = measurements[0].TimeStamp;
             }
             
             Thread t = new Thread(() => dataBaseAdapter.AddMeasurements(measurements));
