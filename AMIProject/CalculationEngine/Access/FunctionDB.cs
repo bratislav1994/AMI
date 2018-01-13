@@ -147,7 +147,7 @@ namespace CalculationEngine.Access
             {
                 using (var access = new AccessDB())
                 {
-                    foreach (var meas in access.History.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp <= to && x.OperationType == OperationType.UPDATE).ToList())
+                    foreach (var meas in access.History.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp <= to).ToList())
                     {
                         measurements.Add(meas);
                     }
@@ -165,7 +165,7 @@ namespace CalculationEngine.Access
             {
                 using (var access = new AccessDB())
                 {
-                    foreach (var meas in access.History.Where(x => x.TimeStamp >= from && x.TimeStamp <= to && x.OperationType == OperationType.UPDATE).ToList())
+                    foreach (var meas in access.History.Where(x => x.TimeStamp >= from && x.TimeStamp <= to).ToList())
                     {
                         measurements.Add(meas);
                     }

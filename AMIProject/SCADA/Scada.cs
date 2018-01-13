@@ -32,7 +32,7 @@ namespace SCADA
         private ITransactionDuplexScada proxyCoordinator;
         private List<ResourceDescription> measurementsToEnlist;
         private Dictionary<int, List<MeasurementForScada>> copyMeasurements;
-        private List<DynamicMeasurement> resourcesToSend;
+        private Dictionary<long, DynamicMeasurement> resourcesToSend;
         private object lockObject = new object();
         private Thread sendingThread;
         private ICalculationEngine proxyCE;
@@ -107,7 +107,7 @@ namespace SCADA
             handlers = new Dictionary<int, SOEHandler>();
             measurements = new Dictionary<int, List<MeasurementForScada>>();
             copyMeasurements = new Dictionary<int, List<MeasurementForScada>>();
-            resourcesToSend = new List<DynamicMeasurement>();
+            resourcesToSend = new Dictionary<long, DynamicMeasurement>();
             simulators = new Dictionary<int, ISimulator>();
             masters = new Dictionary<int, IMaster>();
             channels = new Dictionary<int, IChannel>();

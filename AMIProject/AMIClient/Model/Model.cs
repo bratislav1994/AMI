@@ -262,6 +262,7 @@ namespace AMIClient
                     foreach(IdentifiedObject io2 in substations)
                     {
                         TableItems.Add(new TableItem(io2) { Type = HelperClasses.DataGridType.SUBSTATION });
+                        positions.Add(io2.GlobalId, TableItems.Count - 1);
                         GetSomeTableItems(io2.GlobalId, true);
                     }
                 }

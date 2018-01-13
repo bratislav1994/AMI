@@ -11,6 +11,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Wires;
 
 namespace CalculationEngine
@@ -27,13 +28,20 @@ namespace CalculationEngine
         private Delta delta;
         private FunctionDB dataBaseAdapter;
         private DateTime currentHour = new DateTime(2018, 1, 1, 0, 0, 0);
+        private Dictionary<long, GeographicalRegion> geoRegions;
+        private Dictionary<long, SubGeographicalRegion> subGeoRegions;
+        private Dictionary<long, Substation> substations;
+        private Dictionary<long, EnergyConsumer> amis;
 
         public CalculationEngine()
         {
+            geoRegions = new Dictionary<long, GeographicalRegion>();
+            subGeoRegions = new Dictionary<long, SubGeographicalRegion>();
+            substations = new Dictionary<long, Substation>();
+            amis = new Dictionary<long, EnergyConsumer>();
             clients = new List<IModelForDuplex>();
             clientsForDeleting = new List<IModelForDuplex>();
             dataBaseAdapter = new FunctionDB();
-
             meas = new List<ResourceDescription>();
 
             while (true)
@@ -190,18 +198,40 @@ namespace CalculationEngine
 
         public bool Prepare()
         {
+            foreach (ResourceDescription rd in meas)
+            {
+                DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(rd.Id);
+
+                switch (type)
+                {
+                    case DMSType.GEOREGION:
+                        GeographicalRegion gr = new GeographicalRegion();
+                        gr.RD2Class(rd);
+                        geoRegions.Add(rd.Id, gr);
+                        break;
+                    case DMSType.SUBGEOREGION:
+                        SubGeographicalRegion sgr = new SubGeographicalRegion();
+                        sgr.RD2Class(rd);
+                        subGeoRegions.Add(rd.Id, sgr);
+                        break;
+                    case DMSType.SUBSTATION:
+                        Substation s = new Substation();
+                        s.RD2Class(rd);
+                        substations.Add(rd.Id, s);
+                        break;
+                    case DMSType.ENERGYCONS:
+                        EnergyConsumer ec = new EnergyConsumer();
+                        ec.RD2Class(rd);
+                        amis.Add(rd.Id, ec);
+                        break;
+                }
+            }
+
             return true;
         }
 
         public void Commit()
         {
-            foreach (ResourceDescription rd in meas)
-            {
-                DynamicMeasurement newMeas = new DynamicMeasurement(rd.Id, DateTime.Now);
-                newMeas.OperationType = OperationType.INSERT;
-                dataBaseAdapter.AddMeasurement(newMeas);
-            }
-
             this.meas.Clear();
         }
 
@@ -210,39 +240,95 @@ namespace CalculationEngine
             this.meas.Clear();
         }
         
-        public void DataFromScada(List<DynamicMeasurement> measurements)
+        public void DataFromScada(Dictionary<long, DynamicMeasurement> measurements)
         {
             Logger.LogMessageToFile(string.Format("CE.CalculationEngine.DataFromScada; line: {0}; CE receive data from scada and send this data to client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             Console.WriteLine("Send data to client");
 
-            foreach (DynamicMeasurement dm in measurements)
+            //if (currentHour.Minute == 0)
+            //{
+            //    currentHour = measurements[0].TimeStamp;
+            //}
+            //else if (measurements[0].TimeStamp.Minute > currentHour.Minute || measurements[0].TimeStamp.Minute == 0)
+            //{
+            //    GetMeasurementsForChartView(new List<long>(), currentHour, measurements[0].TimeStamp);
+            //    currentHour = measurements[0].TimeStamp;
+            //}
+            //else if(measurements[0].TimeStamp.Hour > currentHour.Hour || measurements[0].TimeStamp.Date > currentHour.Date)
+            //{
+            //    currentHour = measurements[0].TimeStamp;
+            //}
+
+            //Thread t = new Thread(() => dataBaseAdapter.AddMeasurements(measurements));
+            //t.Start();
+
+            Dictionary<long, DynamicMeasurement> addSubstations = new Dictionary<long, DynamicMeasurement>();
+
+            foreach (KeyValuePair<long, Substation> ss in substations)
             {
-                dm.OperationType = OperationType.UPDATE;
+                DynamicMeasurement m = new DynamicMeasurement(ss.Key);
+                
+                foreach (KeyValuePair<long, DynamicMeasurement> meas in measurements)
+                {
+                    if (amis[meas.Key].EqContainer == m.PsrRef)
+                    {
+                        m.CurrentP += meas.Value.CurrentP;
+                        m.CurrentQ += meas.Value.CurrentQ;
+                        m.CurrentV += meas.Value.CurrentV;
+                    }
+                }
+
+                addSubstations.Add(m.PsrRef, m);
             }
 
-            if (currentHour.Minute == 0)
+            foreach (KeyValuePair<long, DynamicMeasurement> kvp in addSubstations)
             {
-                currentHour = measurements[0].TimeStamp;
+                measurements.Add(kvp.Key, kvp.Value);
             }
-            else if (measurements[0].TimeStamp.Minute > currentHour.Minute || measurements[0].TimeStamp.Minute == 0)
+
+            Dictionary<long, DynamicMeasurement> addSubGeoRegions = new Dictionary<long, DynamicMeasurement>();
+
+            foreach (KeyValuePair<long, SubGeographicalRegion> sgr in subGeoRegions)
             {
-                GetMeasurementsForChartView(new List<long>(), currentHour, measurements[0].TimeStamp);
-                currentHour = measurements[0].TimeStamp;
-            }
-            else if(measurements[0].TimeStamp.Hour > currentHour.Hour || measurements[0].TimeStamp.Date > currentHour.Date)
-            {
-                currentHour = measurements[0].TimeStamp;
+                DynamicMeasurement m = new DynamicMeasurement(sgr.Key);
+
+                foreach (KeyValuePair<long, DynamicMeasurement> meas in addSubstations)
+                {
+                    if (substations[meas.Key].SubGeoRegion == m.PsrRef)
+                    {
+                        m.CurrentP += meas.Value.CurrentP;
+                        m.CurrentQ += meas.Value.CurrentQ;
+                        m.CurrentV += meas.Value.CurrentV;
+                    }
+                }
+
+                addSubGeoRegions.Add(m.PsrRef, m);
+                measurements.Add(m.PsrRef, m);
             }
             
-            Thread t = new Thread(() => dataBaseAdapter.AddMeasurements(measurements));
-            t.Start();
+            foreach (KeyValuePair<long, GeographicalRegion> gr in geoRegions)
+            {
+                DynamicMeasurement m = new DynamicMeasurement(gr.Key);
 
+                foreach (KeyValuePair<long, DynamicMeasurement> meas in addSubGeoRegions)
+                {
+                    if (subGeoRegions[meas.Key].GeoRegion == m.PsrRef)
+                    {
+                        m.CurrentP += meas.Value.CurrentP;
+                        m.CurrentQ += meas.Value.CurrentQ;
+                        m.CurrentV += meas.Value.CurrentV;
+                    }
+                }
+
+                measurements.Add(m.PsrRef, m);
+            }
+            
             clientsForDeleting.Clear();
             foreach (IModelForDuplex client in clients)
             {
                 try
                 {
-                    client.SendMeasurements(measurements);
+                    client.SendMeasurements(measurements.Values.ToList());
                 }
                 catch
                 {

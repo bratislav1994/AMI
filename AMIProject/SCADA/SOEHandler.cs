@@ -16,7 +16,7 @@ namespace SCADA
     {
         private bool canExecute = false;
         private List<MeasurementForScada> measurements;
-        public List<DynamicMeasurement> resourcesToSend;
+        public Dictionary<long, DynamicMeasurement> resourcesToSend;
         private object lockObject;
         private bool hasNewMeas = false;
 
@@ -33,7 +33,7 @@ namespace SCADA
             }
         }
 
-        public SOEHandler(List<MeasurementForScada> measurements, List<DynamicMeasurement> resourcesToSend, ref object lockObject)
+        public SOEHandler(List<MeasurementForScada> measurements, Dictionary<long, DynamicMeasurement> resourcesToSend, ref object lockObject)
         {
             this.measurements = measurements;
             this.resourcesToSend = resourcesToSend;
@@ -104,10 +104,7 @@ namespace SCADA
                         }
                     }
 
-                    foreach (KeyValuePair<long, DynamicMeasurement> kvp in localDic)
-                    {
-                        resourcesToSend.Add(kvp.Value);
-                    }
+                    resourcesToSend = localDic;
 
                     if (localDic.Count > 0)
                     {

@@ -84,7 +84,8 @@ namespace TransactionCoordinator
                     {
                         measurements.Add(rd);
                     }
-                    else if(type == DMSType.ENERGYCONS)
+                    else if (type == DMSType.ENERGYCONS || type == DMSType.GEOREGION || type == DMSType.SUBGEOREGION || 
+                            type == DMSType.SUBSTATION)
                     {
                         consumers.Add(rd);
                     }
