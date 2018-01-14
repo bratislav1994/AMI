@@ -7,7 +7,9 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Meas;
+using TC57CIM.IEC61970.Wires;
 
 namespace CalculationEngine.Access
 {
@@ -16,7 +18,13 @@ namespace CalculationEngine.Access
         public AccessDB() : base("tsDB") { }
 
         public DbSet<DynamicMeasurement> History { get; set; }
-        public DbSet<Statistics> StatisticsForHour { get; set; }
+        public DbSet<MinuteAggregation> AggregationForMiuntes { get; set; }
+        public DbSet<HourAggregation> AggregationForHours { get; set; }
+        public DbSet<DayAggregation> AggregationForDays { get; set; }
+       /* public DbSet<GeographicalRegion> GeoRegions { get; set; }
+        public DbSet<SubGeographicalRegion> SubGeoRegions { get; set; }
+        public DbSet<Substation> Substations { get; set; }
+        public DbSet<EnergyConsumer> Consumers { get; set; }*/
 
     }
 }

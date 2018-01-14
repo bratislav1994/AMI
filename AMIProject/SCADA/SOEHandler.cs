@@ -52,13 +52,6 @@ namespace SCADA
                     Dictionary<long, DynamicMeasurement> localDic = new Dictionary<long, DynamicMeasurement>(this.measurements.Count / 3);
                     string timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
                     DateTime timeStamp = DateTime.Now;
-                    //for(int i = 0; i < measurements.Count; i++)
-                    //{
-                    //    if(!localDic.ContainsKey(measurements[i].Measurement.PowerSystemResourceRef))
-                    //    {
-                    //        localDic.Add(measurements[i].Measurement.PowerSystemResourceRef, new DynamicMeasurement(measurements[i].Measurement.PowerSystemResourceRef, timeStamp));
-                    //    }
-                    //}
 
                     foreach (IndexedValue<Automatak.DNP3.Interface.Analog> analog in analogs)
                     {
@@ -104,7 +97,29 @@ namespace SCADA
                         }
                     }
 
-                    resourcesToSend = localDic;
+
+                    foreach(KeyValuePair<long, DynamicMeasurement> kvp in localDic)
+                    {
+                        if (resourcesToSend.ContainsKey(kvp.Key))
+                        {
+                            if (resourcesToSend[kvp.Key].CurrentP == -1 && localDic[kvp.Key].CurrentP != -1)
+                            {
+                                resourcesToSend[kvp.Key].CurrentP = localDic[kvp.Key].CurrentP;
+                            }
+                            if (resourcesToSend[kvp.Key].CurrentQ == -1 && localDic[kvp.Key].CurrentQ != -1)
+                            {
+                                resourcesToSend[kvp.Key].CurrentQ = localDic[kvp.Key].CurrentQ;
+                            }
+                            if (resourcesToSend[kvp.Key].CurrentV == -1 && localDic[kvp.Key].CurrentV != -1)
+                            {
+                                resourcesToSend[kvp.Key].CurrentV = localDic[kvp.Key].CurrentV;
+                            }
+                        }
+                        else
+                        {
+                            resourcesToSend.Add(kvp.Key, kvp.Value);
+                        }
+                    }
 
                     if (localDic.Count > 0)
                     {

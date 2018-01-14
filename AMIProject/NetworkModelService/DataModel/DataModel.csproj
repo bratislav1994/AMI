@@ -101,8 +101,10 @@
     <Compile Include="Core\SubGeographicalRegion.cs" />
     <Compile Include="Core\Substation.cs" />
     <Compile Include="Core\VoltageLevel.cs" />
+    <Compile Include="Dynamic\DayAggregation.cs" />
     <Compile Include="Dynamic\DynamicMeasurement.cs" />
     <Compile Include="Dynamic\HourAggregation.cs" />
+    <Compile Include="Dynamic\MinuteAggregation.cs" />
     <Compile Include="Dynamic\MeasurementForScada.cs" />
     <Compile Include="Dynamic\Statistics.cs" />
     <Compile Include="Dynamic\WrapperDB.cs" />

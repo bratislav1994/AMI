@@ -12,7 +12,6 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
     [DataContract]
     public class Statistics
     {
-        private int idDB;
         private float maxP;
         private float minP;
         private float maxQ;
@@ -25,7 +24,6 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
         private float integralP;
         private float integralQ;
         private float integralV;
-        private DateTime forTimeSpan;
 
         public Statistics() { }
 
@@ -194,36 +192,6 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             set
             {
                 integralV = value;
-            }
-        }
-
-        [DataMember]
-        public DateTime ForTimeSpan
-        {
-            get
-            {
-                return forTimeSpan;
-            }
-
-            set
-            {
-                forTimeSpan = value;
-            }
-        }
-
-        [IgnoreDataMember]
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IdDB
-        {
-            get
-            {
-                return idDB;
-            }
-
-            set
-            {
-                idDB = value;
             }
         }
     }

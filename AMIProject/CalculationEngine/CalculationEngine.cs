@@ -27,21 +27,34 @@ namespace CalculationEngine
         private bool firstTimeCoordinator = true;
         private Delta delta;
         private FunctionDB dataBaseAdapter;
-        private DateTime currentHour = new DateTime(2018, 1, 1, 0, 0, 0);
         private Dictionary<long, GeographicalRegion> geoRegions;
         private Dictionary<long, SubGeographicalRegion> subGeoRegions;
         private Dictionary<long, Substation> substations;
         private Dictionary<long, EnergyConsumer> amis;
+        private Dictionary<long, GeographicalRegion> geoRegionsTemp;
+        private Dictionary<long, SubGeographicalRegion> subGeoRegionsTemp;
+        private Dictionary<long, Substation> substationsTemp;
+        private Dictionary<long, EnergyConsumer> amisTemp;
 
         public CalculationEngine()
         {
+            dataBaseAdapter = new FunctionDB();
+            dataBaseAdapter.DoUndone();
+            dataBaseAdapter.StartThreads();
             geoRegions = new Dictionary<long, GeographicalRegion>();
             subGeoRegions = new Dictionary<long, SubGeographicalRegion>();
             substations = new Dictionary<long, Substation>();
             amis = new Dictionary<long, EnergyConsumer>();
+            /*geoRegions = dataBaseAdapter.ReadGeoRegions();
+            subGeoRegions = dataBaseAdapter.ReadSubGeoRegions();
+            substations = dataBaseAdapter.ReadSubstations();
+            amis = dataBaseAdapter.ReadConsumers();*/
+            geoRegionsTemp = new Dictionary<long, GeographicalRegion>();
+            subGeoRegionsTemp = new Dictionary<long, SubGeographicalRegion>();
+            substationsTemp = new Dictionary<long, Substation>();
+            amisTemp = new Dictionary<long, EnergyConsumer>();
             clients = new List<IModelForDuplex>();
             clientsForDeleting = new List<IModelForDuplex>();
-            dataBaseAdapter = new FunctionDB();
             meas = new List<ResourceDescription>();
 
             while (true)
@@ -109,14 +122,7 @@ namespace CalculationEngine
         public Tuple<List<DynamicMeasurement>, Statistics> GetMeasurementsForChartView(List<long> gids, DateTime from, DateTime to)
         {
             List<DynamicMeasurement> result = new List<DynamicMeasurement>();
-            if (gids.Count == 0)
-            {
-                result = dataBaseAdapter.GetMeasForHour(from, to);
-            }
-            else
-            {
-                result = dataBaseAdapter.GetMeasForChart(gids, from, to);
-            }
+            result = dataBaseAdapter.GetMeasForChart(gids, from, to);
 
             if (result.Count == 0)
             {
@@ -171,7 +177,6 @@ namespace CalculationEngine
             statistics.AvgP = retVal.Average(x => x.CurrentP);
             statistics.AvgQ = retVal.Average(x => x.CurrentQ);
             statistics.AvgV = retVal.Average(x => x.CurrentV);
-            statistics.ForTimeSpan = from;
             statistics.IntegralP = 0;
             statistics.IntegralQ = 0;
             statistics.IntegralV = 0;
@@ -182,8 +187,6 @@ namespace CalculationEngine
                 statistics.IntegralQ += (retVal[i].CurrentQ * (((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds)) / 3600) + ((((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(retVal[i + 1].CurrentQ - retVal[i].CurrentQ))) / 2;
                 statistics.IntegralV += (retVal[i].CurrentV * (((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds)) / 3600) + ((((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(retVal[i + 1].CurrentV - retVal[i].CurrentV))) / 2;
             }
-
-            dataBaseAdapter.AddStatisticsForHour(statistics);
             
             return new Tuple<List<DynamicMeasurement>, Statistics>(retVal, statistics);
         }
@@ -207,22 +210,22 @@ namespace CalculationEngine
                     case DMSType.GEOREGION:
                         GeographicalRegion gr = new GeographicalRegion();
                         gr.RD2Class(rd);
-                        geoRegions.Add(rd.Id, gr);
+                        geoRegionsTemp.Add(rd.Id, gr);
                         break;
                     case DMSType.SUBGEOREGION:
                         SubGeographicalRegion sgr = new SubGeographicalRegion();
                         sgr.RD2Class(rd);
-                        subGeoRegions.Add(rd.Id, sgr);
+                        subGeoRegionsTemp.Add(rd.Id, sgr);
                         break;
                     case DMSType.SUBSTATION:
                         Substation s = new Substation();
                         s.RD2Class(rd);
-                        substations.Add(rd.Id, s);
+                        substationsTemp.Add(rd.Id, s);
                         break;
                     case DMSType.ENERGYCONS:
                         EnergyConsumer ec = new EnergyConsumer();
                         ec.RD2Class(rd);
-                        amis.Add(rd.Id, ec);
+                        amisTemp.Add(rd.Id, ec);
                         break;
                 }
             }
@@ -232,11 +235,44 @@ namespace CalculationEngine
 
         public void Commit()
         {
+            /*dataBaseAdapter.AddConsumers(amisTemp.Values.ToList());
+            dataBaseAdapter.AddSubstations(substationsTemp.Values.ToList());
+            dataBaseAdapter.AddSubGeoRegions(subGeoRegionsTemp.Values.ToList());
+            dataBaseAdapter.AddGeoRegions(geoRegionsTemp.Values.ToList());*/
+
+            foreach (KeyValuePair<long, EnergyConsumer> kvp in amisTemp)
+            {
+                amis.Add(kvp.Key, kvp.Value);
+            }
+
+            foreach (KeyValuePair<long, Substation> kvp in substationsTemp)
+            {
+                substations.Add(kvp.Key, kvp.Value);
+            }
+
+            foreach (KeyValuePair<long, SubGeographicalRegion> kvp in subGeoRegionsTemp)
+            {
+                subGeoRegions.Add(kvp.Key, kvp.Value);
+            }
+
+            foreach (KeyValuePair<long, GeographicalRegion> kvp in geoRegionsTemp)
+            {
+                geoRegions.Add(kvp.Key, kvp.Value);
+            }
+
+            this.amisTemp.Clear();
+            this.substationsTemp.Clear();
+            this.subGeoRegionsTemp.Clear();
+            this.geoRegionsTemp.Clear();
             this.meas.Clear();
         }
 
         public void Rollback()
         {
+            this.amisTemp.Clear();
+            this.substationsTemp.Clear();
+            this.subGeoRegionsTemp.Clear();
+            this.geoRegionsTemp.Clear();
             this.meas.Clear();
         }
         
@@ -245,22 +281,7 @@ namespace CalculationEngine
             Logger.LogMessageToFile(string.Format("CE.CalculationEngine.DataFromScada; line: {0}; CE receive data from scada and send this data to client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             Console.WriteLine("Send data to client");
 
-            //if (currentHour.Minute == 0)
-            //{
-            //    currentHour = measurements[0].TimeStamp;
-            //}
-            //else if (measurements[0].TimeStamp.Minute > currentHour.Minute || measurements[0].TimeStamp.Minute == 0)
-            //{
-            //    GetMeasurementsForChartView(new List<long>(), currentHour, measurements[0].TimeStamp);
-            //    currentHour = measurements[0].TimeStamp;
-            //}
-            //else if(measurements[0].TimeStamp.Hour > currentHour.Hour || measurements[0].TimeStamp.Date > currentHour.Date)
-            //{
-            //    currentHour = measurements[0].TimeStamp;
-            //}
-
-            //Thread t = new Thread(() => dataBaseAdapter.AddMeasurements(measurements));
-            //t.Start();
+            dataBaseAdapter.AddMeasurements(measurements.Values.ToList()); 
 
             Dictionary<long, DynamicMeasurement> addSubstations = new Dictionary<long, DynamicMeasurement>();
 

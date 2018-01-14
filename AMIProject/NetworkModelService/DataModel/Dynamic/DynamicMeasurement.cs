@@ -98,7 +98,7 @@ namespace FTN.Services.NetworkModelService.DataModel
             }
         }
 
-        [IgnoreDataMember]
+        [DataMember]
         public DateTime TimeStamp
         {
             get
