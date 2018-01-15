@@ -36,6 +36,7 @@ namespace AMIClient
         private DuplexChannelFactory<INetworkModelGDAContractDuplexClient> factory;
         private DuplexChannelFactory<ICalculationDuplexClient> factoryCE;
         private Thread checkNMS;
+        private ICollectionView viewTableItems;
 
         public INetworkModelGDAContractDuplexClient GdaQueryProxy
         {
@@ -100,6 +101,20 @@ namespace AMIClient
             {
                 tableItems = value;
                 RaisePropertyChanged("TableItems");
+            }
+        }
+
+        public ICollectionView ViewTableItems
+        {
+            get
+            {
+                return viewTableItems;
+            }
+
+            set
+            {
+                viewTableItems = value;
+                RaisePropertyChanged("ViewTableItems");
             }
         }
 

@@ -12,8 +12,6 @@ namespace AMISimulator
 {
     class Program
     {
-        private static ServiceHost svc = null;
-
         static void Main(string[] args)
         {
             Console.Title = "RTU";

@@ -19,4 +19,9 @@ namespace AMIClient.HelperClasses
         [Description("Substation")]
         SUBSTATION
     }
+
+    public enum DataGridHeader
+    {
+        Name = 1,
+    }
 }

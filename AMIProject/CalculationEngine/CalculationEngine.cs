@@ -25,7 +25,6 @@ namespace CalculationEngine
         private List<IModelForDuplex> clientsForDeleting;
         private List<ResourceDescription> meas;
         private bool firstTimeCoordinator = true;
-        private Delta delta;
         private FunctionDB dataBaseAdapter;
         private Dictionary<long, GeographicalRegion> geoRegions;
         private Dictionary<long, SubGeographicalRegion> subGeoRegions;

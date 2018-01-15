@@ -14,13 +14,11 @@ namespace TransactionCoordinator
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class TransactionCoordinator : ITransactionCoordinator, ITransactionDuplexNMS, ITransactionDuplexScada, ITransactionDuplexCE
     {
-        bool firstTimeNMS = true;
         private List<IScada> scadas;
         private List<IScada> scadasForDeleting;
         private INetworkModel proxyNMS;
         private ICalculationEngine proxyCE;
         private static TransactionCoordinator instance;
-        private Delta delta;
 
         public TransactionCoordinator()
         {

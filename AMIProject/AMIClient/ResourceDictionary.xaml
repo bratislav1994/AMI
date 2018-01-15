@@ -108,7 +108,7 @@
         <Setter Property="Background" Value="{DynamicResource NormalBorderBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Height" Value="30"/>
+        <!--<Setter Property="Height" Value="30"/>-->
         <Setter Property="SeparatorBrush" Value="#FFC9CACA" />
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontWeight" Value="SemiBold"/>

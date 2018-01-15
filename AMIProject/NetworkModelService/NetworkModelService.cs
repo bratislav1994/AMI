@@ -17,7 +17,6 @@ namespace FTN.Services.NetworkModelService
 		private NetworkModel nm = null;
 		private List<ServiceHost> hosts = null;
         private ServiceHost svcDuplexClient = null;
-        private ServiceHost svc = null;
 
         public NetworkModelService()
 		{			
