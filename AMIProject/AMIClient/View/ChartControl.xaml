@@ -35,12 +35,25 @@
         <Label Grid.Row="0" Grid.Column="0" Content="From: " HorizontalAlignment="Left" VerticalAlignment="Center" Height="29" Width="95"/>
         <wpfToolkit:DateTimePicker Grid.Row="0" Grid.Column="1" Visibility="{Binding DateTimePick}"
                                    Text="{Binding FromPeriod, UpdateSourceTrigger=PropertyChanged}"
-                                Format="Custom" FormatString="dd/MMM/yyyy HH:mm:ss.fff" 
+                                Format="Custom" FormatString="dd/MMM/yyyy HH:mm:ss.fff"
                                    TimeFormat="Custom" TimeFormatString="HH:mm:ss.fff" 
                                    HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="auto" />
         <DatePicker Grid.Row="0" Grid.Column="1" Visibility="{Binding DatePick}"
-                                   SelectedDate="{Binding FromPeriod, UpdateSourceTrigger=PropertyChanged, StringFormat='dd/MMM/yyyy'}"
-                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="auto" />
+                                   SelectedDate="{Binding FromPeriod, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:dd/MMM/yyyy}}"
+                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="auto">
+            <DatePicker.Resources>
+                <Style TargetType="DatePickerTextBox">
+                    <Setter Property="Control.Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <TextBox Text="{Binding Path=SelectedDate, StringFormat = {}{0:dd/MM/yyyy}, 
+                                         RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DatePicker.Resources>
+        </DatePicker>
 
         <!--<Label Grid.Row="1" Grid.Column="0" Content="To: " HorizontalAlignment="Left" VerticalAlignment="Center" Height="29" Width="95"/>
         <wpfToolkit:DateTimePicker Grid.Row="1" Grid.Column="1"
