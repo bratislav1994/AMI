@@ -27,6 +27,9 @@ namespace AMIClient.ViewModels
         private bool toPeriodEntered = false;
         private List<long> amiGids;
         private Statistics statistics;
+        private Visibility datePick = Visibility.Hidden;
+        private Visibility dateTimePick = Visibility.Hidden;
+        private int interval;
 
         public ChartViewModel()
         {
@@ -148,6 +151,42 @@ namespace AMIClient.ViewModels
             set
             {
                 model = value;
+            }
+        }
+
+        public Visibility DateTimePick
+        {
+            get
+            {
+                return dateTimePick;
+            }
+            set
+            {
+                dateTimePick = value;
+            }
+        }
+
+        public Visibility DatePick
+        {
+            get
+            {
+                return datePick;
+            }
+            set
+            {
+                datePick = value;
+            }
+        }
+
+        public int Interval
+        {
+            get
+            {
+                return interval;
+            }
+            set
+            {
+                interval = value;
             }
         }
 

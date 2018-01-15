@@ -62,6 +62,26 @@ namespace AMIClient.ViewModels
             }
         }
 
+        private ICommand individualAmiHourChartCommand;
+
+        public ICommand IndividualAmiHourChartCommand
+        {
+            get
+            {
+                return this.individualAmiHourChartCommand ?? (this.individualAmiHourChartCommand = new DelegateCommand<object>(this.SelectedAMIHourAction, param => true));
+            }
+        }
+
+        private ICommand individualAmiDayChartCommand;
+
+        public ICommand IndividualAmiDayChartCommand
+        {
+            get
+            {
+                return this.individualAmiDayChartCommand ?? (this.individualAmiDayChartCommand = new DelegateCommand<object>(this.SelectedAMIDayAction, param => true));
+            }
+        }
+
         public object TableItem
         {
             get
@@ -85,9 +105,19 @@ namespace AMIClient.ViewModels
 
         private void SelectedAMIAction(object ami)
         {
-            NetworkPreviewViewModel.Instance.SelectedAMIAction(ami);
+            NetworkPreviewViewModel.Instance.SelectedAMIAction(ami, 1);
         }
-        
+
+        private void SelectedAMIHourAction(object ami)
+        {
+            NetworkPreviewViewModel.Instance.SelectedAMIAction(ami, 2);
+        }
+
+        private void SelectedAMIDayAction(object ami)
+        {
+            NetworkPreviewViewModel.Instance.SelectedAMIAction(ami, 3);
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void RaisePropertyChanged(string propName)

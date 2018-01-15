@@ -134,10 +134,20 @@ namespace AMIClient.ViewModels
             get { return closeTabCommand ?? (closeTabCommand = new DelegateCommand<TabItem>((t) => { TabItems.Remove(t); })); }
         }
 
-        public void SelectedAMIAction(object ami)
+        public void SelectedAMIAction(object ami, int interval)
         {
             IdentifiedObject ec = (IdentifiedObject)ami;
-            ChartViewModel chartVM = new ChartViewModel() { Model = this.Model };
+
+            ChartViewModel chartVM;
+            if (interval == 1)
+            {
+                chartVM = new ChartViewModel() { Model = this.Model, DateTimePick = Visibility.Visible, Interval = interval };
+            }
+            else
+            {
+                chartVM = new ChartViewModel() { Model = this.Model, DatePick = Visibility.Visible, Interval = interval };
+            }
+            
             chartVM.SetGids(new List<long>() { ec.GlobalId });
 
             TabItems.Add(new TabItem()

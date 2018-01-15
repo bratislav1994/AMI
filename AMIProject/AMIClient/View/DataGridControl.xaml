@@ -16,8 +16,16 @@
                 <ContextMenu x:Key="ticketContextMenu" Visibility="{Binding ContextMenuVisibility}">
                     <ContextMenu.Items>
                         <MenuItem
-                            Header="Chart"
+                            Header="MinuteChart"
                             Command="{Binding DataContext.IndividualAmiChartCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                            CommandParameter="{Binding DataContext.Io, RelativeSource={RelativeSource Mode=Self}}"/>
+                        <MenuItem
+                            Header="HourChart"
+                            Command="{Binding DataContext.IndividualAmiHourChartCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                            CommandParameter="{Binding DataContext.Io, RelativeSource={RelativeSource Mode=Self}}"/>
+                        <MenuItem
+                            Header="DayChart"
+                            Command="{Binding DataContext.IndividualAmiDayChartCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
                             CommandParameter="{Binding DataContext.Io, RelativeSource={RelativeSource Mode=Self}}"/>
                     </ContextMenu.Items>
                 </ContextMenu>

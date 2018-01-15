@@ -33,18 +33,21 @@
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0" Content="From: " HorizontalAlignment="Left" VerticalAlignment="Center" Height="29" Width="95"/>
-        <wpfToolkit:DateTimePicker Grid.Row="0" Grid.Column="1"
+        <wpfToolkit:DateTimePicker Grid.Row="0" Grid.Column="1" Visibility="{Binding DateTimePick}"
                                    Text="{Binding FromPeriod, UpdateSourceTrigger=PropertyChanged}"
                                 Format="Custom" FormatString="dd/MMM/yyyy HH:mm:ss.fff" 
                                    TimeFormat="Custom" TimeFormatString="HH:mm:ss.fff" 
                                    HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="auto" />
+        <DatePicker Grid.Row="0" Grid.Column="1" Visibility="{Binding DatePick}"
+                                   SelectedDate="{Binding FromPeriod, UpdateSourceTrigger=PropertyChanged, StringFormat='dd/MMM/yyyy'}"
+                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="auto" />
 
-        <Label Grid.Row="1" Grid.Column="0" Content="To: " HorizontalAlignment="Left" VerticalAlignment="Center" Height="29" Width="95"/>
+        <!--<Label Grid.Row="1" Grid.Column="0" Content="To: " HorizontalAlignment="Left" VerticalAlignment="Center" Height="29" Width="95"/>
         <wpfToolkit:DateTimePicker Grid.Row="1" Grid.Column="1"
                                    Text="{Binding ToPeriod, UpdateSourceTrigger=PropertyChanged}"
                                 Format="Custom" FormatString="dd/MMM/yyyy HH:mm:ss.fff" 
                                    TimeFormat="Custom" TimeFormatString="HH:mm:ss.fff" 
-                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="auto"/>
+                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="auto"/>-->
 
         <Button Grid.Row="2" Grid.Column="0" Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
 
