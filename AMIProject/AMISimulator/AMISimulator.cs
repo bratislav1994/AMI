@@ -32,6 +32,7 @@ namespace AMISimulator
         private bool firstContact = true;
         private DuplexChannelFactory<IScadaDuplexSimulator> factory;
         private Dictionary<int, Measurement> measurements;
+        private const int timeToSleep = 30000;
 
         public IScadaDuplexSimulator ProxyScada
         {
@@ -74,11 +75,7 @@ namespace AMISimulator
             measurements = new Dictionary<int, Measurement>();
             this.numberOfInstalledPoints = 0;
             lockObject = new object();
-
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
-
-            //channel = mgr.AddTCPServer("master", LogLevels.NORMAL, ChannelRetry.Default, ipAddress, basePort, ChannelListener.Print());
-
             config = new OutstationStackConfig();
             outstation = InitializeOutstation(config, mgr);
         }
@@ -131,7 +128,6 @@ namespace AMISimulator
             config.link.remoteAddr = 1;
 
             var outstation = channel.AddOutstation("outstation" + address, RejectingCommandHandler.Instance, DefaultOutstationApplication.Instance, config);
-
             outstation.Enable();
 
             return outstation;
@@ -175,7 +171,7 @@ namespace AMISimulator
                     }
                 }
 
-                Thread.Sleep(3000);
+                Thread.Sleep(timeToSleep);
             }
         }
 

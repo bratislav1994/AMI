@@ -17,8 +17,8 @@ namespace CalculationEngine.Access
     {
         public AccessDB() : base("tsDB") { }
 
-        public DbSet<DynamicMeasurement> History { get; set; }
-        public DbSet<MinuteAggregation> AggregationForMiuntes { get; set; }
+        public DbSet<DynamicMeasurement> Collect { get; set; }
+        public DbSet<MinuteAggregation> AggregationForMinutes { get; set; }
         public DbSet<HourAggregation> AggregationForHours { get; set; }
         public DbSet<DayAggregation> AggregationForDays { get; set; }
        /* public DbSet<GeographicalRegion> GeoRegions { get; set; }

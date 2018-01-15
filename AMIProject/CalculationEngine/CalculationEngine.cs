@@ -103,6 +103,7 @@ namespace CalculationEngine
                     proxyCoordinator = factory.CreateChannel();
                     firstTimeCoordinator = false;
                 }
+
                 Logger.LogMessageToFile(string.Format("CE.CalculationEngine.ProxyCoordinator; line: {0}; Channel CE-Coordinator is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return proxyCoordinator;
             }

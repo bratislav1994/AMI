@@ -131,7 +131,6 @@ namespace SCADA
             }
 
             ReadDataFromDB(measurements);
-            //Deserialize(measurements);
             sendingThread = new Thread(() => CheckIfThereIsSomethingToSned());
             sendingThread.Start();
         }
@@ -202,13 +201,14 @@ namespace SCADA
                         index = simulators[Ps[i].RtuAddress].AddMeasurement(Ps[i]);
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     addressPool[Ps[i].RtuAddress].IsConnected = false;
                     return false;
                 }
 
                 int a = f.GetWrapperId(Ps[i].RtuAddress);
+
                 if (index != -1 && a != -1)
                 {
                     if (!this.copyMeasurements.ContainsKey(Ps[i].RtuAddress))
@@ -238,6 +238,7 @@ namespace SCADA
                 }
 
                 a = f.GetWrapperId(Qs[i].RtuAddress);
+
                 if (index != -1 && a != -1)
                 {
                     if (!this.copyMeasurements.ContainsKey(Qs[i].RtuAddress))
@@ -267,6 +268,7 @@ namespace SCADA
                 }
 
                 a = f.GetWrapperId(Vs[i].RtuAddress);
+
                 if (index != -1 && a != -1)
                 {
                     if (!this.copyMeasurements.ContainsKey(Vs[i].RtuAddress))
@@ -297,8 +299,7 @@ namespace SCADA
                 this.measurements.Add(kvp.Key, kvp.Value);
                 f.AddMeasurement(kvp.Value);
             }
-
-            //Serialize(measurements);
+            
             foreach (KeyValuePair<int, RTUAddress> kvp in addressPool)
             {
                 kvp.Value.Cnt = 0;
@@ -368,7 +369,7 @@ namespace SCADA
                     measurements.Add(wDB.RtuAddress, wDB.ListOfMeasurements);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }
@@ -383,10 +384,12 @@ namespace SCADA
                 if (!kvp.Value.IsConnected)
                 {
                     ret = kvp.Key;
+
                     lock (lockObjectForSimulators)
                     {
                         this.simulators.Add(kvp.Key, OperationContext.Current.GetCallbackChannel<ISimulator>());
                     }
+
                     addressPool[ret].IsConnected = true;
                     break;
                 }
@@ -405,6 +408,7 @@ namespace SCADA
                         {
                             this.simulators.Remove(kvp.Key);
                         }
+
                         lock (lockObject)
                         {
                             handlers.Remove(kvp.Key);
@@ -415,11 +419,14 @@ namespace SCADA
                             managers[kvp.Key].Shutdown();
                             managers.Remove(kvp.Key);
                         }
+
                         ret = kvp.Key;
+
                         lock (lockObjectForSimulators)
                         {
                             this.simulators.Add(kvp.Key, OperationContext.Current.GetCallbackChannel<ISimulator>());
                         }
+
                         break;
                     }
                 }
@@ -433,15 +440,11 @@ namespace SCADA
                 }
 
                 var handler = new SOEHandler(measurements[ret], resourcesToSend, ref lockObject);
-
                 var mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
-
                 var channel = mgr.AddTCPClient("outstation" + ret, LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", (ushort)(20000 + ret), ChannelListener.Print());
-
                 var config = new MasterStackConfig();
                 config.link.localAddr = 1;
                 config.link.remoteAddr = (ushort)ret;
-
                 var master = channel.AddMaster("master" + ret, handler, DefaultMasterApplication.Instance, config);
 
                 lock (lockObject)
@@ -453,11 +456,8 @@ namespace SCADA
                 }
 
                 config.master.disableUnsolOnStartup = false;
-
                 var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.MaxValue, TaskConfig.Default);
-
                 master.Enable();
-
                 f.AddSimulator(new WrapperDB(ret));
             }
 
