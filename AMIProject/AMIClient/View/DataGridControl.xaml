@@ -16,15 +16,15 @@
                 <ContextMenu x:Key="ticketContextMenu" Visibility="{Binding ContextMenuVisibility}">
                     <ContextMenu.Items>
                         <MenuItem
-                            Header="MinuteChart"
+                            Header="Minute chart"
                             Command="{Binding DataContext.IndividualAmiChartCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
                             CommandParameter="{Binding DataContext.Io, RelativeSource={RelativeSource Mode=Self}}"/>
                         <MenuItem
-                            Header="HourChart"
+                            Header="Hour chart"
                             Command="{Binding DataContext.IndividualAmiHourChartCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
                             CommandParameter="{Binding DataContext.Io, RelativeSource={RelativeSource Mode=Self}}"/>
                         <MenuItem
-                            Header="DayChart"
+                            Header="Day chart"
                             Command="{Binding DataContext.IndividualAmiDayChartCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
                             CommandParameter="{Binding DataContext.Io, RelativeSource={RelativeSource Mode=Self}}"/>
                     </ContextMenu.Items>
@@ -50,7 +50,44 @@
                 
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn MinWidth="135" Width="135" Header="Type" Binding="{Binding Type}"/>
+                <DataGridTemplateColumn Header="Type" CanUserSort="True" 
+        SortMemberPath="Type" MinWidth="100" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Type}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <!--NAME COLUMN-->
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <Grid IsHitTestVisible="True">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition MinWidth="70" Width="70"/>
+                                    <ColumnDefinition MinWidth="30" Width="30"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{TemplateBinding Content}"/>
+                                <!--FILTER EXPANDER-->
+                                <Expander Grid.Column="1" IsHitTestVisible="True" 
+                VerticalAlignment="Top" ToolTip="Filter">
+                                    <Border IsHitTestVisible="True" BorderThickness="1" 
+                  Margin="-80 0 0 0" >
+                                        <StackPanel Margin="0 4 0 0">
+                                            <TextBox Width="90"
+                                                
+                        Text="{Binding DataContext.TypeFilter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay,
+                        RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                        
+                        ToolTip="Enter filter term" Height="18" FontSize="9" 
+                        BorderThickness="1" />
+                                        </StackPanel>
+                                    </Border>
+                                </Expander>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+
+                </DataGridTemplateColumn>
+
                 <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Io.Mrid}"/>
 
                 <DataGridTemplateColumn Header="Name" CanUserSort="True" 

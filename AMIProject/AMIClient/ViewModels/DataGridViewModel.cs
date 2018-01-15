@@ -21,6 +21,7 @@ namespace AMIClient.ViewModels
         private Dictionary<string, string> columnFilters;
         private Dictionary<string, PropertyInfo> propertyCache;
         private string nameFilter = string.Empty;
+        private string typeFilter = string.Empty;
 
         public DataGridViewModel()
         {
@@ -39,6 +40,22 @@ namespace AMIClient.ViewModels
                 nameFilter = value;
                 this.RaisePropertyChanged("NameFilter");
                 columnFilters[DataGridHeader.Name.ToString()] = this.nameFilter;
+                this.OnFilterApply();
+            }
+        }
+
+        public string TypeFilter
+        {
+            get
+            {
+                return typeFilter;
+            }
+
+            set
+            {
+                typeFilter = value;
+                this.RaisePropertyChanged("TypeFilter");
+                columnFilters[DataGridHeader.Type.ToString()] = this.typeFilter;
                 this.OnFilterApply();
             }
         }
@@ -75,6 +92,7 @@ namespace AMIClient.ViewModels
             this.propertyCache = new Dictionary<string, PropertyInfo>();
             columnFilters = new Dictionary<string, string>();
             columnFilters[DataGridHeader.Name.ToString()] = string.Empty;
+            columnFilters[DataGridHeader.Type.ToString()] = string.Empty;
             this.Model.ViewTableItems = new CollectionViewSource { Source = this.Model.TableItems }.View;
             this.Model.ViewTableItems = CollectionViewSource.GetDefaultView(this.Model.TableItems);
         }
@@ -98,6 +116,11 @@ namespace AMIClient.ViewModels
                         if (filter.Key.Equals(DataGridHeader.Name.ToString()))
                         {
                             containsFilter = ((TableItem)item).Io.Name.IndexOf(NameFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
+                        }
+                        else if (filter.Key.Equals(DataGridHeader.Type.ToString()))
+                        {
+                            DataGridType type = ((TableItem)item).Type;
+                            containsFilter = EnumDescription.GetEnumDescription(type).IndexOf(TypeFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
                         }
 
                         if (!containsFilter)

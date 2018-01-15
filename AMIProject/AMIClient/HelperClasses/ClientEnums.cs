@@ -23,5 +23,6 @@ namespace AMIClient.HelperClasses
     public enum DataGridHeader
     {
         Name = 1,
+        Type
     }
 }
