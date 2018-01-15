@@ -20,11 +20,9 @@ namespace AMIClient.ViewModels
         private List<KeyValuePair<DateTime, float>> dataHistoryQ;
         private List<KeyValuePair<DateTime, float>> dataHistoryV;
         private string fromPeriod;
-        private string toPeriod;
         private DelegateCommand showDataCommand;
         private Model model;
         private bool fromPeriodEntered = false;
-        private bool toPeriodEntered = false;
         private List<long> amiGids;
         private Statistics statistics;
         private Visibility datePick = Visibility.Hidden;
@@ -125,22 +123,6 @@ namespace AMIClient.ViewModels
             }
         }
 
-        public string ToPeriod
-        {
-            get
-            {
-                return toPeriod;
-            }
-
-            set
-            {
-                toPeriod = value;
-                this.toPeriodEntered = !string.IsNullOrEmpty(this.toPeriod) ? true : false;
-                this.ShowDataCommand.RaiseCanExecuteChanged();
-                RaisePropertyChanged("ToPeriod");
-            }
-        }
-
         public Model Model
         {
             get
@@ -233,34 +215,14 @@ namespace AMIClient.ViewModels
         private bool CanShowDataExecute()
         {
             fromPeriodEntered = DateTimeValidation(FromPeriod) ? true : false;
-            toPeriodEntered = DateTimeValidation(ToPeriod) ? true : false;
 
-            if (!fromPeriodEntered && !toPeriodEntered)
+            if (!fromPeriodEntered)
             {
                 return false;
             }
-
-            if (fromPeriodEntered && toPeriodEntered)
-            {
-                return DateTime.Compare(DateTime.Parse(FromPeriod), DateTime.Parse(ToPeriod)) <= 0;
-            }
-            else if (fromPeriodEntered)
-            {
-                if (!string.IsNullOrEmpty(ToPeriod))
-                {
-                    return false;
-                }
-
-                return DateTime.Compare(DateTime.Parse(FromPeriod), DateTime.Now) <= 0;
-            }
             else
             {
-                if (!string.IsNullOrEmpty(FromPeriod))
-                {
-                    return false;
-                }
-
-                return DateTime.Compare(DateTime.MinValue, DateTime.Parse(ToPeriod)) <= 0;
+                return DateTime.Compare(DateTime.Parse(FromPeriod), DateTime.Now) <= 0;
             }
         }
 
@@ -285,31 +247,44 @@ namespace AMIClient.ViewModels
 
         private void ShowCommandAction()
         {
-            DateTime from = new DateTime(), to = new DateTime();
-            from = fromPeriodEntered ? DateTime.Parse(FromPeriod) : DateTime.MinValue;
-            to = toPeriodEntered ? DateTime.Parse(ToPeriod) : DateTime.Now;
-
-            Tuple<List<DynamicMeasurement>, Statistics> measForChart = this.Model.GetMeasForChart(AmiGids, from, to);
-            if(measForChart == null)
+            switch(interval)
             {
-                return;
+                case 1:  //ako je minut
+                    break;
+                case 2: //ako je sat
+                    break;
+                case 3: //ako je dan
+                    break;
             }
-            List<KeyValuePair<DateTime, float>> tempP = new List<KeyValuePair<DateTime, float>>();
-            List<KeyValuePair<DateTime, float>> tempQ = new List<KeyValuePair<DateTime, float>>();
-            List<KeyValuePair<DateTime, float>> tempV = new List<KeyValuePair<DateTime, float>>();
-
-            foreach (DynamicMeasurement dm in measForChart.Item1)
-            {
-                tempP.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.CurrentP));
-                tempQ.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.CurrentQ));
-                tempV.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.CurrentV));
-            }
-
-            this.DataHistoryP = tempP;
-            this.DataHistoryQ = tempQ;
-            this.DataHistoryV = tempV;
-            this.Statistics = measForChart.Item2;
         }
+
+        //private void ShowCommandAction()
+        //{
+        //    DateTime from = new DateTime(), to = new DateTime();
+        //    from = fromPeriodEntered ? DateTime.Parse(FromPeriod) : DateTime.MinValue;
+        //    to = toPeriodEntered ? DateTime.Parse(ToPeriod) : DateTime.Now;
+
+        //    Tuple<List<DynamicMeasurement>, Statistics> measForChart = this.Model.GetMeasForChart(AmiGids, from, to);
+        //    if(measForChart == null)
+        //    {
+        //        return;
+        //    }
+        //    List<KeyValuePair<DateTime, float>> tempP = new List<KeyValuePair<DateTime, float>>();
+        //    List<KeyValuePair<DateTime, float>> tempQ = new List<KeyValuePair<DateTime, float>>();
+        //    List<KeyValuePair<DateTime, float>> tempV = new List<KeyValuePair<DateTime, float>>();
+
+        //    foreach (DynamicMeasurement dm in measForChart.Item1)
+        //    {
+        //        tempP.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.CurrentP));
+        //        tempQ.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.CurrentQ));
+        //        tempV.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.CurrentV));
+        //    }
+
+        //    this.DataHistoryP = tempP;
+        //    this.DataHistoryQ = tempQ;
+        //    this.DataHistoryV = tempV;
+        //    this.Statistics = measForChart.Item2;
+        //}
 
         public void SetGids(List<long> amiGids)
         {
@@ -322,7 +297,6 @@ namespace AMIClient.ViewModels
             this.DataHistoryQ.Clear();
             this.DataHistoryV.Clear();
             this.FromPeriod = string.Empty;
-            this.ToPeriod = string.Empty;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
