@@ -1,4 +1,5 @@
 ﻿using CalculationEngine.Access;
+using CalculationEngine.Class;
 using FTN.Common;
 using FTN.Common.Logger;
 using FTN.ServiceContracts;
@@ -26,32 +27,32 @@ namespace CalculationEngine
         private List<ResourceDescription> meas;
         private bool firstTimeCoordinator = true;
         private FunctionDB dataBaseAdapter;
-        private Dictionary<long, GeographicalRegion> geoRegions;
-        private Dictionary<long, SubGeographicalRegion> subGeoRegions;
-        private Dictionary<long, Substation> substations;
-        private Dictionary<long, EnergyConsumer> amis;
-        private Dictionary<long, GeographicalRegion> geoRegionsTemp;
-        private Dictionary<long, SubGeographicalRegion> subGeoRegionsTemp;
-        private Dictionary<long, Substation> substationsTemp;
-        private Dictionary<long, EnergyConsumer> amisTemp;
+        private Dictionary<long, GeographicalRegionCE> geoRegions;
+        private Dictionary<long, SubGeographicalRegionCE> subGeoRegions;
+        private Dictionary<long, SubstationCE> substations;
+        private Dictionary<long, EnergyConsumerCE> amis;
+        private Dictionary<long, GeographicalRegionCE> geoRegionsTemp;
+        private Dictionary<long, SubGeographicalRegionCE> subGeoRegionsTemp;
+        private Dictionary<long, SubstationCE> substationsTemp;
+        private Dictionary<long, EnergyConsumerCE> amisTemp;
 
         public CalculationEngine()
         {
             dataBaseAdapter = new FunctionDB();
             dataBaseAdapter.DoUndone();
             dataBaseAdapter.StartThreads();
-            geoRegions = new Dictionary<long, GeographicalRegion>();
-            subGeoRegions = new Dictionary<long, SubGeographicalRegion>();
-            substations = new Dictionary<long, Substation>();
-            amis = new Dictionary<long, EnergyConsumer>();
-            /*geoRegions = dataBaseAdapter.ReadGeoRegions();
+            geoRegions = new Dictionary<long, GeographicalRegionCE>();
+            subGeoRegions = new Dictionary<long, SubGeographicalRegionCE>();
+            substations = new Dictionary<long, SubstationCE>();
+            amis = new Dictionary<long, EnergyConsumerCE>();
+            geoRegions = dataBaseAdapter.ReadGeoRegions();
             subGeoRegions = dataBaseAdapter.ReadSubGeoRegions();
             substations = dataBaseAdapter.ReadSubstations();
-            amis = dataBaseAdapter.ReadConsumers();*/
-            geoRegionsTemp = new Dictionary<long, GeographicalRegion>();
-            subGeoRegionsTemp = new Dictionary<long, SubGeographicalRegion>();
-            substationsTemp = new Dictionary<long, Substation>();
-            amisTemp = new Dictionary<long, EnergyConsumer>();
+            amis = dataBaseAdapter.ReadConsumers();
+            geoRegionsTemp = new Dictionary<long, GeographicalRegionCE>();
+            subGeoRegionsTemp = new Dictionary<long, SubGeographicalRegionCE>();
+            substationsTemp = new Dictionary<long, SubstationCE>();
+            amisTemp = new Dictionary<long, EnergyConsumerCE>();
             clients = new List<IModelForDuplex>();
             clientsForDeleting = new List<IModelForDuplex>();
             meas = new List<ResourceDescription>();
@@ -210,22 +211,30 @@ namespace CalculationEngine
                     case DMSType.GEOREGION:
                         GeographicalRegion gr = new GeographicalRegion();
                         gr.RD2Class(rd);
-                        geoRegionsTemp.Add(rd.Id, gr);
+                        gr.GlobalId = rd.Id;
+                        GeographicalRegionCE grCE = new GeographicalRegionCE(gr);
+                        geoRegionsTemp.Add(rd.Id, grCE);
                         break;
                     case DMSType.SUBGEOREGION:
                         SubGeographicalRegion sgr = new SubGeographicalRegion();
                         sgr.RD2Class(rd);
-                        subGeoRegionsTemp.Add(rd.Id, sgr);
+                        sgr.GlobalId = rd.Id;
+                        SubGeographicalRegionCE sgrCE = new SubGeographicalRegionCE(sgr);
+                        subGeoRegionsTemp.Add(rd.Id, sgrCE);
                         break;
                     case DMSType.SUBSTATION:
                         Substation s = new Substation();
                         s.RD2Class(rd);
-                        substationsTemp.Add(rd.Id, s);
+                        s.GlobalId = rd.Id;
+                        SubstationCE sCE = new SubstationCE(s);
+                        substationsTemp.Add(rd.Id, sCE);
                         break;
                     case DMSType.ENERGYCONS:
                         EnergyConsumer ec = new EnergyConsumer();
                         ec.RD2Class(rd);
-                        amisTemp.Add(rd.Id, ec);
+                        ec.GlobalId = rd.Id;
+                        EnergyConsumerCE ecCE = new EnergyConsumerCE(ec);
+                        amisTemp.Add(rd.Id, ecCE);
                         break;
                 }
             }
@@ -235,27 +244,27 @@ namespace CalculationEngine
 
         public void Commit()
         {
-            /*dataBaseAdapter.AddConsumers(amisTemp.Values.ToList());
-            dataBaseAdapter.AddSubstations(substationsTemp.Values.ToList());
+            dataBaseAdapter.AddGeoRegions(geoRegionsTemp.Values.ToList());
             dataBaseAdapter.AddSubGeoRegions(subGeoRegionsTemp.Values.ToList());
-            dataBaseAdapter.AddGeoRegions(geoRegionsTemp.Values.ToList());*/
-
-            foreach (KeyValuePair<long, EnergyConsumer> kvp in amisTemp)
+            dataBaseAdapter.AddSubstations(substationsTemp.Values.ToList());
+            dataBaseAdapter.AddConsumers(amisTemp.Values.ToList());
+            
+            foreach (KeyValuePair<long, EnergyConsumerCE> kvp in amisTemp)
             {
                 amis.Add(kvp.Key, kvp.Value);
             }
 
-            foreach (KeyValuePair<long, Substation> kvp in substationsTemp)
+            foreach (KeyValuePair<long, SubstationCE> kvp in substationsTemp)
             {
                 substations.Add(kvp.Key, kvp.Value);
             }
 
-            foreach (KeyValuePair<long, SubGeographicalRegion> kvp in subGeoRegionsTemp)
+            foreach (KeyValuePair<long, SubGeographicalRegionCE> kvp in subGeoRegionsTemp)
             {
                 subGeoRegions.Add(kvp.Key, kvp.Value);
             }
 
-            foreach (KeyValuePair<long, GeographicalRegion> kvp in geoRegionsTemp)
+            foreach (KeyValuePair<long, GeographicalRegionCE> kvp in geoRegionsTemp)
             {
                 geoRegions.Add(kvp.Key, kvp.Value);
             }
@@ -285,13 +294,13 @@ namespace CalculationEngine
 
             Dictionary<long, DynamicMeasurement> addSubstations = new Dictionary<long, DynamicMeasurement>();
 
-            foreach (KeyValuePair<long, Substation> ss in substations)
+            foreach (KeyValuePair<long, SubstationCE> ss in substations)
             {
                 DynamicMeasurement m = new DynamicMeasurement(ss.Key);
                 
                 foreach (KeyValuePair<long, DynamicMeasurement> meas in measurements)
                 {
-                    if (amis[meas.Key].EqContainer == m.PsrRef)
+                    if (amis[meas.Key].EqContainerID == m.PsrRef)
                     {
                         m.CurrentP += meas.Value.CurrentP;
                         m.CurrentQ += meas.Value.CurrentQ;
@@ -309,13 +318,13 @@ namespace CalculationEngine
 
             Dictionary<long, DynamicMeasurement> addSubGeoRegions = new Dictionary<long, DynamicMeasurement>();
 
-            foreach (KeyValuePair<long, SubGeographicalRegion> sgr in subGeoRegions)
+            foreach (KeyValuePair<long, SubGeographicalRegionCE> sgr in subGeoRegions)
             {
                 DynamicMeasurement m = new DynamicMeasurement(sgr.Key);
 
                 foreach (KeyValuePair<long, DynamicMeasurement> meas in addSubstations)
                 {
-                    if (substations[meas.Key].SubGeoRegion == m.PsrRef)
+                    if (substations[meas.Key].SubGeoRegionID == m.PsrRef)
                     {
                         m.CurrentP += meas.Value.CurrentP;
                         m.CurrentQ += meas.Value.CurrentQ;
@@ -327,13 +336,13 @@ namespace CalculationEngine
                 measurements.Add(m.PsrRef, m);
             }
             
-            foreach (KeyValuePair<long, GeographicalRegion> gr in geoRegions)
+            foreach (KeyValuePair<long, GeographicalRegionCE> gr in geoRegions)
             {
                 DynamicMeasurement m = new DynamicMeasurement(gr.Key);
 
                 foreach (KeyValuePair<long, DynamicMeasurement> meas in addSubGeoRegions)
                 {
-                    if (subGeoRegions[meas.Key].GeoRegion == m.PsrRef)
+                    if (subGeoRegions[meas.Key].GeoRegionID == m.PsrRef)
                     {
                         m.CurrentP += meas.Value.CurrentP;
                         m.CurrentQ += meas.Value.CurrentQ;

@@ -1,4 +1,5 @@
-﻿using FTN.Common;
+﻿using CalculationEngine.Class;
+using FTN.Common;
 using FTN.Services.NetworkModelService.DataModel;
 using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System;
@@ -21,10 +22,10 @@ namespace CalculationEngine.Access
         public DbSet<MinuteAggregation> AggregationForMinutes { get; set; }
         public DbSet<HourAggregation> AggregationForHours { get; set; }
         public DbSet<DayAggregation> AggregationForDays { get; set; }
-       /* public DbSet<GeographicalRegion> GeoRegions { get; set; }
-        public DbSet<SubGeographicalRegion> SubGeoRegions { get; set; }
-        public DbSet<Substation> Substations { get; set; }
-        public DbSet<EnergyConsumer> Consumers { get; set; }*/
+        public DbSet<GeographicalRegionCE> GeoRegions { get; set; }
+        public DbSet<SubGeographicalRegionCE> SubGeoRegions { get; set; }
+        public DbSet<SubstationCE> Substations { get; set; }
+        public DbSet<EnergyConsumerCE> Consumers { get; set; }
 
     }
 }
