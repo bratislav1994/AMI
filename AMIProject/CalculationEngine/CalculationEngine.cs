@@ -120,76 +120,50 @@ namespace CalculationEngine
             this.clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
         }
 
-        public Tuple<List<DynamicMeasurement>, Statistics> GetMeasurementsForChartView(List<long> gids, DateTime from, DateTime to)
+        public Tuple<List<Statistics>, Statistics> GetMeasurementsForChartView(List<long> gids, DateTime from, int resolution)
         {
-            List<DynamicMeasurement> result = new List<DynamicMeasurement>();
-            result = dataBaseAdapter.GetMeasForChart(gids, from, to);
+            List<Statistics> result = new List<Statistics>();
+
+            switch (resolution)
+            {
+                case 1:
+                    result = this.dataBaseAdapter.ReadMinuteAggregationTable(gids, from);
+                    break;
+                case 2:
+                    result = this.dataBaseAdapter.ReadHourAggregationTable(gids, from);
+                    break;
+                case 3:
+                    result = this.dataBaseAdapter.ReadDayAggregationTable(gids, from);
+                    break;
+            }
 
             if (result.Count == 0)
             {
                 return null;
             }
 
-            DateTime min = result.Min(x => x.TimeStamp);
-            DateTime max = result.Max(x => x.TimeStamp);
-            
-            Dictionary<DateTime, DynamicMeasurement> temp = new Dictionary<DateTime, DynamicMeasurement>();
-            
-            for (DateTime t = min; t <= max; t = t.AddSeconds(3))
-            {
-                temp.Add(t, new DynamicMeasurement());
-                temp[t].CurrentP = 0;
-                temp[t].CurrentQ = 0;
-                temp[t].CurrentV = 0;
-                temp[t].TimeStamp = t;
-            }
-
-            DateTime dt2 = temp.Keys.Last().AddMilliseconds(-temp.Keys.Last().Millisecond);
-            temp.Remove(temp.Keys.Last());
-            temp.Add(dt2, new DynamicMeasurement() { CurrentP = 0, CurrentQ = 0, CurrentV = 0, TimeStamp = dt2 });
-            max = max.AddMilliseconds(-max.Millisecond);
-
-            if (DateTime.Compare(temp.Keys.Last(), max) < 0)
-            {
-                temp.Add(max, new DynamicMeasurement());
-                temp[max].CurrentP = 0;
-                temp[max].CurrentQ = 0;
-                temp[max].CurrentV = 0;
-                temp[max].TimeStamp = max;
-            }
-
-            foreach (DynamicMeasurement dm in result)
-            {
-                DateTime dt = temp.Keys.Where(x => (Math.Abs((x - dm.TimeStamp).TotalSeconds) < 1.5)).FirstOrDefault();
-                temp[dt].CurrentP += dm.CurrentP;
-                temp[dt].CurrentQ += dm.CurrentQ;
-                temp[dt].CurrentV += dm.CurrentV;
-            }
-
-            List<DynamicMeasurement> retVal = temp.Values.ToList();
-
             Statistics statistics = new Statistics();
-            statistics.MaxP = retVal.Max(x => x.CurrentP);
-            statistics.MaxQ = retVal.Max(x => x.CurrentQ);
-            statistics.MaxV = retVal.Max(x => x.CurrentV);
-            statistics.MinP = retVal.Min(x => x.CurrentP);
-            statistics.MinQ = retVal.Min(x => x.CurrentQ);
-            statistics.MinV = retVal.Min(x => x.CurrentV);
-            statistics.AvgP = retVal.Average(x => x.CurrentP);
-            statistics.AvgQ = retVal.Average(x => x.CurrentQ);
-            statistics.AvgV = retVal.Average(x => x.CurrentV);
+            statistics.MaxP = result.Max(x => x.MaxP);
+            statistics.MaxQ = result.Max(x => x.MaxQ);
+            statistics.MaxV = result.Max(x => x.MaxV);
+            statistics.MinP = result.Min(x => x.MinP);
+            statistics.MinQ = result.Min(x => x.MinQ);
+            statistics.MinV = result.Min(x => x.MinV);
+            statistics.AvgP = result.Average(x => x.AvgP);
+            statistics.AvgQ = result.Average(x => x.AvgQ);
+            statistics.AvgV = result.Average(x => x.AvgV);
             statistics.IntegralP = 0;
             statistics.IntegralQ = 0;
             statistics.IntegralV = 0;
 
-            for (int i = 0; i < retVal.Count - 1; i++)
+            for (int i = 0; i < result.Count - 1; i++)
             {
-                statistics.IntegralP += (retVal[i].CurrentP * (((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds)) / 3600) + ((((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(retVal[i + 1].CurrentP - retVal[i].CurrentP))) / 2;
-                statistics.IntegralQ += (retVal[i].CurrentQ * (((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds)) / 3600) + ((((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(retVal[i + 1].CurrentQ - retVal[i].CurrentQ))) / 2;
-                statistics.IntegralV += (retVal[i].CurrentV * (((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds)) / 3600) + ((((float)(retVal[i + 1].TimeStamp - retVal[i].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(retVal[i + 1].CurrentV - retVal[i].CurrentV))) / 2;
+                statistics.IntegralP += result[i].IntegralP;
+                statistics.IntegralQ += result[i].IntegralQ;
+                statistics.IntegralV += result[i].IntegralV;
             }
-            
-            return new Tuple<List<DynamicMeasurement>, Statistics>(retVal, statistics);
+
+            return new Tuple<List<Statistics>, Statistics>(result, statistics);
         }
 
         public void EnlistMeas(List<ResourceDescription> measurements)
@@ -248,7 +222,7 @@ namespace CalculationEngine
             dataBaseAdapter.AddSubGeoRegions(subGeoRegionsTemp.Values.ToList());
             dataBaseAdapter.AddSubstations(substationsTemp.Values.ToList());
             dataBaseAdapter.AddConsumers(amisTemp.Values.ToList());
-            
+
             foreach (KeyValuePair<long, EnergyConsumerCE> kvp in amisTemp)
             {
                 amis.Add(kvp.Key, kvp.Value);
@@ -284,20 +258,20 @@ namespace CalculationEngine
             this.geoRegionsTemp.Clear();
             this.meas.Clear();
         }
-        
+
         public void DataFromScada(Dictionary<long, DynamicMeasurement> measurements)
         {
             Logger.LogMessageToFile(string.Format("CE.CalculationEngine.DataFromScada; line: {0}; CE receive data from scada and send this data to client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             Console.WriteLine("Send data to client");
 
-            dataBaseAdapter.AddMeasurements(measurements.Values.ToList()); 
+            dataBaseAdapter.AddMeasurements(measurements.Values.ToList());
 
             Dictionary<long, DynamicMeasurement> addSubstations = new Dictionary<long, DynamicMeasurement>();
 
             foreach (KeyValuePair<long, SubstationCE> ss in substations)
             {
                 DynamicMeasurement m = new DynamicMeasurement(ss.Key);
-                
+
                 foreach (KeyValuePair<long, DynamicMeasurement> meas in measurements)
                 {
                     if (amis[meas.Key].EqContainerID == m.PsrRef)
@@ -335,7 +309,7 @@ namespace CalculationEngine
                 addSubGeoRegions.Add(m.PsrRef, m);
                 measurements.Add(m.PsrRef, m);
             }
-            
+
             foreach (KeyValuePair<long, GeographicalRegionCE> gr in geoRegions)
             {
                 DynamicMeasurement m = new DynamicMeasurement(gr.Key);
@@ -352,7 +326,7 @@ namespace CalculationEngine
 
                 measurements.Add(m.PsrRef, m);
             }
-            
+
             clientsForDeleting.Clear();
             foreach (IModelForDuplex client in clients)
             {

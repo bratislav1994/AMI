@@ -146,7 +146,7 @@ namespace AMIClient
 
         public Model()
         {
-            
+
         }
 
         public void Start()
@@ -234,7 +234,7 @@ namespace AMIClient
         }
 
         #region GDAQueryService
-        
+
         public List<GeographicalRegion> GetAllRegions(bool returnValue)
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllRegions; line: {0}; Start the GetAllRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -269,12 +269,12 @@ namespace AMIClient
                 positions.Add(io.GlobalId, TableItems.Count - 1);
 
                 List<IdentifiedObject> subGeoRegions = GetSomeSubregions(io.GlobalId, true);
-                foreach(IdentifiedObject io1 in subGeoRegions)
+                foreach (IdentifiedObject io1 in subGeoRegions)
                 {
                     TableItems.Add(new TableItem(io1) { Type = HelperClasses.DataGridType.SUBGEOGRAPHICALREGION });
                     positions.Add(io1.GlobalId, TableItems.Count - 1);
                     List<IdentifiedObject> substations = GetSomeSubstations(io1.GlobalId, true);
-                    foreach(IdentifiedObject io2 in substations)
+                    foreach (IdentifiedObject io2 in substations)
                     {
                         TableItems.Add(new TableItem(io2) { Type = HelperClasses.DataGridType.SUBSTATION });
                         positions.Add(io2.GlobalId, TableItems.Count - 1);
@@ -302,14 +302,14 @@ namespace AMIClient
 
                 iteratorId = GdaQueryProxy.GetExtentValues(modelCode, properties);
                 resourcesLeft = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
-                
+
                 while (resourcesLeft > 0)
                 {
                     List<ResourceDescription> rds = GdaQueryProxy.IteratorNext(numberOfResources, iteratorId);
 
                     for (int i = 0; i < rds.Count; i++)
                     {
-                        switch(modelCode)
+                        switch (modelCode)
                         {
                             case ModelCode.GEOREGION:
                                 GeographicalRegion gr = new GeographicalRegion();
@@ -335,7 +335,7 @@ namespace AMIClient
                             default:
                                 break;
                         }
-                        
+
                         ids.Add(rds[i].Id);
                     }
 
@@ -463,9 +463,9 @@ namespace AMIClient
                     default:
                         break;
                 }
-               
+
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 string message = string.Format("Getting related values method failed for {0}.\n\t{1}", modelCode, e.Message);
                 MessageBox.Show(e.Message);
@@ -487,7 +487,7 @@ namespace AMIClient
             ClearPositions();
             List<IdentifiedObject> subGeoRegions = GetSomeSubregions(globalId, true);
 
-            foreach ( IdentifiedObject io1 in subGeoRegions )
+            foreach (IdentifiedObject io1 in subGeoRegions)
             {
                 TableItems.Add(new TableItem(io1) { Type = HelperClasses.DataGridType.SUBGEOGRAPHICALREGION });
                 positions.Add(io1.GlobalId, TableItems.Count - 1);
@@ -508,7 +508,7 @@ namespace AMIClient
             ClearPositions();
             List<IdentifiedObject> substations = GetSomeSubstations(globalId, true);
 
-            foreach ( IdentifiedObject io2 in substations )
+            foreach (IdentifiedObject io2 in substations)
             {
                 TableItems.Add(new TableItem(io2) { Type = HelperClasses.DataGridType.SUBSTATION });
                 GetSomeTableItems(io2.GlobalId, true);
@@ -567,9 +567,9 @@ namespace AMIClient
             }
         }
 
-        public Tuple<List<DynamicMeasurement>, Statistics> GetMeasForChart(List<long> gids, DateTime from, DateTime to)
+        public Tuple<List<Statistics>, Statistics> GetMeasForChart(List<long> gids, DateTime from, int resolution)
         {
-            return this.CEQueryProxy.GetMeasurementsForChartView(gids, from, to);
+            return this.CEQueryProxy.GetMeasurementsForChartView(gids, from, resolution);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

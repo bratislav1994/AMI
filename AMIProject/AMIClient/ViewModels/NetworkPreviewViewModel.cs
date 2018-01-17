@@ -38,7 +38,7 @@ namespace AMIClient.ViewModels
 
             SelectedTab = TabItems.First();
         }
-        
+
         public static NetworkPreviewViewModel Instance
         {
             get
@@ -77,7 +77,7 @@ namespace AMIClient.ViewModels
                 model = value;
             }
         }
-        
+
         public object SelectedTab
         {
             get { return selectedTab; }
@@ -87,7 +87,7 @@ namespace AMIClient.ViewModels
                 this.RaisePropertyChanged("SelectedTab");
             }
         }
-        
+
         public ObservableCollection<TabItem> TabItems
         {
             get
@@ -134,20 +134,20 @@ namespace AMIClient.ViewModels
             get { return closeTabCommand ?? (closeTabCommand = new DelegateCommand<TabItem>((t) => { TabItems.Remove(t); })); }
         }
 
-        public void SelectedAMIAction(object ami, int interval)
+        public void SelectedAMIAction(object ami, int resolution)
         {
             IdentifiedObject ec = (IdentifiedObject)ami;
+            ChartViewModel chartVM = null;
 
-            ChartViewModel chartVM;
-            if (interval == 1)
+            if (resolution == 1)
             {
-                chartVM = new ChartViewModel() { Model = this.Model, DateTimePick = Visibility.Visible, Interval = interval };
+                chartVM = new ChartViewModel() { Model = this.Model, DateTimePick = Visibility.Visible, Resolution = resolution };
             }
-            else
+            else if (resolution == 2 || resolution == 3)
             {
-                chartVM = new ChartViewModel() { Model = this.Model, DatePick = Visibility.Visible, Interval = interval };
+                chartVM = new ChartViewModel() { Model = this.Model, DatePick = Visibility.Visible, Resolution = resolution };
             }
-            
+
             chartVM.SetGids(new List<long>() { ec.GlobalId });
 
             TabItems.Add(new TabItem()
@@ -175,7 +175,7 @@ namespace AMIClient.ViewModels
             TreeView selected = (TreeView)selectedTreeView;
             TreeClasses selectedItem = (TreeClasses)selected.SelectedItem;
             Type t = selectedItem.GetType();
-            
+
             switch (t.Name)
             {
                 case "RootElement":
@@ -186,7 +186,7 @@ namespace AMIClient.ViewModels
                     {
                         ecsC1.Add(ec.GlobalId);
                     }
-                    
+
                     ChartViewModel chartVM = new ChartViewModel() { Model = this.Model };
                     chartVM.SetGids(ecsC1);
                     TabItems.Add(new TabItem()
@@ -244,7 +244,7 @@ namespace AMIClient.ViewModels
                     {
                         ecsC3.Add(ec.GlobalId);
                     }
-                    
+
                     ChartViewModel chartVM3 = new ChartViewModel() { Model = this.Model };
                     chartVM3.SetGids(ecsC3);
                     TabItems.Add(new TabItem()

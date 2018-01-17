@@ -13,7 +13,6 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
     {
         private int idDbM;
         private long psrRef;
-        private DateTime timeStamp;
 
         public MinuteAggregation()
         {
@@ -30,7 +29,7 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             this.IntegralQ = 0;
             this.IntegralV = 0;
         }
-        
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdDB
@@ -56,19 +55,6 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             set
             {
                 psrRef = value;
-            }
-        }
-
-        public DateTime TimeStamp
-        {
-            get
-            {
-                return timeStamp;
-            }
-
-            set
-            {
-                timeStamp = value;
             }
         }
     }

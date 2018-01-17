@@ -25,7 +25,7 @@ namespace AMIClient.ViewModels
 
         public DataGridViewModel()
         {
-            
+
         }
 
         public string NameFilter
@@ -164,35 +164,6 @@ namespace AMIClient.ViewModels
             get
             {
                 return this.individualAmiDayChartCommand ?? (this.individualAmiDayChartCommand = new DelegateCommand<object>(this.SelectedAMIDayAction, param => true));
-            }
-        }
-
-        public object TableItem
-        {
-            get
-            {
-                return tableItem;
-            }
-
-            set
-            {
-                if (value != null)
-                {
-                    if (((TableItem)value).Type == HelperClasses.DataGridType.ENERGY_CONSUMER)
-                    {
-                        tableItem = value;
-                    }
-                    else
-                    {
-                        tableItem = null;
-                    }
-                }
-                else
-                {
-                    tableItem = value;
-                }
-                
-                RaisePropertyChanged("TableItem");
             }
         }
 

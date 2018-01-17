@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 namespace FTN.Services.NetworkModelService.DataModel.Dynamic
 {
     [DataContract]
+    [KnownType(typeof(MinuteAggregation))]
+    [KnownType(typeof(HourAggregation))]
+    [KnownType(typeof(DayAggregation))]
     public class Statistics
     {
         private float maxP;
@@ -24,8 +27,23 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
         private float integralP;
         private float integralQ;
         private float integralV;
+        private DateTime timeStamp;
 
         public Statistics() { }
+
+        [DataMember]
+        public DateTime TimeStamp
+        {
+            get
+            {
+                return timeStamp;
+            }
+
+            set
+            {
+                timeStamp = value;
+            }
+        }
 
         [DataMember]
         public float MaxP
