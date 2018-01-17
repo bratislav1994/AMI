@@ -23,8 +23,6 @@ namespace AMIClient
         private float currentV;
         private Brush status;
         private DataGridType type;
-        private bool contextMenuEnabled;
-        private Visibility contextMenuVisibility;
 
         public TableItem(IdentifiedObject io)
         {
@@ -112,48 +110,9 @@ namespace AMIClient
 
             set
             {
-                if(value == DataGridType.ENERGY_CONSUMER)
-                {
-                    this.Status = new SolidColorBrush(Colors.Green);
-                    this.ContextMenuEnabled = true;
-                    this.ContextMenuVisibility = Visibility.Visible;
-                }
-                else
-                {
-                    this.Status = new SolidColorBrush(Colors.Transparent);
-                    this.ContextMenuEnabled = false;
-                    this.ContextMenuVisibility = Visibility.Hidden;
-                }
+                this.Status = value == DataGridType.ENERGY_CONSUMER ? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.Transparent);
                 type = value;
                 RaisePropertyChanged("Type");
-            }
-        }
-
-        public bool ContextMenuEnabled
-        {
-            get
-            {
-                return contextMenuEnabled;
-            }
-
-            set
-            {
-                contextMenuEnabled = value;
-                RaisePropertyChanged("ContextMenuEnabled");
-            }
-        }
-
-        public Visibility ContextMenuVisibility
-        {
-            get
-            {
-                return contextMenuVisibility;
-            }
-
-            set
-            {
-                contextMenuVisibility = value;
-                RaisePropertyChanged("ContextMenuVisibility");
             }
         }
 

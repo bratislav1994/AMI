@@ -1,4 +1,5 @@
 ﻿using AMIClient.View;
+using FTN.Common;
 using FTN.Services.NetworkModelService.DataModel;
 using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using Prism.Commands;
@@ -27,7 +28,7 @@ namespace AMIClient.ViewModels
         private Statistics statistics;
         private Visibility datePick = Visibility.Hidden;
         private Visibility dateTimePick = Visibility.Hidden;
-        private int resolution;
+        private ResolutionType resolution;
 
         public ChartViewModel()
         {
@@ -159,7 +160,7 @@ namespace AMIClient.ViewModels
             }
         }
 
-        public int Resolution
+        public ResolutionType Resolution
         {
             get
             {
@@ -168,6 +169,15 @@ namespace AMIClient.ViewModels
             set
             {
                 resolution = value;
+
+                if (resolution == ResolutionType.MINUTE)
+                {
+                    DateTimePick = Visibility.Visible;
+                }
+                else
+                {
+                    DatePick = Visibility.Visible;
+                }
             }
         }
 
@@ -246,15 +256,15 @@ namespace AMIClient.ViewModels
 
             switch (this.Resolution)
             {
-                case 1:
+                case ResolutionType.MINUTE:
                     from = RoundDown(DateTime.Parse(FromPeriod), TimeSpan.FromHours(1));
                     break;
-                case 2:
+                case ResolutionType.HOUR:
                     from = RoundDown(DateTime.Parse(FromPeriod), TimeSpan.FromDays(1));
                     break;
-                case 3:
-                    //from = DateTime.Parse(FromPeriod);
-                    //from.Month = 1;
+                case ResolutionType.DAY:
+                    DateTime dt = new DateTime(from.Year, 1, 1);
+                    from = dt;
                     break;
             }
 

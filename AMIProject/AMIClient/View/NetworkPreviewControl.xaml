@@ -70,8 +70,14 @@
                             <TextBlock.ContextMenu>
                                 <ContextMenu DataContext="{x:Reference Name=tree}">
 
-                                    <MenuItem Header="Chart" 
-                                                      Command="{Binding DataContext.GroupAMIChartCommand}"
+                                    <MenuItem Header="Minute chart" 
+                                                      Command="{Binding DataContext.GroupAmiChartMinCommand}"
+                                                      CommandParameter="{Binding}"/>
+                                    <MenuItem Header="Hour chart" 
+                                                      Command="{Binding DataContext.GroupAmiChartHourCommand}"
+                                                      CommandParameter="{Binding}"/>
+                                    <MenuItem Header="Day chart" 
+                                                      Command="{Binding DataContext.GroupAmiChartDayCommand}"
                                                       CommandParameter="{Binding}"/>
 
                                 </ContextMenu>
@@ -92,8 +98,14 @@
                             <TextBlock.ContextMenu>
                                 <ContextMenu DataContext="{x:Reference Name=tree}">
 
-                                    <MenuItem Header="Chart" 
-                                                      Command="{Binding DataContext.GroupAMIChartCommand}"
+                                    <MenuItem Header="Minute chart" 
+                                                      Command="{Binding DataContext.GroupAmiChartMinCommand}"
+                                                      CommandParameter="{Binding}"/>
+                                    <MenuItem Header="Hour chart" 
+                                                      Command="{Binding DataContext.GroupAmiChartHourCommand}"
+                                                      CommandParameter="{Binding}"/>
+                                    <MenuItem Header="Day chart" 
+                                                      Command="{Binding DataContext.GroupAmiChartDayCommand}"
                                                       CommandParameter="{Binding}"/>
 
                                 </ContextMenu>
@@ -113,8 +125,14 @@
                             <TextBlock.ContextMenu>
                                 <ContextMenu DataContext="{x:Reference Name=tree}">
 
-                                    <MenuItem Header="Chart" 
-                                                      Command="{Binding DataContext.GroupAMIChartCommand}"
+                                    <MenuItem Header="Minute chart" 
+                                                      Command="{Binding DataContext.GroupAmiChartMinCommand}"
+                                                      CommandParameter="{Binding}"/>
+                                    <MenuItem Header="Hour chart" 
+                                                      Command="{Binding DataContext.GroupAmiChartHourCommand}"
+                                                      CommandParameter="{Binding}"/>
+                                    <MenuItem Header="Day chart" 
+                                                      Command="{Binding DataContext.GroupAmiChartDayCommand}"
                                                       CommandParameter="{Binding}"/>
 
                                 </ContextMenu>
@@ -133,8 +151,14 @@
                             <TextBlock.ContextMenu>
                                 <ContextMenu DataContext="{x:Reference Name=tree}">
 
-                                    <MenuItem Header="Chart" 
-                                                      Command="{Binding DataContext.GroupAMIChartCommand}"
+                                    <MenuItem Header="Minute chart" 
+                                                      Command="{Binding DataContext.GroupAmiChartMinCommand}"
+                                                      CommandParameter="{Binding}"/>
+                                    <MenuItem Header="Hour chart" 
+                                                      Command="{Binding DataContext.GroupAmiChartHourCommand}"
+                                                      CommandParameter="{Binding}"/>
+                                    <MenuItem Header="Day chart" 
+                                                      Command="{Binding DataContext.GroupAmiChartDayCommand}"
                                                       CommandParameter="{Binding}"/>
 
                                 </ContextMenu>

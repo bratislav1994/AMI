@@ -412,6 +412,7 @@ namespace AMIClient
                 TableItems.Add(new TableItem(ec) { Type = HelperClasses.DataGridType.ENERGY_CONSUMER });
                 positions.Add(ec.GlobalId, TableItems.Count - 1);
             }
+
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeAmis; line: {0}; Finish the GetSomeAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
@@ -496,6 +497,7 @@ namespace AMIClient
                 foreach (IdentifiedObject io2 in substations)
                 {
                     TableItems.Add(new TableItem(io2) { Type = HelperClasses.DataGridType.SUBSTATION });
+                    positions.Add(io2.GlobalId, TableItems.Count - 1);
                     GetSomeTableItems(io2.GlobalId, true);
                 }
             }
@@ -511,6 +513,7 @@ namespace AMIClient
             foreach (IdentifiedObject io2 in substations)
             {
                 TableItems.Add(new TableItem(io2) { Type = HelperClasses.DataGridType.SUBSTATION });
+                positions.Add(io2.GlobalId, TableItems.Count - 1);
                 GetSomeTableItems(io2.GlobalId, true);
             }
         }
@@ -567,7 +570,7 @@ namespace AMIClient
             }
         }
 
-        public Tuple<List<Statistics>, Statistics> GetMeasForChart(List<long> gids, DateTime from, int resolution)
+        public Tuple<List<Statistics>, Statistics> GetMeasForChart(List<long> gids, DateTime from, ResolutionType resolution)
         {
             return this.CEQueryProxy.GetMeasurementsForChartView(gids, from, resolution);
         }

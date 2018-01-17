@@ -1,4 +1,5 @@
 ﻿using AMIClient.View;
+using FTN.Common;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -134,20 +135,12 @@ namespace AMIClient.ViewModels
             get { return closeTabCommand ?? (closeTabCommand = new DelegateCommand<TabItem>((t) => { TabItems.Remove(t); })); }
         }
 
-        public void SelectedAMIAction(object ami, int resolution)
+        public void SelectedAMIAction(object ami, ResolutionType resolution)
         {
             IdentifiedObject ec = (IdentifiedObject)ami;
             ChartViewModel chartVM = null;
-
-            if (resolution == 1)
-            {
-                chartVM = new ChartViewModel() { Model = this.Model, DateTimePick = Visibility.Visible, Resolution = resolution };
-            }
-            else if (resolution == 2 || resolution == 3)
-            {
-                chartVM = new ChartViewModel() { Model = this.Model, DatePick = Visibility.Visible, Resolution = resolution };
-            }
-
+            
+            chartVM = new ChartViewModel() { Model = this.Model, Resolution = resolution };
             chartVM.SetGids(new List<long>() { ec.GlobalId });
 
             TabItems.Add(new TabItem()
@@ -159,17 +152,52 @@ namespace AMIClient.ViewModels
             SelectedTab = TabItems.Last();
         }
 
-        private ICommand groupAmiChartCommand;
+        private ICommand groupAmiChartMinCommand;
 
-        public ICommand GroupAMIChartCommand
+        public ICommand GroupAmiChartMinCommand
         {
             get
             {
-                return this.groupAmiChartCommand ?? (this.groupAmiChartCommand = new DelegateCommand<object>(this.SelectedAMIsAction, param => true));
+                return this.groupAmiChartMinCommand ?? (this.groupAmiChartMinCommand = new DelegateCommand<object>(this.CommandActionForMin, param => true));
             }
         }
 
-        private void SelectedAMIsAction(object selectedTreeView)
+        private void CommandActionForMin(object selected)
+        {
+            this.SelectedAMIsAction(selected, ResolutionType.MINUTE);
+        }
+
+        private ICommand groupAmiChartHourCommand;
+
+        public ICommand GroupAmiChartHourCommand
+        {
+            get
+            {
+                return this.groupAmiChartHourCommand ?? (this.groupAmiChartHourCommand = new DelegateCommand<object>(this.CommandActionForHour, param => true));
+            }
+        }
+
+        private void CommandActionForHour(object selected)
+        {
+            this.SelectedAMIsAction(selected, ResolutionType.HOUR);
+        }
+
+        private ICommand groupAmiChartDayCommand;
+
+        public ICommand GroupAmiChartDayCommand
+        {
+            get
+            {
+                return this.groupAmiChartDayCommand ?? (this.groupAmiChartDayCommand = new DelegateCommand<object>(this.CommandActionForDay, param => true));
+            }
+        }
+
+        private void CommandActionForDay(object selected)
+        {
+            this.SelectedAMIsAction(selected, ResolutionType.DAY);
+        }
+
+        private void SelectedAMIsAction(object selectedTreeView, ResolutionType resolution)
         {
             object o = selectedTreeView;
             TreeView selected = (TreeView)selectedTreeView;
@@ -187,8 +215,9 @@ namespace AMIClient.ViewModels
                         ecsC1.Add(ec.GlobalId);
                     }
 
-                    ChartViewModel chartVM = new ChartViewModel() { Model = this.Model };
+                    ChartViewModel chartVM = new ChartViewModel() { Model = this.Model, Resolution = resolution };
                     chartVM.SetGids(ecsC1);
+
                     TabItems.Add(new TabItem()
                     {
                         Header = "All",
@@ -199,86 +228,102 @@ namespace AMIClient.ViewModels
 
                     break;
                 case "GeoRegionForTree":
-                    List<IdentifiedObject> subRegionsC2 = this.Model.GetSomeSubregions(((GeoRegionForTree)selectedItem).GeoRegion.GlobalId, true);
-                    List<IdentifiedObject> substationsC2 = new List<IdentifiedObject>();
-                    List<IdentifiedObject> amisC2 = new List<IdentifiedObject>();
-                    List<long> ecsC2 = new List<long>();
-
-                    foreach (SubGeographicalRegion sgr in subRegionsC2)
-                    {
-                        substationsC2.AddRange(this.Model.GetSomeSubstations(sgr.GlobalId, true));
-                    }
-
-                    foreach (Substation ss in substationsC2)
-                    {
-                        amisC2.AddRange(this.Model.GetSomeAmis(ss.GlobalId));
-                    }
-
-                    foreach (EnergyConsumer ec in amisC2)
-                    {
-                        ecsC2.Add(ec.GlobalId);
-                    }
-
-                    ChartViewModel chartVM2 = new ChartViewModel() { Model = this.Model };
-                    chartVM2.SetGids(ecsC2);
-                    TabItems.Add(new TabItem()
-                    {
-                        Header = ((GeoRegionForTree)selectedItem).GeoRegion.Name,
-                        CurrentTab = chartVM2
-                    });
-
-                    SelectedTab = TabItems.Last();
+                    this.ChartViewForGeoRegion(resolution, ((GeoRegionForTree)selectedItem).GeoRegion.GlobalId, ((GeoRegionForTree)selectedItem).GeoRegion.Name);
 
                     break;
                 case "SubGeoRegionForTree":
-                    List<IdentifiedObject> substationsC3 = this.Model.GetSomeSubstations(((SubGeoRegionForTree)selectedItem).SubGeoRegion.GlobalId, true);
-                    List<IdentifiedObject> amisC3 = new List<IdentifiedObject>();
-                    List<long> ecsC3 = new List<long>();
-
-                    foreach (Substation ss in substationsC3)
-                    {
-                        amisC3.AddRange(this.Model.GetSomeAmis(ss.GlobalId));
-                    }
-
-                    foreach (EnergyConsumer ec in amisC3)
-                    {
-                        ecsC3.Add(ec.GlobalId);
-                    }
-
-                    ChartViewModel chartVM3 = new ChartViewModel() { Model = this.Model };
-                    chartVM3.SetGids(ecsC3);
-                    TabItems.Add(new TabItem()
-                    {
-                        Header = ((SubGeoRegionForTree)selectedItem).SubGeoRegion.Name,
-                        CurrentTab = chartVM3
-                    });
-
-                    SelectedTab = TabItems.Last();
+                    ChartViewForSubGeoRegion(resolution, ((SubGeoRegionForTree)selectedItem).SubGeoRegion.GlobalId, ((SubGeoRegionForTree)selectedItem).SubGeoRegion.Name);
 
                     break;
                 case "SubstationForTree":
-                    List<IdentifiedObject> amisC4 = this.Model.GetSomeAmis(((SubstationForTree)selectedItem).Substation.GlobalId);
-                    List<long> ecsC4 = new List<long>();
-
-                    foreach (EnergyConsumer ec in amisC4)
-                    {
-                        ecsC4.Add(ec.GlobalId);
-                    }
-
-                    ChartViewModel chartVM4 = new ChartViewModel() { Model = this.Model };
-                    chartVM4.SetGids(ecsC4);
-                    TabItems.Add(new TabItem()
-                    {
-                        Header = ((SubstationForTree)selectedItem).Substation.Name,
-                        CurrentTab = chartVM4
-                    });
-
-                    SelectedTab = TabItems.Last();
+                    ChartViewForSubstation(resolution, ((SubstationForTree)selectedItem).Substation.GlobalId, ((SubstationForTree)selectedItem).Substation.Name);
 
                     break;
                 default:
                     break;
             }
+        }
+
+        public void ChartViewForSubstation(ResolutionType resolution, long gid, string header)
+        {
+            List<IdentifiedObject> amisC4 = this.Model.GetSomeAmis(gid);
+            List<long> ecsC4 = new List<long>();
+
+            foreach (EnergyConsumer ec in amisC4)
+            {
+                ecsC4.Add(ec.GlobalId);
+            }
+
+            ChartViewModel chartVM4 = new ChartViewModel() { Model = this.Model, Resolution = resolution };
+            chartVM4.SetGids(ecsC4);
+            TabItems.Add(new TabItem()
+            {
+                Header = header,
+                CurrentTab = chartVM4
+            });
+
+            SelectedTab = TabItems.Last();
+        }
+
+        public void ChartViewForSubGeoRegion(ResolutionType resolution, long gid, string header)
+        {
+            List<IdentifiedObject> substationsC3 = this.Model.GetSomeSubstations(gid, true);
+            List<IdentifiedObject> amisC3 = new List<IdentifiedObject>();
+            List<long> ecsC3 = new List<long>();
+
+            foreach (Substation ss in substationsC3)
+            {
+                amisC3.AddRange(this.Model.GetSomeAmis(ss.GlobalId));
+            }
+
+            foreach (EnergyConsumer ec in amisC3)
+            {
+                ecsC3.Add(ec.GlobalId);
+            }
+
+            ChartViewModel chartVM3 = new ChartViewModel() { Model = this.Model, Resolution = resolution };
+            chartVM3.SetGids(ecsC3);
+            TabItems.Add(new TabItem()
+            {
+                Header = header,
+                CurrentTab = chartVM3
+            });
+
+            SelectedTab = TabItems.Last();
+        }
+
+        public void ChartViewForGeoRegion(ResolutionType resolution, long gid, string header)
+        {
+            List<IdentifiedObject> subRegionsC2 = this.Model.GetSomeSubregions(gid, true);
+            List<IdentifiedObject> substationsC2 = new List<IdentifiedObject>();
+            List<IdentifiedObject> amisC2 = new List<IdentifiedObject>();
+            List<long> ecsC2 = new List<long>();
+
+            foreach (SubGeographicalRegion sgr in subRegionsC2)
+            {
+                substationsC2.AddRange(this.Model.GetSomeSubstations(sgr.GlobalId, true));
+            }
+
+            foreach (Substation ss in substationsC2)
+            {
+                amisC2.AddRange(this.Model.GetSomeAmis(ss.GlobalId));
+            }
+
+            foreach (EnergyConsumer ec in amisC2)
+            {
+                ecsC2.Add(ec.GlobalId);
+            }
+
+            ChartViewModel chartVM2 = new ChartViewModel() { Model = this.Model, Resolution = resolution };
+            chartVM2.SetGids(ecsC2);
+
+            TabItems.Add(new TabItem()
+            {
+                Header = header,
+                CurrentTab = chartVM2
+            });
+
+            SelectedTab = TabItems.Last();
         }
 
         public void RightClickOn()

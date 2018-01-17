@@ -21,4 +21,11 @@ namespace FTN.Common
         READWRITE,
         READ
     }//end Direction
+
+    public enum ResolutionType : int
+    {
+        MINUTE = 0,
+        HOUR,
+        DAY
+    }
 }

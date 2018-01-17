@@ -319,45 +319,65 @@ namespace CalculationEngine.Access
                 {
                     var measurements = access.AggregationForMinutes.Where(x => DateTime.Compare(x.TimeStamp, to) < 0 && DateTime.Compare(x.TimeStamp, from) > 0).ToList();
 
-                    lock (lockObjH)
+                    if (measurements == null || measurements.Count == 0)
                     {
-                        var hourAggregation = access.AggregationForHours.FirstOrDefault();
+                        var totalConsumers = access.Consumers.ToList();
 
-                        if (hourAggregation == null)
+                        if (totalConsumers != null || totalConsumers.Count != 0)
                         {
-                            List<HourAggregation> aggregations = CreateHourAggregationsWhenHourTableIsEmpty(CreateDictionaryForHour(measurements));
-
-                            foreach (HourAggregation ma in aggregations)
+                            foreach (EnergyConsumerCE consumer in totalConsumers)
                             {
+                                HourAggregation ma = new HourAggregation();
+                                ma.PsrRef = consumer.GlobalId;
+                                ma.TimeStamp = from;
                                 access.AggregationForHours.Add(ma);
                             }
 
                             access.SaveChanges();
                         }
-                        else
+                    }
+                    else
+                    { 
+                        lock (lockObjH)
                         {
-                            DateTime beforeFrom = from.AddHours(-1);
-                            List<MinuteAggregation> previousMeasurements = access.AggregationForMinutes.Where(x => DateTime.Compare(from, x.TimeStamp) > 0 && DateTime.Compare(beforeFrom, x.TimeStamp) < 0).OrderByDescending(x => x.TimeStamp).ToList();
-                            Dictionary<long, MinuteAggregation> previousMeasurementsDic = new Dictionary<long, MinuteAggregation>();
+                            var hourAggregation = access.AggregationForHours.FirstOrDefault();
 
-                            foreach (MinuteAggregation dm in previousMeasurements)
+                            if (hourAggregation == null)
                             {
-                                MinuteAggregation value = null;
+                                List<HourAggregation> aggregations = CreateHourAggregationsWhenHourTableIsEmpty(CreateDictionaryForHour(measurements));
 
-                                if (!previousMeasurementsDic.TryGetValue(dm.PsrRef, out value))
+                                foreach (HourAggregation ma in aggregations)
                                 {
-                                    previousMeasurementsDic[dm.PsrRef] = dm;
+                                    access.AggregationForHours.Add(ma);
                                 }
+
+                                access.SaveChanges();
                             }
-
-                            List<HourAggregation> aggregations = CreateHourAggregationsWhenHourTableIsNotEmpty(from, previousMeasurementsDic, CreateDictionaryForHour(measurements));
-
-                            foreach (HourAggregation ma in aggregations)
+                            else
                             {
-                                access.AggregationForHours.Add(ma);
-                            }
+                                DateTime beforeFrom = from.AddHours(-1);
+                                List<MinuteAggregation> previousMeasurements = access.AggregationForMinutes.Where(x => DateTime.Compare(from, x.TimeStamp) > 0 && DateTime.Compare(beforeFrom, x.TimeStamp) < 0).OrderByDescending(x => x.TimeStamp).ToList();
+                                Dictionary<long, MinuteAggregation> previousMeasurementsDic = new Dictionary<long, MinuteAggregation>();
 
-                            access.SaveChanges();
+                                foreach (MinuteAggregation dm in previousMeasurements)
+                                {
+                                    MinuteAggregation value = null;
+
+                                    if (!previousMeasurementsDic.TryGetValue(dm.PsrRef, out value))
+                                    {
+                                        previousMeasurementsDic[dm.PsrRef] = dm;
+                                    }
+                                }
+
+                                List<HourAggregation> aggregations = CreateHourAggregationsWhenHourTableIsNotEmpty(from, previousMeasurementsDic, CreateDictionaryForHour(measurements));
+
+                                foreach (HourAggregation ma in aggregations)
+                                {
+                                    access.AggregationForHours.Add(ma);
+                                }
+
+                                access.SaveChanges();
+                            }
                         }
                     }
                 }
@@ -369,19 +389,39 @@ namespace CalculationEngine.Access
 
         public List<Statistics> ReadHourAggregationTable(List<long> gids, DateTime from)
         {
-            List<Statistics> measurements = new List<Statistics>();
+            Dictionary<DateTime, Statistics> measurements = new Dictionary<DateTime, Statistics>();
             DateTime to = from.AddDays(1);
 
             lock (lockObj)
             {
                 using (var access = new AccessDB())
                 {
-                    foreach (var meas in access.AggregationForDays.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList())
+                    var rawMeas = access.AggregationForHours.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList();
+
+                    foreach (var meas in rawMeas)
                     {
-                        measurements.Add(meas);
+                        if (!measurements.ContainsKey(meas.TimeStamp))
+                        {
+                            measurements.Add(meas.TimeStamp, meas);
+                        }
+                        else
+                        {
+                            measurements[meas.TimeStamp].AvgP += meas.AvgP;
+                            measurements[meas.TimeStamp].AvgQ += meas.AvgQ;
+                            measurements[meas.TimeStamp].AvgV += meas.AvgV;
+                            //measurements[meas.TimeStamp].MaxP += meas.MaxP;
+                            //measurements[meas.TimeStamp].MaxQ += meas.MaxQ;
+                            //measurements[meas.TimeStamp].MaxV += meas.MaxV;
+                            //measurements[meas.TimeStamp].MinP += meas.MinP;
+                            //measurements[meas.TimeStamp].MinQ += meas.MinQ;
+                            //measurements[meas.TimeStamp].MinV += meas.MinV;
+                            measurements[meas.TimeStamp].IntegralP += meas.IntegralP;
+                            measurements[meas.TimeStamp].IntegralQ += meas.IntegralQ;
+                            measurements[meas.TimeStamp].IntegralV += meas.IntegralV;
+                        }
                     }
 
-                    return measurements;
+                    return measurements.Values.ToList();
                 }
             }
         }
@@ -663,45 +703,65 @@ namespace CalculationEngine.Access
                 {
                     var measurements = access.AggregationForHours.Where(x => DateTime.Compare(x.TimeStamp, to) < 0 && DateTime.Compare(x.TimeStamp, from) > 0).ToList();
 
-                    lock (lockObjH)
+                    if (measurements == null || measurements.Count == 0)
                     {
-                        var dayAggregation = access.AggregationForDays.FirstOrDefault();
+                        var totalConsumers = access.Consumers.ToList();
 
-                        if (dayAggregation == null)
+                        if (totalConsumers != null || totalConsumers.Count != 0)
                         {
-                            List<DayAggregation> aggregations = CreateDayAggregationsWhenDayTableIsEmpty(CreateDictionaryForDay(measurements));
-
-                            foreach (DayAggregation ma in aggregations)
+                            foreach (EnergyConsumerCE consumer in totalConsumers)
                             {
+                                DayAggregation ma = new DayAggregation();
+                                ma.PsrRef = consumer.GlobalId;
+                                ma.TimeStamp = from;
                                 access.AggregationForDays.Add(ma);
                             }
 
                             access.SaveChanges();
                         }
-                        else
+                    }
+                    else
+                    { 
+                        lock (lockObjH)
                         {
-                            DateTime beforeFrom = from.AddDays(-1);
-                            List<HourAggregation> previousMeasurements = access.AggregationForHours.Where(x => DateTime.Compare(from, x.TimeStamp) > 0 && DateTime.Compare(beforeFrom, x.TimeStamp) < 0).OrderByDescending(x => x.TimeStamp).ToList();
-                            Dictionary<long, HourAggregation> previousMeasurementsDic = new Dictionary<long, HourAggregation>();
+                            var dayAggregation = access.AggregationForDays.FirstOrDefault();
 
-                            foreach (HourAggregation dm in previousMeasurements)
+                            if (dayAggregation == null)
                             {
-                                HourAggregation value = null;
+                                List<DayAggregation> aggregations = CreateDayAggregationsWhenDayTableIsEmpty(CreateDictionaryForDay(measurements));
 
-                                if (!previousMeasurementsDic.TryGetValue(dm.PsrRef, out value))
+                                foreach (DayAggregation ma in aggregations)
                                 {
-                                    previousMeasurementsDic[dm.PsrRef] = dm;
+                                    access.AggregationForDays.Add(ma);
                                 }
+
+                                access.SaveChanges();
                             }
-
-                            List<DayAggregation> aggregations = CreateDayAggregationsWhenDayTableIsNotEmpty(from, previousMeasurementsDic, CreateDictionaryForDay(measurements));
-
-                            foreach (DayAggregation ma in aggregations)
+                            else
                             {
-                                access.AggregationForDays.Add(ma);
-                            }
+                                DateTime beforeFrom = from.AddDays(-1);
+                                List<HourAggregation> previousMeasurements = access.AggregationForHours.Where(x => DateTime.Compare(from, x.TimeStamp) > 0 && DateTime.Compare(beforeFrom, x.TimeStamp) < 0).OrderByDescending(x => x.TimeStamp).ToList();
+                                Dictionary<long, HourAggregation> previousMeasurementsDic = new Dictionary<long, HourAggregation>();
 
-                            access.SaveChanges();
+                                foreach (HourAggregation dm in previousMeasurements)
+                                {
+                                    HourAggregation value = null;
+
+                                    if (!previousMeasurementsDic.TryGetValue(dm.PsrRef, out value))
+                                    {
+                                        previousMeasurementsDic[dm.PsrRef] = dm;
+                                    }
+                                }
+
+                                List<DayAggregation> aggregations = CreateDayAggregationsWhenDayTableIsNotEmpty(from, previousMeasurementsDic, CreateDictionaryForDay(measurements));
+
+                                foreach (DayAggregation ma in aggregations)
+                                {
+                                    access.AggregationForDays.Add(ma);
+                                }
+
+                                access.SaveChanges();
+                            }
                         }
                     }
                 }
@@ -713,19 +773,39 @@ namespace CalculationEngine.Access
 
         public List<Statistics> ReadDayAggregationTable(List<long> gids, DateTime from)
         {
-            List<Statistics> measurements = new List<Statistics>();
+            Dictionary<DateTime, Statistics> measurements = new Dictionary<DateTime, Statistics>();
             DateTime to = from.AddMonths(1);
 
             lock (lockObj)
             {
                 using (var access = new AccessDB())
                 {
-                    foreach (var meas in access.AggregationForDays.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList())
+                    var rawMeas = access.AggregationForDays.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList();
+
+                    foreach (var meas in rawMeas)
                     {
-                        measurements.Add(meas);
+                        if (!measurements.ContainsKey(meas.TimeStamp))
+                        {
+                            measurements.Add(meas.TimeStamp, meas);
+                        }
+                        else
+                        {
+                            measurements[meas.TimeStamp].AvgP += meas.AvgP;
+                            measurements[meas.TimeStamp].AvgQ += meas.AvgQ;
+                            measurements[meas.TimeStamp].AvgV += meas.AvgV;
+                            //measurements[meas.TimeStamp].MaxP += meas.MaxP;
+                            //measurements[meas.TimeStamp].MaxQ += meas.MaxQ;
+                            //measurements[meas.TimeStamp].MaxV += meas.MaxV;
+                            //measurements[meas.TimeStamp].MinP += meas.MinP;
+                            //measurements[meas.TimeStamp].MinQ += meas.MinQ;
+                            //measurements[meas.TimeStamp].MinV += meas.MinV;
+                            measurements[meas.TimeStamp].IntegralP += meas.IntegralP;
+                            measurements[meas.TimeStamp].IntegralQ += meas.IntegralQ;
+                            measurements[meas.TimeStamp].IntegralV += meas.IntegralV;
+                        }
                     }
 
-                    return measurements;
+                    return measurements.Values.ToList();
                 }
             }
         }
@@ -1207,44 +1287,64 @@ namespace CalculationEngine.Access
                 {
                     var measurements = access.Collect.Where(x => DateTime.Compare(x.TimeStamp, to) < 0 && DateTime.Compare(x.TimeStamp, from) > 0).ToList();
 
-                    lock (lockObjM)
+                    if (measurements == null || measurements.Count == 0)
                     {
-                        var minuteAggregation = access.AggregationForMinutes.FirstOrDefault();
+                        var totalConsumers = access.Consumers.ToList();
 
-                        if (minuteAggregation == null)
+                        if (totalConsumers != null || totalConsumers.Count != 0)
                         {
-                            List<MinuteAggregation> aggregations = CreateMinuteAggregationsWhenMinuteTableIsEmpty(CreateDictionary(measurements));
-
-                            foreach (MinuteAggregation ma in aggregations)
+                            foreach (EnergyConsumerCE consumer in totalConsumers)
                             {
+                                MinuteAggregation ma = new MinuteAggregation();
+                                ma.PsrRef = consumer.GlobalId;
+                                ma.TimeStamp = from;
                                 access.AggregationForMinutes.Add(ma);
                             }
-
+                            
                             access.SaveChanges();
                         }
-                        else
+                    }
+                    else
+                    { 
+                        lock (lockObjM)
                         {
-                            DateTime beforeFrom = from.AddMinutes(-1);
-                            List<DynamicMeasurement> previousMeasurements = access.Collect.Where(x => DateTime.Compare(from, x.TimeStamp) > 0 && DateTime.Compare(beforeFrom, x.TimeStamp) < 0).OrderByDescending(x => x.TimeStamp).ToList();
-                            Dictionary<long, DynamicMeasurement> previousMeasurementsDic = new Dictionary<long, DynamicMeasurement>();
+                            var minuteAggregation = access.AggregationForMinutes.FirstOrDefault();
 
-                            foreach (DynamicMeasurement dm in previousMeasurements)
+                            if (minuteAggregation == null)
                             {
-                                DynamicMeasurement value = null;
-                                if (!previousMeasurementsDic.TryGetValue(dm.PsrRef, out value))
+                                List<MinuteAggregation> aggregations = CreateMinuteAggregationsWhenMinuteTableIsEmpty(CreateDictionary(measurements));
+
+                                foreach (MinuteAggregation ma in aggregations)
                                 {
-                                    previousMeasurementsDic[dm.PsrRef] = dm;
+                                    access.AggregationForMinutes.Add(ma);
                                 }
+
+                                access.SaveChanges();
                             }
-
-                            List<MinuteAggregation> aggregations = CreateMinuteAggregationsWhenMinuteTableIsNotEmpty(from, previousMeasurementsDic, CreateDictionary(measurements));
-
-                            foreach (MinuteAggregation ma in aggregations)
+                            else
                             {
-                                access.AggregationForMinutes.Add(ma);
-                            }
+                                DateTime beforeFrom = from.AddMinutes(-1);
+                                List<DynamicMeasurement> previousMeasurements = access.Collect.Where(x => DateTime.Compare(from, x.TimeStamp) > 0 && DateTime.Compare(beforeFrom, x.TimeStamp) < 0).OrderByDescending(x => x.TimeStamp).ToList();
+                                Dictionary<long, DynamicMeasurement> previousMeasurementsDic = new Dictionary<long, DynamicMeasurement>();
 
-                            access.SaveChanges();
+                                foreach (DynamicMeasurement dm in previousMeasurements)
+                                {
+                                    DynamicMeasurement value = null;
+                                    if (!previousMeasurementsDic.TryGetValue(dm.PsrRef, out value))
+                                    {
+                                        previousMeasurementsDic[dm.PsrRef] = dm;
+                                    }
+                                }
+
+                                List<MinuteAggregation> aggregations = CreateMinuteAggregationsWhenMinuteTableIsNotEmpty(from, previousMeasurementsDic, CreateDictionary(measurements));
+
+                                foreach (MinuteAggregation ma in aggregations)
+                                {
+                                    access.AggregationForMinutes.Add(ma);
+                                }
+
+                                access.SaveChanges();
+                            }
                         }
                     }
                 }
@@ -1345,19 +1445,39 @@ namespace CalculationEngine.Access
 
         public List<Statistics> ReadMinuteAggregationTable(List<long> gids, DateTime from)
         {
-            List<Statistics> measurements = new List<Statistics>();
+            Dictionary<DateTime, Statistics> measurements = new Dictionary<DateTime, Statistics>();
             DateTime to = from.AddHours(1);
 
             lock (lockObj)
             {
                 using (var access = new AccessDB())
                 {
-                    foreach (var meas in access.AggregationForMinutes.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList())
-                    {
-                        measurements.Add(meas);
-                    }
+                    var rawMeas = access.AggregationForMinutes.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList();
 
-                    return measurements;
+                    foreach (var meas in rawMeas)
+                    {
+                        if (!measurements.ContainsKey(meas.TimeStamp))
+                        {
+                            measurements.Add(meas.TimeStamp, meas);
+                        }
+                        else
+                        {
+                            measurements[meas.TimeStamp].AvgP += meas.AvgP;
+                            measurements[meas.TimeStamp].AvgQ += meas.AvgQ;
+                            measurements[meas.TimeStamp].AvgV += meas.AvgV;
+                            //measurements[meas.TimeStamp].MaxP += meas.MaxP;
+                            //measurements[meas.TimeStamp].MaxQ += meas.MaxQ;
+                            //measurements[meas.TimeStamp].MaxV += meas.MaxV;
+                            //measurements[meas.TimeStamp].MinP += meas.MinP;
+                            //measurements[meas.TimeStamp].MinQ += meas.MinQ;
+                            //measurements[meas.TimeStamp].MinV += meas.MinV;
+                            measurements[meas.TimeStamp].IntegralP += meas.IntegralP;
+                            measurements[meas.TimeStamp].IntegralQ += meas.IntegralQ;
+                            measurements[meas.TimeStamp].IntegralV += meas.IntegralV;
+                        }
+                    }
+                    
+                    return measurements.Values.ToList();
                 }
             }
         }

@@ -13,7 +13,7 @@
 
 
             <DataGrid.Resources>
-                <ContextMenu x:Key="ticketContextMenu" Visibility="{Binding ContextMenuVisibility}">
+                <ContextMenu x:Key="ticketContextMenu">
                     <ContextMenu.Items>
                         <MenuItem
                             Header="Minute chart"
