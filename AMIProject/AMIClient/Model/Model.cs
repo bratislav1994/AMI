@@ -18,6 +18,7 @@ using System.ComponentModel;
 using FTN.Common.Logger;
 using FTN.Services.NetworkModelService.DataModel;
 using FTN.Services.NetworkModelService.DataModel.Dynamic;
+using AMIClient.Classes;
 
 namespace AMIClient
 {
@@ -27,6 +28,7 @@ namespace AMIClient
         private List<ResourceDescription> meas = new List<ResourceDescription>();
         private Dictionary<long, int> positions = new Dictionary<long, int>();
         private ObservableCollection<TableItem> tableItems = new ObservableCollection<TableItem>();
+        private ObservableCollection<TableItemForAlarm> tableItemsForAlarm = new ObservableCollection<TableItemForAlarm>();
         private RootElement root;
         private bool firstContact = true;
         private bool firstContactCE = true;
@@ -37,6 +39,7 @@ namespace AMIClient
         private DuplexChannelFactory<ICalculationDuplexClient> factoryCE;
         private Thread checkNMS;
         private ICollectionView viewTableItems;
+        private ICollectionView viewTableItemsForAlarm;
 
         public INetworkModelGDAContractDuplexClient GdaQueryProxy
         {
@@ -118,6 +121,34 @@ namespace AMIClient
             }
         }
 
+        public ObservableCollection<TableItemForAlarm> TableItemsForAlarm
+        {
+            get
+            {
+                return tableItemsForAlarm;
+            }
+
+            set
+            {
+                tableItemsForAlarm = value;
+                RaisePropertyChanged("TableItemsForAlarm");
+            }
+        }
+        
+        public ICollectionView ViewTableItemsForAlarm
+        {
+            get
+            {
+                return viewTableItemsForAlarm;
+            }
+
+            set
+            {
+                viewTableItemsForAlarm = value;
+                RaisePropertyChanged("ViewTableItemsForAlarm");
+            }
+        }
+
         public bool FirstContact
         {
             get
@@ -146,7 +177,21 @@ namespace AMIClient
 
         public Model()
         {
+            // OBRISATI KASNIJE
+            TableItemForAlarm item = new TableItemForAlarm();
+            item.Consumer = "Consumer1";
+            item.ToPeriod = DateTime.Now;
+            item.Status = HelperClasses.Status.ACTIVE;
+            item.TypeVoltage = HelperClasses.TypeVoltage.OVERVOLTAGE;
+            this.TableItemsForAlarm.Add(item);
 
+            TableItemForAlarm item2 = new TableItemForAlarm();
+            item2.Consumer = "Consumer2";
+            item2.FromPeriod = new DateTime(2018, 1, 19, 12, 0, 0);
+            item2.ToPeriod = DateTime.Now;
+            item2.Status = HelperClasses.Status.RESOLVED;
+            item2.TypeVoltage = HelperClasses.TypeVoltage.OVERVOLTAGE;
+            TableItemsForAlarm.Add(item2);
         }
 
         public void Start()

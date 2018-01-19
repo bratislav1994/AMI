@@ -16,6 +16,7 @@ namespace AMIClient.ViewModels
         private AddCimXmlViewModel xmlvm;
         private ChartViewModel chartVM;
         private DataGridViewModel dgVM;
+        private AlarmSummariesViewModel alarmVM;
         private Model model;
 
         public MasterViewModel()
@@ -30,6 +31,8 @@ namespace AMIClient.ViewModels
             this.DgVM = DataGridViewModel.Instance;
             this.DgVM.SetModel(Model);
             this.CurrentViewModel = Tvm;
+            alarmVM = AlarmSummariesViewModel.Instance;
+            this.AlarmVM.SetModel(Model);
         }
 
         public AddCimXmlViewModel Xmlvm
@@ -68,6 +71,19 @@ namespace AMIClient.ViewModels
             set
             {
                 chartVM = value;
+            }
+        }
+
+        public AlarmSummariesViewModel AlarmVM
+        {
+            get
+            {
+                return alarmVM;
+            }
+
+            set
+            {
+                alarmVM = value;
             }
         }
 
@@ -148,6 +164,30 @@ namespace AMIClient.ViewModels
             }
         }
 
+        private void ChartAction()
+        {
+            this.CurrentViewModel = ChartVM;
+        }
+
+        private DelegateCommand alarmSummariesCommand;
+        public DelegateCommand AlarmSummariesCommand
+        {
+            get
+            {
+                if (alarmSummariesCommand == null)
+                {
+                    alarmSummariesCommand = new DelegateCommand(AlarmSummariesAction);
+                }
+
+                return alarmSummariesCommand;
+            }
+        }
+
+        private void AlarmSummariesAction()
+        {
+            this.CurrentViewModel = alarmVM;
+        }
+
         public DataGridViewModel DgVM
         {
             get
@@ -159,11 +199,6 @@ namespace AMIClient.ViewModels
             {
                 dgVM = value;
             }
-        }
-
-        private void ChartAction()
-        {
-            this.CurrentViewModel = ChartVM;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

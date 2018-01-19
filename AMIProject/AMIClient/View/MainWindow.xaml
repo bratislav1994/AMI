@@ -22,6 +22,10 @@
             <local2:ChartControl />
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type local3:AlarmSummariesViewModel}">
+            <local2:AlarmSummariesControl />
+        </DataTemplate>
+
     </Window.Resources>
 
     <Grid Background="#777777">
@@ -35,6 +39,7 @@
             <MenuItem Header="File">
                 <MenuItem Header="Table view" Command="{Binding NetworkPreviewCommand}" />
                 <MenuItem Header="Chart view" Command="{Binding ChartCommand}" />
+                <MenuItem Header="Alarm summaries" Command="{Binding AlarmSummariesCommand}" />
             </MenuItem>
             <MenuItem Header="Advanced">
                 <MenuItem Header="Delta" Command="{Binding AddCimXmlCommand}"/>
