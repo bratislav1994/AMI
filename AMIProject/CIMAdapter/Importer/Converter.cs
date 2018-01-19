@@ -89,6 +89,11 @@
                 {
                     rd.AddProperty(new Property(ModelCode.ENERGYCONS_QFIXED, cimEnergyConsumer.Qfixed));
                 }
+
+                if (cimEnergyConsumer.ConsumerTypeHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.ENERGYCONS_TYPE, (int)cimEnergyConsumer.ConsumerType));
+                }
             }
         }
 
@@ -193,9 +198,15 @@
                 {
                     rd.AddProperty(new Property(ModelCode.ANALOG_ALARMHIGH, cimAnalog.AlarmHigh));
                 }
+
                 if (cimAnalog.AlarmLowHasValue)
                 {
                     rd.AddProperty(new Property(ModelCode.ANALOG_ALARMLOW, cimAnalog.AlarmLow));
+                }
+
+                if (cimAnalog.IsAlarmHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.ANALOG_ISALARM, cimAnalog.IsAlarm));
                 }
             }
         }
@@ -400,6 +411,19 @@
         #endregion Populate ResourceDescription
 
         #region Enums convert
+
+        public static FTN.Common.ConsumerType GetDMSConsumerType(AMIProfile.ConsumerType type)
+        {
+            switch (type)
+            {
+                case AMIProfile.ConsumerType.HOUSEHOLD:
+                    return FTN.Common.ConsumerType.HOUSEHOLD;
+                case AMIProfile.ConsumerType.SHOPPING_CENTER:
+                    return FTN.Common.ConsumerType.SHOPPING_CENTER;
+
+                default: return FTN.Common.ConsumerType.HOUSEHOLD;
+            }
+        }
 
         public static FTN.Common.UnitSymbol GetDMSUnitSymbol(AMIProfile.UnitSymbol unit)
         {

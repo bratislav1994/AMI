@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FTN.Services.NetworkModelService.DataModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,24 +9,24 @@ using System.Text;
 using System.Threading.Tasks;
 using TC57CIM.IEC61970.Core;
 
-namespace CalculationEngine.Class
+namespace FTN.Services.NetworkModelService.DataModel
 {
     [DataContract]
-    public class SubstationCE
+    public class SubstationDb
     {
         private long globalId;
         private string mRID;
         private string name;
         private long subGeoRegionId;
-        private SubGeographicalRegionCE subGeoRegionCE;
+        private SubGeographicalRegionDb subGeoRegionCE;
         private List<long> equipments = new List<long>();
-        private List<EnergyConsumerCE> equipmentsCE = new List<EnergyConsumerCE>();
+        private List<EnergyConsumerDb> equipmentsCE = new List<EnergyConsumerDb>();
 
-        public SubstationCE()
+        public SubstationDb()
         {
         }
 
-        public SubstationCE(Substation sub)
+        public SubstationDb(Substation sub)
         {
             this.globalId = sub.GlobalId;
             this.mRID = sub.Mrid;
@@ -93,7 +94,7 @@ namespace CalculationEngine.Class
             }
         }
 
-        public SubGeographicalRegionCE SubGeoRegionCE
+        public SubGeographicalRegionDb SubGeoRegionCE
         {
             get
             {

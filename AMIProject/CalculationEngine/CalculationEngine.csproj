@@ -93,10 +93,6 @@
     <Compile Include="Access\Configuration.cs" />
     <Compile Include="Access\FunctionDB.cs" />
     <Compile Include="CalculationEngine.cs" />
-    <Compile Include="Class\EnergyConsumerCE.cs" />
-    <Compile Include="Class\GeographicalRegionCE.cs" />
-    <Compile Include="Class\SubGeographicalRegionCE.cs" />
-    <Compile Include="Class\SubstationCE.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -66,6 +66,7 @@ namespace FTN.Common
         ANALOG_NORMALVALUE                  = 0x11100000000a0305,
         ANALOG_ALARMHIGH                    = 0x11100000000a0403,
         ANALOG_ALARMLOW                     = 0x11100000000a0503,
+        ANALOG_ISALARM                      = 0x11100000000a0601,
 
         DISCRETE                            = 0x11200000000b0000,
         DISCRETE_MAXVALUE                   = 0x11200000000b0103,
@@ -100,6 +101,7 @@ namespace FTN.Common
         ENERGYCONS                          = 0x1411100000060000,
         ENERGYCONS_PFIXED                   = 0x1411100000060105,
         ENERGYCONS_QFIXED                   = 0x1411100000060205,
+        ENERGYCONS_TYPE                     = 0x141110000006030a,
 
         POWERTRANSFORMER                    = 0x1411200000070000,
         POWERTRANSFORMER_POWTRANSENDS       = 0x1411200000070119,

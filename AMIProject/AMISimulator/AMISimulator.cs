@@ -33,6 +33,9 @@ namespace AMISimulator
         private DuplexChannelFactory<IScadaDuplexSimulator> factory;
         private Dictionary<int, Measurement> measurements;
         private const int timeToSleep = 30000;
+        private Dictionary<int, float> householdConsumption;
+        private Dictionary<int, float> shoppingCenterConsumption;
+        private Dictionary<long, EnergyConsumerForScada> consumers;
 
         public IScadaDuplexSimulator ProxyScada
         {
@@ -72,12 +75,85 @@ namespace AMISimulator
 
         public AMISimulator()
         {
+            this.InitHousehold();
+            this.InitShoppingCenter();
+            consumers = new Dictionary<long, EnergyConsumerForScada>();
             measurements = new Dictionary<int, Measurement>();
             this.numberOfInstalledPoints = 0;
             lockObject = new object();
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
             config = new OutstationStackConfig();
             outstation = InitializeOutstation(config, mgr);
+        }
+
+        private void InitHousehold()
+        {
+            householdConsumption = new Dictionary<int, float>();
+
+            for (int i = 0; i < 24; i++)
+            {
+                householdConsumption.Add(i, 0);
+            }
+
+            householdConsumption[0] = 5 / 100;
+            householdConsumption[1] = 5 / 100;
+            householdConsumption[2] = 5 / 100;
+            householdConsumption[3] = 5 / 100;
+            householdConsumption[4] = 5 / 100;
+            householdConsumption[5] = 7 / 100;
+            householdConsumption[6] = 14 / 100;
+            householdConsumption[7] = 25 / 100;
+            householdConsumption[8] = 17 / 100;
+            householdConsumption[9] = 12 / 100;
+            householdConsumption[10] = 12 / 100;
+            householdConsumption[11] = 12 / 100;
+            householdConsumption[12] = 12 / 100;
+            householdConsumption[13] = 11 / 100;
+            householdConsumption[14] = 14 / 100;
+            householdConsumption[15] = 15 / 100;
+            householdConsumption[16] = 45 / 100;
+            householdConsumption[17] = 55 / 100;
+            householdConsumption[18] = 75 / 100;
+            householdConsumption[19] = 60 / 100;
+            householdConsumption[20] = 50 / 100;
+            householdConsumption[21] = 52 / 100;
+            householdConsumption[22] = 33 / 100;
+            householdConsumption[23] = 10 / 100;
+        }
+
+        private void InitShoppingCenter()
+        {
+            shoppingCenterConsumption = new Dictionary<int, float>();
+
+            for (int i = 0; i < 24; i++)
+            {
+                shoppingCenterConsumption.Add(i, 0);
+            }
+
+            shoppingCenterConsumption[0] = 5 / 100;
+            shoppingCenterConsumption[1] = 5 / 100;
+            shoppingCenterConsumption[2] = 5 / 100;
+            shoppingCenterConsumption[3] = 5 / 100;
+            shoppingCenterConsumption[4] = 5 / 100;
+            shoppingCenterConsumption[5] = 5 / 100;
+            shoppingCenterConsumption[6] = 35 / 100;
+            shoppingCenterConsumption[7] = 45 / 100;
+            shoppingCenterConsumption[8] = 75 / 100;
+            shoppingCenterConsumption[9] = 80 / 100;
+            shoppingCenterConsumption[10] = 80 / 100;
+            shoppingCenterConsumption[11] = 80 / 100;
+            shoppingCenterConsumption[12] = 80 / 100;
+            shoppingCenterConsumption[13] = 80 / 100;
+            shoppingCenterConsumption[14] = 80 / 100;
+            shoppingCenterConsumption[15] = 80 / 100;
+            shoppingCenterConsumption[16] = 80 / 100;
+            shoppingCenterConsumption[17] = 80 / 100;
+            shoppingCenterConsumption[18] = 80 / 100;
+            shoppingCenterConsumption[19] = 80 / 100;
+            shoppingCenterConsumption[20] = 80 / 100;
+            shoppingCenterConsumption[21] = 80 / 100;
+            shoppingCenterConsumption[22] = 55 / 100;
+            shoppingCenterConsumption[23] = 10 / 100;
         }
 
         private IOutstation InitializeOutstation(OutstationStackConfig config, IDNP3Manager mgr)
@@ -108,8 +184,8 @@ namespace AMISimulator
             }
 
             Console.WriteLine("Connected to scada");
-
             List<MeasurementForScada> measForScada = ProxyScada.GetNumberOfPoints(address);
+            List<EnergyConsumerForScada> cons = ProxyScada.GetConsumersFromScada(address);
             numberOfInstalledPoints = measForScada.Count;
 
             foreach (MeasurementForScada m in measForScada)
@@ -117,8 +193,12 @@ namespace AMISimulator
                 this.measurements.Add(m.Index, m.Measurement);
             }
 
-            channel = mgr.AddTCPServer("master" + address, LogLevels.NORMAL, ChannelRetry.Default, ipAddress, (ushort)(basePort + address), ChannelListener.Print());
+            foreach (EnergyConsumerForScada ec in cons)
+            {
+                this.consumers.Add(ec.GlobalId, ec); 
+            }
 
+            channel = mgr.AddTCPServer("master" + address, LogLevels.NORMAL, ChannelRetry.Default, ipAddress, (ushort)(basePort + address), ChannelListener.Print());
             config.outstation.config.allowUnsolicited = true;
             config.outstation.config.unsolClassMask.Class0 = true;
             config.outstation.config.unsolClassMask.Class1 = true;
@@ -193,11 +273,24 @@ namespace AMISimulator
             }
         }
 
-        public void Rollback(int decrease)
+        public bool AddConsumer(EnergyConsumerForScada ec)
+        {
+            if (this.consumers.ContainsKey(ec.GlobalId))
+            {
+                return false;
+            }
+
+            consumers.Add(ec.GlobalId, ec);
+
+            return true;
+        }
+
+        public void Rollback(int decrease, List<long> conGidsForSimulator)
         {
             lock (lockObject)
             {
                 this.numberOfInstalledPoints -= decrease;
+                conGidsForSimulator.ForEach(x => consumers.Remove(x));
             }
         }
 

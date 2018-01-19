@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using FTN.Common.Logger;
 using FTN.Services.NetworkModelService.DataModel;
 using SCADA.Access;
+using TC57CIM.IEC61970.Wires;
 
 namespace SCADA
 {
@@ -31,7 +32,12 @@ namespace SCADA
         private Dictionary<int, SOEHandler> handlers;
         private ITransactionDuplexScada proxyCoordinator;
         private List<ResourceDescription> measurementsToEnlist;
+        private List<ResourceDescription> consumersToEnlist;
         private Dictionary<int, List<MeasurementForScada>> copyMeasurements;
+        private Dictionary<long, EnergyConsumerForScada> enConsumers;
+        private Dictionary<long, EnergyConsumerForScada> copyEnConsumers;
+        private Dictionary<int, List<EnergyConsumerForScada>> energyConsumersByRtu;
+        private Dictionary<int, List<EnergyConsumerForScada>> copyEnergyConsumersByRtu;
         private Dictionary<long, DynamicMeasurement> resourcesToSend;
         private object lockObject = new object();
         private Thread sendingThread;
@@ -44,6 +50,7 @@ namespace SCADA
         private Dictionary<int, IMaster> masters;
         private Dictionary<int, IChannel> channels;
         private Dictionary<int, IDNP3Manager> managers;
+        private Dictionary<int, List<long>> conGidsForSimulator;
 
         public ITransactionDuplexScada ProxyCoordinator
         {
@@ -104,7 +111,12 @@ namespace SCADA
                 addressPool.Add(i, new RTUAddress() { IsConnected = false, Cnt = 0 });
             }
 
+            energyConsumersByRtu = new Dictionary<int, List<EnergyConsumerForScada>>();
+            copyEnergyConsumersByRtu = new Dictionary<int, List<EnergyConsumerForScada>>();
+            conGidsForSimulator = new Dictionary<int, List<long>>();
             handlers = new Dictionary<int, SOEHandler>();
+            enConsumers = new Dictionary<long, EnergyConsumerForScada>();
+            copyEnConsumers = new Dictionary<long, EnergyConsumerForScada>();
             measurements = new Dictionary<int, List<MeasurementForScada>>();
             copyMeasurements = new Dictionary<int, List<MeasurementForScada>>();
             resourcesToSend = new Dictionary<long, DynamicMeasurement>();
@@ -112,6 +124,8 @@ namespace SCADA
             masters = new Dictionary<int, IMaster>();
             channels = new Dictionary<int, IChannel>();
             managers = new Dictionary<int, IDNP3Manager>();
+            measurementsToEnlist = new List<ResourceDescription>();
+            consumersToEnlist = new List<ResourceDescription>();
 
             while (true)
             {
@@ -130,19 +144,38 @@ namespace SCADA
                 }
             }
 
-            ReadDataFromDB(measurements);
+            this.ReadDataFromDB();
             sendingThread = new Thread(() => CheckIfThereIsSomethingToSned());
             sendingThread.Start();
         }
 
-        public void EnlistMeas(List<ResourceDescription> meas)
+        public void EnlistMeas(List<ResourceDescription> data)
         {
             Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Start the EnlistMeas function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            this.measurementsToEnlist = meas;
+
+            foreach (ResourceDescription rd in data)
+            {
+                DMSType type = (DMSType)(rd.Id >> 32);
+
+                switch (type)
+                {
+                    case DMSType.ANALOG:
+                        measurementsToEnlist.Add(rd);
+                        break;
+                    case DMSType.ENERGYCONS:
+                        consumersToEnlist.Add(rd);
+                        break;
+                }
+            }
 
             foreach (KeyValuePair<int, List<MeasurementForScada>> kvp in this.measurements)
             {
                 this.copyMeasurements.Add(kvp.Key, kvp.Value);
+            }
+
+            foreach (KeyValuePair<long, EnergyConsumerForScada> kvp in this.enConsumers)
+            {
+                this.copyEnConsumers.Add(kvp.Key, kvp.Value);
             }
 
             Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Finish the EnlistMeas function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -154,6 +187,7 @@ namespace SCADA
             List<Measurement> Ps = new List<Measurement>();
             List<Measurement> Qs = new List<Measurement>();
             List<Measurement> Vs = new List<Measurement>();
+            Dictionary<long, EnergyConsumerForScada> ConsToSimulator = new Dictionary<long, EnergyConsumerForScada>();
 
             lock (lockObjectForSimulators)
             {
@@ -161,6 +195,15 @@ namespace SCADA
                 {
                     return false;
                 }
+            }
+
+            foreach (ResourceDescription rd in consumersToEnlist)
+            {
+                EnergyConsumer ec = new EnergyConsumer();
+                ec.RD2Class(rd);
+                ec.GlobalId = rd.Id;
+                EnergyConsumerForScada ecDb = new EnergyConsumerForScada(ec);
+                ConsToSimulator.Add(ecDb.GlobalId, ecDb);
             }
 
             foreach (ResourceDescription rd in measurementsToEnlist)
@@ -199,6 +242,27 @@ namespace SCADA
                     lock (lockObjectForSimulators)
                     {
                         index = simulators[Ps[i].RtuAddress].AddMeasurement(Ps[i]);
+
+                        if (!simulators[Ps[i].RtuAddress].AddConsumer(ConsToSimulator[Ps[i].PowerSystemResourceRef]))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            if (!conGidsForSimulator.ContainsKey(Ps[i].RtuAddress))
+                            {
+                                conGidsForSimulator.Add(Ps[i].RtuAddress, new List<long>());
+                            }
+
+                            if (!copyEnergyConsumersByRtu.ContainsKey(Ps[i].RtuAddress))
+                            {
+                                copyEnergyConsumersByRtu.Add(Ps[i].RtuAddress, new List<EnergyConsumerForScada>());
+                            }
+
+                            conGidsForSimulator[Ps[i].RtuAddress].Add(ConsToSimulator[Ps[i].PowerSystemResourceRef].GlobalId);
+                            copyEnConsumers.Add(ConsToSimulator[Ps[i].PowerSystemResourceRef].GlobalId, ConsToSimulator[Ps[i].PowerSystemResourceRef]);
+                            copyEnergyConsumersByRtu[Ps[i].RtuAddress].Add(ConsToSimulator[Ps[i].PowerSystemResourceRef]);
+                        }
                     }
                 }
                 catch (Exception)
@@ -293,6 +357,19 @@ namespace SCADA
         {
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Commit; line: {0}; Start the Commit function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             this.measurements.Clear();
+            this.enConsumers.Clear();
+            this.energyConsumersByRtu.Clear();
+
+            foreach (KeyValuePair<long, EnergyConsumerForScada> kvp in this.copyEnConsumers)
+            {
+                this.enConsumers.Add(kvp.Key, kvp.Value);
+                f.AddConsumers(kvp.Value);
+            }
+
+            foreach (KeyValuePair<int, List<EnergyConsumerForScada>> kvp in this.copyEnergyConsumersByRtu)
+            {
+                this.energyConsumersByRtu.Add(kvp.Key, kvp.Value);
+            }
 
             foreach (KeyValuePair<int, List<MeasurementForScada>> kvp in this.copyMeasurements)
             {
@@ -305,7 +382,9 @@ namespace SCADA
                 kvp.Value.Cnt = 0;
             }
 
+            this.copyEnergyConsumersByRtu.Clear();
             this.copyMeasurements.Clear();
+            this.copyEnConsumers.Clear();
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Commit; line: {0}; Finish the Commit function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
@@ -319,13 +398,16 @@ namespace SCADA
                 {
                     if (this.simulators.ContainsKey(kvp.Key))
                     {
-                        this.simulators[kvp.Key].Rollback(addressPool[kvp.Key].Cnt);
+                        this.simulators[kvp.Key].Rollback(addressPool[kvp.Key].Cnt, conGidsForSimulator[kvp.Key]);
                         kvp.Value.Cnt = 0;
                     }
                 }
             }
 
+            this.copyEnergyConsumersByRtu.Clear();
             this.copyMeasurements.Clear();
+            this.copyEnConsumers.Clear();
+            conGidsForSimulator.Clear();
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Rollback; line: {0}; Finish the Rollback function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
@@ -357,7 +439,7 @@ namespace SCADA
             sendingThread.Abort();
         }
 
-        public void ReadDataFromDB(Dictionary<int, List<MeasurementForScada>> measurements)
+        public void ReadDataFromDB()
         {
             try
             {
@@ -367,6 +449,28 @@ namespace SCADA
                 foreach (WrapperDB wDB in meass)
                 {
                     measurements.Add(wDB.RtuAddress, wDB.ListOfMeasurements);
+                }
+
+                enConsumers.Clear();
+                List<EnergyConsumerForScada> conss = f.ReadConsumers();
+                conss.ForEach(x => enConsumers.Add(x.GlobalId, x));
+                List<long> writtenConsumers = new List<long>();
+
+                foreach (KeyValuePair<int, List<MeasurementForScada>> kvp in measurements)
+                {
+                    foreach (MeasurementForScada m in kvp.Value)
+                    {
+                        if (!energyConsumersByRtu.ContainsKey(kvp.Key))
+                        {
+                            energyConsumersByRtu.Add(kvp.Key, new List<EnergyConsumerForScada>());
+                        }
+
+                        if (!writtenConsumers.Contains(enConsumers[m.Measurement.PowerSystemResourceRef].GlobalId))
+                        {
+                            energyConsumersByRtu[kvp.Key].Add(enConsumers[m.Measurement.PowerSystemResourceRef]);
+                            writtenConsumers.Add(enConsumers[m.Measurement.PowerSystemResourceRef].GlobalId);
+                        }
+                    }
                 }
             }
             catch (Exception)
@@ -471,6 +575,25 @@ namespace SCADA
             foreach (MeasurementForScada m in measurements[rtuAddress])
             {
                 retVal.Add(m);
+            }
+
+            return retVal;
+        }
+
+        public List<EnergyConsumerForScada> GetConsumersFromScada(int rtuAddress)
+        {
+            List<EnergyConsumerForScada> retVal = new List<EnergyConsumerForScada>();
+
+            try
+            {
+                foreach (EnergyConsumerForScada m in energyConsumersByRtu[rtuAddress])
+                {
+                    retVal.Add(m);
+                }
+            }
+            catch (KeyNotFoundException)
+            {
+
             }
 
             return retVal;

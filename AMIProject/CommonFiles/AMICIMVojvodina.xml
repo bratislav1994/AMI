@@ -160,6 +160,7 @@
 	<cim:EnergyConsumer rdf:ID="EC_1_1">
 		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
 		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
 		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_1"/>
 		<cim:IdentifiedObject.mRID>EC_1_1</cim:IdentifiedObject.mRID>
@@ -168,6 +169,7 @@
 	<cim:EnergyConsumer rdf:ID="EC_1_2">
 		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
 		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
 		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_1"/>
 		<cim:IdentifiedObject.mRID>EC_1_2</cim:IdentifiedObject.mRID>
@@ -176,6 +178,7 @@
 	<cim:EnergyConsumer rdf:ID="EC_1_3">
 		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
 		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
 		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_1"/>
 		<cim:IdentifiedObject.mRID>EC_1_3</cim:IdentifiedObject.mRID>
@@ -184,6 +187,7 @@
 	<cim:EnergyConsumer rdf:ID="EC_1_4">
 		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
 		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
 		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_2"/>
 		<cim:IdentifiedObject.mRID>EC_1_4</cim:IdentifiedObject.mRID>
@@ -192,6 +196,7 @@
 	<cim:EnergyConsumer rdf:ID="EC_1_5">
 		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
 		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
 		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_2"/>
 		<cim:IdentifiedObject.mRID>EC_1_5</cim:IdentifiedObject.mRID>
@@ -200,6 +205,7 @@
 	<cim:EnergyConsumer rdf:ID="EC_1_6">
 		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
 		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
 		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_2"/>
 		<cim:IdentifiedObject.mRID>EC_1_6</cim:IdentifiedObject.mRID>
@@ -208,6 +214,7 @@
 	<cim:EnergyConsumer rdf:ID="EC_1_7">
 		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
 		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
 		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_3"/>
 		<cim:IdentifiedObject.mRID>EC_1_7</cim:IdentifiedObject.mRID>
@@ -216,6 +223,7 @@
 	<cim:EnergyConsumer rdf:ID="EC_1_8">
 		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
 		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
 		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_3"/>
 		<cim:IdentifiedObject.mRID>EC_1_8</cim:IdentifiedObject.mRID>
@@ -224,6 +232,7 @@
 	<cim:EnergyConsumer rdf:ID="EC_1_9">
 		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
 		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
 		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_3"/>
 		<cim:IdentifiedObject.mRID>EC_1_9</cim:IdentifiedObject.mRID>
@@ -232,6 +241,7 @@
 	<cim:EnergyConsumer rdf:ID="EC_1_10">
 		<cim:EnergyConsumer.pfixed>0</cim:EnergyConsumer.pfixed>
 		<cim:EnergyConsumer.qfixed>0</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
 		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_3"/>
 		<cim:IdentifiedObject.mRID>EC_1_10</cim:IdentifiedObject.mRID>
@@ -245,6 +255,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -261,6 +272,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -277,6 +289,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -293,6 +306,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -309,6 +323,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -325,6 +340,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -341,6 +357,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -357,6 +374,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -373,6 +391,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -389,6 +408,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -406,6 +426,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -422,6 +443,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -438,6 +460,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -454,6 +477,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -470,6 +494,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -486,6 +511,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -502,6 +528,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -518,6 +545,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -534,6 +562,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -550,6 +579,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -567,6 +597,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -583,6 +614,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -599,6 +631,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -615,6 +648,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -631,6 +665,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -647,6 +682,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -663,6 +699,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -679,6 +716,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -695,6 +733,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
@@ -711,6 +750,7 @@
 		<cim:Analog.normalValue>0</cim:Analog.normalValue>
 		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
 		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
+		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
 		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
 		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
 		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>

@@ -8,24 +8,24 @@ using System.Text;
 using System.Threading.Tasks;
 using TC57CIM.IEC61970.Core;
 
-namespace CalculationEngine.Class
+namespace FTN.Services.NetworkModelService.DataModel
 {
     [DataContract]
-    public class SubGeographicalRegionCE
+    public class SubGeographicalRegionDb
     {
         private long globalId;
         private string mRID;
         private string name;
         private long geoRegionId;
-        private GeographicalRegionCE geoRegionCE;
+        private GeographicalRegionDb geoRegionCE;
         private List<long> substations = new List<long>();
-        private List<SubstationCE> substationsCE = new List<SubstationCE>();
+        private List<SubstationDb> substationsCE = new List<SubstationDb>();
 
-        public SubGeographicalRegionCE()
+        public SubGeographicalRegionDb()
         {
         }
 
-        public SubGeographicalRegionCE(SubGeographicalRegion subGeoRegion)
+        public SubGeographicalRegionDb(SubGeographicalRegion subGeoRegion)
         {
             this.globalId = subGeoRegion.GlobalId;
             this.mRID = subGeoRegion.Mrid;
@@ -93,7 +93,7 @@ namespace CalculationEngine.Class
             }
         }
 
-        public GeographicalRegionCE GeoRegionCE
+        public GeographicalRegionDb GeoRegionCE
         {
             get { return geoRegionCE; }
             set { geoRegionCE = value; }

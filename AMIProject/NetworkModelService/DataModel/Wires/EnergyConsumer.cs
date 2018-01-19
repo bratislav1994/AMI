@@ -23,6 +23,7 @@ namespace TC57CIM.IEC61970.Wires {
 
         private float pfixed;
         private float qfixed;
+        private ConsumerType type;
 
         public EnergyConsumer()
         {
@@ -45,6 +46,12 @@ namespace TC57CIM.IEC61970.Wires {
             set { qfixed = value; }
         }
 
+        public ConsumerType Type
+        {
+            get { return type; }
+            set { type = value; }
+        }
+
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -55,8 +62,7 @@ namespace TC57CIM.IEC61970.Wires {
             if (base.Equals(obj))
             {
                 EnergyConsumer x = (EnergyConsumer)obj;
-                return (x.pfixed == this.pfixed &&
-                        x.qfixed == this.qfixed);
+                return (x.pfixed == this.pfixed && x.qfixed == this.qfixed && x.type == this.type);
             }
             else
             {
@@ -77,6 +83,7 @@ namespace TC57CIM.IEC61970.Wires {
             {
                 case ModelCode.ENERGYCONS_PFIXED:
                 case ModelCode.ENERGYCONS_QFIXED:
+                case ModelCode.ENERGYCONS_TYPE:
                     return true;
 
                 default:
@@ -91,11 +98,12 @@ namespace TC57CIM.IEC61970.Wires {
                 case ModelCode.ENERGYCONS_PFIXED:
                     property.SetValue(pfixed);
                     break;
-
                 case ModelCode.ENERGYCONS_QFIXED:
                     property.SetValue(qfixed);
                     break;
-
+                case ModelCode.ENERGYCONS_TYPE:
+                    property.SetValue((int)type);
+                    break;
                 default:
                     base.GetProperty(property);
                     break;
@@ -112,7 +120,9 @@ namespace TC57CIM.IEC61970.Wires {
                 case ModelCode.ENERGYCONS_QFIXED:
                     qfixed = property.AsFloat();
                     break;
-
+                case ModelCode.ENERGYCONS_TYPE:
+                    type = (ConsumerType)property.AsInt();
+                    break;
                 default:
                     base.SetProperty(property);
                     break;
@@ -151,6 +161,7 @@ namespace TC57CIM.IEC61970.Wires {
             consumerCopy.Measurements = this.Measurements;
             consumerCopy.Pfixed = this.Pfixed;
             consumerCopy.Qfixed = this.Qfixed;
+            consumerCopy.Type = this.Type;
 
             return consumerCopy;
         }

@@ -103,10 +103,15 @@
     <Compile Include="Core\VoltageLevel.cs" />
     <Compile Include="Dynamic\DayAggregation.cs" />
     <Compile Include="Dynamic\DynamicMeasurement.cs" />
+    <Compile Include="Dynamic\EnergyConsumerDb.cs" />
+    <Compile Include="Dynamic\EnergyConsumerForScada.cs" />
+    <Compile Include="Dynamic\GeographicalRegionDb.cs" />
     <Compile Include="Dynamic\HourAggregation.cs" />
     <Compile Include="Dynamic\MinuteAggregation.cs" />
     <Compile Include="Dynamic\MeasurementForScada.cs" />
     <Compile Include="Dynamic\Statistics.cs" />
+    <Compile Include="Dynamic\SubGeographicalRegionDb.cs" />
+    <Compile Include="Dynamic\SubstationDb.cs" />
     <Compile Include="Dynamic\WrapperDB.cs" />
     <Compile Include="Meas\Analog.cs" />
     <Compile Include="Meas\Discrete.cs" />

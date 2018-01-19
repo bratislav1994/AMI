@@ -255,7 +255,6 @@ namespace TC57CIM.IEC61970.Meas
                 case ModelCode.MEASUREMENT_NORMALRAWVAL:
                     normalRawValue = property.AsInt();
                     break;
-
                 default:
                     base.SetProperty(property);
                     break;

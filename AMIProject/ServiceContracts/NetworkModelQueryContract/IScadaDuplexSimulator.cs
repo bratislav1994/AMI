@@ -17,5 +17,8 @@ namespace FTN.ServiceContracts
 
         [OperationContract]
         List<MeasurementForScada> GetNumberOfPoints(int rtuAddress);
+
+        [OperationContract]
+        List<EnergyConsumerForScada> GetConsumersFromScada(int rtuAddress);
     }
 }

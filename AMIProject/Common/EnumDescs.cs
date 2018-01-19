@@ -13,6 +13,7 @@ namespace FTN.Common
 		{
             property2enumType.Add(ModelCode.MEASUREMENT_UNITSYMBOL, typeof(UnitSymbol));
             property2enumType.Add(ModelCode.MEASUREMENT_DIRECTION, typeof(Direction));
+            property2enumType.Add(ModelCode.ENERGYCONS_TYPE, typeof(ConsumerType));
         }
 
 		//public List<string> GetEnumList(ModelCode propertyId)

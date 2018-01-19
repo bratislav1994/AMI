@@ -17,6 +17,6 @@ namespace SCADA.Access
         public DbSet<WrapperDB> WrapperMeas { get; set; }
         public DbSet<MeasurementForScada> MeasurementForScada { get; set; }
         public DbSet<Measurement> Measurement { get; set; }
-
+        public DbSet<EnergyConsumerForScada> Consumers { get; set; }
     }
 }

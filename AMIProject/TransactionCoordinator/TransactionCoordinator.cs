@@ -57,8 +57,8 @@ namespace TransactionCoordinator
         public bool ApplyDelta(Delta delta)
         {
             Logger.LogMessageToFile(string.Format("TranscactionCoordinator.TranscactionCoordinator.ApplyDelta; line: {0}; Coordinator sends data to NMS and SCADA", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            List<ResourceDescription> measurements = new List<ResourceDescription>();
-            List<ResourceDescription> consumers = new List<ResourceDescription>();
+            List<ResourceDescription> dataForScada = new List<ResourceDescription>();
+            List<ResourceDescription> dataForCE = new List<ResourceDescription>();
             Delta newDelta = null;
             bool CalculationEnginePrepareSuccess = false;
 
@@ -78,14 +78,14 @@ namespace TransactionCoordinator
                 foreach (ResourceDescription rd in newDelta.InsertOperations)
                 {
                     DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(rd.Id);
-                    if (type == DMSType.ANALOG)
+                    if (type == DMSType.ANALOG || type == DMSType.ENERGYCONS)
                     {
-                        measurements.Add(rd);
+                        dataForScada.Add(rd);
                     }
                     else if (type == DMSType.ENERGYCONS || type == DMSType.GEOREGION || type == DMSType.SUBGEOREGION || 
                             type == DMSType.SUBSTATION)
                     {
-                        consumers.Add(rd);
+                        dataForCE.Add(rd);
                     }
                 }
 
@@ -93,7 +93,7 @@ namespace TransactionCoordinator
                 {
                     try
                     {
-                        scada.EnlistMeas(measurements);
+                        scada.EnlistMeas(dataForScada);
                     }
                     catch
                     {
@@ -109,7 +109,7 @@ namespace TransactionCoordinator
 
                 try
                 {
-                    proxyCE.EnlistMeas(consumers);
+                    proxyCE.EnlistMeas(dataForCE);
                     CalculationEnginePrepareSuccess = proxyCE.Prepare();
                 }
                 catch

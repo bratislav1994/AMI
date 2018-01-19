@@ -1,5 +1,4 @@
-﻿using CalculationEngine.Class;
-using FTN.Common;
+﻿using FTN.Common;
 using FTN.Services.NetworkModelService.DataModel;
 using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System;
@@ -278,7 +277,7 @@ namespace CalculationEngine.Access
 
                         if (totalConsumers != null || totalConsumers.Count != 0)
                         {
-                            foreach (EnergyConsumerCE consumer in totalConsumers)
+                            foreach (EnergyConsumerDb consumer in totalConsumers)
                             {
                                 HourAggregation ha = new HourAggregation();
                                 ha.PsrRef = consumer.GlobalId;
@@ -605,7 +604,7 @@ namespace CalculationEngine.Access
 
                         if (totalConsumers != null || totalConsumers.Count != 0)
                         {
-                            foreach (EnergyConsumerCE consumer in totalConsumers)
+                            foreach (EnergyConsumerDb consumer in totalConsumers)
                             {
                                 DayAggregation da = new DayAggregation();
                                 da.PsrRef = consumer.GlobalId;
@@ -980,13 +979,13 @@ namespace CalculationEngine.Access
             }
         }
 
-        public bool AddGeoRegions(List<GeographicalRegionCE> geoRegions)
+        public bool AddGeoRegions(List<GeographicalRegionDb> geoRegions)
         {
             lock (lockObj)
             {
                 using (var access = new AccessDB())
                 {
-                    foreach (GeographicalRegionCE gr in geoRegions)
+                    foreach (GeographicalRegionDb gr in geoRegions)
                     {
                         access.GeoRegions.Add(gr);
                     }
@@ -1003,13 +1002,13 @@ namespace CalculationEngine.Access
             }
         }
 
-        public bool AddSubGeoRegions(List<SubGeographicalRegionCE> subGeoRegions)
+        public bool AddSubGeoRegions(List<SubGeographicalRegionDb> subGeoRegions)
         {
             lock (lockObj)
             {
                 using (var access = new AccessDB())
                 {
-                    foreach (SubGeographicalRegionCE sgr in subGeoRegions)
+                    foreach (SubGeographicalRegionDb sgr in subGeoRegions)
                     {
                         access.SubGeoRegions.Add(sgr);
                     }
@@ -1026,13 +1025,13 @@ namespace CalculationEngine.Access
             }
         }
 
-        public bool AddSubstations(List<SubstationCE> substations)
+        public bool AddSubstations(List<SubstationDb> substations)
         {
             lock (lockObj)
             {
                 using (var access = new AccessDB())
                 {
-                    foreach (SubstationCE ss in substations)
+                    foreach (SubstationDb ss in substations)
                     {
                         access.Substations.Add(ss);
                     }
@@ -1049,13 +1048,13 @@ namespace CalculationEngine.Access
             }
         }
 
-        public bool AddConsumers(List<EnergyConsumerCE> consumers)
+        public bool AddConsumers(List<EnergyConsumerDb> consumers)
         {
             lock (lockObj)
             {
                 using (var access = new AccessDB())
                 {
-                    foreach (EnergyConsumerCE ec in consumers)
+                    foreach (EnergyConsumerDb ec in consumers)
                     {
                         access.Consumers.Add(ec);
                     }
@@ -1072,9 +1071,9 @@ namespace CalculationEngine.Access
             }
         }
 
-        public Dictionary<long, EnergyConsumerCE> ReadConsumers()
+        public Dictionary<long, EnergyConsumerDb> ReadConsumers()
         {
-            Dictionary<long, EnergyConsumerCE> retVal = new Dictionary<long, EnergyConsumerCE>();
+            Dictionary<long, EnergyConsumerDb> retVal = new Dictionary<long, EnergyConsumerDb>();
 
             lock (lockObj)
             {
@@ -1082,7 +1081,7 @@ namespace CalculationEngine.Access
                 {
                     var consumers = access.Consumers.ToList();
 
-                    foreach (EnergyConsumerCE ec in consumers)
+                    foreach (EnergyConsumerDb ec in consumers)
                     {
                         retVal.Add(ec.GlobalId, ec);
                     }
@@ -1092,9 +1091,9 @@ namespace CalculationEngine.Access
             }
         }
 
-        public Dictionary<long, SubstationCE> ReadSubstations()
+        public Dictionary<long, SubstationDb> ReadSubstations()
         {
-            Dictionary<long, SubstationCE> retVal = new Dictionary<long, SubstationCE>();
+            Dictionary<long, SubstationDb> retVal = new Dictionary<long, SubstationDb>();
 
             lock (lockObj)
             {
@@ -1102,7 +1101,7 @@ namespace CalculationEngine.Access
                 {
                     var substations = access.Substations.ToList();
 
-                    foreach (SubstationCE ss in substations)
+                    foreach (SubstationDb ss in substations)
                     {
                         retVal.Add(ss.GlobalId, ss);
                     }
@@ -1112,9 +1111,9 @@ namespace CalculationEngine.Access
             }
         }
 
-        public Dictionary<long, SubGeographicalRegionCE> ReadSubGeoRegions()
+        public Dictionary<long, SubGeographicalRegionDb> ReadSubGeoRegions()
         {
-            Dictionary<long, SubGeographicalRegionCE> retVal = new Dictionary<long, SubGeographicalRegionCE>();
+            Dictionary<long, SubGeographicalRegionDb> retVal = new Dictionary<long, SubGeographicalRegionDb>();
 
             lock (lockObj)
             {
@@ -1122,7 +1121,7 @@ namespace CalculationEngine.Access
                 {
                     var subGeoRegions = access.SubGeoRegions.ToList();
 
-                    foreach (SubGeographicalRegionCE sgr in subGeoRegions)
+                    foreach (SubGeographicalRegionDb sgr in subGeoRegions)
                     {
                         retVal.Add(sgr.GlobalId, sgr);
                     }
@@ -1132,9 +1131,9 @@ namespace CalculationEngine.Access
             }
         }
 
-        public Dictionary<long, GeographicalRegionCE> ReadGeoRegions()
+        public Dictionary<long, GeographicalRegionDb> ReadGeoRegions()
         {
-            Dictionary<long, GeographicalRegionCE> retVal = new Dictionary<long, GeographicalRegionCE>();
+            Dictionary<long, GeographicalRegionDb> retVal = new Dictionary<long, GeographicalRegionDb>();
 
             lock (lockObj)
             {
@@ -1142,7 +1141,7 @@ namespace CalculationEngine.Access
                 {
                     var geoRegions = access.GeoRegions.ToList();
 
-                    foreach (GeographicalRegionCE gr in geoRegions)
+                    foreach (GeographicalRegionDb gr in geoRegions)
                     {
                         retVal.Add(gr.GlobalId, gr);
                     }
@@ -1186,7 +1185,7 @@ namespace CalculationEngine.Access
 
                         if (totalConsumers != null || totalConsumers.Count != 0)
                         {
-                            foreach (EnergyConsumerCE consumer in totalConsumers)
+                            foreach (EnergyConsumerDb consumer in totalConsumers)
                             {
                                 MinuteAggregation ma = new MinuteAggregation();
                                 ma.PsrRef = consumer.GlobalId;

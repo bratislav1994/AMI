@@ -40,6 +40,7 @@ namespace TC57CIM.IEC61970.Meas
 
         private int alarmHigh;
         private int alarmLow;
+        private bool isAlarm;
 
         public Analog()
         {
@@ -103,13 +104,27 @@ namespace TC57CIM.IEC61970.Meas
             }
         }
 
+        [DataMember]
+        public bool IsAlarm
+        {
+            get
+            {
+                return isAlarm;
+            }
+
+            set
+            {
+                isAlarm = value;
+            }
+        }
+
         public override bool Equals(object obj)
         {
             if (base.Equals(obj))
             {
                 Analog x = (Analog)obj;
                 return (x.maxValue == this.maxValue && x.minValue == this.minValue && x.normalValue == this.normalValue &&
-                        x.alarmHigh == this.alarmHigh && x.alarmLow == this.alarmLow);
+                        x.alarmHigh == this.alarmHigh && x.alarmLow == this.alarmLow && x.isAlarm == this.isAlarm);
             }
             else
             {
@@ -133,6 +148,7 @@ namespace TC57CIM.IEC61970.Meas
                 case ModelCode.ANALOG_NORMALVALUE:
                 case ModelCode.ANALOG_ALARMHIGH:
                 case ModelCode.ANALOG_ALARMLOW:
+                case ModelCode.ANALOG_ISALARM:
                     return true;
 
                 default:
@@ -160,6 +176,9 @@ namespace TC57CIM.IEC61970.Meas
                 case ModelCode.ANALOG_ALARMLOW:
                     property.SetValue(alarmLow);
                     break;
+                case ModelCode.ANALOG_ISALARM:
+                    property.SetValue(isAlarm);
+                    break;
                 default:
                     base.GetProperty(property);
                     break;
@@ -186,7 +205,9 @@ namespace TC57CIM.IEC61970.Meas
                 case ModelCode.ANALOG_ALARMLOW:
                     alarmLow = property.AsInt();
                     break;
-
+                case ModelCode.ANALOG_ISALARM:
+                    isAlarm = property.AsBool();
+                    break;
                 default:
                     base.SetProperty(property);
                     break;
@@ -218,6 +239,7 @@ namespace TC57CIM.IEC61970.Meas
             analogCopy.PowerSystemResourceRef = this.PowerSystemResourceRef;
             analogCopy.alarmHigh = this.alarmHigh;
             analogCopy.alarmLow = this.alarmLow;
+            analogCopy.isAlarm = this.isAlarm;
 
             return analogCopy;
         }

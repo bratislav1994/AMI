@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FTN.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,10 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 using TC57CIM.IEC61970.Wires;
 
-namespace CalculationEngine.Class
+namespace FTN.Services.NetworkModelService.DataModel
 {
     [DataContract]
-    public class EnergyConsumerCE
+    public class EnergyConsumerDb
     {
         private long globalId;
         private string mRID;
@@ -20,13 +21,14 @@ namespace CalculationEngine.Class
         private float qfixed;
         private long baseVoltage;
         private long eqContainerId;
-        private SubstationCE eqContainerCE;
+        private ConsumerType type;
+        private SubstationDb eqContainerCE;
 
-        public EnergyConsumerCE()
+        public EnergyConsumerDb()
         {
         }
 
-        public EnergyConsumerCE(EnergyConsumer consumer)
+        public EnergyConsumerDb(EnergyConsumer consumer)
         {
             this.globalId = consumer.GlobalId;
             this.mRID = consumer.Mrid;
@@ -35,6 +37,7 @@ namespace CalculationEngine.Class
             this.qfixed = consumer.Qfixed;
             this.baseVoltage = consumer.BaseVoltage;
             this.eqContainerId = consumer.EqContainer;
+            this.type = consumer.Type;
         }
 
         [DataMember]
@@ -138,7 +141,7 @@ namespace CalculationEngine.Class
             }
         }
 
-        public SubstationCE EqContainerCE
+        public SubstationDb EqContainerCE
         {
             get
             {
@@ -148,6 +151,20 @@ namespace CalculationEngine.Class
             set
             {
                 eqContainerCE = value;
+            }
+        }
+
+        [DataMember]
+        public ConsumerType Type
+        {
+            get
+            {
+                return type;
+            }
+
+            set
+            {
+                type = value;
             }
         }
     }

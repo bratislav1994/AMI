@@ -22,6 +22,12 @@ namespace FTN.Common
         READ
     }//end Direction
 
+    public enum ConsumerType : int
+    {
+        HOUSEHOLD = 0,
+        SHOPPING_CENTER,
+    }//end Direction
+
     public enum ResolutionType : int
     {
         MINUTE = 0,

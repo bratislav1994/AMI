@@ -15,6 +15,7 @@ namespace FTN.Services.NetworkModelService.DataModel
     {
         private int idDB;
         private long psrRef;
+        private EnergyConsumerDb psr;
         private float currentP;
         private float currentQ;
         private float currentV;
@@ -43,6 +44,7 @@ namespace FTN.Services.NetworkModelService.DataModel
         }
 
         [DataMember]
+        [ForeignKey("Psr")]
         public long PsrRef
         {
             get
@@ -125,6 +127,19 @@ namespace FTN.Services.NetworkModelService.DataModel
             set
             {
                 idDB = value;
+            }
+        }
+        
+        public EnergyConsumerDb Psr
+        {
+            get
+            {
+                return psr;
+            }
+
+            set
+            {
+                psr = value;
             }
         }
     }
