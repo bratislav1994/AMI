@@ -298,7 +298,7 @@ namespace CalculationEngine.Access
                             if (hourAggregation == null)
                             {
                                 Dictionary<long, List<MinuteAggregation>> dic = CreateDictionaryForHour(measurements);
-                                List<HourAggregation> aggregations = CreateHourAggregations(dic.Values.ToList().First().First().TimeStamp, dic);
+                                List<HourAggregation> aggregations = CreateHourAggregations(this.RoundDown(dic.Values.ToList().First().First().TimeStamp, TimeSpan.FromHours(1)), dic);
 
                                 foreach (HourAggregation ma in aggregations)
                                 {
@@ -309,22 +309,8 @@ namespace CalculationEngine.Access
                             }
                             else
                             {
-                                DateTime beforeFrom = from.AddHours(-1);
-                                List<MinuteAggregation> previousMeasurements = access.AggregationForMinutes.Where(x => DateTime.Compare(from, x.TimeStamp) > 0 && DateTime.Compare(beforeFrom, x.TimeStamp) < 0).OrderByDescending(x => x.TimeStamp).ToList();
-                                Dictionary<long, MinuteAggregation> previousMeasurementsDic = new Dictionary<long, MinuteAggregation>();
-
-                                foreach (MinuteAggregation dm in previousMeasurements)
-                                {
-                                    MinuteAggregation value = null;
-
-                                    if (!previousMeasurementsDic.TryGetValue(dm.PsrRef, out value))
-                                    {
-                                        previousMeasurementsDic[dm.PsrRef] = dm;
-                                    }
-                                }
-
                                 Dictionary<long, List<MinuteAggregation>> dic = CreateDictionaryForHour(measurements);
-                                List<HourAggregation> aggregations = CreateHourAggregations(dic.Values.ToList().First().First().TimeStamp, dic);
+                                List<HourAggregation> aggregations = CreateHourAggregations(this.RoundDown(dic.Values.ToList().First().First().TimeStamp, TimeSpan.FromHours(1)), dic);
 
                                 foreach (HourAggregation ma in aggregations)
                                 {
@@ -639,7 +625,7 @@ namespace CalculationEngine.Access
                             if (dayAggregation == null)
                             {
                                 Dictionary<long, List<HourAggregation>> dic = CreateDictionaryForDay(measurements);
-                                List<DayAggregation> aggregations = CreateDayAggregations(dic.Values.ToList().First().First().TimeStamp, dic);
+                                List<DayAggregation> aggregations = CreateDayAggregations(this.RoundDown(dic.Values.ToList().First().First().TimeStamp, TimeSpan.FromDays(1)), dic);
 
                                 foreach (DayAggregation ma in aggregations)
                                 {
@@ -650,22 +636,8 @@ namespace CalculationEngine.Access
                             }
                             else
                             {
-                                DateTime beforeFrom = from.AddDays(-1);
-                                List<HourAggregation> previousMeasurements = access.AggregationForHours.Where(x => DateTime.Compare(from, x.TimeStamp) > 0 && DateTime.Compare(beforeFrom, x.TimeStamp) < 0).OrderByDescending(x => x.TimeStamp).ToList();
-                                Dictionary<long, HourAggregation> previousMeasurementsDic = new Dictionary<long, HourAggregation>();
-
-                                foreach (HourAggregation dm in previousMeasurements)
-                                {
-                                    HourAggregation value = null;
-
-                                    if (!previousMeasurementsDic.TryGetValue(dm.PsrRef, out value))
-                                    {
-                                        previousMeasurementsDic[dm.PsrRef] = dm;
-                                    }
-                                }
-
                                 Dictionary<long, List<HourAggregation>> dic = CreateDictionaryForDay(measurements);
-                                List<DayAggregation> aggregations = CreateDayAggregations(dic.Values.ToList().First().First().TimeStamp, dic);
+                                List<DayAggregation> aggregations = CreateDayAggregations(this.RoundDown(dic.Values.ToList().First().First().TimeStamp, TimeSpan.FromDays(1)), dic);
 
                                 foreach (DayAggregation ma in aggregations)
                                 {
