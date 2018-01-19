@@ -1,4 +1,5 @@
-﻿using FTN.Services.NetworkModelService.DataModel;
+﻿using FTN.Common;
+using FTN.Services.NetworkModelService.DataModel;
 using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,6 @@ namespace FTN.ServiceContracts
         void ConnectClient();
 
         [OperationContract]
-        Tuple<List<Statistics>, Statistics> GetMeasurementsForChartView(List<long> gids, DateTime from, int resolution);
+        Tuple<List<Statistics>, Statistics> GetMeasurementsForChartView(List<long> gids, DateTime from, ResolutionType resolution);
     }
 }

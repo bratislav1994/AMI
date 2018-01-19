@@ -1,4 +1,5 @@
 ﻿using AMIClient.HelperClasses;
+using FTN.Common;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
+using TC57CIM.IEC61970.Core;
 
 namespace AMIClient.ViewModels
 {
@@ -17,7 +19,6 @@ namespace AMIClient.ViewModels
     {
         private static DataGridViewModel instance;
         private Model model;
-        private object tableItem;
         private Dictionary<string, string> columnFilters;
         private Dictionary<string, PropertyInfo> propertyCache;
         private string nameFilter = string.Empty;
@@ -167,19 +168,45 @@ namespace AMIClient.ViewModels
             }
         }
 
-        private void SelectedAMIAction(object ami)
+        private void SelectedAMIAction(object selected)
         {
-            NetworkPreviewViewModel.Instance.SelectedAMIAction(ami, 1);
+            this.SendValues(ResolutionType.MINUTE, selected);
         }
 
-        private void SelectedAMIHourAction(object ami)
+        private void SelectedAMIHourAction(object selected)
         {
-            NetworkPreviewViewModel.Instance.SelectedAMIAction(ami, 2);
+            this.SendValues(ResolutionType.HOUR, selected);
         }
 
-        private void SelectedAMIDayAction(object ami)
+        private void SelectedAMIDayAction(object selected)
         {
-            NetworkPreviewViewModel.Instance.SelectedAMIAction(ami, 3);
+            this.SendValues(ResolutionType.DAY, selected);
+        }
+
+        private void SendValues(ResolutionType resolution, object selected)
+        {
+            IdentifiedObject io = ((IdentifiedObject)selected);
+
+            switch (GetDmsTypeFromGid(io.GlobalId))
+            {
+                case DMSType.ENERGYCONS:
+                    NetworkPreviewViewModel.Instance.SelectedAMIAction(io, resolution);
+                    break;
+                case DMSType.GEOREGION:
+                    NetworkPreviewViewModel.Instance.ChartViewForGeoRegion(resolution, io.GlobalId, io.Name);
+                    break;
+                case DMSType.SUBGEOREGION:
+                    NetworkPreviewViewModel.Instance.ChartViewForSubGeoRegion(resolution, io.GlobalId, io.Name);
+                    break;
+                case DMSType.SUBSTATION:
+                    NetworkPreviewViewModel.Instance.ChartViewForSubstation(resolution, io.GlobalId, io.Name);
+                    break;
+            }
+        }
+
+        private DMSType GetDmsTypeFromGid(long gid)
+        {
+            return (DMSType)(gid >> 32);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

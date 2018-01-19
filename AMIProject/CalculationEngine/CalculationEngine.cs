@@ -120,19 +120,19 @@ namespace CalculationEngine
             this.clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
         }
 
-        public Tuple<List<Statistics>, Statistics> GetMeasurementsForChartView(List<long> gids, DateTime from, int resolution)
+        public Tuple<List<Statistics>, Statistics> GetMeasurementsForChartView(List<long> gids, DateTime from, ResolutionType resolution)
         {
             List<Statistics> result = new List<Statistics>();
 
             switch (resolution)
             {
-                case 1:
+                case ResolutionType.MINUTE:
                     result = this.dataBaseAdapter.ReadMinuteAggregationTable(gids, from);
                     break;
-                case 2:
+                case ResolutionType.HOUR:
                     result = this.dataBaseAdapter.ReadHourAggregationTable(gids, from);
                     break;
-                case 3:
+                case ResolutionType.DAY:
                     result = this.dataBaseAdapter.ReadDayAggregationTable(gids, from);
                     break;
             }
@@ -143,12 +143,12 @@ namespace CalculationEngine
             }
 
             Statistics statistics = new Statistics();
-            statistics.MaxP = result.Max(x => x.MaxP);
-            statistics.MaxQ = result.Max(x => x.MaxQ);
-            statistics.MaxV = result.Max(x => x.MaxV);
-            statistics.MinP = result.Min(x => x.MinP);
-            statistics.MinQ = result.Min(x => x.MinQ);
-            statistics.MinV = result.Min(x => x.MinV);
+            statistics.MaxP = result.Max(x => x.AvgP);
+            statistics.MaxQ = result.Max(x => x.AvgQ);
+            statistics.MaxV = result.Max(x => x.AvgV);
+            statistics.MinP = result.Min(x => x.AvgP);
+            statistics.MinQ = result.Min(x => x.AvgQ);
+            statistics.MinV = result.Min(x => x.AvgV);
             statistics.AvgP = result.Average(x => x.AvgP);
             statistics.AvgQ = result.Average(x => x.AvgQ);
             statistics.AvgV = result.Average(x => x.AvgV);
