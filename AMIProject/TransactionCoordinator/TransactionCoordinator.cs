@@ -82,7 +82,7 @@ namespace TransactionCoordinator
                     {
                         dataForScada.Add(rd);
                     }
-                    else if (type == DMSType.ENERGYCONS || type == DMSType.GEOREGION || type == DMSType.SUBGEOREGION || 
+                    if (type == DMSType.ENERGYCONS || type == DMSType.GEOREGION || type == DMSType.SUBGEOREGION || 
                             type == DMSType.SUBSTATION)
                     {
                         dataForCE.Add(rd);
