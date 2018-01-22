@@ -190,7 +190,7 @@ namespace AMIClient
             item2.FromPeriod = new DateTime(2018, 1, 19, 12, 0, 0);
             item2.ToPeriod = DateTime.Now;
             item2.Status = HelperClasses.Status.RESOLVED;
-            item2.TypeVoltage = HelperClasses.TypeVoltage.OVERVOLTAGE;
+            item2.TypeVoltage = HelperClasses.TypeVoltage.UNDERVOLTAGE;
             TableItemsForAlarm.Add(item2);
         }
 

@@ -26,6 +26,13 @@ namespace AMIClient.HelperClasses
         Type
     }
 
+    public enum DataGridAlarmHeader
+    {
+        Consumer = 1,
+        Status,
+        TypeVoltage
+    }
+
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum TypeVoltage : int
     {
