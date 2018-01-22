@@ -1,4 +1,5 @@
 ﻿using AMIClient.View;
+using AvalonDockMVVM.ViewModel;
 using FTN.Common;
 using Prism.Commands;
 using System;
@@ -22,22 +23,24 @@ namespace AMIClient.ViewModels
         private Model model;
         private ObservableCollection<RootElement> rootElements;
         private static NetworkPreviewViewModel instance;
-        private bool rightClick;
-        private ObservableCollection<TabItem> tabItems = new ObservableCollection<TabItem>();
-        private object selectedTab;
+        public DockManagerViewModel DockManagerViewModel { get; private set; }
+        private List<DockWindowViewModel> documents =  new List<DockWindowViewModel>();
 
         public NetworkPreviewViewModel()
         {
             rootElements = new ObservableCollection<RootElement>();
-            RightClick = false;
-            TabItems.Add(new TabItem()
-            {
-                Header = "Table",
-                CurrentTab = DataGridViewModel.Instance,
-                Exit = Visibility.Hidden
-            });
+            DataGridViewModel.Instance.Title = "Table";
+            documents.Add(DataGridViewModel.Instance);
+            this.DockManagerViewModel = new DockManagerViewModel(documents);
 
-            SelectedTab = TabItems.First();
+            //TabItems.Add(new TabItem()
+            //{
+            //    Header = "Table",
+            //    CurrentTab = DataGridViewModel.Instance,
+            //    Exit = Visibility.Hidden
+            //});
+
+            //SelectedTab = TabItems.First();
         }
 
         public static NetworkPreviewViewModel Instance
@@ -79,60 +82,11 @@ namespace AMIClient.ViewModels
             }
         }
 
-        public object SelectedTab
-        {
-            get { return selectedTab; }
-            set
-            {
-                selectedTab = value;
-                this.RaisePropertyChanged("SelectedTab");
-            }
-        }
-
-        public ObservableCollection<TabItem> TabItems
-        {
-            get
-            {
-                return tabItems;
-            }
-
-            set
-            {
-                if (tabItems == value)
-                {
-                    return;
-                }
-
-                tabItems = value;
-                RaisePropertyChanged("TabItems");
-            }
-        }
-
-        public bool RightClick
-        {
-            get
-            {
-                return rightClick;
-            }
-
-            set
-            {
-                rightClick = value;
-            }
-        }
-
         public void SetModel(Model model)
         {
             this.Model = model;
             RootElements.Add(new RootElement(this.model));
             this.model.SetRoot(rootElements[0]);
-        }
-
-        private ICommand closeTabCommand;
-
-        public ICommand CloseTabCommand
-        {
-            get { return closeTabCommand ?? (closeTabCommand = new DelegateCommand<TabItem>((t) => { TabItems.Remove(t); })); }
         }
 
         public void SelectedAMIAction(object ami, ResolutionType resolution)
@@ -142,14 +96,18 @@ namespace AMIClient.ViewModels
             
             chartVM = new ChartViewModel() { Model = this.Model, Resolution = resolution };
             chartVM.SetGids(new List<long>() { ec.GlobalId });
+            var doc = new List<DockWindowViewModel>();
+            doc.Add(new ChartViewModel() { Title = ec.Name });
 
-            TabItems.Add(new TabItem()
-            {
-                Header = ec.Name,
-                CurrentTab = chartVM
-            });
+            this.DockManagerViewModel.Adding(doc);
 
-            SelectedTab = TabItems.Last();
+            //TabItems.Add(new TabItem()
+            //{
+            //    Header = ec.Name,
+            //    CurrentTab = chartVM
+            //});
+
+            //SelectedTab = TabItems.Last();
         }
 
         private ICommand groupAmiChartMinCommand;
@@ -218,13 +176,18 @@ namespace AMIClient.ViewModels
                     ChartViewModel chartVM = new ChartViewModel() { Model = this.Model, Resolution = resolution };
                     chartVM.SetGids(ecsC1);
 
-                    TabItems.Add(new TabItem()
-                    {
-                        Header = "All",
-                        CurrentTab = chartVM
-                    });
+                    var doc = new List<DockWindowViewModel>();
+                    doc.Add(new ChartViewModel() { Title = "All" });
 
-                    SelectedTab = TabItems.Last();
+                    this.DockManagerViewModel.Adding(doc);
+
+                    //TabItems.Add(new TabItem()
+                    //{
+                    //    Header = "All",
+                    //    CurrentTab = chartVM
+                    //});
+
+                    //SelectedTab = TabItems.Last();
 
                     break;
                 case "GeoRegionForTree":
@@ -256,13 +219,18 @@ namespace AMIClient.ViewModels
 
             ChartViewModel chartVM4 = new ChartViewModel() { Model = this.Model, Resolution = resolution };
             chartVM4.SetGids(ecsC4);
-            TabItems.Add(new TabItem()
-            {
-                Header = header,
-                CurrentTab = chartVM4
-            });
 
-            SelectedTab = TabItems.Last();
+            var doc = new List<DockWindowViewModel>();
+            doc.Add(new ChartViewModel() { Title = header });
+
+            this.DockManagerViewModel.Adding(doc);
+            //TabItems.Add(new TabItem()
+            //{
+            //    Header = header,
+            //    CurrentTab = chartVM4
+            //});
+
+            //SelectedTab = TabItems.Last();
         }
 
         public void ChartViewForSubGeoRegion(ResolutionType resolution, long gid, string header)
@@ -283,13 +251,17 @@ namespace AMIClient.ViewModels
 
             ChartViewModel chartVM3 = new ChartViewModel() { Model = this.Model, Resolution = resolution };
             chartVM3.SetGids(ecsC3);
-            TabItems.Add(new TabItem()
-            {
-                Header = header,
-                CurrentTab = chartVM3
-            });
+            var doc = new List<DockWindowViewModel>();
+            doc.Add(new ChartViewModel() { Title = header });
 
-            SelectedTab = TabItems.Last();
+            this.DockManagerViewModel.Adding(doc);
+            //TabItems.Add(new TabItem()
+            //{
+            //    Header = header,
+            //    CurrentTab = chartVM3
+            //});
+
+            //SelectedTab = TabItems.Last();
         }
 
         public void ChartViewForGeoRegion(ResolutionType resolution, long gid, string header)
@@ -317,28 +289,18 @@ namespace AMIClient.ViewModels
             ChartViewModel chartVM2 = new ChartViewModel() { Model = this.Model, Resolution = resolution };
             chartVM2.SetGids(ecsC2);
 
-            TabItems.Add(new TabItem()
-            {
-                Header = header,
-                CurrentTab = chartVM2
-            });
+            var doc = new List<DockWindowViewModel>();
+            doc.Add(new ChartViewModel() { Title = header });
 
-            SelectedTab = TabItems.Last();
-        }
+            this.DockManagerViewModel.Adding(doc);
 
-        public void RightClickOn()
-        {
-            this.RightClick = true;
-        }
+            //TabItems.Add(new TabItem()
+            //{
+            //    Header = header,
+            //    CurrentTab = chartVM2
+            //});
 
-        public void RightClickOff()
-        {
-            this.RightClick = false;
-        }
-
-        public bool IsRightClick()
-        {
-            return RightClick;
+            //SelectedTab = TabItems.Last();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

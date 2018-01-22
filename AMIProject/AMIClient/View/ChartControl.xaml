@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:AMIClient.View"
              mc:Ignorable="d" 
              xmlns:vml="clr-namespace:AMIClient.VML"
-             vml:ViewModelLocator.AutoHookedUpViewModel="True"
              xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" 
              xmlns:visualizationToolkit="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit" 
              xmlns:Primitives="clr-namespace:System.Windows.Controls.DataVisualization.Charting.Primitives;assembly=System.Windows.Controls.DataVisualization.Toolkit" 

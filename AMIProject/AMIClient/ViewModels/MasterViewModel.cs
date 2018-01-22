@@ -1,4 +1,5 @@
 ﻿using AMIClient.View;
+using AvalonDockMVVM.ViewModel;
 using FTN.Common.Logger;
 using Prism.Commands;
 using System;

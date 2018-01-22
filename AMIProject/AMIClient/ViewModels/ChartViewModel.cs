@@ -15,7 +15,7 @@ using System.Windows;
 
 namespace AMIClient.ViewModels
 {
-    public class ChartViewModel : INotifyPropertyChanged
+    public class ChartViewModel : AvalonDockMVVM.ViewModel.DockWindowViewModel, INotifyPropertyChanged
     {
         private static ChartViewModel instance;
         private List<KeyValuePair<DateTime, float>> dataHistoryP;

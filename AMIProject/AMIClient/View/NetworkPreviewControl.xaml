@@ -8,7 +8,9 @@
         xmlns:local2="clr-namespace:AMIClient.View"
         xmlns:local3="clr-namespace:AMIClient.ViewModels"
         xmlns:vml="clr-namespace:AMIClient.VML"
-        
+        xmlns:vm="clr-namespace:AvalonDockMVVM.ViewModel"
+        xmlns:dock="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:dockctrl="clr-namespace:Xceed.Wpf.AvalonDock.Controls;assembly=Xceed.Wpf.AvalonDock"
         mc:Ignorable="d"
          >
 
@@ -26,160 +28,185 @@
 
     <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" MinWidth="200"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <TreeView Grid.Column="0" ItemsSource="{Binding RootElements}" x:Name="tree" PreviewMouseRightButtonDown="tree_PreviewMouseRightButtonDown">
+        <Expander ExpandDirection="Right" 
+				  HorizontalAlignment="Right" VerticalAlignment="Stretch">
 
-            <!--<TreeView.ContextMenu>
-                <ContextMenu >
-                    <MenuItem Header="Chart" />
-                    <ContextMenu.ItemContainerStyle>
-                        <Style TargetType="{x:Type MenuItem}">
-                            <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}, Path=DataContext.GroupAMIChartCommand}"/>
-                            <Setter Property="CommandParameter" Value="{Binding}"/>
+            <Expander.Content>
+                <TreeView Width="200" Grid.Column="0" ItemsSource="{Binding RootElements}" x:Name="tree">
+
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                            <Setter Property="FontWeight" Value="Normal" />
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                </Trigger>
+                            </Style.Triggers>
                         </Style>
-                    </ContextMenu.ItemContainerStyle>
-                </ContextMenu>
-            </TreeView.ContextMenu>-->
-
-            <TreeView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}">
-                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-                    <Setter Property="FontWeight" Value="Normal" />
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="FontWeight" Value="Bold" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </TreeView.ItemContainerStyle>
+                    </TreeView.ItemContainerStyle>
 
 
-            <TreeView.Resources>
+                    <TreeView.Resources>
 
-                <HierarchicalDataTemplate 
+                        <HierarchicalDataTemplate 
                                 DataType="{x:Type local:RootElement}" 
                                 ItemsSource="{Binding Children}">
 
-                    <StackPanel Orientation="Horizontal" >
-                        <TextBlock x:Name="t1" Text="{Binding Name}">
+                            <StackPanel Orientation="Horizontal" >
+                                <TextBlock x:Name="t1" Text="{Binding Name}">
 
-                            <TextBlock.ContextMenu>
-                                <ContextMenu DataContext="{x:Reference Name=tree}">
+                                    <!--<TextBlock.ContextMenu>
+                                        <ContextMenu DataContext="{x:Reference Name=tree}">
 
-                                    <MenuItem Header="Minute chart" 
+                                            <MenuItem Header="Minute chart" 
                                                       Command="{Binding DataContext.GroupAmiChartMinCommand}"
                                                       CommandParameter="{Binding}"/>
-                                    <MenuItem Header="Hour chart" 
+                                            <MenuItem Header="Hour chart" 
                                                       Command="{Binding DataContext.GroupAmiChartHourCommand}"
                                                       CommandParameter="{Binding}"/>
-                                    <MenuItem Header="Day chart" 
+                                            <MenuItem Header="Day chart" 
                                                       Command="{Binding DataContext.GroupAmiChartDayCommand}"
                                                       CommandParameter="{Binding}"/>
 
-                                </ContextMenu>
+                                        </ContextMenu>
 
-                            </TextBlock.ContextMenu>
+                                    </TextBlock.ContextMenu>-->
 
-                        </TextBlock>
-                    </StackPanel>
-                </HierarchicalDataTemplate>
+                                </TextBlock>
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
 
-                <HierarchicalDataTemplate 
+                        <HierarchicalDataTemplate 
                                 DataType="{x:Type local:GeoRegionForTree}" 
                                 ItemsSource="{Binding Children}">
 
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Name}" Tag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name}" Tag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
 
-                            <TextBlock.ContextMenu>
-                                <ContextMenu DataContext="{x:Reference Name=tree}">
+                                    <!--<TextBlock.ContextMenu>
+                                        <ContextMenu DataContext="{x:Reference Name=tree}">
 
-                                    <MenuItem Header="Minute chart" 
+                                            <MenuItem Header="Minute chart" 
                                                       Command="{Binding DataContext.GroupAmiChartMinCommand}"
                                                       CommandParameter="{Binding}"/>
-                                    <MenuItem Header="Hour chart" 
+                                            <MenuItem Header="Hour chart" 
                                                       Command="{Binding DataContext.GroupAmiChartHourCommand}"
                                                       CommandParameter="{Binding}"/>
-                                    <MenuItem Header="Day chart" 
+                                            <MenuItem Header="Day chart" 
                                                       Command="{Binding DataContext.GroupAmiChartDayCommand}"
                                                       CommandParameter="{Binding}"/>
 
-                                </ContextMenu>
+                                        </ContextMenu>
 
-                            </TextBlock.ContextMenu>
+                                    </TextBlock.ContextMenu>-->
 
-                        </TextBlock>
-                    </StackPanel>
-                </HierarchicalDataTemplate>
+                                </TextBlock>
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
 
-                <HierarchicalDataTemplate 
+                        <HierarchicalDataTemplate 
                                 DataType="{x:Type local:SubGeoRegionForTree}" 
                                 ItemsSource="{Binding Children}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Name}" Tag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name}" Tag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
 
-                            <TextBlock.ContextMenu>
-                                <ContextMenu DataContext="{x:Reference Name=tree}">
+                                    <!--<TextBlock.ContextMenu>
+                                        <ContextMenu DataContext="{x:Reference Name=tree}">
 
-                                    <MenuItem Header="Minute chart" 
+                                            <MenuItem Header="Minute chart" 
                                                       Command="{Binding DataContext.GroupAmiChartMinCommand}"
                                                       CommandParameter="{Binding}"/>
-                                    <MenuItem Header="Hour chart" 
+                                            <MenuItem Header="Hour chart" 
                                                       Command="{Binding DataContext.GroupAmiChartHourCommand}"
                                                       CommandParameter="{Binding}"/>
-                                    <MenuItem Header="Day chart" 
+                                            <MenuItem Header="Day chart" 
                                                       Command="{Binding DataContext.GroupAmiChartDayCommand}"
                                                       CommandParameter="{Binding}"/>
 
-                                </ContextMenu>
+                                        </ContextMenu>
 
-                            </TextBlock.ContextMenu>
+                                    </TextBlock.ContextMenu>-->
 
-                        </TextBlock>
-                    </StackPanel>
-                </HierarchicalDataTemplate>
+                                </TextBlock>
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
 
-                <DataTemplate 
+                        <DataTemplate 
                                 DataType="{x:Type local:SubstationForTree}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Name}" Tag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name}" Tag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
 
-                            <TextBlock.ContextMenu>
-                                <ContextMenu DataContext="{x:Reference Name=tree}">
+                                    <!--<TextBlock.ContextMenu>
+                                        <ContextMenu DataContext="{x:Reference Name=tree}">
 
-                                    <MenuItem Header="Minute chart" 
+                                            <MenuItem Header="Minute chart" 
                                                       Command="{Binding DataContext.GroupAmiChartMinCommand}"
                                                       CommandParameter="{Binding}"/>
-                                    <MenuItem Header="Hour chart" 
+                                            <MenuItem Header="Hour chart" 
                                                       Command="{Binding DataContext.GroupAmiChartHourCommand}"
                                                       CommandParameter="{Binding}"/>
-                                    <MenuItem Header="Day chart" 
+                                            <MenuItem Header="Day chart" 
                                                       Command="{Binding DataContext.GroupAmiChartDayCommand}"
                                                       CommandParameter="{Binding}"/>
 
-                                </ContextMenu>
+                                        </ContextMenu>
 
-                            </TextBlock.ContextMenu>
+                                    </TextBlock.ContextMenu>-->
 
-                        </TextBlock>
-                    </StackPanel>
-                </DataTemplate>
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
 
-            </TreeView.Resources>
-        </TreeView>
+                    </TreeView.Resources>
+                </TreeView>
+            </Expander.Content>
+        </Expander>
 
         <Grid Grid.Column="1" Grid.ColumnSpan="2">
-           
-            
-            <TabControl SelectedItem="{Binding SelectedTab}" Name="TabMain" ItemsSource="{Binding TabItems,UpdateSourceTrigger=PropertyChanged}" >
+
+            <dock:DockingManager Grid.Row="1"
+                         DataContext="{Binding DockManagerViewModel}"
+                         DocumentsSource="{Binding Documents}"
+                         AnchorablesSource="{Binding Anchorables}" >
+
+                <dock:DockingManager.Resources>
+
+                    <!-- add views for specific ViewModels -->
+                    <DataTemplate DataType="{x:Type local3:ChartViewModel}">
+                        <local2:ChartControl />
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type local3:DataGridViewModel}">
+                        <local2:DataGridControl />
+                    </DataTemplate>
+
+                    <!--<DataTemplate>
+                        <ContentControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Content="{Binding Path=CurrentTab}"></ContentControl>
+                    </DataTemplate>-->
+
+                </dock:DockingManager.Resources>
+
+                <dock:DockingManager.LayoutItemContainerStyle>
+                    <!-- you can add additional bindings from the layoutitem to the DockWindowViewModel -->
+                    <Style TargetType="{x:Type dockctrl:LayoutItem}" >
+                        <Setter Property="Title" Value="{Binding Model.Title}" />
+                        <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
+                        <Setter Property="CanClose" Value="{Binding Model.CanClose}" />
+                    </Style>
+                </dock:DockingManager.LayoutItemContainerStyle>
+
+            </dock:DockingManager>
+            <!--<TabControl SelectedItem="{Binding SelectedTab}" Name="TabMain" ItemsSource="{Binding TabItems,UpdateSourceTrigger=PropertyChanged}" >
                 <TabControl.ItemTemplate>
                     <DataTemplate >
                         <DockPanel >
-                            
+
                             <TextBlock Text="{Binding Header}" Width="90" ToolTip="{Binding Header}" />
                             <Button Content="X" Visibility="{Binding Exit}" Cursor="Hand" Focusable="False"
             FontFamily="Courier" FontSize="12" FontWeight="Bold" Padding="0" 
@@ -191,7 +218,7 @@
                 </TabControl.ItemTemplate>
 
                 <TabControl.ContentTemplate>
-                                    
+
                     <DataTemplate>
                         <ContentControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Content="{Binding Path=CurrentTab}"></ContentControl>
                     </DataTemplate>
@@ -205,42 +232,7 @@
                     </Style>
                 </TabControl.Resources>
 
-            </TabControl>
+            </TabControl>-->
         </Grid>
-
-        
-        
-        <!--<DataGrid Visibility="{Binding DataGridVisibility}" Margin="0, 20, 0, 0" Grid.Column="1" Grid.ColumnSpan="2" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.Amis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
-
-
-            <DataGrid.Resources>
-                <ContextMenu x:Key="ticketContextMenu">
-                    <ContextMenu.Items>
-                        <MenuItem
-                            Header="Chart"
-                            Command="{Binding DataContext.IndividualAmiChartCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
-                            CommandParameter="{Binding DataContext.Ami.GlobalId, RelativeSource={RelativeSource Mode=Self}}"/>
-                    </ContextMenu.Items>
-                </ContextMenu>
-            </DataGrid.Resources>
-
-            <DataGrid.RowStyle>
-                <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
-                    <Setter Property="ContextMenu" Value="{StaticResource ticketContextMenu}" />
-                </Style>
-            </DataGrid.RowStyle>
-
-            <DataGrid.Columns>
-
-                <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Ami.Mrid}"/>
-                <DataGridTextColumn MinWidth="100" Width="100" Header="Name" Binding="{Binding Ami.Name}"/>
-                <DataGridTextColumn MinWidth="100" Width="100" Header="Subgeographical region ID" Binding="{Binding Ami.EqContainer}"/>
-                <DataGridTextColumn MinWidth="100" Width="100" Header="Current P" Binding="{Binding CurrentP}"/>
-                <DataGridTextColumn MinWidth="100" Width="100" Header="Current Q" Binding="{Binding CurrentQ}"/>
-                <DataGridTextColumn MinWidth="100" Width="100" Header="Current V" Binding="{Binding CurrentV}"/>
-                <DataGridTextColumn MinWidth="100" Width="*" Header="TimeStamp" Binding="{Binding TimeStamp, StringFormat=\{0:dd.MM.yy HH:mm:ss\}}"/>
-
-            </DataGrid.Columns>
-        </DataGrid>-->
     </Grid>
 </UserControl>

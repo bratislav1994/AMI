@@ -77,7 +77,7 @@ namespace AMIClient
                 {
                     
                     base.isSelected = value;
-                    if (!NetworkPreviewViewModel.Instance.IsRightClick() && value)
+                    if (value)
                     {
                         Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.IsSelected; line: {0}; Start - get all ami for the selected region", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                         base.Model.ClearPositions();
