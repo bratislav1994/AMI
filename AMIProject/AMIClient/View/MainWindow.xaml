@@ -38,7 +38,6 @@
         <Menu Grid.Row="0" VerticalAlignment="Top" IsMainMenu="True">
             <MenuItem Header="File">
                 <MenuItem Header="Table view" Command="{Binding NetworkPreviewCommand}" />
-                <MenuItem Header="Chart view" Command="{Binding ChartCommand}" />
                 <MenuItem Header="Alarm summaries" Command="{Binding AlarmSummariesCommand}" />
             </MenuItem>
             <MenuItem Header="Advanced">

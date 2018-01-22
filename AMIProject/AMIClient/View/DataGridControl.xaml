@@ -8,6 +8,13 @@
              vml:ViewModelLocator.AutoHookedUpViewModel="True"
              mc:Ignorable="d" 
              >
+
+    <UserControl.Resources>
+        <Style TargetType="Expander">
+
+        </Style>
+    </UserControl.Resources>
+    
     <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
         <DataGrid SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.ViewTableItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
 

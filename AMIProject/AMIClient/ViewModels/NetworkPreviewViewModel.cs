@@ -24,23 +24,14 @@ namespace AMIClient.ViewModels
         private ObservableCollection<RootElement> rootElements;
         private static NetworkPreviewViewModel instance;
         public DockManagerViewModel DockManagerViewModel { get; private set; }
-        private List<DockWindowViewModel> documents =  new List<DockWindowViewModel>();
 
         public NetworkPreviewViewModel()
         {
             rootElements = new ObservableCollection<RootElement>();
             DataGridViewModel.Instance.Title = "Table";
+            var documents = new List<DockWindowViewModel>();
             documents.Add(DataGridViewModel.Instance);
             this.DockManagerViewModel = new DockManagerViewModel(documents);
-
-            //TabItems.Add(new TabItem()
-            //{
-            //    Header = "Table",
-            //    CurrentTab = DataGridViewModel.Instance,
-            //    Exit = Visibility.Hidden
-            //});
-
-            //SelectedTab = TabItems.First();
         }
 
         public static NetworkPreviewViewModel Instance
@@ -98,113 +89,7 @@ namespace AMIClient.ViewModels
             chartVM.SetGids(new List<long>() { ec.GlobalId });
             var doc = new List<DockWindowViewModel>();
             doc.Add(new ChartViewModel() { Title = ec.Name });
-
             this.DockManagerViewModel.Adding(doc);
-
-            //TabItems.Add(new TabItem()
-            //{
-            //    Header = ec.Name,
-            //    CurrentTab = chartVM
-            //});
-
-            //SelectedTab = TabItems.Last();
-        }
-
-        private ICommand groupAmiChartMinCommand;
-
-        public ICommand GroupAmiChartMinCommand
-        {
-            get
-            {
-                return this.groupAmiChartMinCommand ?? (this.groupAmiChartMinCommand = new DelegateCommand<object>(this.CommandActionForMin, param => true));
-            }
-        }
-
-        private void CommandActionForMin(object selected)
-        {
-            this.SelectedAMIsAction(selected, ResolutionType.MINUTE);
-        }
-
-        private ICommand groupAmiChartHourCommand;
-
-        public ICommand GroupAmiChartHourCommand
-        {
-            get
-            {
-                return this.groupAmiChartHourCommand ?? (this.groupAmiChartHourCommand = new DelegateCommand<object>(this.CommandActionForHour, param => true));
-            }
-        }
-
-        private void CommandActionForHour(object selected)
-        {
-            this.SelectedAMIsAction(selected, ResolutionType.HOUR);
-        }
-
-        private ICommand groupAmiChartDayCommand;
-
-        public ICommand GroupAmiChartDayCommand
-        {
-            get
-            {
-                return this.groupAmiChartDayCommand ?? (this.groupAmiChartDayCommand = new DelegateCommand<object>(this.CommandActionForDay, param => true));
-            }
-        }
-
-        private void CommandActionForDay(object selected)
-        {
-            this.SelectedAMIsAction(selected, ResolutionType.DAY);
-        }
-
-        private void SelectedAMIsAction(object selectedTreeView, ResolutionType resolution)
-        {
-            object o = selectedTreeView;
-            TreeView selected = (TreeView)selectedTreeView;
-            TreeClasses selectedItem = (TreeClasses)selected.SelectedItem;
-            Type t = selectedItem.GetType();
-
-            switch (t.Name)
-            {
-                case "RootElement":
-                    List<IdentifiedObject> amisC1 = this.Model.GetAllAmis();
-                    List<long> ecsC1 = new List<long>();
-
-                    foreach (EnergyConsumer ec in amisC1)
-                    {
-                        ecsC1.Add(ec.GlobalId);
-                    }
-
-                    ChartViewModel chartVM = new ChartViewModel() { Model = this.Model, Resolution = resolution };
-                    chartVM.SetGids(ecsC1);
-
-                    var doc = new List<DockWindowViewModel>();
-                    doc.Add(new ChartViewModel() { Title = "All" });
-
-                    this.DockManagerViewModel.Adding(doc);
-
-                    //TabItems.Add(new TabItem()
-                    //{
-                    //    Header = "All",
-                    //    CurrentTab = chartVM
-                    //});
-
-                    //SelectedTab = TabItems.Last();
-
-                    break;
-                case "GeoRegionForTree":
-                    this.ChartViewForGeoRegion(resolution, ((GeoRegionForTree)selectedItem).GeoRegion.GlobalId, ((GeoRegionForTree)selectedItem).GeoRegion.Name);
-
-                    break;
-                case "SubGeoRegionForTree":
-                    ChartViewForSubGeoRegion(resolution, ((SubGeoRegionForTree)selectedItem).SubGeoRegion.GlobalId, ((SubGeoRegionForTree)selectedItem).SubGeoRegion.Name);
-
-                    break;
-                case "SubstationForTree":
-                    ChartViewForSubstation(resolution, ((SubstationForTree)selectedItem).Substation.GlobalId, ((SubstationForTree)selectedItem).Substation.Name);
-
-                    break;
-                default:
-                    break;
-            }
         }
 
         public void ChartViewForSubstation(ResolutionType resolution, long gid, string header)
@@ -217,20 +102,11 @@ namespace AMIClient.ViewModels
                 ecsC4.Add(ec.GlobalId);
             }
 
-            ChartViewModel chartVM4 = new ChartViewModel() { Model = this.Model, Resolution = resolution };
+            ChartViewModel chartVM4 = new ChartViewModel() { Model = this.Model, Resolution = resolution, Title = header };
             chartVM4.SetGids(ecsC4);
-
             var doc = new List<DockWindowViewModel>();
-            doc.Add(new ChartViewModel() { Title = header });
-
+            doc.Add(chartVM4);
             this.DockManagerViewModel.Adding(doc);
-            //TabItems.Add(new TabItem()
-            //{
-            //    Header = header,
-            //    CurrentTab = chartVM4
-            //});
-
-            //SelectedTab = TabItems.Last();
         }
 
         public void ChartViewForSubGeoRegion(ResolutionType resolution, long gid, string header)
@@ -249,19 +125,11 @@ namespace AMIClient.ViewModels
                 ecsC3.Add(ec.GlobalId);
             }
 
-            ChartViewModel chartVM3 = new ChartViewModel() { Model = this.Model, Resolution = resolution };
+            ChartViewModel chartVM3 = new ChartViewModel() { Model = this.Model, Resolution = resolution, Title = header };
             chartVM3.SetGids(ecsC3);
             var doc = new List<DockWindowViewModel>();
-            doc.Add(new ChartViewModel() { Title = header });
-
+            doc.Add(chartVM3);
             this.DockManagerViewModel.Adding(doc);
-            //TabItems.Add(new TabItem()
-            //{
-            //    Header = header,
-            //    CurrentTab = chartVM3
-            //});
-
-            //SelectedTab = TabItems.Last();
         }
 
         public void ChartViewForGeoRegion(ResolutionType resolution, long gid, string header)
@@ -286,21 +154,12 @@ namespace AMIClient.ViewModels
                 ecsC2.Add(ec.GlobalId);
             }
 
-            ChartViewModel chartVM2 = new ChartViewModel() { Model = this.Model, Resolution = resolution };
+            ChartViewModel chartVM2 = new ChartViewModel() { Model = this.Model, Resolution = resolution, Title = header };
             chartVM2.SetGids(ecsC2);
 
             var doc = new List<DockWindowViewModel>();
-            doc.Add(new ChartViewModel() { Title = header });
-
+            doc.Add(chartVM2);
             this.DockManagerViewModel.Adding(doc);
-
-            //TabItems.Add(new TabItem()
-            //{
-            //    Header = header,
-            //    CurrentTab = chartVM2
-            //});
-
-            //SelectedTab = TabItems.Last();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
