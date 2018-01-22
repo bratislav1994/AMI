@@ -68,7 +68,7 @@ namespace AMIClient
                 if (value != base.isSelected)
                 {
                     base.isSelected = value;
-                    if (!NetworkPreviewViewModel.Instance.IsRightClick() && value)
+                    if (value)
                     {
                         base.Model.ClearTableItems();
                         base.Model.ClearPositions();

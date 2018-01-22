@@ -659,7 +659,7 @@
 
     <!--treeView-->
 
-    <Style TargetType="{x:Type TreeView}">
+    <!--<Style TargetType="{x:Type TreeView}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TreeView}">
@@ -807,7 +807,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
 
     <!--menu-->
 

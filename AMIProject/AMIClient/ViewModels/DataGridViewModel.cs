@@ -15,7 +15,7 @@ using TC57CIM.IEC61970.Core;
 
 namespace AMIClient.ViewModels
 {
-    public class DataGridViewModel : INotifyPropertyChanged
+    public class DataGridViewModel : AvalonDockMVVM.ViewModel.DockWindowViewModel, INotifyPropertyChanged
     {
         private static DataGridViewModel instance;
         private Model model;

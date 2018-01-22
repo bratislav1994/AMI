@@ -26,25 +26,25 @@ namespace AMIClient.View
             InitializeComponent();
         }
 
-        private void tree_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            TreeViewItem treeViewItem = VisualUpwardSearch(e.OriginalSource as DependencyObject);
+        //private void tree_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    TreeViewItem treeViewItem = VisualUpwardSearch(e.OriginalSource as DependencyObject);
 
-            if (treeViewItem != null)
-            {
-                NetworkPreviewViewModel.Instance.RightClickOn();
-                treeViewItem.Focus();
-                NetworkPreviewViewModel.Instance.RightClickOff();
-                e.Handled = true;
-            }
-        }
+        //    if (treeViewItem != null)
+        //    {
+        //        NetworkPreviewViewModel.Instance.RightClickOn();
+        //        treeViewItem.Focus();
+        //        NetworkPreviewViewModel.Instance.RightClickOff();
+        //        e.Handled = true;
+        //    }
+        //}
 
-        private TreeViewItem VisualUpwardSearch(DependencyObject source)
-        {
-            while (source != null && !(source is TreeViewItem))
-                source = VisualTreeHelper.GetParent(source);
+        //private TreeViewItem VisualUpwardSearch(DependencyObject source)
+        //{
+        //    while (source != null && !(source is TreeViewItem))
+        //        source = VisualTreeHelper.GetParent(source);
 
-            return source as TreeViewItem;
-        }
+        //    return source as TreeViewItem;
+        //}
     }
 }
