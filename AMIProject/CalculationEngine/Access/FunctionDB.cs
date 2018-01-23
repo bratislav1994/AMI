@@ -34,9 +34,9 @@ namespace CalculationEngine.Access
 
         public void DoUndone()
         {
-            this.DoUndoneByMinute();
-            this.DoUndoneByHour();
-            this.DoUndoneByDay();
+            //this.DoUndoneByMinute();
+            //this.DoUndoneByHour();
+            //this.DoUndoneByDay();
         }
 
         #region hour

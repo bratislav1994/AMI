@@ -27,7 +27,9 @@ namespace AMIClient
         private ModelResourcesDesc modelResourcesDesc = new ModelResourcesDesc();
         private List<ResourceDescription> meas = new List<ResourceDescription>();
         private Dictionary<long, int> positions = new Dictionary<long, int>();
+        private Dictionary<long, int> positionsAmi = new Dictionary<long, int>();
         private ObservableCollection<TableItem> tableItems = new ObservableCollection<TableItem>();
+        private ObservableCollection<TableItem> amiTableItems = new ObservableCollection<TableItem>();
         private ObservableCollection<TableItemForAlarm> tableItemsForAlarm = new ObservableCollection<TableItemForAlarm>();
         private RootElement root;
         private bool firstContact = true;
@@ -39,6 +41,7 @@ namespace AMIClient
         private DuplexChannelFactory<ICalculationDuplexClient> factoryCE;
         private Thread checkNMS;
         private ICollectionView viewTableItems;
+        private ICollectionView viewAmiTableItems;
         private ICollectionView viewTableItemsForAlarm;
 
         public INetworkModelGDAContractDuplexClient GdaQueryProxy
@@ -121,6 +124,34 @@ namespace AMIClient
             }
         }
 
+        public ObservableCollection<TableItem> AmiTableItems
+        {
+            get
+            {
+                return amiTableItems;
+            }
+
+            set
+            {
+                amiTableItems = value;
+                RaisePropertyChanged("AmiTableItems");
+            }
+        }
+
+        public ICollectionView ViewAmiTableItems
+        {
+            get
+            {
+                return viewAmiTableItems;
+            }
+
+            set
+            {
+                viewAmiTableItems = value;
+                RaisePropertyChanged("ViewAmiTableItems");
+            }
+        }
+
         public ObservableCollection<TableItemForAlarm> TableItemsForAlarm
         {
             get
@@ -134,7 +165,7 @@ namespace AMIClient
                 RaisePropertyChanged("TableItemsForAlarm");
             }
         }
-        
+
         public ICollectionView ViewTableItemsForAlarm
         {
             get
@@ -190,7 +221,7 @@ namespace AMIClient
             item2.FromPeriod = new DateTime(2018, 1, 19, 12, 0, 0);
             item2.ToPeriod = DateTime.Now;
             item2.Status = HelperClasses.Status.RESOLVED;
-            item2.TypeVoltage = HelperClasses.TypeVoltage.UNDERVOLTAGE;
+            item2.TypeVoltage = HelperClasses.TypeVoltage.OVERVOLTAGE;
             TableItemsForAlarm.Add(item2);
         }
 
@@ -285,10 +316,12 @@ namespace AMIClient
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllRegions; line: {0}; Start the GetAllRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             List<IdentifiedObject> results = GetExtentValues(ModelCode.GEOREGION);
             List<GeographicalRegion> retVal = new List<GeographicalRegion>();
+
             foreach (GeographicalRegion gr in results)
             {
                 retVal.Add(gr);
             }
+
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllRegions; line: {0}; Start the GetAllRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             return retVal;
         }
@@ -312,21 +345,23 @@ namespace AMIClient
             {
                 TableItems.Add(new TableItem(io) { Type = HelperClasses.DataGridType.GEOGRAPHICALREGION });
                 positions.Add(io.GlobalId, TableItems.Count - 1);
-
                 List<IdentifiedObject> subGeoRegions = GetSomeSubregions(io.GlobalId, true);
+
                 foreach (IdentifiedObject io1 in subGeoRegions)
                 {
                     TableItems.Add(new TableItem(io1) { Type = HelperClasses.DataGridType.SUBGEOGRAPHICALREGION });
                     positions.Add(io1.GlobalId, TableItems.Count - 1);
                     List<IdentifiedObject> substations = GetSomeSubstations(io1.GlobalId, true);
+
                     foreach (IdentifiedObject io2 in substations)
                     {
                         TableItems.Add(new TableItem(io2) { Type = HelperClasses.DataGridType.SUBSTATION });
                         positions.Add(io2.GlobalId, TableItems.Count - 1);
-                        GetSomeTableItems(io2.GlobalId, true);
+                        //GetSomeTableItems(io2.GlobalId, true);
                     }
                 }
             }
+
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllAmis; line: {0}; Start the GetAllAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
@@ -404,6 +439,7 @@ namespace AMIClient
                     new Thread(() => ConnectToNMS()).Start();
                 }
             }
+
             return retVal;
         }
 
@@ -416,6 +452,7 @@ namespace AMIClient
             associtaion.Type = ModelCode.SUBGEOREGION;
             List<IdentifiedObject> results = GetRelatedValues(regionId, properties, associtaion, ModelCode.SUBGEOREGION);
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubregions; line: {0}; Finish the GetSomeSubregions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+
             return results;
         }
 
@@ -429,6 +466,7 @@ namespace AMIClient
             GetRelatedValues(subRegionId, properties, associtaion, ModelCode.SUBSTATION);
             List<IdentifiedObject> results = GetRelatedValues(subRegionId, properties, associtaion, ModelCode.SUBSTATION);
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubstation; line: {0}; Start the GetSomeSubstation function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+
             return results;
         }
 
@@ -454,8 +492,8 @@ namespace AMIClient
 
             foreach (EnergyConsumer ec in results)
             {
-                TableItems.Add(new TableItem(ec) { Type = HelperClasses.DataGridType.ENERGY_CONSUMER });
-                positions.Add(ec.GlobalId, TableItems.Count - 1);
+                AmiTableItems.Add(new TableItem(ec) { Type = HelperClasses.DataGridType.ENERGY_CONSUMER });
+                positionsAmi.Add(ec.GlobalId, TableItems.Count - 1);
             }
 
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeAmis; line: {0}; Finish the GetSomeAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -543,7 +581,7 @@ namespace AMIClient
                 {
                     TableItems.Add(new TableItem(io2) { Type = HelperClasses.DataGridType.SUBSTATION });
                     positions.Add(io2.GlobalId, TableItems.Count - 1);
-                    GetSomeTableItems(io2.GlobalId, true);
+                    //GetSomeTableItems(io2.GlobalId, true);
                 }
             }
         }
@@ -559,7 +597,7 @@ namespace AMIClient
             {
                 TableItems.Add(new TableItem(io2) { Type = HelperClasses.DataGridType.SUBSTATION });
                 positions.Add(io2.GlobalId, TableItems.Count - 1);
-                GetSomeTableItems(io2.GlobalId, true);
+                //GetSomeTableItems(io2.GlobalId, true);
             }
         }
 

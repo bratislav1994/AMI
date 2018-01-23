@@ -57,7 +57,7 @@ namespace AMIClient
                 }
             }
         }
-        
+
         public bool IsSelected
         {
             get
@@ -138,16 +138,10 @@ namespace AMIClient
                 List<IdentifiedObject> Substations = new List<IdentifiedObject>();
                 SubGeoRegions = base.Model.GetSomeSubregions(this.GeoRegion.GlobalId, false);
                 base.Model.ClearPositions();
+
                 foreach (SubGeographicalRegion sgr in SubGeoRegions)
                 {
                     Substations.AddRange(base.Model.GetSomeSubstations(sgr.GlobalId, false));
-                }
-
-                base.Model.ClearTableItems();
-
-                foreach (Substation ss in Substations)
-                {
-                    base.Model.GetSomeTableItems(ss.GlobalId, false);
                 }
             }
         }

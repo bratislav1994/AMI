@@ -24,6 +24,10 @@
             <local2:DataGridControl />
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type local3:AmiDataGridViewModel}">
+            <local2:AmiDataGridControl />
+        </DataTemplate>
+
     </UserControl.Resources>
 
     <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
@@ -77,18 +81,9 @@
                             </StackPanel>
                         </HierarchicalDataTemplate>
 
-                        <HierarchicalDataTemplate 
-                                DataType="{x:Type local:SubGeoRegionForTree}" 
-                                ItemsSource="{Binding Children}">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Name}" Tag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
-
-                                </TextBlock>
-                            </StackPanel>
-                        </HierarchicalDataTemplate>
-
                         <DataTemplate 
-                                DataType="{x:Type local:SubstationForTree}">
+                                DataType="{x:Type local:SubGeoRegionForTree}" 
+                                >
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding Name}" Tag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
 
@@ -117,6 +112,10 @@
 
                     <DataTemplate DataType="{x:Type local3:DataGridViewModel}">
                         <local2:DataGridControl />
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type local3:AmiDataGridViewModel}">
+                        <local2:AmiDataGridControl />
                     </DataTemplate>
 
                     <!--<DataTemplate>

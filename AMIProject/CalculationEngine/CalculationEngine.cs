@@ -262,6 +262,7 @@ namespace CalculationEngine
         {
             Logger.LogMessageToFile(string.Format("CE.CalculationEngine.DataFromScada; line: {0}; CE receive data from scada and send this data to client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             Console.WriteLine("Send data to client");
+            Console.WriteLine("Data from scada: " + measurements.Count);
 
             dataBaseAdapter.AddMeasurements(measurements.Values.ToList());
 

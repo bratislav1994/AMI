@@ -1,5 +1,4 @@
 ﻿using AMIClient.HelperClasses;
-using AvalonDockMVVM.ViewModel;
 using FTN.Common;
 using Prism.Commands;
 using System;
@@ -13,19 +12,24 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
 using TC57CIM.IEC61970.Core;
+using TC57CIM.IEC61970.Wires;
 
 namespace AMIClient.ViewModels
 {
-    public class DataGridViewModel : AvalonDockMVVM.ViewModel.DockWindowViewModel, INotifyPropertyChanged
+    public class AmiDataGridViewModel : AvalonDockMVVM.ViewModel.DockWindowViewModel, INotifyPropertyChanged
     {
-        private static DataGridViewModel instance;
         private Model model;
         private Dictionary<string, string> columnFilters;
         private Dictionary<string, PropertyInfo> propertyCache;
         private string nameFilter = string.Empty;
         private string typeFilter = string.Empty;
+        private DMSType parentType;
+        private long parentGid;
+        private Dictionary<long, int> positionsAmi = new Dictionary<long, int>();
+        private ICollectionView viewAmiTableItems;
+        private ObservableCollection<TableItem> amiTableItems = new ObservableCollection<TableItem>();
 
-        public DataGridViewModel()
+        public AmiDataGridViewModel()
         {
 
         }
@@ -62,19 +66,6 @@ namespace AMIClient.ViewModels
             }
         }
 
-        public static DataGridViewModel Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new DataGridViewModel();
-                }
-
-                return instance;
-            }
-        }
-
         public Model Model
         {
             get
@@ -88,6 +79,62 @@ namespace AMIClient.ViewModels
             }
         }
 
+        public long ParentGid
+        {
+            get
+            {
+                return parentGid;
+            }
+
+            set
+            {
+                parentGid = value;
+            }
+        }
+
+        public DMSType ParentType
+        {
+            get
+            {
+                return parentType;
+            }
+
+            set
+            {
+                parentType = value;
+                this.GetAmisForParentType();
+            }
+        }
+
+        private void GetAmisForParentType()
+        {
+            switch (this.ParentType)
+            {
+                case DMSType.GEOREGION:
+                    List<IdentifiedObject> subRegionsC = this.Model.GetSomeSubregions(ParentGid, true);
+                    List<IdentifiedObject> substationsC = new List<IdentifiedObject>();
+
+                    foreach (SubGeographicalRegion sgr in subRegionsC)
+                    {
+                        substationsC.AddRange(this.Model.GetSomeSubstations(sgr.GlobalId, true));
+                    }
+
+                    this.Model.AmiTableItems.Clear();
+
+                    foreach (Substation ss in substationsC)
+                    {
+                        this.Model.GetSomeTableItems(ss.GlobalId, false);
+                    }
+                    break;
+                case DMSType.SUBGEOREGION:
+
+                    break;
+                case DMSType.SUBSTATION:
+
+                    break;
+            }
+        }
+
         public void SetModel(Model model)
         {
             this.Model = model;
@@ -95,19 +142,19 @@ namespace AMIClient.ViewModels
             columnFilters = new Dictionary<string, string>();
             columnFilters[DataGridHeader.Name.ToString()] = string.Empty;
             columnFilters[DataGridHeader.Type.ToString()] = string.Empty;
-            this.Model.ViewTableItems = new CollectionViewSource { Source = this.Model.TableItems }.View;
-            this.Model.ViewTableItems = CollectionViewSource.GetDefaultView(this.Model.TableItems);
+            this.Model.ViewAmiTableItems = new CollectionViewSource { Source = this.Model.AmiTableItems }.View;
+            this.Model.ViewAmiTableItems = CollectionViewSource.GetDefaultView(this.Model.AmiTableItems);
         }
 
         #region filter
 
         public void OnFilterApply()
         {
-            this.Model.ViewTableItems = CollectionViewSource.GetDefaultView(this.Model.TableItems);
+            this.Model.ViewAmiTableItems = CollectionViewSource.GetDefaultView(this.Model.AmiTableItems);
 
-            if (this.Model.ViewTableItems != null)
+            if (this.Model.ViewAmiTableItems != null)
             {
-                this.Model.ViewTableItems.Filter = delegate (object item)
+                this.Model.ViewAmiTableItems.Filter = delegate (object item)
                 {
                     bool show = true;
 
@@ -139,26 +186,6 @@ namespace AMIClient.ViewModels
 
         #endregion
 
-        private ICommand showAmisCommand;
-
-        public ICommand ShowAmisCommand
-        {
-            get
-            {
-                return this.showAmisCommand ?? (this.showAmisCommand = new DelegateCommand<object>(this.ShowAmisAction, param => true));
-            }
-        }
-
-        private void ShowAmisAction(object io)
-        {
-            IdentifiedObject idObj = (IdentifiedObject)io;
-            DMSType type = this.GetDmsTypeFromGid(idObj.GlobalId);
-            AmiDataGridViewModel amiDG = new AmiDataGridViewModel() { Model = this.Model, Title = idObj.Name, ParentType = type, ParentGid = idObj.GlobalId };
-            var doc = new List<DockWindowViewModel>();
-            doc.Add(amiDG);
-            NetworkPreviewViewModel.Instance.DockManagerViewModel.Adding(doc);
-        }
-
         private ICommand individualAmiChartCommand;
 
         public ICommand IndividualAmiChartCommand
@@ -189,6 +216,19 @@ namespace AMIClient.ViewModels
             }
         }
 
+        public ICollectionView ViewAmiTableItems
+        {
+            get
+            {
+                return viewAmiTableItems;
+            }
+
+            set
+            {
+                viewAmiTableItems = value;
+            }
+        }
+
         private void SelectedAMIAction(object selected)
         {
             this.SendValues(ResolutionType.MINUTE, selected);
@@ -207,27 +247,7 @@ namespace AMIClient.ViewModels
         private void SendValues(ResolutionType resolution, object selected)
         {
             IdentifiedObject io = ((IdentifiedObject)selected);
-
-            switch (GetDmsTypeFromGid(io.GlobalId))
-            {
-                case DMSType.ENERGYCONS:
-                    NetworkPreviewViewModel.Instance.SelectedAMIAction(io, resolution);
-                    break;
-                case DMSType.GEOREGION:
-                    NetworkPreviewViewModel.Instance.ChartViewForGeoRegion(resolution, io.GlobalId, io.Name);
-                    break;
-                case DMSType.SUBGEOREGION:
-                    NetworkPreviewViewModel.Instance.ChartViewForSubGeoRegion(resolution, io.GlobalId, io.Name);
-                    break;
-                case DMSType.SUBSTATION:
-                    NetworkPreviewViewModel.Instance.ChartViewForSubstation(resolution, io.GlobalId, io.Name);
-                    break;
-            }
-        }
-
-        private DMSType GetDmsTypeFromGid(long gid)
-        {
-            return (DMSType)(gid >> 32);
+            NetworkPreviewViewModel.Instance.SelectedAMIAction(io, resolution);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -241,3 +261,4 @@ namespace AMIClient.ViewModels
         }
     }
 }
+

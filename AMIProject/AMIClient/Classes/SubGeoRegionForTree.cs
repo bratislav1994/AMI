@@ -75,8 +75,8 @@ namespace AMIClient
             {
                 if (value != base.isSelected)
                 {
-                    
                     base.isSelected = value;
+
                     if (value)
                     {
                         Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.IsSelected; line: {0}; Start - get all ami for the selected region", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -116,27 +116,6 @@ namespace AMIClient
             }
         }
 
-        public override void LoadChildren()
-        {
-            Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.LoadChildren; line: {0}; Start the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            List<IdentifiedObject> Substations = new List<IdentifiedObject>();
-            Substations = base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId, false);
-
-            if (Substations != null)
-            {
-                foreach (Substation ss in Substations)
-                {
-                    if (!allTreeElements.ContainsKey(ss.GlobalId))
-                    {
-                        base.Children.Add(new SubstationForTree(ss, this, this.Model));
-                        allTreeElements.Add(ss.GlobalId, base.Children[base.Children.Count - 1]);
-                    }
-                }
-            }
-
-            Logger.LogMessageToFile(string.Format("AMIClient.SubGeoRegionForTree.LoadChildren; line: {0}; Finish the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-        }
-
         public override void CheckIfSeleacted()
         {
             if (IsSelected)
@@ -145,10 +124,6 @@ namespace AMIClient
                 Substations = base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId, false);
                 base.Model.ClearTableItems();
                 base.Model.ClearPositions();
-                foreach (Substation ss in Substations)
-                {
-                    base.Model.GetSomeTableItems(ss.GlobalId, false);
-                }
             }
         }
     }

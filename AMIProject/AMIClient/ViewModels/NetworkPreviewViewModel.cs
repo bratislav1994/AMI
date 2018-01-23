@@ -84,11 +84,11 @@ namespace AMIClient.ViewModels
         {
             IdentifiedObject ec = (IdentifiedObject)ami;
             ChartViewModel chartVM = null;
-            
-            chartVM = new ChartViewModel() { Model = this.Model, Resolution = resolution };
+
+            chartVM = new ChartViewModel() { Model = this.Model, Resolution = resolution, Title = ec.Name };
             chartVM.SetGids(new List<long>() { ec.GlobalId });
             var doc = new List<DockWindowViewModel>();
-            doc.Add(new ChartViewModel() { Title = ec.Name });
+            doc.Add(chartVM);
             this.DockManagerViewModel.Adding(doc);
         }
 

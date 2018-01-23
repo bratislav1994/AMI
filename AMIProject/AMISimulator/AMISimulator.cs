@@ -36,6 +36,7 @@ namespace AMISimulator
         private Dictionary<int, float> householdConsumption;
         private Dictionary<int, float> shoppingCenterConsumption;
         private Dictionary<long, EnergyConsumerForScada> consumers;
+        private static Random rnd = new Random();
 
         public IScadaDuplexSimulator ProxyScada
         {
@@ -95,30 +96,30 @@ namespace AMISimulator
                 householdConsumption.Add(i, 0);
             }
 
-            householdConsumption[0] = 5 / 100;
-            householdConsumption[1] = 5 / 100;
-            householdConsumption[2] = 5 / 100;
-            householdConsumption[3] = 5 / 100;
-            householdConsumption[4] = 5 / 100;
-            householdConsumption[5] = 7 / 100;
-            householdConsumption[6] = 14 / 100;
-            householdConsumption[7] = 25 / 100;
-            householdConsumption[8] = 17 / 100;
-            householdConsumption[9] = 12 / 100;
-            householdConsumption[10] = 12 / 100;
-            householdConsumption[11] = 12 / 100;
-            householdConsumption[12] = 12 / 100;
-            householdConsumption[13] = 11 / 100;
-            householdConsumption[14] = 14 / 100;
-            householdConsumption[15] = 15 / 100;
-            householdConsumption[16] = 45 / 100;
-            householdConsumption[17] = 55 / 100;
-            householdConsumption[18] = 75 / 100;
-            householdConsumption[19] = 60 / 100;
-            householdConsumption[20] = 50 / 100;
-            householdConsumption[21] = 52 / 100;
-            householdConsumption[22] = 33 / 100;
-            householdConsumption[23] = 10 / 100;
+            householdConsumption[0] = (float)5 / 100;
+            householdConsumption[1] = (float)5 / 100;
+            householdConsumption[2] = (float)5 / 100;
+            householdConsumption[3] = (float)5 / 100;
+            householdConsumption[4] = (float)5 / 100;
+            householdConsumption[5] = (float)7 / 100;
+            householdConsumption[6] = (float)14 / 100;
+            householdConsumption[7] = (float)25 / 100;
+            householdConsumption[8] = (float)17 / 100;
+            householdConsumption[9] = (float)12 / 100;
+            householdConsumption[10] = (float)12 / 100;
+            householdConsumption[11] = (float)12 / 100;
+            householdConsumption[12] = (float)12 / 100;
+            householdConsumption[13] = (float)11 / 100;
+            householdConsumption[14] = (float)14 / 100;
+            householdConsumption[15] = (float)15 / 100;
+            householdConsumption[16] = (float)45 / 100;
+            householdConsumption[17] = (float)55 / 100;
+            householdConsumption[18] = (float)75 / 100;
+            householdConsumption[19] = (float)60 / 100;
+            householdConsumption[20] = (float)50 / 100;
+            householdConsumption[21] = (float)52 / 100;
+            householdConsumption[22] = (float)33 / 100;
+            householdConsumption[23] = (float)10 / 100;
         }
 
         private void InitShoppingCenter()
@@ -130,30 +131,30 @@ namespace AMISimulator
                 shoppingCenterConsumption.Add(i, 0);
             }
 
-            shoppingCenterConsumption[0] = 5 / 100;
-            shoppingCenterConsumption[1] = 5 / 100;
-            shoppingCenterConsumption[2] = 5 / 100;
-            shoppingCenterConsumption[3] = 5 / 100;
-            shoppingCenterConsumption[4] = 5 / 100;
-            shoppingCenterConsumption[5] = 5 / 100;
-            shoppingCenterConsumption[6] = 35 / 100;
-            shoppingCenterConsumption[7] = 45 / 100;
-            shoppingCenterConsumption[8] = 75 / 100;
-            shoppingCenterConsumption[9] = 80 / 100;
-            shoppingCenterConsumption[10] = 80 / 100;
-            shoppingCenterConsumption[11] = 80 / 100;
-            shoppingCenterConsumption[12] = 80 / 100;
-            shoppingCenterConsumption[13] = 80 / 100;
-            shoppingCenterConsumption[14] = 80 / 100;
-            shoppingCenterConsumption[15] = 80 / 100;
-            shoppingCenterConsumption[16] = 80 / 100;
-            shoppingCenterConsumption[17] = 80 / 100;
-            shoppingCenterConsumption[18] = 80 / 100;
-            shoppingCenterConsumption[19] = 80 / 100;
-            shoppingCenterConsumption[20] = 80 / 100;
-            shoppingCenterConsumption[21] = 80 / 100;
-            shoppingCenterConsumption[22] = 55 / 100;
-            shoppingCenterConsumption[23] = 10 / 100;
+            shoppingCenterConsumption[0] = (float)5 / 100;
+            shoppingCenterConsumption[1] = (float)5 / 100;
+            shoppingCenterConsumption[2] = (float)5 / 100;
+            shoppingCenterConsumption[3] = (float)5 / 100;
+            shoppingCenterConsumption[4] = (float)5 / 100;
+            shoppingCenterConsumption[5] = (float)5 / 100;
+            shoppingCenterConsumption[6] = (float)35 / 100;
+            shoppingCenterConsumption[7] = (float)45 / 100;
+            shoppingCenterConsumption[8] = (float)75 / 100;
+            shoppingCenterConsumption[9] = (float)80 / 100;
+            shoppingCenterConsumption[10] = (float)80 / 100;
+            shoppingCenterConsumption[11] = (float)80 / 100;
+            shoppingCenterConsumption[12] = (float)80 / 100;
+            shoppingCenterConsumption[13] = (float)80 / 100;
+            shoppingCenterConsumption[14] = (float)80 / 100;
+            shoppingCenterConsumption[15] = (float)80 / 100;
+            shoppingCenterConsumption[16] = (float)80 / 100;
+            shoppingCenterConsumption[17] = (float)80 / 100;
+            shoppingCenterConsumption[18] = (float)80 / 100;
+            shoppingCenterConsumption[19] = (float)80 / 100;
+            shoppingCenterConsumption[20] = (float)80 / 100;
+            shoppingCenterConsumption[21] = (float)80 / 100;
+            shoppingCenterConsumption[22] = (float)55 / 100;
+            shoppingCenterConsumption[23] = (float)10 / 100;
         }
 
         private IOutstation InitializeOutstation(OutstationStackConfig config, IDNP3Manager mgr)
@@ -195,7 +196,7 @@ namespace AMISimulator
 
             foreach (EnergyConsumerForScada ec in cons)
             {
-                this.consumers.Add(ec.GlobalId, ec); 
+                this.consumers.Add(ec.GlobalId, ec);
             }
 
             channel = mgr.AddTCPServer("master" + address, LogLevels.NORMAL, ChannelRetry.Default, ipAddress, (ushort)(basePort + address), ChannelListener.Print());
@@ -220,7 +221,6 @@ namespace AMISimulator
 
         private void SendPointValues(OutstationStackConfig config, IOutstation outstation)
         {
-            Random rnd = new Random();
             while (channel.GetChannelStatistics().NumOpen == 0)
             { }
 
@@ -231,23 +231,56 @@ namespace AMISimulator
             {
                 for (int i = 0; i < numberOfInstalledPoints; i++)
                 {
+                    ConsumerType type = consumers[measurements[i].PowerSystemResourceRef].Type;
+
                     if (i % 3 == 0)
                     {
-                        ChangeSet changeset = new ChangeSet();
-                        changeset.Update(new Automatak.DNP3.Interface.Analog(rnd.Next(measurements[i].MinRawValue, measurements[i].MaxRawValue), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
-                        outstation.Load(changeset);
+                        if (type == ConsumerType.HOUSEHOLD)
+                        {
+                            ChangeSet changeset = new ChangeSet();
+                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].Pfixed * householdConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            outstation.Load(changeset);
+                        }
+                        else if (type == ConsumerType.SHOPPING_CENTER)
+                        {
+                            ChangeSet changeset = new ChangeSet();
+                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].Pfixed * shoppingCenterConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            outstation.Load(changeset);
+                        }
                     }
                     else if (i % 3 == 1)
                     {
-                        ChangeSet changeset = new ChangeSet();
-                        changeset.Update(new Automatak.DNP3.Interface.Analog(rnd.Next(measurements[i].MinRawValue, measurements[i].MaxRawValue), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
-                        outstation.Load(changeset);
+                        if (type == ConsumerType.HOUSEHOLD)
+                        {
+                            ChangeSet changeset = new ChangeSet();
+                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].Qfixed * householdConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            outstation.Load(changeset);
+                        }
+                        else if (type == ConsumerType.SHOPPING_CENTER)
+                        {
+                            ChangeSet changeset = new ChangeSet();
+                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].Qfixed * shoppingCenterConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            outstation.Load(changeset);
+                        }
                     }
                     else
                     {
-                        ChangeSet changeset = new ChangeSet();
-                        changeset.Update(new Automatak.DNP3.Interface.Analog(rnd.Next(measurements[i].MinRawValue, measurements[i].MaxRawValue), 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
-                        outstation.Load(changeset);
+                        if (type == ConsumerType.HOUSEHOLD)
+                        {
+                            ChangeSet changeset = new ChangeSet();
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(220, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            outstation.Load(changeset);
+                        }
+                        else if (type == ConsumerType.SHOPPING_CENTER)
+                        {
+                            ChangeSet changeset = new ChangeSet();
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(10000, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            outstation.Load(changeset);
+                        }
                     }
                 }
 

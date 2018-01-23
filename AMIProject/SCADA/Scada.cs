@@ -376,7 +376,7 @@ namespace SCADA
                 this.measurements.Add(kvp.Key, kvp.Value);
                 f.AddMeasurement(kvp.Value);
             }
-            
+
             foreach (KeyValuePair<int, RTUAddress> kvp in addressPool)
             {
                 kvp.Value.Cnt = 0;
@@ -391,7 +391,7 @@ namespace SCADA
         public void Rollback()
         {
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Rollback; line: {0}; Start the Rollback function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            
+
             foreach (KeyValuePair<int, RTUAddress> kvp in addressPool)
             {
                 lock (lockObjectForSimulators)
@@ -424,7 +424,6 @@ namespace SCADA
                             Logger.LogMessageToFile(string.Format("SCADA.Scada.CheckIfThereIsSomethingToSned; line: {0}; Scada sends data to client if it has data to send", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                             Console.WriteLine("List changed, here will be code for sending measurements to Calculation Engine...");
                             ProxyCE.DataFromScada(handler.resourcesToSend);
-                            handler.resourcesToSend.Clear();
                             handler.HasNewMeas = false;
                         }
                     }

@@ -50,15 +50,17 @@ namespace SCADA
                     List<IndexedValue<Automatak.DNP3.Interface.Analog>> analogs = new List<IndexedValue<Automatak.DNP3.Interface.Analog>>();
                     analogs.AddRange(values.ToList());
                     Dictionary<long, DynamicMeasurement> localDic = new Dictionary<long, DynamicMeasurement>(this.measurements.Count / 3);
-                    string timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
                     DateTime timeStamp = DateTime.Now;
+
+                    Console.WriteLine("Number of points: " + analogs.Count);
+                    int cnt = 0;
 
                     foreach (IndexedValue<Automatak.DNP3.Interface.Analog> analog in analogs)
                     {
-                        if (analog.Value.Value != 0)
-                        {
-                            TC57CIM.IEC61970.Meas.Analog a = (TC57CIM.IEC61970.Meas.Analog)GetMeasurement(analog.Index);
+                        TC57CIM.IEC61970.Meas.Analog a = (TC57CIM.IEC61970.Meas.Analog)GetMeasurement(analog.Index);
 
+                        if (a != null)
+                        {
                             if (localDic.ContainsKey(a.PowerSystemResourceRef))
                             {
                                 switch (analog.Index % 3)
@@ -77,6 +79,7 @@ namespace SCADA
                             else
                             {
                                 localDic.Add(a.PowerSystemResourceRef, new DynamicMeasurement(a.PowerSystemResourceRef, timeStamp));
+                                cnt++;
                                 switch (analog.Index % 3)
                                 {
                                     case 0:
@@ -97,20 +100,24 @@ namespace SCADA
                         }
                     }
 
+                    foreach (KeyValuePair<long, DynamicMeasurement> kvp in resourcesToSend)
+                    {
+                        kvp.Value.TimeStamp = timeStamp;
+                    }
 
-                    foreach(KeyValuePair<long, DynamicMeasurement> kvp in localDic)
+                    foreach (KeyValuePair<long, DynamicMeasurement> kvp in localDic)
                     {
                         if (resourcesToSend.ContainsKey(kvp.Key))
                         {
-                            if (resourcesToSend[kvp.Key].CurrentP == -1 && localDic[kvp.Key].CurrentP != -1)
+                            if (localDic[kvp.Key].CurrentP != -1)
                             {
                                 resourcesToSend[kvp.Key].CurrentP = localDic[kvp.Key].CurrentP;
                             }
-                            if (resourcesToSend[kvp.Key].CurrentQ == -1 && localDic[kvp.Key].CurrentQ != -1)
+                            if (localDic[kvp.Key].CurrentQ != -1)
                             {
                                 resourcesToSend[kvp.Key].CurrentQ = localDic[kvp.Key].CurrentQ;
                             }
-                            if (resourcesToSend[kvp.Key].CurrentV == -1 && localDic[kvp.Key].CurrentV != -1)
+                            if (localDic[kvp.Key].CurrentV != -1)
                             {
                                 resourcesToSend[kvp.Key].CurrentV = localDic[kvp.Key].CurrentV;
                             }
@@ -121,11 +128,9 @@ namespace SCADA
                         }
                     }
 
-                    if (localDic.Count > 0)
-                    {
-                        HasNewMeas = true;
-                    }
+                    Console.WriteLine("Number of measurements: " + resourcesToSend.Count + " " + cnt);
 
+                    HasNewMeas = true;
                     Logger.LogMessageToFile(string.Format("SCADA.SOEHandler.Process; line: {0}; Finish the Process function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 }
             }
