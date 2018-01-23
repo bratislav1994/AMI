@@ -154,6 +154,7 @@ namespace AMIClient.ViewModels
             IdentifiedObject idObj = (IdentifiedObject)io;
             DMSType type = this.GetDmsTypeFromGid(idObj.GlobalId);
             AmiDataGridViewModel amiDG = new AmiDataGridViewModel() { Model = this.Model, Title = idObj.Name, ParentType = type, ParentGid = idObj.GlobalId };
+            amiDG.SetModel(Model);
             var doc = new List<DockWindowViewModel>();
             doc.Add(amiDG);
             NetworkPreviewViewModel.Instance.DockManagerViewModel.Adding(doc);

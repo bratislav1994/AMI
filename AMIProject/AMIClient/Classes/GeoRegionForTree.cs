@@ -136,13 +136,9 @@ namespace AMIClient
             {
                 List<IdentifiedObject> SubGeoRegions = new List<IdentifiedObject>();
                 List<IdentifiedObject> Substations = new List<IdentifiedObject>();
-                SubGeoRegions = base.Model.GetSomeSubregions(this.GeoRegion.GlobalId, false);
                 base.Model.ClearPositions();
-
-                foreach (SubGeographicalRegion sgr in SubGeoRegions)
-                {
-                    Substations.AddRange(base.Model.GetSomeSubstations(sgr.GlobalId, false));
-                }
+                base.Model.ClearTableItems();
+                base.Model.GetSomeTableItemsForGeoRegion(this.GeoRegion.GlobalId);
             }
         }
     }

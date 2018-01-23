@@ -121,9 +121,9 @@ namespace AMIClient
             if (IsSelected)
             {
                 List<IdentifiedObject> Substations = new List<IdentifiedObject>();
-                Substations = base.Model.GetSomeSubstations(this.SubGeoRegion.GlobalId, false);
                 base.Model.ClearTableItems();
                 base.Model.ClearPositions();
+                base.Model.GetSomeTableItemsForSubGeoRegion(this.SubGeoRegion.GlobalId);
             }
         }
     }

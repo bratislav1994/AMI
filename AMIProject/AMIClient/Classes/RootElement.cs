@@ -22,7 +22,6 @@ namespace AMIClient
         private object lockObject = new object();
         private Thread updateThread;
         private Dictionary<long, TreeClasses> allTreeElements = new Dictionary<long, TreeClasses>();
-        private Dispatcher dispatcher;
 
         public RootElement(Model model)
             :base(null, model)

@@ -41,8 +41,10 @@ namespace AMIClient
         private DuplexChannelFactory<ICalculationDuplexClient> factoryCE;
         private Thread checkNMS;
         private ICollectionView viewTableItems;
-        private ICollectionView viewAmiTableItems;
+        //private ICollectionView viewAmiTableItems;
         private ICollectionView viewTableItemsForAlarm;
+        private Dictionary<long, DynamicMeasurement> changesForAmis = new Dictionary<long, DynamicMeasurement>();
+        private DateTime timeOfLastUpdate = DateTime.Now;
 
         public INetworkModelGDAContractDuplexClient GdaQueryProxy
         {
@@ -138,7 +140,7 @@ namespace AMIClient
             }
         }
 
-        public ICollectionView ViewAmiTableItems
+        /*public ICollectionView ViewAmiTableItems
         {
             get
             {
@@ -150,7 +152,7 @@ namespace AMIClient
                 viewAmiTableItems = value;
                 RaisePropertyChanged("ViewAmiTableItems");
             }
-        }
+        }*/
 
         public ObservableCollection<TableItemForAlarm> TableItemsForAlarm
         {
@@ -334,8 +336,6 @@ namespace AMIClient
         public void GetAllTableItems(bool returnValue)
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllAmis; line: {0}; Start the GetAllAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            this.ClearPositions();
-            //List<IdentifiedObject> results = GetExtentValues(ModelCode.ENERGYCONS);
             List<IdentifiedObject> geoRegions = GetExtentValues(ModelCode.GEOREGION);
 
             ClearTableItems();
@@ -357,7 +357,6 @@ namespace AMIClient
                     {
                         TableItems.Add(new TableItem(io2) { Type = HelperClasses.DataGridType.SUBSTATION });
                         positions.Add(io2.GlobalId, TableItems.Count - 1);
-                        //GetSomeTableItems(io2.GlobalId, true);
                     }
                 }
             }
@@ -481,23 +480,23 @@ namespace AMIClient
             return results;
         }
 
-        public void GetSomeTableItems(long substationId, bool returnValue)
-        {
-            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeAmis; line: {0}; Start the GetSomeAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.ENERGYCONS);
-            Association associtaion = new Association();
-            associtaion.PropertyId = ModelCode.EQCONTAINER_EQUIPMENTS;
-            associtaion.Type = ModelCode.ENERGYCONS;
-            List<IdentifiedObject> results = GetRelatedValues(substationId, properties, associtaion, ModelCode.ENERGYCONS);
+        //public void GetSomeTableItems(long substationId, bool returnValue)
+        //{
+        //    Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeAmis; line: {0}; Start the GetSomeAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+        //    List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.ENERGYCONS);
+        //    Association associtaion = new Association();
+        //    associtaion.PropertyId = ModelCode.EQCONTAINER_EQUIPMENTS;
+        //    associtaion.Type = ModelCode.ENERGYCONS;
+        //    List<IdentifiedObject> results = GetRelatedValues(substationId, properties, associtaion, ModelCode.ENERGYCONS);
 
-            foreach (EnergyConsumer ec in results)
-            {
-                AmiTableItems.Add(new TableItem(ec) { Type = HelperClasses.DataGridType.ENERGY_CONSUMER });
-                positionsAmi.Add(ec.GlobalId, TableItems.Count - 1);
-            }
+        //    foreach (EnergyConsumer ec in results)
+        //    {
+        //        AmiTableItems.Add(new TableItem(ec) { Type = HelperClasses.DataGridType.ENERGY_CONSUMER });
+        //        positionsAmi.Add(ec.GlobalId, TableItems.Count - 1);
+        //    }
 
-            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeAmis; line: {0}; Finish the GetSomeAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-        }
+        //    Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeAmis; line: {0}; Finish the GetSomeAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+        //}
 
         private List<IdentifiedObject> GetRelatedValues(long source, List<ModelCode> propIds, Association association, ModelCode modelCode)
         {
@@ -581,7 +580,6 @@ namespace AMIClient
                 {
                     TableItems.Add(new TableItem(io2) { Type = HelperClasses.DataGridType.SUBSTATION });
                     positions.Add(io2.GlobalId, TableItems.Count - 1);
-                    //GetSomeTableItems(io2.GlobalId, true);
                 }
             }
         }
@@ -597,7 +595,6 @@ namespace AMIClient
             {
                 TableItems.Add(new TableItem(io2) { Type = HelperClasses.DataGridType.SUBSTATION });
                 positions.Add(io2.GlobalId, TableItems.Count - 1);
-                //GetSomeTableItems(io2.GlobalId, true);
             }
         }
 
@@ -625,6 +622,8 @@ namespace AMIClient
                     positions.Clear();
                 }
 
+                changesForAmis.Clear();
+
                 foreach (DynamicMeasurement dm in measurements)
                 {
                     if (positions.ContainsKey(dm.PsrRef))
@@ -633,8 +632,43 @@ namespace AMIClient
                         TableItems[positions[dm.PsrRef]].CurrentQ = dm.CurrentQ != -1 ? dm.CurrentQ : TableItems[positions[dm.PsrRef]].CurrentQ;
                         TableItems[positions[dm.PsrRef]].CurrentV = dm.CurrentV != -1 ? dm.CurrentV : TableItems[positions[dm.PsrRef]].CurrentV;
                     }
+
+                    if ((DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(dm.PsrRef) == DMSType.ENERGYCONS)
+                    {
+                        changesForAmis.Add(dm.PsrRef, dm);
+                    }
+                }
+
+                this.timeOfLastUpdate = DateTime.Now;
+            }
+        }
+
+        public bool NewChangesAvailable(DateTime lastUpdate)
+        {
+            return DateTime.Compare(lastUpdate, this.timeOfLastUpdate) < 0;
+        }
+
+        public Dictionary<long, DynamicMeasurement> GetChanges(List<long> gids)
+        {
+            Dictionary<long, DynamicMeasurement> retVal = new Dictionary<long, DynamicMeasurement>();
+
+            lock (lockObj)
+            {
+                foreach (long gid in gids)
+                {
+                    if (changesForAmis.ContainsKey(gid))
+                    {
+                        retVal.Add(gid, changesForAmis[gid]);
+                    }
                 }
             }
+
+            return retVal;
+        }
+
+        public DateTime GetTimeOfTheLastUpdate()
+        {
+            return this.timeOfLastUpdate;
         }
 
         public void ClearTableItems()
