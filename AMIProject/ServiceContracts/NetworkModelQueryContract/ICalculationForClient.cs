@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 
 namespace FTN.ServiceContracts
 {
-    [ServiceContract(CallbackContract = typeof(IModelForDuplex))]
-    public interface ICalculationDuplexClient
+    [ServiceContract]
+    public interface ICalculationForClient
     {
         [OperationContract]
         void ConnectClient();

@@ -49,7 +49,7 @@ namespace AMISimulator
                         try
                         {
                             NetTcpBinding binding = new NetTcpBinding();
-                            binding.SendTimeout = TimeSpan.FromMinutes(3);
+                            binding.SendTimeout = TimeSpan.FromMinutes(5);
                             factory = new DuplexChannelFactory<IScadaDuplexSimulator>(new InstanceContext(this),
                                                                                     binding,
                                                                                     new EndpointAddress("net.tcp://localhost:10100/Scada/Simulator"));
@@ -174,7 +174,7 @@ namespace AMISimulator
                 try
                 {
                     address = ProxyScada.Connect();
-                    ((IContextChannel)ProxyScada).OperationTimeout = TimeSpan.FromMinutes(1);
+                    ((IContextChannel)ProxyScada).OperationTimeout = TimeSpan.FromMinutes(5);
                     break;
                 }
                 catch

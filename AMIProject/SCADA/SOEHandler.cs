@@ -130,7 +130,11 @@ namespace SCADA
 
                     Console.WriteLine("Number of measurements: " + resourcesToSend.Count + " " + cnt);
 
-                    HasNewMeas = true;
+                    if (this.resourcesToSend.Count > 0)
+                    {
+                        HasNewMeas = true;
+                    }
+
                     Logger.LogMessageToFile(string.Format("SCADA.SOEHandler.Process; line: {0}; Finish the Process function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 }
             }

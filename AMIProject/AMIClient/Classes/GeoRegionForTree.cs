@@ -70,12 +70,14 @@ namespace AMIClient
                 if (value != base.isSelected)
                 {
                     base.isSelected = value;
+
                     if (value)
                     {
                         Logger.LogMessageToFile(string.Format("AMIClient.GeoRegionForTree.IsSelected; line: {0}; Start - get all ami for the selected region", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                         base.Model.ClearPositions();
                         base.Model.ClearTableItems();
                         base.Model.GetSomeTableItemsForGeoRegion(this.GeoRegion.GlobalId);
+                        this.Model.GetLastMeasurements();
                         this.OnPropertyChanged("IsSelected");
                         Logger.LogMessageToFile(string.Format("AMIClient.GeoRegionForTree.IsSelected; line: {0}; Finish - get all ami for the selected region", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     }

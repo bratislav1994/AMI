@@ -34,11 +34,14 @@ namespace AMIClient
         private RootElement root;
         private bool firstContact = true;
         private bool firstContactCE = true;
+        private bool firstContactSC = true;
+        private ISmartCacheDuplexForClient scProxy = null;
+        private DuplexChannelFactory<ISmartCacheDuplexForClient> factorySC;
         private INetworkModelGDAContractDuplexClient gdaQueryProxy = null;
-        private ICalculationDuplexClient ceQueryProxy = null;
+        private ICalculationForClient ceQueryProxy = null;
         private object lockObj = new object();
         private DuplexChannelFactory<INetworkModelGDAContractDuplexClient> factory;
-        private DuplexChannelFactory<ICalculationDuplexClient> factoryCE;
+        private ChannelFactory<ICalculationForClient> factoryCE;
         private Thread checkNMS;
         private ICollectionView viewTableItems;
         //private ICollectionView viewAmiTableItems;
@@ -62,6 +65,7 @@ namespace AMIClient
                     gdaQueryProxy = factory.CreateChannel();
                     FirstContact = false;
                 }
+
                 Logger.LogMessageToFile(string.Format("AMIClient.Model.GdaQueryProxy; line: {0}; Channel Client-NMS is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return gdaQueryProxy;
             }
@@ -72,7 +76,7 @@ namespace AMIClient
             }
         }
 
-        public ICalculationDuplexClient CEQueryProxy
+        public ICalculationForClient CEQueryProxy
         {
             get
             {
@@ -81,13 +85,13 @@ namespace AMIClient
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.CEQueryProxy; line: {0}; Create channel between Client and CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.SendTimeout = TimeSpan.FromSeconds(3);
-                    factoryCE = new DuplexChannelFactory<ICalculationDuplexClient>(
-                    new InstanceContext(this),
+                    factoryCE = new ChannelFactory<ICalculationForClient>(
                         binding,
                         new EndpointAddress("net.tcp://localhost:10006/CalculationEngine/Client"));
                     ceQueryProxy = factoryCE.CreateChannel();
                     FirstContactCE = false;
                 }
+
                 Logger.LogMessageToFile(string.Format("AMIClient.Model.CEQueryProxy; line: {0}; Channel Client-CE is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return ceQueryProxy;
             }
@@ -95,6 +99,34 @@ namespace AMIClient
             set
             {
                 ceQueryProxy = value;
+            }
+        }
+
+        public ISmartCacheDuplexForClient ScProxy
+        {
+            get
+            {
+                if (firstContactSC)
+                {
+                    Logger.LogMessageToFile(string.Format("AMIClient.Model.SCProxy; line: {0}; Create channel between Client and SC", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    NetTcpBinding binding = new NetTcpBinding();
+                    binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    factorySC = new DuplexChannelFactory<ISmartCacheDuplexForClient>(
+                    new InstanceContext(this),
+                        binding,
+                        new EndpointAddress("net.tcp://localhost:10008/SmartCache/Client"));
+                    scProxy = factorySC.CreateChannel();
+                    firstContactSC = false;
+                }
+
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.SCProxy; line: {0}; Channel Client-SC is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+
+                return scProxy;
+            }
+
+            set
+            {
+                scProxy = value;
             }
         }
 
@@ -207,7 +239,7 @@ namespace AMIClient
                 firstContactCE = value;
             }
         }
-
+        
         public Model()
         {
             // OBRISATI KASNIJE
@@ -233,12 +265,37 @@ namespace AMIClient
 
             Thread t = new Thread(() => ConnectToNMS());
             t.Start();
-
-
+            
             Thread t2 = new Thread(() => ConnectToCE());
             t2.Start();
+
+            Thread t3 = new Thread(() => ConnectToSC());
+            t3.Start();
+
             t.Join();
             t2.Join();
+            t3.Join();
+        }
+
+        private void ConnectToSC()
+        {
+            while (true)
+            {
+                try
+                {
+                    Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToSC; line: {0}; Client try to connect to SC", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    ScProxy.Subscribe();
+                    ((IContextChannel)ScProxy).OperationTimeout = TimeSpan.FromMinutes(5);
+                    Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToSC; line: {0}; Client is connected to the SC", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    break;
+                }
+                catch
+                {
+                    Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToSC; line: {0}; Client faild to connect to SC. CATCH", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    firstContactSC = true;
+                    Thread.Sleep(1000);
+                }
+            }
         }
 
         private void ConnectToCE()
@@ -250,7 +307,7 @@ namespace AMIClient
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client try to connect with CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     CEQueryProxy.ConnectClient();
                     //factoryCE.Endpoint.Binding.SendTimeout = TimeSpan.FromMinutes(1);
-                    ((IContextChannel)CEQueryProxy).OperationTimeout = TimeSpan.FromMinutes(1);
+                    ((IContextChannel)CEQueryProxy).OperationTimeout = TimeSpan.FromMinutes(5);
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client is connected to the CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     break;
                 }
@@ -272,7 +329,7 @@ namespace AMIClient
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToNMS; line: {0}; Client try to connect with NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     GdaQueryProxy.ConnectClient();
                     //factory.Endpoint.Binding.SendTimeout = TimeSpan.FromMinutes(1);
-                    ((IContextChannel)GdaQueryProxy).OperationTimeout = TimeSpan.FromMinutes(1);
+                    ((IContextChannel)GdaQueryProxy).OperationTimeout = TimeSpan.FromMinutes(5);
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToNMS; line: {0}; Client is connected to the NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     checkNMS.Start();
 
@@ -615,6 +672,12 @@ namespace AMIClient
 
         public void SendMeasurements(List<DynamicMeasurement> measurements)
         {
+            UpdateTables(measurements);
+            this.timeOfLastUpdate = DateTime.Now;
+        }
+
+        private void UpdateTables(List<DynamicMeasurement> measurements)
+        {
             lock (lockObj)
             {
                 if (TableItems.Count == 0)
@@ -638,9 +701,12 @@ namespace AMIClient
                         changesForAmis.Add(dm.PsrRef, dm);
                     }
                 }
-
-                this.timeOfLastUpdate = DateTime.Now;
             }
+        }
+
+        public void GetLastMeasurements()
+        {
+            this.UpdateTables(this.ScProxy.GetLastMeas());
         }
 
         public bool NewChangesAvailable(DateTime lastUpdate)

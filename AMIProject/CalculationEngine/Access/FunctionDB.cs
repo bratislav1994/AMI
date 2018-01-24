@@ -337,28 +337,30 @@ namespace CalculationEngine.Access
                 using (var access = new AccessDB())
                 {
                     var rawMeas = access.AggregationForHours.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList();
+                    Dictionary<DateTime, int> cntForVoltage = new Dictionary<DateTime, int>();
 
                     foreach (var meas in rawMeas)
                     {
                         if (!measurements.ContainsKey(meas.TimeStamp))
                         {
                             measurements.Add(meas.TimeStamp, meas);
+                            cntForVoltage.Add(meas.TimeStamp, 1);
                         }
                         else
                         {
                             measurements[meas.TimeStamp].AvgP += meas.AvgP;
                             measurements[meas.TimeStamp].AvgQ += meas.AvgQ;
                             measurements[meas.TimeStamp].AvgV += meas.AvgV;
-                            //measurements[meas.TimeStamp].MaxP += meas.MaxP;
-                            //measurements[meas.TimeStamp].MaxQ += meas.MaxQ;
-                            //measurements[meas.TimeStamp].MaxV += meas.MaxV;
-                            //measurements[meas.TimeStamp].MinP += meas.MinP;
-                            //measurements[meas.TimeStamp].MinQ += meas.MinQ;
-                            //measurements[meas.TimeStamp].MinV += meas.MinV;
+                            ++cntForVoltage[meas.TimeStamp];
                             measurements[meas.TimeStamp].IntegralP += meas.IntegralP;
                             measurements[meas.TimeStamp].IntegralQ += meas.IntegralQ;
                             measurements[meas.TimeStamp].IntegralV += meas.IntegralV;
                         }
+                    }
+
+                    foreach (KeyValuePair<DateTime, int> kvp in cntForVoltage)
+                    {
+                        measurements[kvp.Key].AvgV /= kvp.Value;
                     }
 
                     return measurements.Values.ToList();
@@ -664,28 +666,30 @@ namespace CalculationEngine.Access
                 using (var access = new AccessDB())
                 {
                     var rawMeas = access.AggregationForDays.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList();
+                    Dictionary<DateTime, int> cntForVoltage = new Dictionary<DateTime, int>();
 
                     foreach (var meas in rawMeas)
                     {
                         if (!measurements.ContainsKey(meas.TimeStamp))
                         {
                             measurements.Add(meas.TimeStamp, meas);
+                            cntForVoltage.Add(meas.TimeStamp, 1);
                         }
                         else
                         {
                             measurements[meas.TimeStamp].AvgP += meas.AvgP;
                             measurements[meas.TimeStamp].AvgQ += meas.AvgQ;
                             measurements[meas.TimeStamp].AvgV += meas.AvgV;
-                            //measurements[meas.TimeStamp].MaxP += meas.MaxP;
-                            //measurements[meas.TimeStamp].MaxQ += meas.MaxQ;
-                            //measurements[meas.TimeStamp].MaxV += meas.MaxV;
-                            //measurements[meas.TimeStamp].MinP += meas.MinP;
-                            //measurements[meas.TimeStamp].MinQ += meas.MinQ;
-                            //measurements[meas.TimeStamp].MinV += meas.MinV;
+                            ++cntForVoltage[meas.TimeStamp];
                             measurements[meas.TimeStamp].IntegralP += meas.IntegralP;
                             measurements[meas.TimeStamp].IntegralQ += meas.IntegralQ;
                             measurements[meas.TimeStamp].IntegralV += meas.IntegralV;
                         }
+                    }
+
+                    foreach (KeyValuePair<DateTime, int> kvp in cntForVoltage)
+                    {
+                        measurements[kvp.Key].AvgV /= kvp.Value;
                     }
 
                     return measurements.Values.ToList();
@@ -1288,6 +1292,7 @@ namespace CalculationEngine.Access
         private List<MinuteAggregation> CreateMinuteAggregationsWhenMinuteTableIsEmpty(Dictionary<long, List<DynamicMeasurement>> measurementsFromCollect1)
         {
             List<MinuteAggregation> retVal = new List<MinuteAggregation>();
+
             foreach (KeyValuePair<long, List<DynamicMeasurement>> kvp in measurementsFromCollect1)
             {
                 MinuteAggregation ma = new MinuteAggregation();
@@ -1345,28 +1350,30 @@ namespace CalculationEngine.Access
                 using (var access = new AccessDB())
                 {
                     var rawMeas = access.AggregationForMinutes.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList();
+                    Dictionary<DateTime, int> cntForVoltage = new Dictionary<DateTime, int>();
 
                     foreach (var meas in rawMeas)
                     {
                         if (!measurements.ContainsKey(meas.TimeStamp))
                         {
                             measurements.Add(meas.TimeStamp, meas);
+                            cntForVoltage.Add(meas.TimeStamp, 1);
                         }
                         else
                         {
                             measurements[meas.TimeStamp].AvgP += meas.AvgP;
                             measurements[meas.TimeStamp].AvgQ += meas.AvgQ;
                             measurements[meas.TimeStamp].AvgV += meas.AvgV;
-                            //measurements[meas.TimeStamp].MaxP += meas.MaxP;
-                            //measurements[meas.TimeStamp].MaxQ += meas.MaxQ;
-                            //measurements[meas.TimeStamp].MaxV += meas.MaxV;
-                            //measurements[meas.TimeStamp].MinP += meas.MinP;
-                            //measurements[meas.TimeStamp].MinQ += meas.MinQ;
-                            //measurements[meas.TimeStamp].MinV += meas.MinV;
+                            ++cntForVoltage[meas.TimeStamp];
                             measurements[meas.TimeStamp].IntegralP += meas.IntegralP;
                             measurements[meas.TimeStamp].IntegralQ += meas.IntegralQ;
                             measurements[meas.TimeStamp].IntegralV += meas.IntegralV;
                         }
+                    }
+
+                    foreach (KeyValuePair<DateTime, int> kvp in cntForVoltage)
+                    {
+                        measurements[kvp.Key].AvgV /= kvp.Value;
                     }
 
                     return measurements.Values.ToList();

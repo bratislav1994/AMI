@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonTest", "CommonTest\Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkModelServiceTest", "NetworkModelServiceTest\NetworkModelServiceTest.csproj", "{48B6B880-F98C-4768-AC79-C499C74224B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartCacheCE", "SmartCacheCE\SmartCacheCE.csproj", "{8ACB9739-15EC-4C41-BB87-966A1D378138}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -255,6 +257,18 @@ Global
 		{48B6B880-F98C-4768-AC79-C499C74224B7}.Release|x64.Build.0 = Release|Any CPU
 		{48B6B880-F98C-4768-AC79-C499C74224B7}.Release|x86.ActiveCfg = Release|Any CPU
 		{48B6B880-F98C-4768-AC79-C499C74224B7}.Release|x86.Build.0 = Release|Any CPU
+		{8ACB9739-15EC-4C41-BB87-966A1D378138}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8ACB9739-15EC-4C41-BB87-966A1D378138}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8ACB9739-15EC-4C41-BB87-966A1D378138}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8ACB9739-15EC-4C41-BB87-966A1D378138}.Debug|x64.Build.0 = Debug|Any CPU
+		{8ACB9739-15EC-4C41-BB87-966A1D378138}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8ACB9739-15EC-4C41-BB87-966A1D378138}.Debug|x86.Build.0 = Debug|Any CPU
+		{8ACB9739-15EC-4C41-BB87-966A1D378138}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8ACB9739-15EC-4C41-BB87-966A1D378138}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8ACB9739-15EC-4C41-BB87-966A1D378138}.Release|x64.ActiveCfg = Release|Any CPU
+		{8ACB9739-15EC-4C41-BB87-966A1D378138}.Release|x64.Build.0 = Release|Any CPU
+		{8ACB9739-15EC-4C41-BB87-966A1D378138}.Release|x86.ActiveCfg = Release|Any CPU
+		{8ACB9739-15EC-4C41-BB87-966A1D378138}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

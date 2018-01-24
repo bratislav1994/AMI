@@ -90,13 +90,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IBaseNetworkModelGDAContract.cs" />
-    <Compile Include="ICalculationDuplexClient.cs" />
+    <Compile Include="ICalculationForClient.cs" />
     <Compile Include="ICalculationEngine.cs" />
+    <Compile Include="ICalculationEngineDuplexSmartCache.cs" />
     <Compile Include="IModelForDuplex.cs" />
     <Compile Include="INetworkModel.cs" />
     <Compile Include="INetworkModelGDAContract.cs" />
     <Compile Include="INetworkModelGDAContractDuplexClient.cs" />
     <Compile Include="IScadaDuplexSimulator.cs" />
+    <Compile Include="ISmartCacheDuplexForClient.cs" />
+    <Compile Include="ISmartCacheForCE.cs" />
     <Compile Include="ITransactionCoordinator.cs" />
     <Compile Include="ITransactionDuplexCE.cs" />
     <Compile Include="ITransactionDuplexNMS.cs" />

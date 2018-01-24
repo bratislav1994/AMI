@@ -119,6 +119,7 @@ namespace TransactionCoordinator
                 }
 
                 List<bool> list = new List<bool>(scadas.Count);
+
                 foreach (IScada scada in scadas)
                 {
                     try

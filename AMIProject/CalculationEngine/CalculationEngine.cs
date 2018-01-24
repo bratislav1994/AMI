@@ -17,12 +17,12 @@ using TC57CIM.IEC61970.Wires;
 namespace CalculationEngine
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class CalculationEngine : ICalculationEngine, ICalculationDuplexClient
+    public class CalculationEngine : ICalculationEngine, ICalculationForClient, ICalculationEngineDuplexSmartCache
     {
         private static CalculationEngine instance;
         private ITransactionDuplexCE proxyCoordinator;
-        private List<IModelForDuplex> clients;
-        private List<IModelForDuplex> clientsForDeleting;
+        private List<ISmartCacheForCE> smartCaches;
+        private List<ISmartCacheForCE> smartCachesForDeleting;
         private List<ResourceDescription> meas;
         private bool firstTimeCoordinator = true;
         private FunctionDB dataBaseAdapter;
@@ -37,6 +37,8 @@ namespace CalculationEngine
 
         public CalculationEngine()
         {
+            smartCaches = new List<ISmartCacheForCE>();
+            smartCachesForDeleting = new List<ISmartCacheForCE>();
             dataBaseAdapter = new FunctionDB();
             dataBaseAdapter.DoUndone();
             dataBaseAdapter.StartThreads();
@@ -52,22 +54,20 @@ namespace CalculationEngine
             subGeoRegionsTemp = new Dictionary<long, SubGeographicalRegionDb>();
             substationsTemp = new Dictionary<long, SubstationDb>();
             amisTemp = new Dictionary<long, EnergyConsumerDb>();
-            clients = new List<IModelForDuplex>();
-            clientsForDeleting = new List<IModelForDuplex>();
             meas = new List<ResourceDescription>();
 
             while (true)
             {
                 try
                 {
-                    Logger.LogMessageToFile(string.Format("CE.CalculationEngine; line: {0}; CE try to connect with Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    Logger.LogMessageToFile(string.Format("CE.CalculationEngine; line: {0}; CE try to connect to Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     this.ProxyCoordinator.ConnectCE();
                     Logger.LogMessageToFile(string.Format("CE.CalculationEngine; line: {0}; CE is connected to the Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     break;
                 }
                 catch
                 {
-                    Logger.LogMessageToFile(string.Format("CE.CalculationEngine; line: {0}; CE faild to connect with Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    Logger.LogMessageToFile(string.Format("CE.CalculationEngine; line: {0}; CE failed to connect to Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     firstTimeCoordinator = true;
                     Thread.Sleep(1000);
                 }
@@ -116,7 +116,7 @@ namespace CalculationEngine
 
         public void ConnectClient()
         {
-            this.clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
+            return;
         }
 
         public Tuple<List<Statistics>, Statistics> GetMeasurementsForChartView(List<long> gids, DateTime from, ResolutionType resolution)
@@ -144,10 +144,10 @@ namespace CalculationEngine
             Statistics statistics = new Statistics();
             statistics.MaxP = result.Max(x => x.AvgP);
             statistics.MaxQ = result.Max(x => x.AvgQ);
-            statistics.MaxV = result.Max(x => x.AvgV);
+            statistics.MaxV = result.Max(x => x.MaxV);
             statistics.MinP = result.Min(x => x.AvgP);
             statistics.MinQ = result.Min(x => x.AvgQ);
-            statistics.MinV = result.Min(x => x.AvgV);
+            statistics.MinV = result.Min(x => x.MinV);
             statistics.AvgP = result.Average(x => x.AvgP);
             statistics.AvgQ = result.Average(x => x.AvgQ);
             statistics.AvgV = result.Average(x => x.AvgV);
@@ -263,6 +263,7 @@ namespace CalculationEngine
             Logger.LogMessageToFile(string.Format("CE.CalculationEngine.DataFromScada; line: {0}; CE receive data from scada and send this data to client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             Console.WriteLine("Send data to client");
             Console.WriteLine("Data from scada: " + measurements.Count);
+            int cntForVoltage = 0;
 
             dataBaseAdapter.AddMeasurements(measurements.Values.ToList());
 
@@ -279,9 +280,12 @@ namespace CalculationEngine
                         m.CurrentP += meas.Value.CurrentP;
                         m.CurrentQ += meas.Value.CurrentQ;
                         m.CurrentV += meas.Value.CurrentV;
+                        ++cntForVoltage;
                     }
                 }
 
+                m.CurrentV /= cntForVoltage;
+                cntForVoltage = 0;
                 addSubstations.Add(m.PsrRef, m);
             }
 
@@ -303,9 +307,12 @@ namespace CalculationEngine
                         m.CurrentP += meas.Value.CurrentP;
                         m.CurrentQ += meas.Value.CurrentQ;
                         m.CurrentV += meas.Value.CurrentV;
+                        ++cntForVoltage;
                     }
                 }
 
+                m.CurrentV /= cntForVoltage;
+                cntForVoltage = 0;
                 addSubGeoRegions.Add(m.PsrRef, m);
                 measurements.Add(m.PsrRef, m);
             }
@@ -321,31 +328,40 @@ namespace CalculationEngine
                         m.CurrentP += meas.Value.CurrentP;
                         m.CurrentQ += meas.Value.CurrentQ;
                         m.CurrentV += meas.Value.CurrentV;
+                        ++cntForVoltage;
                     }
                 }
 
+                m.CurrentV /= cntForVoltage;
+                cntForVoltage = 0;
                 measurements.Add(m.PsrRef, m);
             }
 
-            clientsForDeleting.Clear();
-            foreach (IModelForDuplex client in clients)
+            smartCachesForDeleting.Clear();
+
+            foreach (ISmartCacheForCE sc in smartCaches)
             {
                 try
                 {
-                    client.SendMeasurements(measurements.Values.ToList());
+                    sc.SendMeasurements(measurements);
                 }
                 catch
                 {
-                    clientsForDeleting.Add(client);
+                    smartCachesForDeleting.Add(sc);
                 }
             }
 
-            foreach (IModelForDuplex client in clientsForDeleting)
+            foreach (ISmartCacheForCE sc in smartCachesForDeleting)
             {
-                clients.Remove(client);
+                smartCaches.Remove(sc);
             }
 
             Logger.LogMessageToFile(string.Format("CE.CalculationEngine.DataFromScada; line: {0}; Finish transport data SCADA-CE-Client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+        }
+
+        public void Subscribe()
+        {
+            this.smartCaches.Add(OperationContext.Current.GetCallbackChannel<ISmartCacheForCE>());
         }
     }
 }

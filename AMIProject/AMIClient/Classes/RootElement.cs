@@ -78,10 +78,12 @@ namespace AMIClient
                 if (value != base.isSelected)
                 {
                     base.isSelected = value;
+
                     if (value)
                     {
                         base.Model.ClearPositions();
                         Model.GetAllTableItems(false);
+                        this.Model.GetLastMeasurements();
                         this.OnPropertyChanged("IsSelected");
                     }
                 }
