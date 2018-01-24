@@ -29,7 +29,6 @@ namespace AMIClient
         private Dictionary<long, int> positions = new Dictionary<long, int>();
         private Dictionary<long, int> positionsAmi = new Dictionary<long, int>();
         private ObservableCollection<TableItem> tableItems = new ObservableCollection<TableItem>();
-        private ObservableCollection<TableItem> amiTableItems = new ObservableCollection<TableItem>();
         private ObservableCollection<TableItemForAlarm> tableItemsForAlarm = new ObservableCollection<TableItemForAlarm>();
         private RootElement root;
         private bool firstContact = true;
@@ -44,7 +43,6 @@ namespace AMIClient
         private ChannelFactory<ICalculationForClient> factoryCE;
         private Thread checkNMS;
         private ICollectionView viewTableItems;
-        //private ICollectionView viewAmiTableItems;
         private ICollectionView viewTableItemsForAlarm;
         private Dictionary<long, DynamicMeasurement> changesForAmis = new Dictionary<long, DynamicMeasurement>();
         private DateTime timeOfLastUpdate = DateTime.Now;
@@ -157,34 +155,6 @@ namespace AMIClient
                 RaisePropertyChanged("ViewTableItems");
             }
         }
-
-        public ObservableCollection<TableItem> AmiTableItems
-        {
-            get
-            {
-                return amiTableItems;
-            }
-
-            set
-            {
-                amiTableItems = value;
-                RaisePropertyChanged("AmiTableItems");
-            }
-        }
-
-        /*public ICollectionView ViewAmiTableItems
-        {
-            get
-            {
-                return viewAmiTableItems;
-            }
-
-            set
-            {
-                viewAmiTableItems = value;
-                RaisePropertyChanged("ViewAmiTableItems");
-            }
-        }*/
 
         public ObservableCollection<TableItemForAlarm> TableItemsForAlarm
         {

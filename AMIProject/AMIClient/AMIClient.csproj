@@ -221,7 +221,6 @@
     <Compile Include="HelperClasses\EnumDescription.cs" />
     <Compile Include="HelperClasses\EnumDescriptionTypeConverter.cs" />
     <Compile Include="Model\IModel.cs" />
-    <Compile Include="TabItem.cs" />
     <Compile Include="ViewModels\AddCimXmlViewModel.cs" />
     <Compile Include="Model\Model.cs" />
     <Compile Include="ViewModels\AlarmSummariesViewModel.cs" />

@@ -35,6 +35,8 @@ namespace AMIClient.ViewModels
 
         public AmiDataGridViewModel()
         {
+            this.ViewAmiTableItems = new CollectionViewSource { Source = this.AmiTableItems }.View;
+            this.ViewAmiTableItems = CollectionViewSource.GetDefaultView(this.AmiTableItems);
             this.checkIfThereAreNewUpdates = new Thread(() => CheckForUpdates());
             this.checkIfThereAreNewUpdates.Start();
         }
@@ -202,7 +204,7 @@ namespace AMIClient.ViewModels
 
         public void OnFilterApply()
         {
-            this.ViewAmiTableItems = CollectionViewSource.GetDefaultView(this.Model.AmiTableItems);
+            this.ViewAmiTableItems = CollectionViewSource.GetDefaultView(this.AmiTableItems);
 
             if (this.ViewAmiTableItems != null)
             {
@@ -278,6 +280,7 @@ namespace AMIClient.ViewModels
             set
             {
                 viewAmiTableItems = value;
+                RaisePropertyChanged("ViewAmiTableItems");
             }
         }
 
@@ -318,7 +321,7 @@ namespace AMIClient.ViewModels
 
         private void CheckForUpdates()
         {
-            while(true)
+            while (true)
             {
                 if (this.Model.NewChangesAvailable(this.timeOfLastUpdate))
                 {
