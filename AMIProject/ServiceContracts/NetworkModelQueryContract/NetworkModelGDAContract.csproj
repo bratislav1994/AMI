@@ -93,6 +93,7 @@
     <Compile Include="ICalculationForClient.cs" />
     <Compile Include="ICalculationEngine.cs" />
     <Compile Include="ICalculationEngineDuplexSmartCache.cs" />
+    <Compile Include="IDatabaseForNMS.cs" />
     <Compile Include="IModelForDuplex.cs" />
     <Compile Include="INetworkModel.cs" />
     <Compile Include="INetworkModelGDAContract.cs" />
