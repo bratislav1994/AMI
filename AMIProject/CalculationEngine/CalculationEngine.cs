@@ -153,13 +153,11 @@ namespace CalculationEngine
             statistics.AvgV = result.Average(x => x.AvgV);
             statistics.IntegralP = 0;
             statistics.IntegralQ = 0;
-            statistics.IntegralV = 0;
 
             for (int i = 0; i < result.Count - 1; i++)
             {
                 statistics.IntegralP += result[i].IntegralP;
                 statistics.IntegralQ += result[i].IntegralQ;
-                statistics.IntegralV += result[i].IntegralV;
             }
 
             return new Tuple<List<Statistics>, Statistics>(result, statistics);

@@ -15,10 +15,9 @@
              >
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
+        <Grid Margin="0,0,0,0" Background="#E3E3E3" VerticalAlignment="Stretch" Height="auto">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"></RowDefinition>
                 <RowDefinition Height="30"></RowDefinition>
                 <RowDefinition Height="30"></RowDefinition>
                 <RowDefinition Height="200"></RowDefinition>
@@ -27,9 +26,9 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="90"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="170"></ColumnDefinition>
                 <ColumnDefinition Width="7*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="150"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" Content="From: " HorizontalAlignment="Left" VerticalAlignment="Center" Height="29" Width="95"/>
@@ -37,10 +36,10 @@
                                    Text="{Binding FromPeriod, UpdateSourceTrigger=PropertyChanged}"
                                 Format="Custom" FormatString="dd/MMM/yyyy HH:mm:ss.fff"
                                    TimeFormat="Custom" TimeFormatString="HH:mm:ss.fff" 
-                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="auto" />
+                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="170" />
             <DatePicker Grid.Row="0" Grid.Column="1" Visibility="{Binding DatePick}"
                                    SelectedDate="{Binding FromPeriod, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:dd/MMM/yyyy}}"
-                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="auto">
+                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="170">
                 <DatePicker.Resources>
                     <Style TargetType="DatePickerTextBox">
                         <Setter Property="Control.Template">
@@ -55,9 +54,9 @@
                 </DatePicker.Resources>
             </DatePicker>
 
-            <Button Grid.Row="2" Grid.Column="0" Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
+            <Button Grid.Row="1" Grid.Column="0" Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
 
-            <DVC:Chart Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Background="#FF3F3F3F">
+            <DVC:Chart Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Background="#E3E3E3">
 
                 <DVC:Chart.LegendStyle>
                     <Style TargetType="Control">
@@ -73,35 +72,37 @@
                     IndependentValueBinding="{Binding Path=Key}"
                     DependentValueBinding="{Binding Path=Value}" Margin="0,0,0,-2"/>
                 </DVC:Chart.Series>
+                
+                
             </DVC:Chart>
 
-            <StackPanel Grid.Row="3" Grid.Column="3">
+            <StackPanel Grid.Row="2" Grid.Column="3">
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Maximum: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="115"/>
-                    <Label Content="{Binding Statistics.MaxP}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="80"/>
-                    <Label Content="W" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
+                    <Label Content="Pmax: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
+                    <Label Content="{Binding Statistics.MaxP}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
+                    <Label Content="kW" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Minimum: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="115"/>
-                    <Label Content="{Binding Statistics.MinP}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="80"/>
-                    <Label Content="W" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
+                    <Label Content="Pmin: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
+                    <Label Content="{Binding Statistics.MinP}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
+                    <Label Content="kW" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Average: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="115"/>
-                    <Label Content="{Binding Statistics.AvgP}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="80"/>
-                    <Label Content="W" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
+                    <Label Content="Pavg: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
+                    <Label Content="{Binding Statistics.AvgP}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
+                    <Label Content="kW" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Consumed energy: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="115"/>
-                    <Label Content="{Binding Statistics.IntegralP}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="80"/>
+                    <Label Content="Energy: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
+                    <Label Content="{Binding Statistics.IntegralP}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
                     <Label Content="kWh" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
                 </StackPanel>
             </StackPanel>
 
-            <DVC:Chart Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Background="#FF3F3F3F">
+            <DVC:Chart Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"  Background="#E3E3E3">
 
                 <DVC:Chart.LegendStyle>
                     <Style TargetType="Control">
@@ -120,33 +121,33 @@
                 </DVC:Chart.Series>
             </DVC:Chart>
 
-            <StackPanel Grid.Row="4" Grid.Column="3">
+            <StackPanel Grid.Row="3" Grid.Column="3">
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Maximum: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="115"/>
-                    <Label Content="{Binding Statistics.MaxQ}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="80"/>
-                    <Label Content="VAr" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
+                    <Label Content="Qmax: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
+                    <Label Content="{Binding Statistics.MaxQ}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
+                    <Label Content="kVAr" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Minimum: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="115"/>
-                    <Label Content="{Binding Statistics.MinQ}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="80"/>
-                    <Label Content="VAr" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
+                    <Label Content="Qmin: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
+                    <Label Content="{Binding Statistics.MinQ}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
+                    <Label Content="kVAr" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Average: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="115"/>
-                    <Label Content="{Binding Statistics.AvgQ}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="80"/>
-                    <Label Content="VAr" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
+                    <Label Content="Qavg: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
+                    <Label Content="{Binding Statistics.AvgQ}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
+                    <Label Content="kVAr" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Consumed energy: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="115"/>
-                    <Label Content="{Binding Statistics.IntegralQ}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="80"/>
+                    <Label Content="Energy: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
+                    <Label Content="{Binding Statistics.IntegralQ}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
                     <Label Content="kWh" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
                 </StackPanel>
             </StackPanel>
 
-            <DVC:Chart Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Background="#FF3F3F3F">
+            <DVC:Chart Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Background="#E3E3E3">
 
                 <DVC:Chart.LegendStyle>
                     <Style TargetType="Control">
@@ -164,29 +165,23 @@
                 </DVC:Chart.Series>
             </DVC:Chart>
 
-            <StackPanel Grid.Row="5" Grid.Column="3">
+            <StackPanel Grid.Row="4" Grid.Column="3">
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Maximum: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="115"/>
-                    <Label Content="{Binding Statistics.MaxV}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="80"/>
+                    <Label Content="Vmax: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
+                    <Label Content="{Binding Statistics.MaxV}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
                     <Label Content="V" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Minimum: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="115"/>
-                    <Label Content="{Binding Statistics.MinV}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="80"/>
+                    <Label Content="Vmin: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
+                    <Label Content="{Binding Statistics.MinV}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
                     <Label Content="V" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Average: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="115"/>
-                    <Label Content="{Binding Statistics.AvgV}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="80"/>
+                    <Label Content="Vavg: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
+                    <Label Content="{Binding Statistics.AvgV}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
                     <Label Content="V" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Consumed energy: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="115"/>
-                    <Label Content="{Binding Statistics.IntegralV}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="80"/>
-                    <Label Content="kWh" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
                 </StackPanel>
             </StackPanel>
 

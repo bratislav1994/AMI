@@ -26,7 +26,6 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
         private float avgV;
         private float integralP;
         private float integralQ;
-        private float integralV;
         private DateTime timeStamp;
 
         public Statistics() { }
@@ -196,20 +195,6 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             set
             {
                 integralQ = value;
-            }
-        }
-
-        [DataMember]
-        public float IntegralV
-        {
-            get
-            {
-                return integralV;
-            }
-
-            set
-            {
-                integralV = value;
             }
         }
     }

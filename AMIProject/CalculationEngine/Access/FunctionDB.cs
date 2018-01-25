@@ -226,7 +226,6 @@ namespace CalculationEngine.Access
                 {
                     ma.IntegralP += kvp.Value[i].IntegralP;
                     ma.IntegralQ += kvp.Value[i].IntegralQ;
-                    ma.IntegralV += kvp.Value[i].IntegralV;
                 }
 
                 retVal.Add(ma);
@@ -354,7 +353,6 @@ namespace CalculationEngine.Access
                             ++cntForVoltage[meas.TimeStamp];
                             measurements[meas.TimeStamp].IntegralP += meas.IntegralP;
                             measurements[meas.TimeStamp].IntegralQ += meas.IntegralQ;
-                            measurements[meas.TimeStamp].IntegralV += meas.IntegralV;
                         }
                     }
 
@@ -554,7 +552,6 @@ namespace CalculationEngine.Access
                 {
                     ma.IntegralP += kvp.Value[i].IntegralP;
                     ma.IntegralQ += kvp.Value[i].IntegralQ;
-                    ma.IntegralV += kvp.Value[i].IntegralV;
                 }
 
                 retVal.Add(ma);
@@ -683,7 +680,6 @@ namespace CalculationEngine.Access
                             ++cntForVoltage[meas.TimeStamp];
                             measurements[meas.TimeStamp].IntegralP += meas.IntegralP;
                             measurements[meas.TimeStamp].IntegralQ += meas.IntegralQ;
-                            measurements[meas.TimeStamp].IntegralV += meas.IntegralV;
                         }
                     }
 
@@ -1273,14 +1269,12 @@ namespace CalculationEngine.Access
                 {
                     ma.IntegralP += (toBeWrittenDic[kvp.Key].CurrentP * (((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[0].CurrentP - toBeWrittenDic[kvp.Key].CurrentP))) / 2;
                     ma.IntegralQ += (toBeWrittenDic[kvp.Key].CurrentQ * (((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[0].CurrentQ - toBeWrittenDic[kvp.Key].CurrentQ))) / 2;
-                    ma.IntegralV += (toBeWrittenDic[kvp.Key].CurrentV * (((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[0].CurrentV - toBeWrittenDic[kvp.Key].CurrentV))) / 2;
                 }
 
                 for (int i = 1; i < kvp.Value.Count; i++)
                 {
                     ma.IntegralP += (kvp.Value[i].CurrentP * (((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[i].CurrentP - kvp.Value[i - 1].CurrentP))) / 2;
                     ma.IntegralQ += (kvp.Value[i].CurrentQ * (((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[i].CurrentQ - kvp.Value[i - 1].CurrentQ))) / 2;
-                    ma.IntegralV += (kvp.Value[i].CurrentV * (((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[i].CurrentV - kvp.Value[i - 1].CurrentV))) / 2;
                 }
 
                 retVal.Add(ma);
@@ -1312,7 +1306,6 @@ namespace CalculationEngine.Access
                 {
                     ma.IntegralP += (kvp.Value[i].CurrentP * (((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[i].CurrentP - kvp.Value[i - 1].CurrentP))) / 2;
                     ma.IntegralQ += (kvp.Value[i].CurrentQ * (((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[i].CurrentQ - kvp.Value[i - 1].CurrentQ))) / 2;
-                    ma.IntegralV += (kvp.Value[i].CurrentV * (((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[i].CurrentV - kvp.Value[i - 1].CurrentV))) / 2;
                 }
 
                 retVal.Add(ma);
@@ -1367,7 +1360,6 @@ namespace CalculationEngine.Access
                             ++cntForVoltage[meas.TimeStamp];
                             measurements[meas.TimeStamp].IntegralP += meas.IntegralP;
                             measurements[meas.TimeStamp].IntegralQ += meas.IntegralQ;
-                            measurements[meas.TimeStamp].IntegralV += meas.IntegralV;
                         }
                     }
 

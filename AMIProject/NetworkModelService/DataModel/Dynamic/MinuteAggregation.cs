@@ -27,7 +27,6 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             this.AvgV = 0;
             this.IntegralP = 0;
             this.IntegralQ = 0;
-            this.IntegralV = 0;
         }
 
         [Key]

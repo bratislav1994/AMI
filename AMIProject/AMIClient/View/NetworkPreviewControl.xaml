@@ -56,7 +56,6 @@
                         </Style>
                     </TreeView.ItemContainerStyle>
 
-
                     <TreeView.Resources>
 
                         <HierarchicalDataTemplate 
@@ -101,7 +100,8 @@
             <dock:DockingManager Grid.Row="1"
                          DataContext="{Binding DockManagerViewModel}"
                          DocumentsSource="{Binding Documents}"
-                         AnchorablesSource="{Binding Anchorables}" >
+                         AnchorablesSource="{Binding Anchorables}" 
+                         AllowMixedOrientation="True">
 
                 <dock:DockingManager.Resources>
 
