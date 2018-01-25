@@ -35,12 +35,16 @@ namespace FTN.Services.NetworkModelService
         private bool clientsNeedToUpdate = false;
         private object lockObjectClient;
         private object lockObjectScada;
+        private bool firstContactDB = true;
+        private IDatabaseForNMS dbProxy;
+        private Thread checkDB;
 
         /// <summary>
         /// Initializes a new instance of the Model class.
         /// </summary>
         public NetworkModel()
         {
+            Start();
             IsTest = false;
             LockObjectClient = new object();
             LockObjectScada = new object();
@@ -50,6 +54,77 @@ namespace FTN.Services.NetworkModelService
             ClientsForDeleting = new List<IModelForDuplex>();
             UpdateThreadClient = new Thread(() => InformClients());
             UpdateThreadClient.Start();
+        }
+
+        public IDatabaseForNMS DBProxy
+        {
+            get
+            {
+                if (firstContactDB)
+                {
+                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel.DBProxy; line: {0}; Create channel between NMS and DB", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    ChannelFactory<IDatabaseForNMS> factoryDB = new ChannelFactory<IDatabaseForNMS>(new NetTcpBinding(),
+                                                                                        new EndpointAddress("net.tcp://localhost:10009/Database/NMS"));
+                    dbProxy = factoryDB.CreateChannel();
+                    firstContactDB = false;
+                }
+
+                Logger.LogMessageToFile(string.Format("NSM.NetworkModel.DBProxy; line: {0}; Channel NMS-DB is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+
+                return dbProxy;
+            }
+
+            set
+            {
+                dbProxy = value;
+            }
+        }
+
+        private void Start()
+        {
+            checkDB = new Thread(() => CheckIfDBIsAlive());
+
+            Thread t = new Thread(() => ConnectToDB());
+            t.Start();
+        }
+
+        private void CheckIfDBIsAlive()
+        {
+            while (true)
+            {
+                try
+                {
+                    DBProxy.Ping();
+                }
+                catch
+                {
+                    firstContactDB = true;
+                    new Thread(() => ConnectToDB()).Start();
+                    break;
+                }
+
+                Thread.Sleep(3000);
+            }
+        }
+
+        private void ConnectToDB()
+        {
+            while (true)
+            {
+                try
+                {
+                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS try to connect to DB", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    this.DBProxy.Connect();
+                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS is connected to the DB", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    break;
+                }
+                catch
+                {
+                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS failed to connect to DB", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    firstContactDB = true;
+                    Thread.Sleep(1000);
+                }
+            }
         }
 
         public ModelResourcesDesc ResourcesDescs
@@ -736,85 +811,93 @@ namespace FTN.Services.NetworkModelService
 
         private void SaveDelta(Delta delta)
         {
-            bool fileExisted = false;
+            int deltaCount = DBProxy.GetDeltaId();
+            delta.Id = ++deltaCount;
 
-            if (!IsTest)
-            {
-                if (File.Exists(Config.Instance.ConnectionString))
-                {
-                    fileExisted = true;
-                }
+            DBProxy.SaveDelta(delta);
 
-                FileStream fs = new FileStream(Config.Instance.ConnectionString, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                fs.Seek(0, SeekOrigin.Begin);
+            //bool fileExisted = false;
 
-                BinaryReader br = null;
-                int deltaCount = 0;
+            //if (!IsTest)
+            //{
+            //    if (File.Exists(Config.Instance.ConnectionString))
+            //    {
+            //        fileExisted = true;
+            //    }
 
-                if (fileExisted)
-                {
-                    br = new BinaryReader(fs);
-                    deltaCount = br.ReadInt32();
-                }
+            //    FileStream fs = new FileStream(Config.Instance.ConnectionString, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            //    fs.Seek(0, SeekOrigin.Begin);
 
-                BinaryWriter bw = new BinaryWriter(fs);
-                fs.Seek(0, SeekOrigin.Begin);
+            //    BinaryReader br = null;
+            //    int deltaCount = 0;
 
-                delta.Id = ++deltaCount;
-                byte[] deltaSerialized = delta.Serialize();
-                int deltaLength = deltaSerialized.Length;
+            //    if (fileExisted)
+            //    {
+            //        br = new BinaryReader(fs);
+            //        deltaCount = br.ReadInt32();
+            //    }
 
-                bw.Write(deltaCount);
-                fs.Seek(0, SeekOrigin.End);
-                bw.Write(deltaLength);
-                bw.Write(deltaSerialized);
+            //    BinaryWriter bw = new BinaryWriter(fs);
+            //    fs.Seek(0, SeekOrigin.Begin);
 
-                if (br != null)
-                {
-                    br.Close();
-                }
+            //    delta.Id = ++deltaCount;
+            //    byte[] deltaSerialized = delta.Serialize();
+            //    int deltaLength = deltaSerialized.Length;
 
-                bw.Close();
-                fs.Close();
-            }
+            //    bw.Write(deltaCount);
+            //    fs.Seek(0, SeekOrigin.End);
+            //    bw.Write(deltaLength);
+            //    bw.Write(deltaSerialized);
+
+            //    if (br != null)
+            //    {
+            //        br.Close();
+            //    }
+
+            //    bw.Close();
+            //    fs.Close();
+            //}
         }
 
         private List<Delta> ReadAllDeltas()
         {
-            List<Delta> result = new List<Delta>();
+            return DBProxy.ReadDelta();
+            //List<Delta> result = new List<Delta>();
 
-            if (!File.Exists(Config.Instance.ConnectionString))
-            {
-                return result;
-            }
+            //if (!File.Exists(Config.Instance.ConnectionString))
+            //{
+            //    return result;
+            //}
 
-            FileStream fs = new FileStream(Config.Instance.ConnectionString, FileMode.OpenOrCreate, FileAccess.Read);
-            fs.Seek(0, SeekOrigin.Begin);
+            //FileStream fs = new FileStream(Config.Instance.ConnectionString, FileMode.OpenOrCreate, FileAccess.Read);
+            //fs.Seek(0, SeekOrigin.Begin);
 
-            if (fs.Position < fs.Length) // if it is not empty stream
-            {
-                BinaryReader br = new BinaryReader(fs);
+            //if (fs.Position < fs.Length) // if it is not empty stream
+            //{
+            //    BinaryReader br = new BinaryReader(fs);
 
-                int deltaCount = br.ReadInt32();
-                int deltaLength = 0;
-                byte[] deltaSerialized = null;
-                Delta delta = null;
+            //    int deltaCount = br.ReadInt32();
+            //    int deltaLength = 0;
+            //    byte[] deltaSerialized = null;
+            //    Delta delta = null;
 
-                for (int i = 0; i < deltaCount; i++)
-                {
-                    deltaLength = br.ReadInt32();
-                    deltaSerialized = new byte[deltaLength];
-                    br.Read(deltaSerialized, 0, deltaLength);
-                    delta = Delta.Deserialize(deltaSerialized);
-                    result.Add(delta);
-                }
+            //    for (int i = 0; i < deltaCount; i++)
+            //    {
+            //        deltaLength = br.ReadInt32();
+            //        deltaSerialized = new byte[deltaLength];
+            //        br.Read(deltaSerialized, 0, deltaLength);
+            //        delta = Delta.Deserialize(deltaSerialized);
+            //        result.Add(delta);
+            //    }
 
-                br.Close();
-            }
+            //    br.Close();
+            //}
 
-            fs.Close();
+            //fs.Close();
 
-            return result;
+            //result = DBProxy.ReadDelta();
+
+            //return result;
         }
 
         private Dictionary<short, int> GetCounters()

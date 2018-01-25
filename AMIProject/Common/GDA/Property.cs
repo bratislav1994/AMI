@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -48,6 +50,7 @@ namespace FTN.Common
     [DataContract]
     public class Property //: IComparable
     {
+        private int idDB;
         /// <summary>
         /// Code for property of model type 
         /// </summary>
@@ -129,6 +132,21 @@ namespace FTN.Common
             if (longValues != null)
             {
                 SetValue(longValues);
+            }
+        }
+
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int IdDB
+        {
+            get
+            {
+                return idDB;
+            }
+
+            set
+            {
+                idDB = value;
             }
         }
 

@@ -8,6 +8,8 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FTN.Common
 {
@@ -23,6 +25,7 @@ namespace FTN.Common
     [DataContract]
     public class Delta
     {
+   //     private int idDB;
         private long id;
         private List<ResourceDescription> insertOps = new List<ResourceDescription>();
         private List<ResourceDescription> deleteOps = new List<ResourceDescription>();
@@ -106,6 +109,22 @@ namespace FTN.Common
         //	this.positiveIdsAllowed = delta.positiveIdsAllowed;
         //}
 
+        //[Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //public int IdDB
+        //{
+        //    get
+        //    {
+        //        return idDB;
+        //    }
+
+        //    set
+        //    {
+        //        idDB = value;
+        //    }
+        //}
+
+        [Key]
         [DataMember]
         public long Id
         {

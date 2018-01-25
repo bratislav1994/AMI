@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -15,6 +17,7 @@ namespace FTN.Common
     [DataContract]
     public class ResourceDescription
     {
+        private int idDB;
         private long id;
         private List<Property> properties = new List<Property>();
 
@@ -52,6 +55,21 @@ namespace FTN.Common
             {
                 Property toAdd = new Property(property);
                 this.AddProperty(toAdd);
+            }
+        }
+
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int IdDB
+        {
+            get
+            {
+                return idDB;
+            }
+
+            set
+            {
+                idDB = value;
             }
         }
 
