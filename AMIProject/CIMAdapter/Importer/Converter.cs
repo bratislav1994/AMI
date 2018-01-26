@@ -420,6 +420,8 @@
                     return FTN.Common.ConsumerType.HOUSEHOLD;
                 case AMIProfile.ConsumerType.SHOPPING_CENTER:
                     return FTN.Common.ConsumerType.SHOPPING_CENTER;
+                case AMIProfile.ConsumerType.FIRM:
+                    return FTN.Common.ConsumerType.FIRM;
 
                 default: return FTN.Common.ConsumerType.HOUSEHOLD;
             }

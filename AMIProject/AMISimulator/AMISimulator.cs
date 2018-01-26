@@ -35,6 +35,7 @@ namespace AMISimulator
         private const int timeToSleep = 30000;
         private Dictionary<int, float> householdConsumption;
         private Dictionary<int, float> shoppingCenterConsumption;
+        private Dictionary<int, float> firmConsumption;
         private Dictionary<long, EnergyConsumerForScada> consumers;
         private static Random rnd = new Random();
 
@@ -78,6 +79,7 @@ namespace AMISimulator
         {
             this.InitHousehold();
             this.InitShoppingCenter();
+            this.InitFirm();
             consumers = new Dictionary<long, EnergyConsumerForScada>();
             measurements = new Dictionary<int, Measurement>();
             this.numberOfInstalledPoints = 0;
@@ -85,6 +87,41 @@ namespace AMISimulator
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
             config = new OutstationStackConfig();
             outstation = InitializeOutstation(config, mgr);
+        }
+
+        private void InitFirm()
+        {
+            firmConsumption = new Dictionary<int, float>();
+
+            for (int i = 0; i < 24; i++)
+            {
+                firmConsumption.Add(i, 0);
+            }
+
+            firmConsumption[0] = (float)5 / 100;
+            firmConsumption[1] = (float)5 / 100;
+            firmConsumption[2] = (float)5 / 100;
+            firmConsumption[3] = (float)5 / 100;
+            firmConsumption[4] = (float)5 / 100;
+            firmConsumption[5] = (float)5 / 100;
+            firmConsumption[6] = (float)35 / 100;
+            firmConsumption[7] = (float)45 / 100;
+            firmConsumption[8] = (float)75 / 100;
+            firmConsumption[9] = (float)80 / 100;
+            firmConsumption[10] = (float)80 / 100;
+            firmConsumption[11] = (float)80 / 100;
+            firmConsumption[12] = (float)80 / 100;
+            firmConsumption[13] = (float)80 / 100;
+            firmConsumption[14] = (float)80 / 100;
+            firmConsumption[15] = (float)80 / 100;
+            firmConsumption[16] = (float)80 / 100;
+            firmConsumption[17] = (float)62 / 100;
+            firmConsumption[18] = (float)55 / 100;
+            firmConsumption[19] = (float)40 / 100;
+            firmConsumption[20] = (float)10 / 100;
+            firmConsumption[21] = (float)10 / 100;
+            firmConsumption[22] = (float)10 / 100;
+            firmConsumption[23] = (float)10 / 100;
         }
 
         private void InitHousehold()

@@ -26,6 +26,7 @@ namespace FTN.Common
     {
         HOUSEHOLD = 0,
         SHOPPING_CENTER,
+        FIRM
     }//end Direction
 
     public enum ResolutionType : int

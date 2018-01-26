@@ -54,10 +54,6 @@ namespace AMIClientTest.ClassesTest
             model.FirstContact = false;
             model.GdaQueryProxy = mock2;
             newChange = DateTime.Now;
-            root.Model.GeoRegions = new ObservableCollection<GeographicalRegion>()
-            {
-                new GeographicalRegion() { GlobalId = 1234 }
-            };
         }
 
         [Test]

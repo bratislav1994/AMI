@@ -230,9 +230,9 @@
 		<cim:IdentifiedObject.name>EConsumer_1_8</cim:IdentifiedObject.name>
 	</cim:EnergyConsumer>
 	<cim:EnergyConsumer rdf:ID="EC_1_9">
-		<cim:EnergyConsumer.pfixed>55</cim:EnergyConsumer.pfixed>
-		<cim:EnergyConsumer.qfixed>6</cim:EnergyConsumer.qfixed>
-		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
+		<cim:EnergyConsumer.pfixed>2000</cim:EnergyConsumer.pfixed>
+		<cim:EnergyConsumer.qfixed>200</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.consumerType>FIRM</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
 		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_3"/>
 		<cim:IdentifiedObject.mRID>EC_1_9</cim:IdentifiedObject.mRID>
