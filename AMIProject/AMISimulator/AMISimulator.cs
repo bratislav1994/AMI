@@ -275,14 +275,21 @@ namespace AMISimulator
                         if (type == ConsumerType.HOUSEHOLD)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].Pfixed * householdConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
+                            double valueToSend = measurements[i].MaxRawValue * householdConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
                             changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                             outstation.Load(changeset);
                         }
                         else if (type == ConsumerType.SHOPPING_CENTER)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].Pfixed * shoppingCenterConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
+                            double valueToSend = measurements[i].MaxRawValue * shoppingCenterConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            outstation.Load(changeset);
+                        }
+                        else
+                        {
+                            ChangeSet changeset = new ChangeSet();
+                            double valueToSend = measurements[i].MaxRawValue * firmConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
                             changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                             outstation.Load(changeset);
                         }
@@ -292,14 +299,21 @@ namespace AMISimulator
                         if (type == ConsumerType.HOUSEHOLD)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].Qfixed * householdConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
+                            double valueToSend = measurements[i].MaxRawValue * householdConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
                             changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                             outstation.Load(changeset);
                         }
                         else if (type == ConsumerType.SHOPPING_CENTER)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].Qfixed * shoppingCenterConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
+                            double valueToSend = measurements[i].MaxRawValue * shoppingCenterConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            outstation.Load(changeset);
+                        }
+                        else
+                        {
+                            ChangeSet changeset = new ChangeSet();
+                            double valueToSend = measurements[i].MaxRawValue * firmConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
                             changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                             outstation.Load(changeset);
                         }
@@ -316,6 +330,12 @@ namespace AMISimulator
                         {
                             ChangeSet changeset = new ChangeSet();
                             changeset.Update(new Automatak.DNP3.Interface.Analog(10000, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            outstation.Load(changeset);
+                        }
+                        else
+                        {
+                            ChangeSet changeset = new ChangeSet();
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(20000, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                             outstation.Load(changeset);
                         }
                     }
