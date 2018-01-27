@@ -115,7 +115,7 @@ namespace AMIClient
         {
             Logger.LogMessageToFile(string.Format("AMIClient.GeoRegionForTree.LoadChildren; line: {0}; Start the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             List<IdentifiedObject> SubGeoRegions = new List<IdentifiedObject>();
-            SubGeoRegions = this.Model.GetSomeSubregions(GeoRegion.GlobalId, false);
+            SubGeoRegions = this.Model.GetSomeSubregions(GeoRegion.GlobalId);
 
             if (SubGeoRegions != null)
             {

@@ -15,7 +15,7 @@ namespace AMIClient.Classes
         private string consumer;
         private Status status;
         private DateTime fromPeriod;
-        private DateTime toPeriod;
+        private DateTime? toPeriod;
         private TypeVoltage typeVoltage;
 
         public TableItemForAlarm()
@@ -50,7 +50,7 @@ namespace AMIClient.Classes
             }
         }
 
-        public DateTime ToPeriod
+        public DateTime? ToPeriod
         {
             get
             {

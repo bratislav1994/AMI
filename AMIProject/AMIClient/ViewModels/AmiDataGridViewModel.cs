@@ -118,12 +118,12 @@ namespace AMIClient.ViewModels
             switch (this.ParentType)
             {
                 case DMSType.GEOREGION:
-                    List<IdentifiedObject> subRegionsC = this.Model.GetSomeSubregions(ParentGid, true);
+                    List<IdentifiedObject> subRegionsC = this.Model.GetSomeSubregions(ParentGid);
                     List<IdentifiedObject> substationsC = new List<IdentifiedObject>();
 
                     foreach (SubGeographicalRegion sgr in subRegionsC)
                     {
-                        substationsC.AddRange(this.Model.GetSomeSubstations(sgr.GlobalId, true));
+                        substationsC.AddRange(this.Model.GetSomeSubstations(sgr.GlobalId));
                     }
 
                     this.AmiTableItems.Clear();
@@ -144,7 +144,7 @@ namespace AMIClient.ViewModels
                 case DMSType.SUBGEOREGION:
                     List<IdentifiedObject> substationsC2 = new List<IdentifiedObject>();
                     
-                    substationsC2.AddRange(this.Model.GetSomeSubstations(ParentGid, true));
+                    substationsC2.AddRange(this.Model.GetSomeSubstations(ParentGid));
 
                     this.AmiTableItems.Clear();
                     List<IdentifiedObject> amisC2 = new List<IdentifiedObject>();

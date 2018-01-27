@@ -215,7 +215,7 @@ namespace AMIClient
             // OBRISATI KASNIJE
             TableItemForAlarm item = new TableItemForAlarm();
             item.Consumer = "Consumer1";
-            item.ToPeriod = DateTime.Now;
+            //item.ToPeriod = DateTime.Now;
             item.Status = HelperClasses.Status.ACTIVE;
             item.TypeVoltage = HelperClasses.TypeVoltage.OVERVOLTAGE;
             this.TableItemsForAlarm.Add(item);
@@ -340,7 +340,7 @@ namespace AMIClient
 
         #region GDAQueryService
 
-        public List<GeographicalRegion> GetAllRegions(bool returnValue)
+        public List<GeographicalRegion> GetAllRegions()
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllRegions; line: {0}; Start the GetAllRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             List<IdentifiedObject> results = GetExtentValues(ModelCode.GEOREGION);
@@ -360,7 +360,7 @@ namespace AMIClient
             return GetExtentValues(ModelCode.ENERGYCONS);
         }
 
-        public void GetAllTableItems(bool returnValue)
+        public void GetAllTableItems()
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllAmis; line: {0}; Start the GetAllAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             List<IdentifiedObject> geoRegions = GetExtentValues(ModelCode.GEOREGION);
@@ -372,13 +372,13 @@ namespace AMIClient
             {
                 TableItems.Add(new TableItem(io) { Type = HelperClasses.DataGridType.GEOGRAPHICALREGION });
                 positions.Add(io.GlobalId, TableItems.Count - 1);
-                List<IdentifiedObject> subGeoRegions = GetSomeSubregions(io.GlobalId, true);
+                List<IdentifiedObject> subGeoRegions = GetSomeSubregions(io.GlobalId);
 
                 foreach (IdentifiedObject io1 in subGeoRegions)
                 {
                     TableItems.Add(new TableItem(io1) { Type = HelperClasses.DataGridType.SUBGEOGRAPHICALREGION });
                     positions.Add(io1.GlobalId, TableItems.Count - 1);
-                    List<IdentifiedObject> substations = GetSomeSubstations(io1.GlobalId, true);
+                    List<IdentifiedObject> substations = GetSomeSubstations(io1.GlobalId);
 
                     foreach (IdentifiedObject io2 in substations)
                     {
@@ -469,7 +469,7 @@ namespace AMIClient
             return retVal;
         }
 
-        public List<IdentifiedObject> GetSomeSubregions(long regionId, bool returnValue)
+        public List<IdentifiedObject> GetSomeSubregions(long regionId)
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubregions; line: {0}; Start the GetSomeSubregions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.SUBGEOREGION);
@@ -482,7 +482,7 @@ namespace AMIClient
             return results;
         }
 
-        public List<IdentifiedObject> GetSomeSubstations(long subRegionId, bool returnValue)
+        public List<IdentifiedObject> GetSomeSubstations(long subRegionId)
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubstation; line: {0}; Start the GetSomeSubstation function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.SUBSTATION);
@@ -595,13 +595,13 @@ namespace AMIClient
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllAmis; line: {0}; Start the GetAllAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             ClearTableItems();
             ClearPositions();
-            List<IdentifiedObject> subGeoRegions = GetSomeSubregions(globalId, true);
+            List<IdentifiedObject> subGeoRegions = GetSomeSubregions(globalId);
 
             foreach (IdentifiedObject io1 in subGeoRegions)
             {
                 TableItems.Add(new TableItem(io1) { Type = HelperClasses.DataGridType.SUBGEOGRAPHICALREGION });
                 positions.Add(io1.GlobalId, TableItems.Count - 1);
-                List<IdentifiedObject> substations = GetSomeSubstations(io1.GlobalId, true);
+                List<IdentifiedObject> substations = GetSomeSubstations(io1.GlobalId);
 
                 foreach (IdentifiedObject io2 in substations)
                 {
@@ -616,7 +616,7 @@ namespace AMIClient
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllAmis; line: {0}; Start the GetAllAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             ClearTableItems();
             ClearPositions();
-            List<IdentifiedObject> substations = GetSomeSubstations(globalId, true);
+            List<IdentifiedObject> substations = GetSomeSubstations(globalId);
 
             foreach (IdentifiedObject io2 in substations)
             {

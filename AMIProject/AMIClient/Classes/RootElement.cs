@@ -82,7 +82,7 @@ namespace AMIClient
                     if (value)
                     {
                         base.Model.ClearPositions();
-                        Model.GetAllTableItems(false);
+                        Model.GetAllTableItems();
                         this.Model.GetLastMeasurements();
                         this.OnPropertyChanged("IsSelected");
                     }
@@ -133,7 +133,7 @@ namespace AMIClient
         {
             Logger.LogMessageToFile(string.Format("AMIClient.RootElement.LoadChildren; line: {0}; Start the LoadChildren function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             List<GeographicalRegion> GeoRegions = new List<GeographicalRegion>();
-            GeoRegions = this.Model.GetAllRegions(false);
+            GeoRegions = this.Model.GetAllRegions();
 
             if (GeoRegions != null)
             {
@@ -164,7 +164,7 @@ namespace AMIClient
                             base.Model.ClearTableItems();
                             if (IsSelected)
                             {
-                                this.Model.GetAllTableItems(false);
+                                this.Model.GetAllTableItems();
                             }
                             else
                             {

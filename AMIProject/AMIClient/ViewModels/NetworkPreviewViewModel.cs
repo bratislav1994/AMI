@@ -83,9 +83,7 @@ namespace AMIClient.ViewModels
         public void SelectedAMIAction(object ami, ResolutionType resolution)
         {
             IdentifiedObject ec = (IdentifiedObject)ami;
-            ChartViewModel chartVM = null;
-
-            chartVM = new ChartViewModel() { Model = this.Model, Resolution = resolution, Title = ec.Name };
+            ChartViewModel chartVM = new ChartViewModel() { Model = this.Model, Resolution = resolution, Title = ec.Name };
             chartVM.SetGids(new List<long>() { ec.GlobalId });
             var doc = new List<DockWindowViewModel>();
             doc.Add(chartVM);
@@ -111,7 +109,7 @@ namespace AMIClient.ViewModels
 
         public void ChartViewForSubGeoRegion(ResolutionType resolution, long gid, string header)
         {
-            List<IdentifiedObject> substationsC3 = this.Model.GetSomeSubstations(gid, true);
+            List<IdentifiedObject> substationsC3 = this.Model.GetSomeSubstations(gid);
             List<IdentifiedObject> amisC3 = new List<IdentifiedObject>();
             List<long> ecsC3 = new List<long>();
 
@@ -134,14 +132,14 @@ namespace AMIClient.ViewModels
 
         public void ChartViewForGeoRegion(ResolutionType resolution, long gid, string header)
         {
-            List<IdentifiedObject> subRegionsC2 = this.Model.GetSomeSubregions(gid, true);
+            List<IdentifiedObject> subRegionsC2 = this.Model.GetSomeSubregions(gid);
             List<IdentifiedObject> substationsC2 = new List<IdentifiedObject>();
             List<IdentifiedObject> amisC2 = new List<IdentifiedObject>();
             List<long> ecsC2 = new List<long>();
 
             foreach (SubGeographicalRegion sgr in subRegionsC2)
             {
-                substationsC2.AddRange(this.Model.GetSomeSubstations(sgr.GlobalId, true));
+                substationsC2.AddRange(this.Model.GetSomeSubstations(sgr.GlobalId));
             }
 
             foreach (Substation ss in substationsC2)
@@ -156,7 +154,6 @@ namespace AMIClient.ViewModels
 
             ChartViewModel chartVM2 = new ChartViewModel() { Model = this.Model, Resolution = resolution, Title = header };
             chartVM2.SetGids(ecsC2);
-
             var doc = new List<DockWindowViewModel>();
             doc.Add(chartVM2);
             this.DockManagerViewModel.Adding(doc);
