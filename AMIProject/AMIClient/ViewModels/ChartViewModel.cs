@@ -55,11 +55,6 @@ namespace AMIClient.ViewModels
         {
             get
             {
-                if (this.dataHistoryP == null)
-                {
-                    this.dataHistoryP = new List<KeyValuePair<DateTime, float>>();
-                }
-
                 return this.dataHistoryP;
             }
 
@@ -74,11 +69,6 @@ namespace AMIClient.ViewModels
         {
             get
             {
-                if (this.dataHistoryQ == null)
-                {
-                    this.dataHistoryQ = new List<KeyValuePair<DateTime, float>>();
-                }
-
                 return this.dataHistoryQ;
             }
 
@@ -93,11 +83,6 @@ namespace AMIClient.ViewModels
         {
             get
             {
-                if (this.dataHistoryV == null)
-                {
-                    this.dataHistoryV = new List<KeyValuePair<DateTime, float>>();
-                }
-
                 return this.dataHistoryV;
             }
 
@@ -295,14 +280,6 @@ namespace AMIClient.ViewModels
         public void SetGids(List<long> amiGids)
         {
             this.AmiGids = amiGids;
-        }
-
-        public void OnClosing(object sender, CancelEventArgs e)
-        {
-            this.DataHistoryP.Clear();
-            this.DataHistoryQ.Clear();
-            this.DataHistoryV.Clear();
-            this.FromPeriod = string.Empty;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
