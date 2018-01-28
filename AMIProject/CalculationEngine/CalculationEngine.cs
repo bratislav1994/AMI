@@ -17,7 +17,7 @@ using TC57CIM.IEC61970.Wires;
 namespace CalculationEngine
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class CalculationEngine : ICalculationEngine, ICalculationForClient, ICalculationEngineDuplexSmartCache
+    public class CalculationEngine : ICalculationEngine, ICalculationForClient, ICalculationEngineDuplexSmartCache, ICalculationEngineForScript
     {
         private static CalculationEngine instance;
         private ITransactionDuplexCE proxyCoordinator;
@@ -96,6 +96,8 @@ namespace CalculationEngine
                     Logger.LogMessageToFile(string.Format("CE.CalculationEngine.ProxyCoordinator; line: {0}; Create channel between CE and Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    binding.MaxReceivedMessageSize = Int32.MaxValue;
+                    binding.MaxBufferSize = Int32.MaxValue;
                     DuplexChannelFactory<ITransactionDuplexCE> factory = new DuplexChannelFactory<ITransactionDuplexCE>(
                     new InstanceContext(this),
                         binding,
@@ -360,6 +362,16 @@ namespace CalculationEngine
         public void Subscribe()
         {
             this.smartCaches.Add(OperationContext.Current.GetCallbackChannel<ISmartCacheForCE>());
+        }
+
+        public void FillDataBase(List<DynamicMeasurement> measurements)
+        {
+            dataBaseAdapter.AddMeasurements(measurements);
+        }
+
+        public void DoUndoneFill()
+        {
+            dataBaseAdapter.DoUndoneFill();
         }
     }
 }

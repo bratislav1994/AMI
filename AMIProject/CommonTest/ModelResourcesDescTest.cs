@@ -183,7 +183,7 @@ namespace CommonTest
             Assert.AreEqual(2, result.Count);
 
             result = modelResDesc.GetAllSettablePropertyIds(DMSType.ANALOG);
-            Assert.AreEqual(14, result.Count);
+            Assert.AreEqual(15, result.Count);
         }
 
         //[Test]

@@ -51,6 +51,8 @@ namespace AMISimulator
                         {
                             NetTcpBinding binding = new NetTcpBinding();
                             binding.SendTimeout = TimeSpan.FromMinutes(5);
+                            binding.MaxReceivedMessageSize = Int32.MaxValue;
+                            binding.MaxBufferSize = Int32.MaxValue;
                             factory = new DuplexChannelFactory<IScadaDuplexSimulator>(new InstanceContext(this),
                                                                                     binding,
                                                                                     new EndpointAddress("net.tcp://localhost:10100/Scada/Simulator"));

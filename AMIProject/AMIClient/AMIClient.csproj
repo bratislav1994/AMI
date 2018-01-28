@@ -330,9 +330,9 @@
       <Project>{ade96497-7c11-40b6-ae82-57f956c9f104}</Project>
       <Name>DataModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ServiceContracts\NetworkModelQueryContract\NetworkModelGDAContract.csproj">
+    <ProjectReference Include="..\ServiceContracts\NetworkModelQueryContract\ServiceContracts.csproj">
       <Project>{b726fb71-d295-41ee-9644-b2b0b1bc8911}</Project>
-      <Name>NetworkModelGDAContract</Name>
+      <Name>ServiceContracts</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

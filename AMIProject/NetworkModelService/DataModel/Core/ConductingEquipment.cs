@@ -14,12 +14,16 @@ using System.IO;
 
 using TC57CIM.IEC61970.Core;
 using FTN.Common;
+using System.Runtime.Serialization;
+using TC57CIM.IEC61970.Wires;
 
 namespace TC57CIM.IEC61970.Core {
 	/// <summary>
 	/// The parts of the power system that are designed to carry current or that are
 	/// conductively connected through terminals.
 	/// </summary>
+    [DataContract]
+    [KnownType(typeof(EnergyConsumer))]
 	public class ConductingEquipment : Equipment {
 
         private long baseVoltage = 0;

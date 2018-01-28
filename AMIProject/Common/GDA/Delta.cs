@@ -125,6 +125,7 @@ namespace FTN.Common
         //}
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember]
         public long Id
         {

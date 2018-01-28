@@ -29,8 +29,11 @@ namespace NMSDatabase
 
             DatabaseForNMS db = new DatabaseForNMS();
             svc = new ServiceHost(db);
+            NetTcpBinding binding = new NetTcpBinding();
+            binding.MaxReceivedMessageSize = Int32.MaxValue;
+            binding.MaxBufferSize = Int32.MaxValue;
             svc.AddServiceEndpoint(typeof(IDatabaseForNMS),
-                                   new NetTcpBinding(),
+                                  binding,
                                    new Uri("net.tcp://localhost:10009/Database/NMS"));
             svc.Open();
             

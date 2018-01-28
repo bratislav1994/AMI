@@ -1,4 +1,4 @@
-﻿using FTN.Common;
+﻿using FTN.Services.NetworkModelService.DataModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +9,11 @@ using System.Threading.Tasks;
 namespace FTN.ServiceContracts
 {
     [ServiceContract]
-    public interface IDatabaseForNMS
+    public interface ICalculationEngineForScript
     {
         [OperationContract]
-        int Connect();
-
+        void FillDataBase(List<DynamicMeasurement> measurements);
         [OperationContract]
-        bool SaveDelta(Delta delta);
-
-        [OperationContract]
-        List<Delta> ReadDelta();
-
-        [OperationContract]
-        void Ping();
+        void DoUndoneFill();
     }
 }

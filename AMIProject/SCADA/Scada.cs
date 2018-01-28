@@ -61,6 +61,8 @@ namespace SCADA
                     Logger.LogMessageToFile(string.Format("SCADA.Scada.ProxyCoordinator; line: {0}; Create channel between Scada and Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    binding.MaxReceivedMessageSize = Int32.MaxValue;
+                    binding.MaxBufferSize = Int32.MaxValue;
                     DuplexChannelFactory<ITransactionDuplexScada> factory = new DuplexChannelFactory<ITransactionDuplexScada>(
                     new InstanceContext(this),
                         binding,
@@ -86,7 +88,10 @@ namespace SCADA
                 if (firstTimeCE)
                 {
                     Logger.LogMessageToFile(string.Format("SCADA.Scada.ProxyCE; line: {0}; Create channel between Scada and CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    ChannelFactory<ICalculationEngine> factory = new ChannelFactory<ICalculationEngine>(new NetTcpBinding(),
+                    NetTcpBinding binding = new NetTcpBinding();
+                    binding.MaxReceivedMessageSize = Int32.MaxValue;
+                    binding.MaxBufferSize = Int32.MaxValue;
+                    ChannelFactory<ICalculationEngine> factory = new ChannelFactory<ICalculationEngine>(binding,
                                                                                         new EndpointAddress("net.tcp://localhost:10050/ICalculationEngine/Calculation"));
                     proxyCE = factory.CreateChannel();
                     firstTimeCE = false;
@@ -399,10 +404,11 @@ namespace SCADA
             {
                 lock (lockObjectForSimulators)
                 {
-                    if (this.simulators.ContainsKey(kvp.Key))
+                    if (this.simulators.ContainsKey(kvp.Key) && addressPool[kvp.Key].Cnt > 0)
                     {
                         this.simulators[kvp.Key].Rollback(addressPool[kvp.Key].Cnt, conGidsForSimulator[kvp.Key]);
-                        kvp.Value.Cnt = 0;
+                        conGidsForSimulator.Remove(kvp.Key);
+                        addressPool[kvp.Key].Cnt = 0;
                     }
                 }
             }
@@ -410,7 +416,6 @@ namespace SCADA
             this.copyEnergyConsumersByRtu.Clear();
             this.copyMeasurements.Clear();
             this.copyEnConsumers.Clear();
-            conGidsForSimulator.Clear();
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Rollback; line: {0}; Finish the Rollback function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 

@@ -11,11 +11,12 @@ using FTN.ServiceContracts;
 using TC57CIM.IEC61970.Meas;
 using TC57CIM.IEC61970.Core;
 using FTN.Common.Logger;
+using TC57CIM.IEC61970.Wires;
 
 namespace FTN.Services.NetworkModelService
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class GenericDataAccess : INetworkModelGDAContractDuplexClient, INetworkModel
+    public class GenericDataAccess : INetworkModelGDAContractDuplexClient, INetworkModel, INMSForScript
     {
         //INetworkModelGDAContract,
         private static Dictionary<int, ResourceIterator> resourceItMap = new Dictionary<int, ResourceIterator>();
@@ -60,6 +61,8 @@ namespace FTN.Services.NetworkModelService
                     //Logger.LogMessageToFile(string.Format("NMS.NetworkModel.ProxyCoordinator; line: {0}; Create channel between NMS and Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    binding.MaxReceivedMessageSize = Int32.MaxValue;
+                    binding.MaxBufferSize = Int32.MaxValue;
                     DuplexChannelFactory<ITransactionDuplexNMS> factory = new DuplexChannelFactory<ITransactionDuplexNMS>(
                     new InstanceContext(this),
                         binding,
@@ -129,6 +132,8 @@ namespace FTN.Services.NetworkModelService
             nmCopy.LockObjectScada = nm.LockObjectScada;
             nmCopy.ResourcesDescs = nm.ResourcesDescs;
             nmCopy.UpdateThreadClient = nm.UpdateThreadClient;
+            nmCopy.DBProxy = nm.DBProxy;
+            nmCopy.FirstContactDB = nm.FirstContactDB;
 
             Dictionary<DMSType, Container> copy = nm.DeepCopy();
             nmCopy.networkDataModel = copy;
@@ -354,6 +359,11 @@ namespace FTN.Services.NetworkModelService
         public void ClearResourceMap()
         {
             resourceItMap.Clear();
+        }
+
+        public Tuple<Dictionary<long, IdentifiedObject>, List<IdentifiedObject>> GetConsumers()
+        {
+            return nm.GetConsumers();
         }
     }
 }

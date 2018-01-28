@@ -15,15 +15,20 @@ using System.IO;
 using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Meas;
 using FTN.Common;
+using System.Runtime.Serialization;
+using TC57CIM.IEC61970.Wires;
 
 namespace TC57CIM.IEC61970.Core {
-	/// <summary>
-	/// A power system resource can be an item of equipment such as a switch, an
-	/// equipment container containing many individual items of equipment such as a
-	/// substation, or an organisational entity such as sub-control area. Power system
-	/// resources can have measurements associated.
-	/// </summary>
-	public class PowerSystemResource : IdentifiedObject {
+    /// <summary>
+    /// A power system resource can be an item of equipment such as a switch, an
+    /// equipment container containing many individual items of equipment such as a
+    /// substation, or an organisational entity such as sub-control area. Power system
+    /// resources can have measurements associated.
+    /// </summary>
+
+    [DataContract]
+    [KnownType(typeof(Equipment))]
+    public class PowerSystemResource : IdentifiedObject {
 
         private List<long> measurements = new List<long>();
 

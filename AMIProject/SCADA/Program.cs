@@ -33,8 +33,11 @@ namespace SCADA
 
             Scada scada = new Scada();
             svc = new ServiceHost(scada);
+            var binding = new NetTcpBinding();
+            binding.MaxReceivedMessageSize = Int32.MaxValue;
+            binding.MaxBufferSize = Int32.MaxValue;
             svc.AddServiceEndpoint(typeof(IScadaDuplexSimulator),
-                                   new NetTcpBinding(),
+                                   binding,
                                    new Uri("net.tcp://localhost:10100/Scada/Simulator"));
             svc.Open();
 
