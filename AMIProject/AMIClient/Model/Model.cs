@@ -104,7 +104,7 @@ namespace AMIClient
         {
             get
             {
-                if (firstContactSC)
+                if (FirstContactSC)
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.SCProxy; line: {0}; Create channel between Client and SC", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
@@ -114,7 +114,7 @@ namespace AMIClient
                         binding,
                         new EndpointAddress("net.tcp://localhost:10008/SmartCache/Client"));
                     scProxy = factorySC.CreateChannel();
-                    firstContactSC = false;
+                    FirstContactSC = false;
                 }
 
                 Logger.LogMessageToFile(string.Format("AMIClient.Model.SCProxy; line: {0}; Channel Client-SC is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -209,7 +209,20 @@ namespace AMIClient
                 firstContactCE = value;
             }
         }
-        
+
+        public bool FirstContactSC
+        {
+            get
+            {
+                return firstContactSC;
+            }
+
+            set
+            {
+                firstContactSC = value;
+            }
+        }
+
         public Model()
         {
             // OBRISATI KASNIJE
@@ -262,7 +275,7 @@ namespace AMIClient
                 catch
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToSC; line: {0}; Client faild to connect to SC. CATCH", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    firstContactSC = true;
+                    FirstContactSC = true;
                     Thread.Sleep(1000);
                 }
             }
