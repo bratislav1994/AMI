@@ -35,11 +35,6 @@ namespace NMSDatabase
             return dataBaseAdapter.AddDelta(delta);
         }
 
-        public int GetDeltaId()
-        {
-            return dataBaseAdapter.GetDeltaId();
-        }
-
         public void Ping()
         {
             return;

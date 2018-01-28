@@ -2,6 +2,7 @@
 using FTN.Common;
 using FTN.Common.Logger;
 using FTN.ServiceContracts;
+using FTN.Services.NetworkModelService.DataModel;
 using NSubstitute;
 using NUnit.Framework;
 using System;
@@ -119,13 +120,19 @@ namespace AMIClientTest.ClassesTest
             mock2.IteratorClose(4);
             model = new Model();
             model.FirstContact = false;
+            ISmartCacheDuplexForClient mock3 = Substitute.For<ISmartCacheDuplexForClient>();
+            List<DynamicMeasurement> retMeas = new List<DynamicMeasurement>();
+            mock3.GetLastMeas().ReturnsForAnyArgs(retMeas);
             model.GdaQueryProxy = mock2;
+            model.ScProxy = mock3;
+            model.FirstContactSC = false;
 
             this.subGeoRegionForTree.Model = model;
             this.subGeoRegionForTree.SubGeoRegion = subGeoRegion;
 
             this.subGeoRegionForTree.IsSelected = false;
             this.subGeoRegionForTree.IsSelected = true;
+            
             Assert.DoesNotThrow(() => this.subGeoRegionForTree.CheckIfSeleacted());
         }
 

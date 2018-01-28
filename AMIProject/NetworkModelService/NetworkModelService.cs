@@ -28,8 +28,12 @@ namespace FTN.Services.NetworkModelService
 			gda.NetworkModel = nm;
             ResourceIterator.NetworkModel = nm;
             svcDuplexClient = new ServiceHost(gda);
-            svcDuplexClient.AddServiceEndpoint(typeof(INetworkModelGDAContractDuplexClient), 
-                                    new NetTcpBinding(),
+            NetTcpBinding binding = new NetTcpBinding();
+            binding.SendTimeout = TimeSpan.FromSeconds(3);
+            binding.MaxReceivedMessageSize = Int32.MaxValue;
+            binding.MaxBufferSize = Int32.MaxValue;
+            svcDuplexClient.AddServiceEndpoint(typeof(INetworkModelGDAContractDuplexClient),
+                                    binding,
                                     new Uri("net.tcp://localhost:10000/NetworkModelService/GDADuplexClient"));
 
             svcScript = new ServiceHost(gda);

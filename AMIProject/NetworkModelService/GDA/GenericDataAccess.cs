@@ -61,6 +61,8 @@ namespace FTN.Services.NetworkModelService
                     //Logger.LogMessageToFile(string.Format("NMS.NetworkModel.ProxyCoordinator; line: {0}; Create channel between NMS and Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    binding.MaxReceivedMessageSize = Int32.MaxValue;
+                    binding.MaxBufferSize = Int32.MaxValue;
                     DuplexChannelFactory<ITransactionDuplexNMS> factory = new DuplexChannelFactory<ITransactionDuplexNMS>(
                     new InstanceContext(this),
                         binding,
@@ -130,6 +132,8 @@ namespace FTN.Services.NetworkModelService
             nmCopy.LockObjectScada = nm.LockObjectScada;
             nmCopy.ResourcesDescs = nm.ResourcesDescs;
             nmCopy.UpdateThreadClient = nm.UpdateThreadClient;
+            nmCopy.DBProxy = nm.DBProxy;
+            nmCopy.FirstContactDB = nm.FirstContactDB;
 
             Dictionary<DMSType, Container> copy = nm.DeepCopy();
             nmCopy.networkDataModel = copy;

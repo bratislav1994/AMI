@@ -162,6 +162,7 @@ namespace AMIClient
                         {
                             LoadChildren();
                             base.Model.ClearTableItems();
+
                             if (IsSelected)
                             {
                                 this.Model.GetAllTableItems();

@@ -96,6 +96,8 @@ namespace CalculationEngine
                     Logger.LogMessageToFile(string.Format("CE.CalculationEngine.ProxyCoordinator; line: {0}; Create channel between CE and Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    binding.MaxReceivedMessageSize = Int32.MaxValue;
+                    binding.MaxBufferSize = Int32.MaxValue;
                     DuplexChannelFactory<ITransactionDuplexCE> factory = new DuplexChannelFactory<ITransactionDuplexCE>(
                     new InstanceContext(this),
                         binding,

@@ -37,14 +37,20 @@ namespace CalculationEngine
         {
             svc = new ServiceHost(CalculationEngine.Instance);
             var binding = new NetTcpBinding();
+            binding.MaxReceivedMessageSize = Int32.MaxValue;
+            binding.MaxBufferSize = Int32.MaxValue;
             svc.AddServiceEndpoint(typeof(ICalculationForClient), binding, new Uri("net.tcp://localhost:10006/CalculationEngine/Client"));
 
             svc1 = new ServiceHost(CalculationEngine.Instance);
             var binding1 = new NetTcpBinding();
+            binding1.MaxReceivedMessageSize = Int32.MaxValue;
+            binding1.MaxBufferSize = Int32.MaxValue;
             svc1.AddServiceEndpoint(typeof(ICalculationEngine), binding1, new Uri("net.tcp://localhost:10050/ICalculationEngine/Calculation"));
 
             svc2 = new ServiceHost(CalculationEngine.Instance);
             var binding2 = new NetTcpBinding();
+            binding2.MaxReceivedMessageSize = Int32.MaxValue;
+            binding2.MaxBufferSize = Int32.MaxValue;
             svc2.AddServiceEndpoint(typeof(ICalculationEngineDuplexSmartCache), binding2, new Uri("net.tcp://localhost:10007/ICalculationEngineDuplexSmartCache/SmartCache"));
 
             svc3 = new ServiceHost(CalculationEngine.Instance);

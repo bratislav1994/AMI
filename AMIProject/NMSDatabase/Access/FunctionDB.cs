@@ -48,7 +48,7 @@ namespace NMSDatabase.Access
             {
                 using (var access = new AccessDB())
                 {
-                    var retVal = access.Delta.Include("InsertOperations").Include("UpdateOperations").Include("DeleteOperations").Include("InsertOperations.Properties").Include("UpdateOperations.Properties").Include("DeleteOperations.Properties").ToList();
+                    var retVal = access.Delta.Include("InsertOperations").Include("InsertOperations.Properties").ToList();
 
                     foreach(var d in retVal)
                     {
@@ -58,26 +58,6 @@ namespace NMSDatabase.Access
             }
 
             return delta;
-        }
-
-        public int GetDeltaId()
-        {
-            int result = 0;
-
-            lock (lockObj)
-            {
-                using (var access = new AccessDB())
-                {
-                    var retVal = access.Delta.ToList();
-
-                    foreach (var d in retVal)
-                    {
-                        result++;
-                    }
-                }
-            }
-
-            return result;
         }
     }
 }
