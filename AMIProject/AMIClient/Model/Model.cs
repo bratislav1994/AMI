@@ -46,6 +46,7 @@ namespace AMIClient
         private ICollectionView viewTableItemsForAlarm;
         private Dictionary<long, DynamicMeasurement> changesForAmis = new Dictionary<long, DynamicMeasurement>();
         private DateTime timeOfLastUpdate = DateTime.Now;
+        private bool isTest = false;
 
         public INetworkModelGDAContractDuplexClient GdaQueryProxy
         {
@@ -229,6 +230,19 @@ namespace AMIClient
             }
         }
 
+        public bool IsTest
+        {
+            get
+            {
+                return isTest;
+            }
+
+            set
+            {
+                isTest = value;
+            }
+        }
+
         public Model()
         {
             // OBRISATI KASNIJE
@@ -254,7 +268,7 @@ namespace AMIClient
 
             Thread t = new Thread(() => ConnectToNMS());
             t.Start();
-            
+
             Thread t2 = new Thread(() => ConnectToCE());
             t2.Start();
 
@@ -274,7 +288,11 @@ namespace AMIClient
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToSC; line: {0}; Client try to connect to SC", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     ScProxy.Subscribe();
-                    ((IContextChannel)ScProxy).OperationTimeout = TimeSpan.FromMinutes(5);
+                    if (!isTest)
+                    {
+                        ((IContextChannel)ScProxy).OperationTimeout = TimeSpan.FromMinutes(5);
+                    }
+
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToSC; line: {0}; Client is connected to the SC", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     break;
                 }
@@ -296,7 +314,11 @@ namespace AMIClient
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client try to connect with CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     CEQueryProxy.ConnectClient();
                     //factoryCE.Endpoint.Binding.SendTimeout = TimeSpan.FromMinutes(1);
-                    ((IContextChannel)CEQueryProxy).OperationTimeout = TimeSpan.FromMinutes(5);
+                    if (!isTest)
+                    {
+                        ((IContextChannel)CEQueryProxy).OperationTimeout = TimeSpan.FromMinutes(5);
+                    }
+
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client is connected to the CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     break;
                 }
@@ -318,7 +340,11 @@ namespace AMIClient
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToNMS; line: {0}; Client try to connect with NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     GdaQueryProxy.ConnectClient();
                     //factory.Endpoint.Binding.SendTimeout = TimeSpan.FromMinutes(1);
-                    ((IContextChannel)GdaQueryProxy).OperationTimeout = TimeSpan.FromMinutes(5);
+                    if (!isTest)
+                    {
+                        ((IContextChannel)GdaQueryProxy).OperationTimeout = TimeSpan.FromMinutes(5);
+                    }
+
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToNMS; line: {0}; Client is connected to the NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     checkNMS.Start();
 
@@ -344,6 +370,12 @@ namespace AMIClient
                 catch
                 {
                     FirstContact = true;
+
+                    if (IsTest)
+                    {
+                        break;
+                    }
+
                     new Thread(() => ConnectToNMS()).Start();
                     break;
                 }
@@ -441,16 +473,6 @@ namespace AMIClient
                                 gr.RD2Class(rds[i]);
                                 retVal.Add(gr);
                                 break;
-                            case ModelCode.SUBGEOREGION:
-                                SubGeographicalRegion sgr = new SubGeographicalRegion();
-                                sgr.RD2Class(rds[i]);
-                                retVal.Add(sgr);
-                                break;
-                            case ModelCode.SUBSTATION:
-                                Substation ss = new Substation();
-                                ss.RD2Class(rds[i]);
-                                retVal.Add(ss);
-                                break;
                             case ModelCode.ENERGYCONS:
                                 EnergyConsumer ec = new EnergyConsumer();
                                 ec.RD2Class(rds[i]);
@@ -508,7 +530,6 @@ namespace AMIClient
             Association associtaion = new Association();
             associtaion.PropertyId = ModelCode.SUBGEOREGION_SUBS;
             associtaion.Type = ModelCode.SUBSTATION;
-            GetRelatedValues(subRegionId, properties, associtaion, ModelCode.SUBSTATION);
             List<IdentifiedObject> results = GetRelatedValues(subRegionId, properties, associtaion, ModelCode.SUBSTATION);
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubstation; line: {0}; Start the GetSomeSubstation function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
 
@@ -547,6 +568,7 @@ namespace AMIClient
         private List<IdentifiedObject> GetRelatedValues(long source, List<ModelCode> propIds, Association association, ModelCode modelCode)
         {
             List<IdentifiedObject> retVal = new List<IdentifiedObject>();
+
             try
             {
                 int iteratorId = GdaQueryProxy.GetRelatedValues(source, propIds, association);
