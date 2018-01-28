@@ -153,6 +153,9 @@ namespace SCADA
         {
             Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Start the EnlistMeas function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
 
+            measurementsToEnlist.Clear();
+            consumersToEnlist.Clear();
+
             foreach (ResourceDescription rd in data)
             {
                 DMSType type = (DMSType)(rd.Id >> 32);
@@ -349,7 +352,7 @@ namespace SCADA
                 }
             }
 
-            Logger.LogMessageToFile(string.Format("SCADA.Scada.Prepare; line: {0}; Finish the EnlistMeas function successful", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            Logger.LogMessageToFile(string.Format("SCADA.Scada.Prepare; line: {0}; Finish the Prepare function successful", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             return true;
         }
 
