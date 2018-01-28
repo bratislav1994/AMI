@@ -1,0 +1,1431 @@
+1/28/2018 1:36:31 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:36:31 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:36:31 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:36:31 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:36:31 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:36:31 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:36:31 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:36:31 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:36:31 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:36:33 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:36:33 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:36:33 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:36:34 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:36:34 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:36:34 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:36:34 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:36:34 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:36:34 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:36:34 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:36:34 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:36:34 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:36:36 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:36:36 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:36:36 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:36:37 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:36:37 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:36:37 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:36:37 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:36:37 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:36:37 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:36:37 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:36:37 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:36:37 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:36:39 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:36:39 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:36:39 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:36:40 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:36:40 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:36:40 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:36:40 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:36:40 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:36:40 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:36:40 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:36:40 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:36:40 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:36:42 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:36:42 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:36:42 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:36:43 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:36:43 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:36:43 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:36:43 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:36:43 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:36:43 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:36:43 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:36:43 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:36:43 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:36:45 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:36:45 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:36:45 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:36:46 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:36:46 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:36:46 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:36:46 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:36:46 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:36:46 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:36:46 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:36:46 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:36:46 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:36:48 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:36:48 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:36:48 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:36:49 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:36:49 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:36:49 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:36:49 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:36:49 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:36:49 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:36:49 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:36:49 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:36:49 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:36:51 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:36:51 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:36:51 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:36:52 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:36:52 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:36:52 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:36:52 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:36:52 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:36:52 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:36:52 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:36:52 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:36:52 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:36:55 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:36:55 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:36:55 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:36:56 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:36:56 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:36:56 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:36:56 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:36:56 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:36:56 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:36:56 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:36:56 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:36:56 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:36:58 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:36:58 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:36:58 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:36:59 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:36:59 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:36:59 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:36:59 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:36:59 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:36:59 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:36:59 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:36:59 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:36:59 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:01 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:01 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:01 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:02 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:02 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:02 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:02 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:02 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:02 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:02 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:02 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:02 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:04 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:04 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:04 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:05 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:05 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:05 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:05 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:05 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:05 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:05 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:05 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:05 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:07 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:07 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:07 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:08 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:08 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:08 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:08 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:08 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:08 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:08 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:08 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:08 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:10 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:10 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:10 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:11 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:11 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:11 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:11 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:11 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:11 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:11 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:11 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:11 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:13 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:13 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:13 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:14 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:14 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:14 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:14 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:14 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:14 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:14 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:14 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:14 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:16 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:16 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:16 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:17 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:17 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:17 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:17 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:17 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:17 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:17 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:17 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:17 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:19 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:19 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:19 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:20 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:20 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:20 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:20 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:20 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:20 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:20 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:20 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:20 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:22 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:22 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:22 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:23 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:23 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:23 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:23 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:23 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:23 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:23 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:23 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:23 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:25 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:25 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:25 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:26 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:26 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:26 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:26 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:26 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:26 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:26 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:26 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:26 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:28 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:28 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:28 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:29 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:29 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:29 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:29 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:29 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:29 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:29 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:29 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:29 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:31 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:31 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:31 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:32 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:32 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:32 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:32 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:32 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:32 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:32 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:32 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:32 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:34 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:34 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:34 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:35 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:35 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:35 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:35 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:35 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:35 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:35 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:35 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:35 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:37 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:37 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:37 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:38 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:38 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:38 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:38 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:38 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:38 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:38 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:38 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:38 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:40 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:40 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:40 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:41 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:41 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:41 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:41 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:41 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:41 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:41 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:41 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:41 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:43 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:43 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:43 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:44 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:44 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:44 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:44 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:44 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:44 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:44 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:44 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:44 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:46 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:46 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:46 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:47 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:47 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:47 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:47 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:47 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:47 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:47 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:47 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:47 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:49 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:49 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:49 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:50 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:50 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:50 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:50 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:50 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:50 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:50 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:50 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:50 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:52 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:52 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:52 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:53 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:53 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:53 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:53 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:53 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:53 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:53 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:53 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:53 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:55 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:55 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:55 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:56 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:56 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:56 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:56 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:56 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:56 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:56 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:56 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:56 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:37:58 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:37:58 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:37:58 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:37:59 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:37:59 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:37:59 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:37:59 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:37:59 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:37:59 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:37:59 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:37:59 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:37:59 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:38:01 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:38:01 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:38:01 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:38:02 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:38:02 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:38:02 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:38:02 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:38:02 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:38:02 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:38:02 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:38:02 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:38:02 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:38:04 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:38:04 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:38:04 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:38:05 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:38:05 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:38:05 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:38:05 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:38:05 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:38:05 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:38:05 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:38:05 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:38:05 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:38:07 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:38:07 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:38:07 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:38:08 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:38:08 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:38:08 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:38:08 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:38:08 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:38:08 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:38:08 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:38:08 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:38:08 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:38:10 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:38:10 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:38:10 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:38:11 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:38:11 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:38:11 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:38:11 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:38:11 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:38:11 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:38:11 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:38:11 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:38:11 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:38:13 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:38:13 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:38:13 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:45:06 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:45:06 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:45:06 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:45:06 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:45:06 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:45:06 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:45:06 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:45:06 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:45:06 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:45:08 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:45:08 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:45:08 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:45:09 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:45:09 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:45:09 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:45:09 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:45:09 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:45:09 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:45:09 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:45:09 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:45:09 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:45:11 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:45:11 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:45:11 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:45:12 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:45:12 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:45:12 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:45:12 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:45:12 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:45:12 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:45:12 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:45:12 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:45:12 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:45:14 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:45:14 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:45:14 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:45:15 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:45:15 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:45:15 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:45:15 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:45:15 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:45:15 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:45:15 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:45:15 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:45:15 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:45:17 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:45:17 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:45:17 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:45:18 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:45:18 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:45:18 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:45:18 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:45:18 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:45:18 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:45:18 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:45:18 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:45:18 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:45:20 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:45:20 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:45:20 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:45:21 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:45:21 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:45:21 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:45:21 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:45:21 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:45:21 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:45:21 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:45:21 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:45:21 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:45:23 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:45:23 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:45:23 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:45:24 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:45:24 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:45:24 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:45:24 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:45:24 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:45:24 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:45:24 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:45:24 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:45:24 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:45:26 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:45:26 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:45:26 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:45:27 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:45:27 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:45:27 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:45:27 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:45:27 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:45:27 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:45:28 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:45:28 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:45:28 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:45:30 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:45:30 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:45:30 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:45:31 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:45:31 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:45:31 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:45:31 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:45:31 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:45:31 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:45:31 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:45:31 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:45:31 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:45:33 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:45:33 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:45:33 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:45:34 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:45:34 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:45:34 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:45:34 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:45:34 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:45:34 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:45:34 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:45:34 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:45:34 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:45:36 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:45:36 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:45:36 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:45:37 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:45:37 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:45:37 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:45:37 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:45:37 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:45:37 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:45:37 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:45:37 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:45:37 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:45:39 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:45:39 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:45:39 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:45:40 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:45:40 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:45:40 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:45:40 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:45:40 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:45:40 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:45:40 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:45:40 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:45:40 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:45:42 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:45:42 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:45:42 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:45:43 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:45:43 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:45:43 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:45:43 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:45:43 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:45:43 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:45:43 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:45:43 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:45:43 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:45:45 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:45:45 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:45:45 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:45:46 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:45:46 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:45:46 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:45:46 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:45:46 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:45:46 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:45:46 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:45:46 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:45:46 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:45:48 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:45:48 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:45:48 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:45:49 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:45:49 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:45:49 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:45:49 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:45:49 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:45:49 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:45:49 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:45:49 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:45:49 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:45:51 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:45:51 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:45:51 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:45:52 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:45:52 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:45:52 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:45:52 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:45:52 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:45:52 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:45:52 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:45:52 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:45:52 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:45:54 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:45:54 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:45:54 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:45:55 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:45:55 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:45:55 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:45:55 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:45:55 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:45:55 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:45:55 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:45:55 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:45:55 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:45:57 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:45:57 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:45:57 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:45:58 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:45:58 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:45:58 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:45:58 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:45:58 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:45:58 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:45:58 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:45:58 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:45:58 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:46:00 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:46:00 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:46:00 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:46:01 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:46:01 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:46:01 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:46:01 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:46:01 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:46:01 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:46:01 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:46:01 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:46:01 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:46:03 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:46:03 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:46:03 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:46:04 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:46:04 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:46:04 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:46:04 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:46:04 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:46:04 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:46:04 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:46:04 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:46:04 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:46:06 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:46:06 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:46:06 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:46:27 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:46:27 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:46:27 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:46:27 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:46:27 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:46:27 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:46:27 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:46:27 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:46:27 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:46:30 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:46:30 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:46:30 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:46:31 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:46:31 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:46:31 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:46:31 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:46:31 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:46:31 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:46:31 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:46:31 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:46:31 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:46:33 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:46:33 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:46:33 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:46:34 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:46:34 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:46:34 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:46:34 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:46:34 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:46:34 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:46:34 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:46:34 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:46:34 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:46:36 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:46:36 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:46:36 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:46:37 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:46:37 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:46:37 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:46:37 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:46:37 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:46:37 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:46:37 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:46:37 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:46:37 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:46:39 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:46:39 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:46:39 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:46:40 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:46:40 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:46:40 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:46:40 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:46:40 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:46:40 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:46:40 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:46:40 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:46:40 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:46:42 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:46:42 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:46:43 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:46:43 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:46:43 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:46:43 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:46:43 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:46:43 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:46:43 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:46:44 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:46:44 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:46:44 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:46:45 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:46:45 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:46:46 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:46:46 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:46:46 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:46:46 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:46:46 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:46:46 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:46:46 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:46:47 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:46:47 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:46:47 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:46:48 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:46:48 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:46:49 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:46:49 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:46:49 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:46:49 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:46:49 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:46:49 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:46:49 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:46:50 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:46:50 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:46:50 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:46:51 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:46:51 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:46:52 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:46:52 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:46:52 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:46:52 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:46:52 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:46:52 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:46:52 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:46:53 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:46:53 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:46:53 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:46:54 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:46:54 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:46:55 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:46:55 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:46:55 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:46:55 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:46:55 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:46:55 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:46:55 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:46:56 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:46:56 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:46:56 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:46:58 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:46:58 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:46:58 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:46:59 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:46:59 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:46:59 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:46:59 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:46:59 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:46:59 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:46:59 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:46:59 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:46:59 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:47:01 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:47:01 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:47:01 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:47:02 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:47:02 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:47:02 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:47:02 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:47:02 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:47:02 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:47:02 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:47:02 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:47:02 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:47:34 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:47:34 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:47:34 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:47:34 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:47:34 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:47:34 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:47:35 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:47:35 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:47:35 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:47:37 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:47:37 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:47:37 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:47:38 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:47:38 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:47:38 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:47:38 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:47:38 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:47:38 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:47:38 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:47:38 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:47:38 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:47:40 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:47:40 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:47:40 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:47:41 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:47:41 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:47:41 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:47:41 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:47:41 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:47:41 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:47:41 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:47:41 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:47:41 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:47:43 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:47:44 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:47:44 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:47:44 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:47:44 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:47:44 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:47:45 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:47:45 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:47:45 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:47:45 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:47:45 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:47:45 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:47:47 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:47:47 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:47:47 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:47:48 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:47:48 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:47:48 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:47:48 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:47:48 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:47:48 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:47:48 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:47:48 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:47:48 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:48:53 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:48:53 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:48:53 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:48:53 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:48:53 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:48:53 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:48:53 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:48:53 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:48:53 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:48:55 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:48:55 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:48:55 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:48:56 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:48:56 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:48:56 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:48:56 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:48:56 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:48:56 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:48:56 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:48:56 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:48:56 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:48:58 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:48:58 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:48:58 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:48:59 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:48:59 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:48:59 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:48:59 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:48:59 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:48:59 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:48:59 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:48:59 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:48:59 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:49:01 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:49:02 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:49:02 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:49:02 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:49:02 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:49:02 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:49:03 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:49:03 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:49:03 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:49:03 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:49:03 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:49:03 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:49:05 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:49:05 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:49:05 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:49:06 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:49:06 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:49:06 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:49:06 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:49:06 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:49:06 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:49:06 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:49:06 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:49:06 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:49:08 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:49:08 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:49:08 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:49:09 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:49:09 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:49:09 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:49:09 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:49:09 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:49:09 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:49:09 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:49:09 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:49:09 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:49:11 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:49:11 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:49:11 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:49:12 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:49:12 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:49:12 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:49:12 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:49:12 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:49:12 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:49:12 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:49:12 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:49:12 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:49:14 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:49:14 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:49:14 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:49:15 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:49:15 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:49:15 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:49:15 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:49:15 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:49:15 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:49:15 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:49:15 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:49:15 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 1:49:17 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 1:49:17 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 1:49:17 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 1:49:18 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 1:49:18 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 1:49:18 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 1:49:18 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 1:49:18 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 1:49:18 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 1:49:18 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 1:49:18 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 1:49:18 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:02:27 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:02:27 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:02:27 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:02:27 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:02:27 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:02:27 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:02:27 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:02:27 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:02:27 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:02:29 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:02:29 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:02:29 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:02:30 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:02:30 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:02:30 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:02:30 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:02:30 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:02:30 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:02:30 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:02:30 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:02:30 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:02:32 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:02:32 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:02:32 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:02:33 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:02:33 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:02:33 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:02:33 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:02:33 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:02:33 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:02:33 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:02:33 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:02:33 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:02:35 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:02:35 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:02:35 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:02:36 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:02:36 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:02:36 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:02:36 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:02:36 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:02:36 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:02:36 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:02:36 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:02:36 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:02:38 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:02:38 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:02:38 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:02:39 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:02:39 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:02:39 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:02:39 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:02:39 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:02:39 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:02:39 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:02:39 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:02:39 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:02:41 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:02:41 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:02:41 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:02:42 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:02:42 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:02:42 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:02:42 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:02:42 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:02:42 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:02:42 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:02:42 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:02:42 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:02:44 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:02:44 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:02:44 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:02:45 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:02:45 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:02:45 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:02:45 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:02:45 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:02:46 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:02:46 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:02:46 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:02:46 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:02:48 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:02:48 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:02:48 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:02:49 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:02:49 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:02:49 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:02:49 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:02:49 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:02:49 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:02:49 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:02:49 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:02:49 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:02:51 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:02:51 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:02:51 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:02:52 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:02:52 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:02:52 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:02:52 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:02:52 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:02:52 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:02:52 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:02:52 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:02:52 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:02:54 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:02:54 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:02:54 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:02:55 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:02:55 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:02:55 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:02:55 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:02:55 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:02:55 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:02:55 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:02:55 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:02:55 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:02:57 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:02:57 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:02:57 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:02:58 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:02:58 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:02:58 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:02:58 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:02:58 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:02:58 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:02:58 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:02:58 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:02:58 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:03:00 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:03:00 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:03:00 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:03:01 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:03:01 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:03:01 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:03:01 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:03:01 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:03:01 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:03:01 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:03:01 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:03:01 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:03:03 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:03:03 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:03:03 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:03:04 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:03:04 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:03:04 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:03:04 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:03:04 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:03:04 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:03:04 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:03:04 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:03:04 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:03:06 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:03:06 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:03:06 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:03:07 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:03:07 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:03:07 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:03:07 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:03:07 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:03:07 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:03:07 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:03:07 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:03:07 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:03:09 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:03:09 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:03:09 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:03:10 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:03:10 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:03:10 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:03:10 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:03:10 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:03:10 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:03:10 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:03:10 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:03:10 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:03:12 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:03:12 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:03:12 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:03:13 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:03:13 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:03:13 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:03:13 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:03:13 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:03:13 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:03:13 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:03:13 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:03:13 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:03:15 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:03:15 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:03:15 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:03:16 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:03:16 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:03:16 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:03:16 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:03:16 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:03:16 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:03:16 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:03:16 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:03:16 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:03:18 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:03:18 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:03:18 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:03:19 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:03:19 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:03:19 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:03:19 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:03:19 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:03:19 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:03:19 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:03:19 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:03:19 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:03:21 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:03:21 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:03:21 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:03:22 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:03:22 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:03:22 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:03:22 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:03:22 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:03:22 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:03:22 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:03:22 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:03:22 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:03:24 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:03:24 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:03:24 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:03:25 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:03:25 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:03:25 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:03:25 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:03:25 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:03:25 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:03:25 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:03:25 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:03:25 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:03:27 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:03:27 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:03:27 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:03:28 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:03:28 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:03:28 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:03:28 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:03:28 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:03:28 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:03:28 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:03:28 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:03:28 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:03:30 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:03:30 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:03:30 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:03:31 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:03:31 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:03:31 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:03:31 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:03:31 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:03:31 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:03:31 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:03:31 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:03:31 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:03:33 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:03:33 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:03:33 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:03:34 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:03:34 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:03:34 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:03:34 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:03:34 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:03:34 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:03:34 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:03:34 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:03:34 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:03:36 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:03:36 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:03:36 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:03:37 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:03:37 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:03:37 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:03:37 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:03:37 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:03:37 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:03:37 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:03:37 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:03:37 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:10:05 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:10:05 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:10:05 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:10:05 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:10:05 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:10:05 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:10:05 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:10:05 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:10:05 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:10:07 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:10:07 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:10:07 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:10:08 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:10:08 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:10:08 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:10:08 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:10:08 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:10:08 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:10:08 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:10:08 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:10:08 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:10:10 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:10:10 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:10:10 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:10:11 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:10:11 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:10:11 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:10:11 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:10:11 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:10:11 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:10:11 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:10:11 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:10:11 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:10:13 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:10:13 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:10:13 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:10:14 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:10:14 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:10:14 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:10:14 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:10:14 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:10:14 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:10:14 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:10:14 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:10:14 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:10:16 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:10:16 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:10:16 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:10:17 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:10:17 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:10:17 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:10:17 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:10:17 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:10:17 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:10:17 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:10:17 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:10:17 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:10:19 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:10:19 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:10:19 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:10:20 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:10:20 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:10:20 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:10:20 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:10:20 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:10:20 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:10:20 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:10:20 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:10:20 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:16:25 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:16:25 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:16:27 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:16:27 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:16:28 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:16:28 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:16:29 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:16:29 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:16:29 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:16:31 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:16:31 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:16:31 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:16:32 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:16:32 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:16:32 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:16:32 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:16:32 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:16:32 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:16:32 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:16:32 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:16:32 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:16:34 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:16:34 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:16:34 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:16:35 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:16:35 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:16:35 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:16:35 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:16:35 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:16:35 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:16:35 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:16:35 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:16:35 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:16:37 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:16:37 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:16:38 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:16:38 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:16:38 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:16:38 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:16:38 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:16:38 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:16:38 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:16:39 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:16:39 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:16:39 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:17:15 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:17:15 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:17:15 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:17:15 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:17:15 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:17:15 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:17:15 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:17:15 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:17:15 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:17:17 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:17:17 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:17:17 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:17:18 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:17:18 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:17:18 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:17:18 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:17:18 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:17:18 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:17:18 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:17:18 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:17:18 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:17:20 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:17:20 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:17:20 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:17:21 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:17:21 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:17:21 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:17:21 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:17:21 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:17:21 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:17:21 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:17:21 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:17:21 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:17:23 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:17:23 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:17:23 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:17:24 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:17:24 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:17:24 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:17:24 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:17:24 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:17:24 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:17:24 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:17:24 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:17:24 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:17:26 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:17:26 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:17:26 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:17:27 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:17:27 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:17:27 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:17:27 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:17:27 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:17:27 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:17:27 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:17:27 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:17:27 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:17:29 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:17:29 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:17:29 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:17:30 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:17:30 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:17:30 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:17:30 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:17:30 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:17:30 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:17:30 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:17:30 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
+1/28/2018 2:17:30 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:17:33 PM: AMIClient.Model.ConnectToSC; line: 264; Client faild to connect to SC. CATCH.
+1/28/2018 2:17:33 PM: AMIClient.Model.ConnectToNMS; line: 310; Client faild to connect with NMS. CATCH.
+1/28/2018 2:17:33 PM: AMIClient.Model.ConnectToCE; line: 286; Client faild to connect with CE. CATCH.
+1/28/2018 2:17:34 PM: AMIClient.Model.ConnectToSC; line: 256; Client try to connect to SC.
+1/28/2018 2:17:34 PM: AMIClient.Model.SCProxy; line: 109; Create channel between Client and SC.
+1/28/2018 2:17:34 PM: AMIClient.Model.SCProxy; line: 120; Channel Client-SC is created.
+1/28/2018 2:17:34 PM: AMIClient.Model.ConnectToNMS; line: 299; Client try to connect with NMS.
+1/28/2018 2:17:34 PM: AMIClient.Model.GdaQueryProxy; line: 56; Create channel between Client and NMS.
+1/28/2018 2:17:34 PM: AMIClient.Model.ConnectToCE; line: 277; Client try to connect with CE.
+1/28/2018 2:17:34 PM: AMIClient.Model.CEQueryProxy; line: 83; Create channel between Client and CE.
+1/28/2018 2:17:34 PM: AMIClient.Model.CEQueryProxy; line: 93; Channel Client-CE is created.
+1/28/2018 2:17:34 PM: AMIClient.Model.GdaQueryProxy; line: 67; Channel Client-NMS is created.
