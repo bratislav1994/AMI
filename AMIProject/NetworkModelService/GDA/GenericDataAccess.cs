@@ -129,6 +129,8 @@ namespace FTN.Services.NetworkModelService
             nmCopy.LockObjectScada = nm.LockObjectScada;
             nmCopy.ResourcesDescs = nm.ResourcesDescs;
             nmCopy.UpdateThreadClient = nm.UpdateThreadClient;
+            nmCopy.DBProxy = nm.DBProxy;
+            nmCopy.FirstContactDB = nm.FirstContactDB;
 
             Dictionary<DMSType, Container> copy = nm.DeepCopy();
             nmCopy.networkDataModel = copy;

@@ -21,9 +21,6 @@ namespace FTN.ServiceContracts
         List<Delta> ReadDelta();
 
         [OperationContract]
-        int GetDeltaId();
-
-        [OperationContract]
         void Ping();
     }
 }

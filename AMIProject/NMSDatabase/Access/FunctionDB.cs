@@ -59,25 +59,5 @@ namespace NMSDatabase.Access
 
             return delta;
         }
-
-        public int GetDeltaId()
-        {
-            int result = 0;
-
-            lock (lockObj)
-            {
-                using (var access = new AccessDB())
-                {
-                    var retVal = access.Delta.ToList();
-
-                    foreach (var d in retVal)
-                    {
-                        result++;
-                    }
-                }
-            }
-
-            return result;
-        }
     }
 }

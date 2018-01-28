@@ -60,13 +60,13 @@ namespace FTN.Services.NetworkModelService
         {
             get
             {
-                if (firstContactDB)
+                if (FirstContactDB)
                 {
                     Logger.LogMessageToFile(string.Format("NMS.NetworkModel.DBProxy; line: {0}; Create channel between NMS and DB", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     ChannelFactory<IDatabaseForNMS> factoryDB = new ChannelFactory<IDatabaseForNMS>(new NetTcpBinding(),
                                                                                         new EndpointAddress("net.tcp://localhost:10009/Database/NMS"));
                     dbProxy = factoryDB.CreateChannel();
-                    firstContactDB = false;
+                    FirstContactDB = false;
                 }
 
                 Logger.LogMessageToFile(string.Format("NSM.NetworkModel.DBProxy; line: {0}; Channel NMS-DB is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -98,7 +98,7 @@ namespace FTN.Services.NetworkModelService
                 }
                 catch
                 {
-                    firstContactDB = true;
+                    FirstContactDB = true;
                     new Thread(() => ConnectToDB()).Start();
                     break;
                 }
@@ -121,7 +121,7 @@ namespace FTN.Services.NetworkModelService
                 catch
                 {
                     Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS failed to connect to DB", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    firstContactDB = true;
+                    FirstContactDB = true;
                     Thread.Sleep(1000);
                 }
             }
@@ -809,11 +809,21 @@ namespace FTN.Services.NetworkModelService
 
         public bool IsTest { get; set; }
 
+        public bool FirstContactDB
+        {
+            get
+            {
+                return firstContactDB;
+            }
+
+            set
+            {
+                firstContactDB = value;
+            }
+        }
+
         private void SaveDelta(Delta delta)
         {
-            int deltaCount = DBProxy.GetDeltaId();
-            delta.Id = ++deltaCount;
-
             DBProxy.SaveDelta(delta);
 
             //bool fileExisted = false;
