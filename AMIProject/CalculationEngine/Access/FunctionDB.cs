@@ -715,7 +715,7 @@ namespace CalculationEngine.Access
                             {
                                 var lastMeasMinutes = access.AggregationForMinutes.Max(x => x.TimeStamp);
                                 this.lastMeasForMinutesBeforeAppStart = lastMeasMinutes;
-                                DateTime temp = lastMeasMinutes.AddMinutes(1);
+                                DateTime temp = lastMeasMinutes.AddMinutes(15);
 
                                 if (DateTime.Compare(temp, lastMeasCollect) < 0) // postoje merenja u collect tabeli koje treba upisati u minutnu
                                 {
@@ -732,8 +732,8 @@ namespace CalculationEngine.Access
                                     }
 
                                     numberOfUniqueConsumers = toBeWrittenDic.Keys.ToList();
-                                    DateTime now = RoundDown(DateTime.Now, TimeSpan.FromMinutes(1));
-                                    DateTime roundDownLastMeasCollect = RoundDown(lastMeasCollect, TimeSpan.FromHours(1));
+                                    DateTime now = RoundDown(DateTime.Now, TimeSpan.FromMinutes(15));
+                                    DateTime roundDownLastMeasCollect = RoundDown(lastMeasCollect, TimeSpan.FromMinutes(15));
                                     List<DynamicMeasurement> tempList = new List<DynamicMeasurement>();
                                     Dictionary<long, List<DynamicMeasurement>> measurementsFromCollect;
 
@@ -748,7 +748,7 @@ namespace CalculationEngine.Access
                                             access.AggregationForMinutes.Add(maa);
                                         }
 
-                                        while (DateTime.Compare(roundDownLastMeasCollect, now.AddMinutes(-1)) < 0)
+                                        while (DateTime.Compare(roundDownLastMeasCollect, now.AddMinutes(-15)) < 0)
                                         {
                                             for (int i = 0; i < numberOfUniqueConsumers.Count; i++)
                                             {
@@ -758,7 +758,7 @@ namespace CalculationEngine.Access
                                                 access.AggregationForMinutes.Add(ma);
                                             }
 
-                                            roundDownLastMeasCollect = roundDownLastMeasCollect.AddMinutes(1);
+                                            roundDownLastMeasCollect = roundDownLastMeasCollect.AddMinutes(15);
                                         }
 
                                         access.SaveChanges();
@@ -785,20 +785,20 @@ namespace CalculationEngine.Access
                                     }
 
                                     numberOfUniqueConsumers = toBeWrittenDic.Keys.ToList();
-                                    DateTime now = RoundDown(DateTime.Now, TimeSpan.FromMinutes(1));
-                                    DateTime roundDownLastMeasCollect = RoundDown(lastMeasCollect, TimeSpan.FromMinutes(1));
+                                    DateTime now = RoundDown(DateTime.Now, TimeSpan.FromMinutes(15));
+                                    DateTime roundDownLastMeasCollect = RoundDown(lastMeasCollect, TimeSpan.FromMinutes(15));
 
-                                    while (DateTime.Compare(roundDownLastMeasCollect, now.AddMinutes(-1)) < 0)
+                                    while (DateTime.Compare(roundDownLastMeasCollect, now.AddMinutes(-15)) < 0)
                                     {
                                         for (int i = 0; i < numberOfUniqueConsumers.Count; i++)
                                         {
                                             MinuteAggregation ma = new MinuteAggregation();
                                             ma.PsrRef = numberOfUniqueConsumers[i];
-                                            ma.TimeStamp = roundDownLastMeasCollect.AddMinutes(1);
+                                            ma.TimeStamp = roundDownLastMeasCollect.AddMinutes(15);
                                             access.AggregationForMinutes.Add(ma);
                                         }
 
-                                        roundDownLastMeasCollect = roundDownLastMeasCollect.AddMinutes(1);
+                                        roundDownLastMeasCollect = roundDownLastMeasCollect.AddMinutes(15);
                                     }
 
                                     access.SaveChanges();
@@ -806,8 +806,8 @@ namespace CalculationEngine.Access
                             }
                             catch (InvalidOperationException)
                             {
-                                DateTime now = RoundDown(DateTime.Now, TimeSpan.FromMinutes(1));
-                                DateTime roundDownLastMeasCollect = RoundDown(lastMeasCollect, TimeSpan.FromMinutes(1));
+                                DateTime now = RoundDown(DateTime.Now, TimeSpan.FromMinutes(15));
+                                DateTime roundDownLastMeasCollect = RoundDown(lastMeasCollect, TimeSpan.FromMinutes(15));
                                 List<DynamicMeasurement> toBeWritten1 = new List<DynamicMeasurement>();
                                 Dictionary<long, List<DynamicMeasurement>> measurementsFromCollect1 = new Dictionary<long, List<DynamicMeasurement>>();
 
@@ -824,17 +824,17 @@ namespace CalculationEngine.Access
                                         access.AggregationForMinutes.Add(maa);
                                     }
                                 }
-                                while (DateTime.Compare(roundDownLastMeasCollect, now.AddMinutes(-1)) < 0)
+                                while (DateTime.Compare(roundDownLastMeasCollect, now.AddMinutes(-15)) < 0)
                                 {
                                     for (int i = 0; i < numberOfUniqueConsumers.Count; i++)
                                     {
                                         MinuteAggregation ma = new MinuteAggregation();
                                         ma.PsrRef = numberOfUniqueConsumers[i];
-                                        ma.TimeStamp = roundDownLastMeasCollect.AddMinutes(1);
+                                        ma.TimeStamp = roundDownLastMeasCollect.AddMinutes(15);
                                         access.AggregationForMinutes.Add(ma);
                                     }
 
-                                    roundDownLastMeasCollect = roundDownLastMeasCollect.AddMinutes(1);
+                                    roundDownLastMeasCollect = roundDownLastMeasCollect.AddMinutes(15);
                                 }
 
                                 access.SaveChanges();
@@ -852,14 +852,14 @@ namespace CalculationEngine.Access
         #endregion minutes
         public void StartThreads()
         {
-            DateTime now = DateTime.Now;
-            DateTime argument = RoundUp(now, TimeSpan.FromMinutes(1));
+            /*DateTime now = DateTime.Now;
+            DateTime argument = RoundUp(now, TimeSpan.FromMinutes(15));
             this.SetUpTimer(argument);
             DateTime dt = new DateTime(2018, 1, 15, 19, 19, 0);
             DateTime argumentH = RoundUp(now, TimeSpan.FromHours(1));
             this.SetUpTimerForHours(argumentH);
             DateTime argumentD = RoundUp(now, TimeSpan.FromDays(1));
-            this.SetUpTimerForDays(argumentD);
+            this.SetUpTimerForDays(argumentD);*/
         }
 
         public bool AddMeasurements(List<DynamicMeasurement> measurements)
@@ -1170,8 +1170,8 @@ namespace CalculationEngine.Access
         private void AggregateForMinute(DateTime to)
         {
             this.isMinuteDone = false;
-            DateTime from = to.AddMinutes(-1);
-            DateTime argForSetUpTimer = to.AddMinutes(1);
+            DateTime from = to.AddMinutes(-15);
+            DateTime argForSetUpTimer = to.AddMinutes(15);
 
             lock (lockObj)
             {
@@ -1215,7 +1215,7 @@ namespace CalculationEngine.Access
                             }
                             else
                             {
-                                DateTime beforeFrom = from.AddMinutes(-1);
+                                DateTime beforeFrom = from.AddMinutes(-15);
                                 List<DynamicMeasurement> previousMeasurements = access.Collect.Where(x => DateTime.Compare(from, x.TimeStamp) > 0 && DateTime.Compare(beforeFrom, x.TimeStamp) < 0).OrderByDescending(x => x.TimeStamp).ToList();
                                 Dictionary<long, DynamicMeasurement> previousMeasurementsDic = new Dictionary<long, DynamicMeasurement>();
 
@@ -1384,5 +1384,136 @@ namespace CalculationEngine.Access
         }
 
         #endregion private methods
+
+        #region Fill methods
+
+        public void DoUndoneFill()
+        {
+            using (var access = new AccessDB())
+            {
+                FillMinuteTable(access);
+                FillHourTable(access);
+                FillMonthTable(access);
+            }
+        }
+
+        private void FillMinuteTable(AccessDB access)
+        {
+            try
+            {
+                var dtMin = access.Collect.Min(x => x.TimeStamp);
+                var dtMax = access.Collect.Max(x => x.TimeStamp);
+                DateTime roundDownCollect = this.RoundDown(dtMin, TimeSpan.FromMinutes(1));
+                DateTime roudUpCollect = this.RoundUp(dtMax, TimeSpan.FromMinutes(1));
+                Dictionary<long, DynamicMeasurement> lastMeasurementsFromCollect = new Dictionary<long, DynamicMeasurement>();
+                DateTime roundDownCollectPlus15Minutes = roundDownCollect.AddMinutes(15);
+                var tempListMinute = access.Collect.Where(x => DateTime.Compare(roundDownCollect, x.TimeStamp) <= 0 && DateTime.Compare(roundDownCollectPlus15Minutes, x.TimeStamp) > 0).ToList(); // merenja koja treba da se upisu u bazu (minutna tabela)
+
+                var measurementsFromCollect = CreateDictionary(tempListMinute);
+                List<MinuteAggregation> aggregationsMinute = CreateMinuteAggregationsWhenMinuteTableIsEmpty(measurementsFromCollect);
+
+                foreach (MinuteAggregation maa in aggregationsMinute)
+                {
+                    access.AggregationForMinutes.Add(maa);
+                }
+
+                roundDownCollect = roundDownCollect.AddMinutes(15);
+
+                while (roundDownCollect < roudUpCollect)
+                {
+                    roundDownCollectPlus15Minutes = roundDownCollect.AddMinutes(15);
+                    var tempListMinute1 = access.Collect.Where(x => DateTime.Compare(roundDownCollect, x.TimeStamp) <= 0 && DateTime.Compare(roundDownCollectPlus15Minutes, x.TimeStamp) > 0).ToList(); // merenja koja treba da se upisu u bazu (minutna tabela)
+
+                    foreach (DynamicMeasurement dm in tempListMinute1)
+                    {
+                        DynamicMeasurement value = null;
+                        if (!lastMeasurementsFromCollect.TryGetValue(dm.PsrRef, out value))
+                        {
+                            lastMeasurementsFromCollect[dm.PsrRef] = dm;
+                        }
+                    }
+
+                    var measurementsFromCollect1 = CreateDictionary(tempListMinute1);
+                    List<MinuteAggregation> aggregationsMinute1 = CreateMinuteAggregationsWhenMinuteTableIsNotEmpty(roundDownCollect, lastMeasurementsFromCollect, measurementsFromCollect1);
+
+                    foreach (MinuteAggregation maa in aggregationsMinute1)
+                    {
+                        access.AggregationForMinutes.Add(maa);
+                    }
+
+                    access.SaveChanges();
+                    roundDownCollect = roundDownCollect.AddMinutes(15);
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void FillHourTable(AccessDB access)
+        {
+            try
+            {
+                var dtMin = access.AggregationForMinutes.Min(x => x.TimeStamp);
+                var dtMax = access.AggregationForMinutes.Max(x => x.TimeStamp);
+                DateTime roundDownMinute = this.RoundDown(dtMin, TimeSpan.FromHours(1));
+                DateTime roudUpMinute = this.RoundUp(dtMax, TimeSpan.FromHours(1));
+
+                while (roundDownMinute < roudUpMinute)
+                {
+                    DateTime roundDownMinutePlusOneHour = roundDownMinute.AddHours(1);
+                    var tempList = access.AggregationForMinutes.Where(x => DateTime.Compare(roundDownMinute, x.TimeStamp) < 0 && DateTime.Compare(roundDownMinutePlusOneHour, x.TimeStamp) > 0).ToList(); // merenja koja treba da se upisu u bazu (minutna tabela)
+                    Dictionary<long, List<MinuteAggregation>> measurementsFromCollect = CreateDictionaryForHour(tempList);
+                    List<HourAggregation> aggregations = CreateHourAggregations(roundDownMinute, measurementsFromCollect);
+
+                    foreach (HourAggregation ma in aggregations)
+                    {
+                        access.AggregationForHours.Add(ma);
+                    }
+
+                    access.SaveChanges();
+                    roundDownMinute = roundDownMinute.AddHours(1);
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+
+        private void FillMonthTable(AccessDB access)
+        {
+            try
+            {
+                var dtMin = access.AggregationForMinutes.Min(x => x.TimeStamp);
+                var dtMax = access.AggregationForMinutes.Max(x => x.TimeStamp);
+                DateTime roundDownHour = this.RoundDown(dtMin, TimeSpan.FromHours(1));
+                DateTime roudUpHour = this.RoundUp(dtMax, TimeSpan.FromHours(1));
+
+                while (roundDownHour < roudUpHour)
+                {
+                    DateTime roundDownHourPlusOneDay = roundDownHour.AddDays(1);
+                    var tempList = access.AggregationForHours.Where(x => DateTime.Compare(roundDownHour, x.TimeStamp) < 0 && DateTime.Compare(roundDownHourPlusOneDay, x.TimeStamp) > 0).ToList(); // merenja koja treba da se upisu u bazu (minutna tabela)
+                    Dictionary<long, List<HourAggregation>> measurementsFromCollect = CreateDictionaryForDay(tempList);
+                    List<DayAggregation> aggregations = CreateDayAggregations(roundDownHour, measurementsFromCollect);
+
+                    foreach (DayAggregation da in aggregations)
+                    {
+                        access.AggregationForDays.Add(da);
+                    }
+
+                    access.SaveChanges();
+                    roundDownHour = roundDownHour.AddDays(1);
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        #endregion Fill methods
     }
 }

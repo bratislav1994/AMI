@@ -113,9 +113,9 @@
       <Project>{2630d180-1b68-4e84-aeac-42ee8c88b50f}</Project>
       <Name>NetworkModelService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ServiceContracts\NetworkModelQueryContract\NetworkModelGDAContract.csproj">
+    <ProjectReference Include="..\ServiceContracts\NetworkModelQueryContract\ServiceContracts.csproj">
       <Project>{B726FB71-D295-41EE-9644-B2B0B1BC8911}</Project>
-      <Name>NetworkModelGDAContract</Name>
+      <Name>ServiceContracts</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -131,13 +131,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DB\TimeSeriesDb.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DB\TimeSeriesDb_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>TimeSeriesDb.mdf</DependentUpon>
-    </Content>
+    <Folder Include="DB\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

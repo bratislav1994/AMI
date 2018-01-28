@@ -30,6 +30,7 @@ namespace TC57CIM.IEC61970.Core
     [DataContract]
     [Serializable]
     [KnownType(typeof(Measurement))]
+    [KnownType(typeof(PowerSystemResource))]
     public class IdentifiedObject
     {
 

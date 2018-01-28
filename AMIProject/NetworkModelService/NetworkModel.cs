@@ -1022,6 +1022,16 @@ namespace FTN.Services.NetworkModelService
             UpdateThreadClient.Abort();
         }
 
+        public Tuple<Dictionary<long, IdentifiedObject>, List<IdentifiedObject>> GetConsumers()
+        {
+            Dictionary<long, IdentifiedObject> retValEC = new Dictionary<long, IdentifiedObject>();
+            retValEC = networkDataModel[DMSType.ENERGYCONS].Entities;
+            List<IdentifiedObject> retValM = new List<IdentifiedObject>();
+            retValM = networkDataModel[DMSType.ANALOG].Entities.Values.ToList();
+
+            return new Tuple<Dictionary<long, IdentifiedObject>, List<IdentifiedObject>>(retValEC, retValM);
+        }
+
         #region test methods
 
         public void CreateContainer(long gid)

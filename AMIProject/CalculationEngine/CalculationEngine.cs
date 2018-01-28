@@ -17,7 +17,7 @@ using TC57CIM.IEC61970.Wires;
 namespace CalculationEngine
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class CalculationEngine : ICalculationEngine, ICalculationForClient, ICalculationEngineDuplexSmartCache
+    public class CalculationEngine : ICalculationEngine, ICalculationForClient, ICalculationEngineDuplexSmartCache, ICalculationEngineForScript
     {
         private static CalculationEngine instance;
         private ITransactionDuplexCE proxyCoordinator;
@@ -360,6 +360,16 @@ namespace CalculationEngine
         public void Subscribe()
         {
             this.smartCaches.Add(OperationContext.Current.GetCallbackChannel<ISmartCacheForCE>());
+        }
+
+        public void FillDataBase(List<DynamicMeasurement> measurements)
+        {
+            dataBaseAdapter.AddMeasurements(measurements);
+        }
+
+        public void DoUndoneFill()
+        {
+            dataBaseAdapter.DoUndoneFill();
         }
     }
 }

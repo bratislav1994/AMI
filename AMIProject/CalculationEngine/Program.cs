@@ -16,6 +16,7 @@ namespace CalculationEngine
         public static ServiceHost svc = null;
         public static ServiceHost svc1 = null;
         public static ServiceHost svc2 = null;
+        public static ServiceHost svc3 = null;
 
         static void Main(string[] args)
         {
@@ -46,9 +47,16 @@ namespace CalculationEngine
             var binding2 = new NetTcpBinding();
             svc2.AddServiceEndpoint(typeof(ICalculationEngineDuplexSmartCache), binding2, new Uri("net.tcp://localhost:10007/ICalculationEngineDuplexSmartCache/SmartCache"));
 
+            svc3 = new ServiceHost(CalculationEngine.Instance);
+            var binding3 = new NetTcpBinding();
+            binding3.SendTimeout = TimeSpan.FromDays(1);
+            binding3.ReceiveTimeout = TimeSpan.FromDays(1);
+            svc3.AddServiceEndpoint(typeof(ICalculationEngineForScript), binding3, new Uri("net.tcp://localhost:10010/ICalculationEngineForScript/FillingScript"));
+
             svc.Open();
             svc1.Open();
             svc2.Open();
+            svc3.Open();
             Console.WriteLine("CalculationEngine waiting for request..");
         }
 
@@ -57,6 +65,7 @@ namespace CalculationEngine
             svc.Close();
             svc1.Close();
             svc2.Close();
+            svc3.Close();
             Console.WriteLine("CalculationEngine server stopped");
         }
     }

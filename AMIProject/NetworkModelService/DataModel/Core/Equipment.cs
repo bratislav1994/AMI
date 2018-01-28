@@ -14,12 +14,15 @@ using System.IO;
 
 using TC57CIM.IEC61970.Core;
 using FTN.Common;
+using System.Runtime.Serialization;
 
 namespace TC57CIM.IEC61970.Core {
 	/// <summary>
 	/// The parts of a power system that are physical devices, electronic or mechanical.
 	/// 
 	/// </summary>
+    [DataContract]
+    [KnownType(typeof(ConductingEquipment))]
 	public class Equipment : PowerSystemResource {
 
         private long eqContainer = 0;

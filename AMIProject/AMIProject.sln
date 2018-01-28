@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AMIClient", "AMIClient\AMIC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServiceContracts", "ServiceContracts", "{56DF3099-7700-4AB5-8595-07E29C18412B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkModelGDAContract", "ServiceContracts\NetworkModelQueryContract\NetworkModelGDAContract.csproj", "{B726FB71-D295-41EE-9644-B2B0B1BC8911}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceContracts", "ServiceContracts\NetworkModelQueryContract\ServiceContracts.csproj", "{B726FB71-D295-41EE-9644-B2B0B1BC8911}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIMAdapter", "CIMAdapter\CIMAdapter.csproj", "{F680D34F-C148-4314-8914-B2DF3E7B17AF}"
 EndProject
@@ -54,6 +54,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartCacheCE", "SmartCacheCE\SmartCacheCE.csproj", "{8ACB9739-15EC-4C41-BB87-966A1D378138}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMSDatabase", "NMSDatabase\NMSDatabase.csproj", "{44C76968-BAB6-426F-81AD-B7C59F0D488B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FillingScript", "FillingScript\FillingScript.csproj", "{68D74786-D952-4ADE-8627-CBF8EF45AB52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -283,6 +285,18 @@ Global
 		{44C76968-BAB6-426F-81AD-B7C59F0D488B}.Release|x64.Build.0 = Release|Any CPU
 		{44C76968-BAB6-426F-81AD-B7C59F0D488B}.Release|x86.ActiveCfg = Release|Any CPU
 		{44C76968-BAB6-426F-81AD-B7C59F0D488B}.Release|x86.Build.0 = Release|Any CPU
+		{68D74786-D952-4ADE-8627-CBF8EF45AB52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68D74786-D952-4ADE-8627-CBF8EF45AB52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68D74786-D952-4ADE-8627-CBF8EF45AB52}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{68D74786-D952-4ADE-8627-CBF8EF45AB52}.Debug|x64.Build.0 = Debug|Any CPU
+		{68D74786-D952-4ADE-8627-CBF8EF45AB52}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{68D74786-D952-4ADE-8627-CBF8EF45AB52}.Debug|x86.Build.0 = Debug|Any CPU
+		{68D74786-D952-4ADE-8627-CBF8EF45AB52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68D74786-D952-4ADE-8627-CBF8EF45AB52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68D74786-D952-4ADE-8627-CBF8EF45AB52}.Release|x64.ActiveCfg = Release|Any CPU
+		{68D74786-D952-4ADE-8627-CBF8EF45AB52}.Release|x64.Build.0 = Release|Any CPU
+		{68D74786-D952-4ADE-8627-CBF8EF45AB52}.Release|x86.ActiveCfg = Release|Any CPU
+		{68D74786-D952-4ADE-8627-CBF8EF45AB52}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

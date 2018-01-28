@@ -11,11 +11,12 @@ using FTN.ServiceContracts;
 using TC57CIM.IEC61970.Meas;
 using TC57CIM.IEC61970.Core;
 using FTN.Common.Logger;
+using TC57CIM.IEC61970.Wires;
 
 namespace FTN.Services.NetworkModelService
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class GenericDataAccess : INetworkModelGDAContractDuplexClient, INetworkModel
+    public class GenericDataAccess : INetworkModelGDAContractDuplexClient, INetworkModel, INMSForScript
     {
         //INetworkModelGDAContract,
         private static Dictionary<int, ResourceIterator> resourceItMap = new Dictionary<int, ResourceIterator>();
@@ -354,6 +355,11 @@ namespace FTN.Services.NetworkModelService
         public void ClearResourceMap()
         {
             resourceItMap.Clear();
+        }
+
+        public Tuple<Dictionary<long, IdentifiedObject>, List<IdentifiedObject>> GetConsumers()
+        {
+            return nm.GetConsumers();
         }
     }
 }

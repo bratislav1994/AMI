@@ -17,6 +17,7 @@ namespace FTN.Services.NetworkModelService
 		private NetworkModel nm = null;
 		private List<ServiceHost> hosts = null;
         private ServiceHost svcDuplexClient = null;
+        private ServiceHost svcScript = null;
 
         public NetworkModelService()
 		{			
@@ -31,13 +32,19 @@ namespace FTN.Services.NetworkModelService
                                     new NetTcpBinding(),
                                     new Uri("net.tcp://localhost:10000/NetworkModelService/GDADuplexClient"));
 
-            
+            svcScript = new ServiceHost(gda);
+            svcScript.AddServiceEndpoint(typeof(INMSForScript),
+                                    new NetTcpBinding(),
+                                    new Uri("net.tcp://localhost:10011/NetworkModelService/FillingScript"));
+
+
             //InitializeHosts();
         }
 	
 		public void Start()
 		{
             svcDuplexClient.Open();
+            svcScript.Open();
             Console.WriteLine("WCF services opened and ready");
 			//StartHosts();			
 		}
@@ -46,6 +53,7 @@ namespace FTN.Services.NetworkModelService
 		{
             //CloseHosts();
             svcDuplexClient.Close();
+            svcScript.Close();
             GC.SuppressFinalize(this);
 		}
 

@@ -14,12 +14,15 @@ using System.IO;
 using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Wires;
 using FTN.Common;
+using System.Runtime.Serialization;
 
 namespace TC57CIM.IEC61970.Wires {
-	/// <summary>
-	/// Generic user of energy - a  point of consumption on the power system model.
-	/// </summary>
-	public class EnergyConsumer : ConductingEquipment {
+    /// <summary>
+    /// Generic user of energy - a  point of consumption on the power system model.
+    /// </summary>
+
+    [DataContract]
+    public class EnergyConsumer : ConductingEquipment {
 
         private float pfixed;
         private float qfixed;
@@ -34,18 +37,21 @@ namespace TC57CIM.IEC61970.Wires {
         {
         }
 
+        [DataMember]
         public float Pfixed
         {
             get { return pfixed; }
             set { pfixed = value; }
         }
 
+        [DataMember]
         public float Qfixed
         {
             get { return qfixed; }
             set { qfixed = value; }
         }
 
+        [DataMember]
         public ConsumerType Type
         {
             get { return type; }
