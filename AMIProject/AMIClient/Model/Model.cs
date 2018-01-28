@@ -56,6 +56,8 @@ namespace AMIClient
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.GdaQueryProxy; line: {0}; Create channel between Client and NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    binding.MaxReceivedMessageSize = Int32.MaxValue;
+                    binding.MaxBufferSize = Int32.MaxValue;
                     factory = new DuplexChannelFactory<INetworkModelGDAContractDuplexClient>(
                     new InstanceContext(this),
                         binding,
@@ -83,6 +85,8 @@ namespace AMIClient
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.CEQueryProxy; line: {0}; Create channel between Client and CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    binding.MaxReceivedMessageSize = Int32.MaxValue;
+                    binding.MaxBufferSize = Int32.MaxValue;
                     factoryCE = new ChannelFactory<ICalculationForClient>(
                         binding,
                         new EndpointAddress("net.tcp://localhost:10006/CalculationEngine/Client"));
@@ -109,6 +113,8 @@ namespace AMIClient
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.SCProxy; line: {0}; Create channel between Client and SC", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    binding.MaxReceivedMessageSize = Int32.MaxValue;
+                    binding.MaxBufferSize = Int32.MaxValue;
                     factorySC = new DuplexChannelFactory<ISmartCacheDuplexForClient>(
                     new InstanceContext(this),
                         binding,

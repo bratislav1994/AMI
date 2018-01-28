@@ -32,19 +32,30 @@ namespace TransactionCoordinator
         {
             svc = new ServiceHost(TransactionCoordinator.Instance);
             var binding = new NetTcpBinding();
+            binding.MaxReceivedMessageSize = Int32.MaxValue;
+            binding.MaxBufferSize = Int32.MaxValue;
             svc.AddServiceEndpoint(typeof(ITransactionDuplexScada), binding, new Uri("net.tcp://localhost:10002/TransactionCoordinator/Scada"));
 
             svc3 = new ServiceHost(TransactionCoordinator.Instance);
-            svc3.AddServiceEndpoint(typeof(ITransactionDuplexNMS), new NetTcpBinding(), new Uri("net.tcp://localhost:10003/TransactionCoordinator/NMS"));
+            NetTcpBinding binding4 = new NetTcpBinding();
+            binding4.MaxReceivedMessageSize = Int32.MaxValue;
+            binding4.MaxBufferSize = Int32.MaxValue;
+            svc3.AddServiceEndpoint(typeof(ITransactionDuplexNMS), binding4, new Uri("net.tcp://localhost:10003/TransactionCoordinator/NMS"));
 
 
             svc2 = new ServiceHost(TransactionCoordinator.Instance);
+            NetTcpBinding binding2 = new NetTcpBinding();
+            binding2.MaxReceivedMessageSize = Int32.MaxValue;
+            binding2.MaxBufferSize = Int32.MaxValue;
             svc2.AddServiceEndpoint(typeof(ITransactionCoordinator),
-                                    new NetTcpBinding(),
+                                    binding2,
                                     new Uri("net.tcp://localhost:10001/TransactionCoordinator/Adapter"));
 
             svc4 = new ServiceHost(TransactionCoordinator.Instance);
-            svc4.AddServiceEndpoint(typeof(ITransactionDuplexCE), new NetTcpBinding(), new Uri("net.tcp://localhost:10103/TransactionCoordinator/CE"));
+            NetTcpBinding binding3 = new NetTcpBinding();
+            binding3.MaxReceivedMessageSize = Int32.MaxValue;
+            binding3.MaxBufferSize = Int32.MaxValue;
+            svc4.AddServiceEndpoint(typeof(ITransactionDuplexCE), binding3, new Uri("net.tcp://localhost:10103/TransactionCoordinator/CE"));
 
 
             svc.Open();

@@ -19,8 +19,11 @@ namespace SmartCacheCE
             Logger.Path = "SmartCache.txt";
             SmartCache sc = new SmartCache();
             svc = new ServiceHost(sc);
+            var binding = new NetTcpBinding();
+            binding.MaxReceivedMessageSize = Int32.MaxValue;
+            binding.MaxBufferSize = Int32.MaxValue;
             svc.AddServiceEndpoint(typeof(ISmartCacheDuplexForClient),
-                                   new NetTcpBinding(),
+                                   binding,
                                    new Uri("net.tcp://localhost:10008/SmartCache/Client"));
             svc.Open();
 

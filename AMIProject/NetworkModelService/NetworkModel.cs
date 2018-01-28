@@ -63,7 +63,10 @@ namespace FTN.Services.NetworkModelService
                 if (FirstContactDB)
                 {
                     Logger.LogMessageToFile(string.Format("NMS.NetworkModel.DBProxy; line: {0}; Create channel between NMS and DB", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    ChannelFactory<IDatabaseForNMS> factoryDB = new ChannelFactory<IDatabaseForNMS>(new NetTcpBinding(),
+                    NetTcpBinding binding = new NetTcpBinding();
+                    binding.MaxReceivedMessageSize = Int32.MaxValue;
+                    binding.MaxBufferSize = Int32.MaxValue;
+                    ChannelFactory<IDatabaseForNMS> factoryDB = new ChannelFactory<IDatabaseForNMS>(binding,
                                                                                         new EndpointAddress("net.tcp://localhost:10009/Database/NMS"));
                     dbProxy = factoryDB.CreateChannel();
                     FirstContactDB = false;

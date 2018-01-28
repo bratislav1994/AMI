@@ -48,7 +48,7 @@ namespace NMSDatabase.Access
             {
                 using (var access = new AccessDB())
                 {
-                    var retVal = access.Delta.Include("InsertOperations").Include("UpdateOperations").Include("DeleteOperations").Include("InsertOperations.Properties").Include("UpdateOperations.Properties").Include("DeleteOperations.Properties").ToList();
+                    var retVal = access.Delta.Include("InsertOperations").Include("InsertOperations.Properties").ToList();
 
                     foreach(var d in retVal)
                     {
