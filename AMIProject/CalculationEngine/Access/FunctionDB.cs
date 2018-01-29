@@ -34,9 +34,9 @@ namespace CalculationEngine.Access
 
         public void DoUndone()
         {
-            //this.DoUndoneByMinute();
-            //this.DoUndoneByHour();
-            //this.DoUndoneByDay();
+            this.DoUndoneByMinute();
+            this.DoUndoneByHour();
+            this.DoUndoneByDay();
         }
 
         #region hour
@@ -725,6 +725,7 @@ namespace CalculationEngine.Access
                                     foreach (DynamicMeasurement dm in toBeWritten) // poslednja merenja koja su vec obradjena da bi se racunao integral
                                     {
                                         DynamicMeasurement value = null;
+
                                         if (!toBeWrittenDic.TryGetValue(dm.PsrRef, out value))
                                         {
                                             toBeWrittenDic[dm.PsrRef] = dm;
@@ -852,14 +853,14 @@ namespace CalculationEngine.Access
         #endregion minutes
         public void StartThreads()
         {
-            /*DateTime now = DateTime.Now;
+            DateTime now = DateTime.Now;
             DateTime argument = RoundUp(now, TimeSpan.FromMinutes(15));
             this.SetUpTimer(argument);
             DateTime dt = new DateTime(2018, 1, 15, 19, 19, 0);
             DateTime argumentH = RoundUp(now, TimeSpan.FromHours(1));
             this.SetUpTimerForHours(argumentH);
             DateTime argumentD = RoundUp(now, TimeSpan.FromDays(1));
-            this.SetUpTimerForDays(argumentD);*/
+            this.SetUpTimerForDays(argumentD);
         }
 
         public bool AddMeasurements(List<DynamicMeasurement> measurements)
@@ -1157,6 +1158,7 @@ namespace CalculationEngine.Access
             DateTime current = DateTime.Now;
             DateTime alertTime = argument.AddMilliseconds(-10);
             TimeSpan timeToGo = alertTime.TimeOfDay - current.TimeOfDay;
+
             if (timeToGo < TimeSpan.Zero)
             {
                 return;//time already passed
@@ -1208,6 +1210,7 @@ namespace CalculationEngine.Access
 
                                 foreach (MinuteAggregation ma in aggregations)
                                 {
+                                    ma.TimeStamp = from;
                                     access.AggregationForMinutes.Add(ma);
                                 }
 
