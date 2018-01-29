@@ -21,7 +21,7 @@ namespace AMIClientTest.ViewModels
         public void SetupTest()
         {
             this.addCimXml = new AddCimXmlViewModel();
-     //       Logger.Path = "AddCimTest";
+            Logger.Path = "TestClient.txt";
         }
 
         [Test]
@@ -82,7 +82,7 @@ namespace AMIClientTest.ViewModels
             addCimXml.XMLPath = "path";
             Assert.DoesNotThrow(() => addCimXml.ConvertCommand.Execute());
 
-            addCimXml.XMLPath = "../AMIProject/CommonFiles/AMICIMVojvodina.xml";
+            addCimXml.XMLPath = "CommonFiles/AMICIMVojvodina.xml";
             Assert.DoesNotThrow(() => addCimXml.ConvertCommand.Execute());
         }
 

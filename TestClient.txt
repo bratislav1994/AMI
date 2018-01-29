@@ -1,0 +1,597 @@
+1/29/2018 10:45:25 AM: AMIClient.GeoRegionForTree.IsSelected; line: 76; Start - get all ami for the selected region.
+1/29/2018 10:45:25 AM: AMIClient.Model.GetAllAmis; line: 636; Start the GetAllAmis function.
+1/29/2018 10:45:25 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 10:45:25 AM: AMIClient.Model.GetSomeSubstation; line: 528; Start the GetSomeSubstation function.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GetSomeSubstation; line: 534; Start the GetSomeSubstation function.
+1/29/2018 10:45:25 AM: AMIClient.Model.SCProxy; line: 127; Channel Client-SC is created.
+1/29/2018 10:45:25 AM: AMIClient.GeoRegionForTree.IsSelected; line: 82; Finish - get all ami for the selected region.
+1/29/2018 10:45:25 AM: AMIClient.Model.GetAllAmis; line: 636; Start the GetAllAmis function.
+1/29/2018 10:45:25 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 10:45:25 AM: AMIClient.Model.GetSomeSubstation; line: 528; Start the GetSomeSubstation function.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GetSomeSubstation; line: 534; Start the GetSomeSubstation function.
+1/29/2018 10:45:25 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 116; Start the LoadChildren function.
+1/29/2018 10:45:25 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 10:45:25 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 132; Finish the LoadChildren function.
+1/29/2018 10:45:25 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 116; Start the LoadChildren function.
+1/29/2018 10:45:25 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 10:45:25 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 132; Finish the LoadChildren function.
+1/29/2018 10:45:25 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 116; Start the LoadChildren function.
+1/29/2018 10:45:25 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 10:45:25 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 132; Finish the LoadChildren function.
+1/29/2018 10:45:25 AM: AMIClient.RootElement.LoadChildren; line: 134; Start the LoadChildren function.
+1/29/2018 10:45:25 AM: AMIClient.Model.GetAllRegions; line: 396; Start the GetAllRegions function.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:25 AM: AMIClient.Model.GetAllRegions; line: 405; Start the GetAllRegions function.
+1/29/2018 10:45:25 AM: AMIClient.RootElement.LoadChildren; line: 150; Finish the LoadChildren function.
+1/29/2018 10:45:26 AM: AMIClient.RootElement.LoadChildren; line: 134; Start the LoadChildren function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetAllRegions; line: 396; Start the GetAllRegions function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetAllRegions; line: 405; Start the GetAllRegions function.
+1/29/2018 10:45:26 AM: AMIClient.RootElement.LoadChildren; line: 150; Finish the LoadChildren function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetAllAmis; line: 416; Start the GetAllAmis function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetAllAmis; line: 442; Start the GetAllAmis function.
+1/29/2018 10:45:26 AM: AMIClient.Model.SCProxy; line: 127; Channel Client-SC is created.
+1/29/2018 10:45:26 AM: AMIClient.RootElement.LoadChildren; line: 134; Start the LoadChildren function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetAllRegions; line: 396; Start the GetAllRegions function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetAllRegions; line: 405; Start the GetAllRegions function.
+1/29/2018 10:45:26 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 116; Start the LoadChildren function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 10:45:26 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 132; Finish the LoadChildren function.
+1/29/2018 10:45:26 AM: AMIClient.RootElement.LoadChildren; line: 150; Finish the LoadChildren function.
+1/29/2018 10:45:26 AM: AMIClient.SubGeoRegionForTree.IsSelected; line: 82; Start - get all ami for the selected region.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetAllAmis; line: 657; Start the GetAllAmis function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetSomeSubstation; line: 528; Start the GetSomeSubstation function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetSomeSubstation; line: 534; Start the GetSomeSubstation function.
+1/29/2018 10:45:26 AM: AMIClient.Model.SCProxy; line: 127; Channel Client-SC is created.
+1/29/2018 10:45:26 AM: AMIClient.SubGeoRegionForTree.IsSelected; line: 88; Finish - get all ami for the selected region.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetAllAmis; line: 657; Start the GetAllAmis function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetSomeSubstation; line: 528; Start the GetSomeSubstation function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetSomeSubstation; line: 534; Start the GetSomeSubstation function.
+1/29/2018 10:45:26 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 116; Start the LoadChildren function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 10:45:26 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 132; Finish the LoadChildren function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetAllAmis; line: 416; Start the GetAllAmis function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetSomeSubstation; line: 528; Start the GetSomeSubstation function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetSomeSubstation; line: 534; Start the GetSomeSubstation function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetAllAmis; line: 442; Start the GetAllAmis function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetAllAmis; line: 657; Start the GetAllAmis function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetSomeSubstation; line: 528; Start the GetSomeSubstation function.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.GetSomeSubstation; line: 534; Start the GetSomeSubstation function.
+1/29/2018 10:45:26 AM: AMIClient.Model.ConnectToNMS; line: 340; Client try to connect with NMS.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.ConnectToNMS; line: 348; Client is connected to the NMS.
+1/29/2018 10:45:26 AM: AMIClient.Model.ConnectToCE; line: 314; Client try to connect with CE.
+1/29/2018 10:45:26 AM: AMIClient.Model.CEQueryProxy; line: 98; Channel Client-CE is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.ConnectToCE; line: 322; Client is connected to the CE.
+1/29/2018 10:45:26 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.ConnectToSC; line: 289; Client try to connect to SC.
+1/29/2018 10:45:26 AM: AMIClient.Model.SCProxy; line: 127; Channel Client-SC is created.
+1/29/2018 10:45:26 AM: AMIClient.Model.ConnectToSC; line: 296; Client is connected to the SC.
+1/29/2018 10:45:30 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:45:30 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:45:30 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 185; Convert faild.
+1/29/2018 10:45:31 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:45:31 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 185; Convert faild.
+1/29/2018 10:45:34 AM: AMIClient.Model.CEQueryProxy; line: 98; Channel Client-CE is created.
+1/29/2018 10:45:34 AM: AMIClient.Model.CEQueryProxy; line: 98; Channel Client-CE is created.
+1/29/2018 10:45:34 AM: AMIClient.Model.CEQueryProxy; line: 98; Channel Client-CE is created.
+1/29/2018 10:45:34 AM: AMIClient.Model.CEQueryProxy; line: 98; Channel Client-CE is created.
+1/29/2018 10:45:34 AM: AMIClient.RootElement.LoadChildren; line: 134; Start the LoadChildren function.
+1/29/2018 10:45:34 AM: AMIClient.Model.GetAllRegions; line: 396; Start the GetAllRegions function.
+1/29/2018 10:45:34 AM: AMIClient.Model.GdaQueryProxy; line: 57; Create channel between Client and NMS.
+1/29/2018 10:45:35 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:38 AM: AMIClient.Model.GetAllRegions; line: 405; Start the GetAllRegions function.
+1/29/2018 10:45:38 AM: AMIClient.Model.ConnectToNMS; line: 340; Client try to connect with NMS.
+1/29/2018 10:45:38 AM: AMIClient.RootElement.LoadChildren; line: 150; Finish the LoadChildren function.
+1/29/2018 10:45:38 AM: AMIClient.Model.GdaQueryProxy; line: 57; Create channel between Client and NMS.
+1/29/2018 10:45:38 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:38 AM: AMIClient.RootElement.LoadChildren; line: 134; Start the LoadChildren function.
+1/29/2018 10:45:38 AM: AMIClient.Model.GetAllRegions; line: 396; Start the GetAllRegions function.
+1/29/2018 10:45:38 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 10:45:40 AM: AMIClient.Model.ConnectToNMS; line: 355; Client faild to connect with NMS. CATCH.
+1/29/2018 10:45:41 AM: AMIClient.Model.GetAllRegions; line: 405; Start the GetAllRegions function.
+1/29/2018 10:45:41 AM: AMIClient.RootElement.LoadChildren; line: 150; Finish the LoadChildren function.
+1/29/2018 10:51:29 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:51:30 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:51:31 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 185; Convert faild.
+1/29/2018 10:51:32 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:51:32 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 185; Convert faild.
+1/29/2018 10:52:47 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:52:48 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:52:48 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 185; Convert faild.
+1/29/2018 10:52:52 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:52:52 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 185; Convert faild.
+1/29/2018 10:54:39 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:54:41 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:54:41 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 185; Convert faild.
+1/29/2018 10:54:43 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:55:01 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 181; Convert succeeded.
+1/29/2018 10:57:52 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:57:53 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:57:54 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 185; Convert faild.
+1/29/2018 10:57:54 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:57:58 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 181; Convert succeeded.
+1/29/2018 10:57:58 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:58:03 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 181; Convert succeeded.
+1/29/2018 10:58:48 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:58:50 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:58:50 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 185; Convert faild.
+1/29/2018 10:58:51 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:58:53 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 181; Convert succeeded.
+1/29/2018 10:58:53 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:59:50 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:59:51 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 10:59:51 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 185; Convert faild.
+1/29/2018 10:59:53 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 11:01:11 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 181; Convert succeeded.
+1/29/2018 11:01:15 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 11:01:23 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 181; Convert succeeded.
+1/29/2018 11:38:29 AM: AMIClient.GeoRegionForTree.IsSelected; line: 76; Start - get all ami for the selected region.
+1/29/2018 11:38:29 AM: AMIClient.Model.GetAllAmis; line: 636; Start the GetAllAmis function.
+1/29/2018 11:38:29 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 11:38:29 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubstation; line: 528; Start the GetSomeSubstation function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubstation; line: 534; Start the GetSomeSubstation function.
+1/29/2018 11:38:30 AM: AMIClient.Model.SCProxy; line: 127; Channel Client-SC is created.
+1/29/2018 11:38:30 AM: AMIClient.GeoRegionForTree.IsSelected; line: 82; Finish - get all ami for the selected region.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetAllAmis; line: 636; Start the GetAllAmis function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubstation; line: 528; Start the GetSomeSubstation function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubstation; line: 534; Start the GetSomeSubstation function.
+1/29/2018 11:38:30 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 116; Start the LoadChildren function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 11:38:30 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 132; Finish the LoadChildren function.
+1/29/2018 11:38:30 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 116; Start the LoadChildren function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 11:38:30 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 132; Finish the LoadChildren function.
+1/29/2018 11:38:30 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 116; Start the LoadChildren function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 11:38:30 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 132; Finish the LoadChildren function.
+1/29/2018 11:38:30 AM: AMIClient.RootElement.LoadChildren; line: 134; Start the LoadChildren function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetAllRegions; line: 396; Start the GetAllRegions function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetAllRegions; line: 405; Start the GetAllRegions function.
+1/29/2018 11:38:30 AM: AMIClient.RootElement.LoadChildren; line: 150; Finish the LoadChildren function.
+1/29/2018 11:38:30 AM: AMIClient.RootElement.LoadChildren; line: 134; Start the LoadChildren function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetAllRegions; line: 396; Start the GetAllRegions function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetAllRegions; line: 405; Start the GetAllRegions function.
+1/29/2018 11:38:30 AM: AMIClient.RootElement.LoadChildren; line: 150; Finish the LoadChildren function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetAllAmis; line: 416; Start the GetAllAmis function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetAllAmis; line: 442; Start the GetAllAmis function.
+1/29/2018 11:38:30 AM: AMIClient.Model.SCProxy; line: 127; Channel Client-SC is created.
+1/29/2018 11:38:30 AM: AMIClient.RootElement.LoadChildren; line: 134; Start the LoadChildren function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetAllRegions; line: 396; Start the GetAllRegions function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetAllRegions; line: 405; Start the GetAllRegions function.
+1/29/2018 11:38:30 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 116; Start the LoadChildren function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 11:38:30 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 132; Finish the LoadChildren function.
+1/29/2018 11:38:30 AM: AMIClient.RootElement.LoadChildren; line: 150; Finish the LoadChildren function.
+1/29/2018 11:38:30 AM: AMIClient.SubGeoRegionForTree.IsSelected; line: 82; Start - get all ami for the selected region.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetAllAmis; line: 657; Start the GetAllAmis function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubstation; line: 528; Start the GetSomeSubstation function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubstation; line: 534; Start the GetSomeSubstation function.
+1/29/2018 11:38:30 AM: AMIClient.Model.SCProxy; line: 127; Channel Client-SC is created.
+1/29/2018 11:38:30 AM: AMIClient.SubGeoRegionForTree.IsSelected; line: 88; Finish - get all ami for the selected region.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetAllAmis; line: 657; Start the GetAllAmis function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubstation; line: 528; Start the GetSomeSubstation function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubstation; line: 534; Start the GetSomeSubstation function.
+1/29/2018 11:38:30 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 116; Start the LoadChildren function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 11:38:30 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 132; Finish the LoadChildren function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetAllAmis; line: 416; Start the GetAllAmis function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:31 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:31 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 11:38:31 AM: AMIClient.Model.GetSomeSubstation; line: 528; Start the GetSomeSubstation function.
+1/29/2018 11:38:31 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:31 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:31 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:31 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:31 AM: AMIClient.Model.GetSomeSubstation; line: 534; Start the GetSomeSubstation function.
+1/29/2018 11:38:31 AM: AMIClient.Model.GetAllAmis; line: 442; Start the GetAllAmis function.
+1/29/2018 11:38:31 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:31 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:31 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:31 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:31 AM: AMIClient.Model.GetAllAmis; line: 657; Start the GetAllAmis function.
+1/29/2018 11:38:31 AM: AMIClient.Model.GetSomeSubstation; line: 528; Start the GetSomeSubstation function.
+1/29/2018 11:38:31 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:31 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:31 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:31 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:31 AM: AMIClient.Model.GetSomeSubstation; line: 534; Start the GetSomeSubstation function.
+1/29/2018 11:38:31 AM: AMIClient.Model.ConnectToNMS; line: 340; Client try to connect with NMS.
+1/29/2018 11:38:31 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:31 AM: AMIClient.Model.ConnectToNMS; line: 348; Client is connected to the NMS.
+1/29/2018 11:38:31 AM: AMIClient.Model.ConnectToCE; line: 314; Client try to connect with CE.
+1/29/2018 11:38:31 AM: AMIClient.Model.CEQueryProxy; line: 98; Channel Client-CE is created.
+1/29/2018 11:38:31 AM: AMIClient.Model.ConnectToCE; line: 322; Client is connected to the CE.
+1/29/2018 11:38:31 AM: AMIClient.Model.ConnectToSC; line: 289; Client try to connect to SC.
+1/29/2018 11:38:31 AM: AMIClient.Model.SCProxy; line: 127; Channel Client-SC is created.
+1/29/2018 11:38:31 AM: AMIClient.Model.ConnectToSC; line: 296; Client is connected to the SC.
+1/29/2018 11:38:31 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:33 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 11:38:33 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 11:38:33 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 185; Convert faild.
+1/29/2018 11:38:34 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 11:38:34 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 181; Convert succeeded.
+1/29/2018 11:38:34 AM: AMIClient.Model.CEQueryProxy; line: 98; Channel Client-CE is created.
+1/29/2018 11:38:34 AM: AMIClient.Model.CEQueryProxy; line: 98; Channel Client-CE is created.
+1/29/2018 11:38:34 AM: AMIClient.Model.CEQueryProxy; line: 98; Channel Client-CE is created.
+1/29/2018 11:38:34 AM: AMIClient.Model.CEQueryProxy; line: 98; Channel Client-CE is created.
+1/29/2018 11:38:34 AM: AMIClient.RootElement.LoadChildren; line: 134; Start the LoadChildren function.
+1/29/2018 11:38:34 AM: AMIClient.Model.GetAllRegions; line: 396; Start the GetAllRegions function.
+1/29/2018 11:38:34 AM: AMIClient.Model.GdaQueryProxy; line: 57; Create channel between Client and NMS.
+1/29/2018 11:38:36 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:39 AM: AMIClient.Model.ConnectToNMS; line: 340; Client try to connect with NMS.
+1/29/2018 11:38:39 AM: AMIClient.Model.GdaQueryProxy; line: 57; Create channel between Client and NMS.
+1/29/2018 11:38:39 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:39 AM: AMIClient.Model.GetAllRegions; line: 405; Start the GetAllRegions function.
+1/29/2018 11:38:39 AM: AMIClient.RootElement.LoadChildren; line: 150; Finish the LoadChildren function.
+1/29/2018 11:38:39 AM: AMIClient.RootElement.LoadChildren; line: 134; Start the LoadChildren function.
+1/29/2018 11:38:39 AM: AMIClient.Model.GetAllRegions; line: 396; Start the GetAllRegions function.
+1/29/2018 11:38:39 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:38:41 AM: AMIClient.Model.ConnectToNMS; line: 355; Client faild to connect with NMS. CATCH.
+1/29/2018 11:38:41 AM: AMIClient.Model.GetAllRegions; line: 405; Start the GetAllRegions function.
+1/29/2018 11:38:41 AM: AMIClient.RootElement.LoadChildren; line: 150; Finish the LoadChildren function.
+1/29/2018 11:42:20 AM: AMIClient.GeoRegionForTree.IsSelected; line: 76; Start - get all ami for the selected region.
+1/29/2018 11:42:20 AM: AMIClient.Model.GetAllAmis; line: 636; Start the GetAllAmis function.
+1/29/2018 11:42:20 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 11:42:20 AM: AMIClient.Model.GetSomeSubstation; line: 528; Start the GetSomeSubstation function.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GetSomeSubstation; line: 534; Start the GetSomeSubstation function.
+1/29/2018 11:42:20 AM: AMIClient.Model.SCProxy; line: 127; Channel Client-SC is created.
+1/29/2018 11:42:20 AM: AMIClient.GeoRegionForTree.IsSelected; line: 82; Finish - get all ami for the selected region.
+1/29/2018 11:42:20 AM: AMIClient.Model.GetAllAmis; line: 636; Start the GetAllAmis function.
+1/29/2018 11:42:20 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 11:42:20 AM: AMIClient.Model.GetSomeSubstation; line: 528; Start the GetSomeSubstation function.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GetSomeSubstation; line: 534; Start the GetSomeSubstation function.
+1/29/2018 11:42:20 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 116; Start the LoadChildren function.
+1/29/2018 11:42:20 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 11:42:20 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 132; Finish the LoadChildren function.
+1/29/2018 11:42:20 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 116; Start the LoadChildren function.
+1/29/2018 11:42:20 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 11:42:20 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 132; Finish the LoadChildren function.
+1/29/2018 11:42:20 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 116; Start the LoadChildren function.
+1/29/2018 11:42:20 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:20 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 11:42:20 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 132; Finish the LoadChildren function.
+1/29/2018 11:42:21 AM: AMIClient.RootElement.LoadChildren; line: 134; Start the LoadChildren function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetAllRegions; line: 396; Start the GetAllRegions function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetAllRegions; line: 405; Start the GetAllRegions function.
+1/29/2018 11:42:21 AM: AMIClient.RootElement.LoadChildren; line: 150; Finish the LoadChildren function.
+1/29/2018 11:42:21 AM: AMIClient.RootElement.LoadChildren; line: 134; Start the LoadChildren function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetAllRegions; line: 396; Start the GetAllRegions function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetAllRegions; line: 405; Start the GetAllRegions function.
+1/29/2018 11:42:21 AM: AMIClient.RootElement.LoadChildren; line: 150; Finish the LoadChildren function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetAllAmis; line: 416; Start the GetAllAmis function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetAllAmis; line: 442; Start the GetAllAmis function.
+1/29/2018 11:42:21 AM: AMIClient.Model.SCProxy; line: 127; Channel Client-SC is created.
+1/29/2018 11:42:21 AM: AMIClient.RootElement.LoadChildren; line: 134; Start the LoadChildren function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetAllRegions; line: 396; Start the GetAllRegions function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetAllRegions; line: 405; Start the GetAllRegions function.
+1/29/2018 11:42:21 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 116; Start the LoadChildren function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 11:42:21 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 132; Finish the LoadChildren function.
+1/29/2018 11:42:21 AM: AMIClient.RootElement.LoadChildren; line: 150; Finish the LoadChildren function.
+1/29/2018 11:42:21 AM: AMIClient.SubGeoRegionForTree.IsSelected; line: 82; Start - get all ami for the selected region.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetAllAmis; line: 657; Start the GetAllAmis function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetSomeSubstation; line: 528; Start the GetSomeSubstation function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetSomeSubstation; line: 534; Start the GetSomeSubstation function.
+1/29/2018 11:42:21 AM: AMIClient.Model.SCProxy; line: 127; Channel Client-SC is created.
+1/29/2018 11:42:21 AM: AMIClient.SubGeoRegionForTree.IsSelected; line: 88; Finish - get all ami for the selected region.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetAllAmis; line: 657; Start the GetAllAmis function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetSomeSubstation; line: 528; Start the GetSomeSubstation function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetSomeSubstation; line: 534; Start the GetSomeSubstation function.
+1/29/2018 11:42:21 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 116; Start the LoadChildren function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 11:42:21 AM: AMIClient.GeoRegionForTree.LoadChildren; line: 132; Finish the LoadChildren function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetAllAmis; line: 416; Start the GetAllAmis function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetSomeSubregions; line: 515; Start the GetSomeSubregions function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetSomeSubregions; line: 521; Finish the GetSomeSubregions function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetSomeSubstation; line: 528; Start the GetSomeSubstation function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetSomeSubstation; line: 534; Start the GetSomeSubstation function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetAllAmis; line: 442; Start the GetAllAmis function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetAllAmis; line: 657; Start the GetAllAmis function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetSomeSubstation; line: 528; Start the GetSomeSubstation function.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.GetSomeSubstation; line: 534; Start the GetSomeSubstation function.
+1/29/2018 11:42:21 AM: AMIClient.Model.ConnectToNMS; line: 340; Client try to connect with NMS.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.ConnectToNMS; line: 348; Client is connected to the NMS.
+1/29/2018 11:42:21 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.ConnectToCE; line: 314; Client try to connect with CE.
+1/29/2018 11:42:21 AM: AMIClient.Model.CEQueryProxy; line: 98; Channel Client-CE is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.ConnectToCE; line: 322; Client is connected to the CE.
+1/29/2018 11:42:21 AM: AMIClient.Model.ConnectToSC; line: 289; Client try to connect to SC.
+1/29/2018 11:42:21 AM: AMIClient.Model.SCProxy; line: 127; Channel Client-SC is created.
+1/29/2018 11:42:21 AM: AMIClient.Model.ConnectToSC; line: 296; Client is connected to the SC.
+1/29/2018 11:42:24 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 11:42:24 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 11:42:24 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 185; Convert faild.
+1/29/2018 11:42:25 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 162; Try convert xml.
+1/29/2018 11:42:25 AM: AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: 181; Convert succeeded.
+1/29/2018 11:42:25 AM: AMIClient.Model.CEQueryProxy; line: 98; Channel Client-CE is created.
+1/29/2018 11:42:25 AM: AMIClient.Model.CEQueryProxy; line: 98; Channel Client-CE is created.
+1/29/2018 11:42:25 AM: AMIClient.Model.CEQueryProxy; line: 98; Channel Client-CE is created.
+1/29/2018 11:42:25 AM: AMIClient.Model.CEQueryProxy; line: 98; Channel Client-CE is created.
+1/29/2018 11:42:26 AM: AMIClient.RootElement.LoadChildren; line: 134; Start the LoadChildren function.
+1/29/2018 11:42:26 AM: AMIClient.Model.GetAllRegions; line: 396; Start the GetAllRegions function.
+1/29/2018 11:42:26 AM: AMIClient.Model.GdaQueryProxy; line: 57; Create channel between Client and NMS.
+1/29/2018 11:42:27 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:30 AM: AMIClient.Model.ConnectToNMS; line: 340; Client try to connect with NMS.
+1/29/2018 11:42:30 AM: AMIClient.Model.GetAllRegions; line: 405; Start the GetAllRegions function.
+1/29/2018 11:42:30 AM: AMIClient.RootElement.LoadChildren; line: 150; Finish the LoadChildren function.
+1/29/2018 11:42:30 AM: AMIClient.Model.GdaQueryProxy; line: 57; Create channel between Client and NMS.
+1/29/2018 11:42:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:30 AM: AMIClient.RootElement.LoadChildren; line: 134; Start the LoadChildren function.
+1/29/2018 11:42:30 AM: AMIClient.Model.GetAllRegions; line: 396; Start the GetAllRegions function.
+1/29/2018 11:42:30 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:32 AM: AMIClient.Model.ConnectToNMS; line: 355; Client faild to connect with NMS. CATCH.
+1/29/2018 11:42:33 AM: AMIClient.Model.ConnectToNMS; line: 340; Client try to connect with NMS.
+1/29/2018 11:42:33 AM: AMIClient.Model.GdaQueryProxy; line: 57; Create channel between Client and NMS.
+1/29/2018 11:42:33 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:33 AM: AMIClient.Model.ConnectToNMS; line: 340; Client try to connect with NMS.
+1/29/2018 11:42:33 AM: AMIClient.Model.GdaQueryProxy; line: 57; Create channel between Client and NMS.
+1/29/2018 11:42:33 AM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 11:42:33 AM: AMIClient.Model.GetAllRegions; line: 405; Start the GetAllRegions function.
+1/29/2018 11:42:33 AM: AMIClient.RootElement.LoadChildren; line: 150; Finish the LoadChildren function.
+1/29/2018 11:42:34 AM: AMIClient.Model.ConnectToNMS; line: 355; Client faild to connect with NMS. CATCH.
+1/29/2018 11:42:34 AM: AMIClient.Model.ConnectToNMS; line: 355; Client faild to connect with NMS. CATCH.
+1/29/2018 12:17:40 PM: AMIClient.Model.ConnectToNMS; line: 340; Client try to connect with NMS.
+1/29/2018 12:17:40 PM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 12:17:41 PM: AMIClient.Model.ConnectToCE; line: 314; Client try to connect with CE.
+1/29/2018 12:17:41 PM: AMIClient.Model.CEQueryProxy; line: 98; Channel Client-CE is created.
+1/29/2018 12:17:41 PM: AMIClient.Model.ConnectToNMS; line: 348; Client is connected to the NMS.
+1/29/2018 12:17:41 PM: AMIClient.Model.ConnectToSC; line: 289; Client try to connect to SC.
+1/29/2018 12:17:41 PM: AMIClient.Model.SCProxy; line: 127; Channel Client-SC is created.
+1/29/2018 12:17:41 PM: AMIClient.Model.ConnectToSC; line: 296; Client is connected to the SC.
+1/29/2018 12:17:41 PM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 12:17:41 PM: AMIClient.Model.ConnectToCE; line: 322; Client is connected to the CE.
+1/29/2018 1:01:44 PM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 1:01:44 PM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 1:01:44 PM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.
+1/29/2018 1:01:44 PM: AMIClient.Model.GdaQueryProxy; line: 70; Channel Client-NMS is created.

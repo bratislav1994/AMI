@@ -21,7 +21,8 @@ namespace AMIClientTest.ViewModels
         {
             this.alarm = new AlarmSummariesViewModel();
             this.model = new Model();
-        //    Logger.Path = "TestClient.txt";
+            this.alarm.SetModel(model);
+            //    Logger.Path = "TestClient.txt";
         }
 
         [Test]
@@ -48,7 +49,7 @@ namespace AMIClientTest.ViewModels
         [Test]
         public void ConsumerFilterTest()
         {
-            string consumerFilter = "consumerFilter";
+            string consumerFilter = "consumer";
             alarm.ConsumerFilter = consumerFilter;
 
             Assert.AreEqual(consumerFilter, alarm.ConsumerFilter);
@@ -57,7 +58,8 @@ namespace AMIClientTest.ViewModels
         [Test]
         public void StatusFilterTest()
         {
-            string status = "statusFilter";
+            alarm.ConsumerFilter = string.Empty;
+            string status = "ACTIVE";
             alarm.StatusFilter = status;
 
             Assert.AreEqual(status, alarm.StatusFilter);
@@ -66,7 +68,9 @@ namespace AMIClientTest.ViewModels
         [Test]
         public void TypeVoltageFilterTest()
         {
-            string type = "typeFilter";
+            alarm.ConsumerFilter = string.Empty;
+            alarm.StatusFilter = string.Empty;
+            string type = "UNDERVOLTAGE";
             alarm.TypeVoltageFilter = type;
 
             Assert.AreEqual(type, alarm.TypeVoltageFilter);

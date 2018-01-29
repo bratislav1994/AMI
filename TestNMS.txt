@@ -1,0 +1,828 @@
+1/29/2018 10:45:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 41; NMS try to connect with Coordinator.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 43; NMS is connected to the Coordinator.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:53 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:53 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:53 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:53 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:53 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:53 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:53 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:53 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:53 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:53 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:53 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:53 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:53 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:53 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:53 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:53 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:53 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:53 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:53 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:53 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:53 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:53 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:53 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:53 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:53 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:53 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:53 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:53 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:54 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:54 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:54 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:54 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:54 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:54 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:54 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:54 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:54 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:54 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:54 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:54 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:54 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:54 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:54 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:54 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:55 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:55 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:55 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:55 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:55 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:55 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:55 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:55 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:55 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:55 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:55 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 10:45:55 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:55 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:56 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:56 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:56 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:56 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:56 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:56 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:56 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:56 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:56 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:56 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:56 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:56 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:56 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:56 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:56 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:56 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 10:45:56 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:50 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:50 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:50 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:50 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:50 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:50 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:50 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:50 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:50 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:50 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:50 AM: NMS.NetworkModel; line: 41; NMS try to connect with Coordinator.
+1/29/2018 11:38:50 AM: NMS.NetworkModel; line: 43; NMS is connected to the Coordinator.
+1/29/2018 11:38:50 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:50 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:50 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:50 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:50 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:50 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:50 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:50 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:50 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:51 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:51 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:51 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:52 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:38:52 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:38:52 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:38:53 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:44 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:44 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:44 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:44 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:44 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:44 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:44 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:44 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:44 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:44 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:44 AM: NMS.NetworkModel; line: 41; NMS try to connect with Coordinator.
+1/29/2018 11:42:44 AM: NMS.NetworkModel; line: 43; NMS is connected to the Coordinator.
+1/29/2018 11:42:44 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:44 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:44 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:44 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:44 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:44 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:44 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:44 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:44 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:44 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:44 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:44 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:44 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:44 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:44 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:44 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:44 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:44 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:44 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:44 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:44 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:45 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:45 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:45 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:45 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:45 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:45 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:45 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:45 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:45 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:45 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:45 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:45 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:45 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:45 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:45 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:45 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:45 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:45 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:45 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:45 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:45 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:45 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:45 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:45 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:45 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:45 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:45 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:45 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:45 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:45 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:45 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:45 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:45 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:45 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:45 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:45 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:45 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:45 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:45 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:45 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:45 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:45 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:46 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:46 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:46 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:46 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:46 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:46 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:46 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:46 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:46 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:46 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:46 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:46 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:46 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:46 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:46 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:46 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:46 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:46 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:47 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:47 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:47 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 119; NMS try to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel.DBProxy; line: 65; Create channel between NMS and DB.
+1/29/2018 11:42:48 AM: NSM.NetworkModel.DBProxy; line: 75; Channel NMS-DB is created.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:48 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.
+1/29/2018 11:42:49 AM: NMS.NetworkModel; line: 126; NMS failed to connect to DB.

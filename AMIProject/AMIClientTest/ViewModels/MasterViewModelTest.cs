@@ -1,5 +1,6 @@
 ﻿using AMIClient;
 using AMIClient.ViewModels;
+using FTN.Common.Logger;
 using FTN.ServiceContracts;
 using NSubstitute;
 using NUnit.Framework;
@@ -21,10 +22,29 @@ namespace AMIClientTest.ViewModels
         //[OneTimeSetUp]
         //public void SetupTest()
         //{
-        //    this.model = new Model();
-        //    this.master = new MasterViewModel();
+        //    Logger.Path = "TestClient.txt";
 
-        //    //    Logger.Path = "TestClient.txt";
+        //    ISmartCacheDuplexForClient mock = Substitute.For<ISmartCacheDuplexForClient>();
+        //    mock.Subscribe();
+        //    ICalculationForClient mock2 = Substitute.For<ICalculationForClient>();
+        //    mock2.ConnectClient();
+        //    INetworkModelGDAContractDuplexClient mock3 = Substitute.For<INetworkModelGDAContractDuplexClient>();
+        //    mock3.ConnectClient();
+        //    mock3.When(fake => fake.Ping()).Do(call => { throw new Exception(); });
+
+        //    this.model = new Model();
+        //    this.model.CEQueryProxy = mock2;
+        //    this.model.GdaQueryProxy = mock3;
+        //    this.model.ScProxy = mock;
+        //    this.model.FirstContact = false;
+        //    this.model.FirstContactCE = false;
+        //    this.model.FirstContactSC = false;
+
+        //    this.model.IsTest = true;
+        //    this.model.Start();
+
+        //    //this.master.Model = model;
+        //    this.master = new MasterViewModel();
         //}
 
         //[Test]
@@ -66,7 +86,6 @@ namespace AMIClientTest.ViewModels
         //[Test]
         //public void ModelTest()
         //{
-        //    Model model = new Model();
         //    master.Model = model;
 
         //    Assert.AreEqual(model, master.Model);
