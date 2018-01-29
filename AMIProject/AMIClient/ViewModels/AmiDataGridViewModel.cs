@@ -30,11 +30,12 @@ namespace AMIClient.ViewModels
         private Dictionary<long, int> positionsAmi = new Dictionary<long, int>();
         private ICollectionView viewAmiTableItems;
         private ObservableCollection<TableItem> amiTableItems = new ObservableCollection<TableItem>();
-        private DateTime timeOfLastUpdate = DateTime.Now;
+        private DateTime timeOfLastUpdate;
         private Thread checkIfThereAreNewUpdates;
 
         public AmiDataGridViewModel()
         {
+            timeOfLastUpdate = DateTime.Now;
             this.ViewAmiTableItems = new CollectionViewSource { Source = this.AmiTableItems }.View;
             this.ViewAmiTableItems = CollectionViewSource.GetDefaultView(this.AmiTableItems);
             this.checkIfThereAreNewUpdates = new Thread(() => CheckForUpdates());
@@ -323,18 +324,21 @@ namespace AMIClient.ViewModels
         {
             while (true)
             {
-                if (this.Model.NewChangesAvailable(this.timeOfLastUpdate))
+                if (this.Model != null)
                 {
-                    this.timeOfLastUpdate = this.Model.GetTimeOfTheLastUpdate();
-                    Dictionary<long, DynamicMeasurement> changes = this.Model.GetChanges(this.positionsAmi.Keys.ToList());
-
-                    foreach (KeyValuePair<long, DynamicMeasurement> kvp in changes)
+                    if (this.Model.NewChangesAvailable(this.timeOfLastUpdate))
                     {
-                        if (positionsAmi.ContainsKey(kvp.Key))
+                        this.timeOfLastUpdate = this.Model.GetTimeOfTheLastUpdate();
+                        Dictionary<long, DynamicMeasurement> changes = this.Model.GetChanges(this.positionsAmi.Keys.ToList());
+
+                        foreach (KeyValuePair<long, DynamicMeasurement> kvp in changes)
                         {
-                            AmiTableItems[positionsAmi[kvp.Key]].CurrentP = kvp.Value.CurrentP != -1 ? kvp.Value.CurrentP : AmiTableItems[positionsAmi[kvp.Key]].CurrentP;
-                            AmiTableItems[positionsAmi[kvp.Key]].CurrentQ = kvp.Value.CurrentQ != -1 ? kvp.Value.CurrentQ : AmiTableItems[positionsAmi[kvp.Key]].CurrentQ;
-                            AmiTableItems[positionsAmi[kvp.Key]].CurrentV = kvp.Value.CurrentV != -1 ? kvp.Value.CurrentV : AmiTableItems[positionsAmi[kvp.Key]].CurrentV;
+                            if (positionsAmi.ContainsKey(kvp.Key))
+                            {
+                                AmiTableItems[positionsAmi[kvp.Key]].CurrentP = kvp.Value.CurrentP != -1 ? kvp.Value.CurrentP : AmiTableItems[positionsAmi[kvp.Key]].CurrentP;
+                                AmiTableItems[positionsAmi[kvp.Key]].CurrentQ = kvp.Value.CurrentQ != -1 ? kvp.Value.CurrentQ : AmiTableItems[positionsAmi[kvp.Key]].CurrentQ;
+                                AmiTableItems[positionsAmi[kvp.Key]].CurrentV = kvp.Value.CurrentV != -1 ? kvp.Value.CurrentV : AmiTableItems[positionsAmi[kvp.Key]].CurrentV;
+                            }
                         }
                     }
                 }
