@@ -12,6 +12,7 @@ namespace AMIClient.Classes
 {
     public class TableItemForAlarm : INotifyPropertyChanged
     {
+        private long id;
         private string consumer;
         private Status status;
         private DateTime fromPeriod;
@@ -89,6 +90,20 @@ namespace AMIClient.Classes
             {
                 consumer = value;
                 RaisePropertyChanged("Consumer");
+            }
+        }
+
+        public long Id
+        {
+            get
+            {
+                return id;
+            }
+
+            set
+            {
+                id = value;
+                RaisePropertyChanged("Id");
             }
         }
 

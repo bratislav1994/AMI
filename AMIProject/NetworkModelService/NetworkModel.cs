@@ -66,6 +66,7 @@ namespace FTN.Services.NetworkModelService
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.MaxReceivedMessageSize = Int32.MaxValue;
                     binding.MaxBufferSize = Int32.MaxValue;
+                    binding.SendTimeout = TimeSpan.FromMinutes(5);
                     ChannelFactory<IDatabaseForNMS> factoryDB = new ChannelFactory<IDatabaseForNMS>(binding,
                                                                                         new EndpointAddress("net.tcp://localhost:10009/Database/NMS"));
                     dbProxy = factoryDB.CreateChannel();

@@ -281,6 +281,11 @@ namespace CalculationEngine
                         m.CurrentQ += meas.Value.CurrentQ;
                         m.CurrentV += meas.Value.CurrentV;
                         ++cntForVoltage;
+
+                        if (meas.Value.IsAlarm)
+                        {
+                            m.IsAlarm = true;
+                        }
                     }
                 }
 
@@ -308,6 +313,11 @@ namespace CalculationEngine
                         m.CurrentQ += meas.Value.CurrentQ;
                         m.CurrentV += meas.Value.CurrentV;
                         ++cntForVoltage;
+
+                        if (meas.Value.IsAlarm)
+                        {
+                            m.IsAlarm = true;
+                        }
                     }
                 }
 
@@ -329,6 +339,11 @@ namespace CalculationEngine
                         m.CurrentQ += meas.Value.CurrentQ;
                         m.CurrentV += meas.Value.CurrentV;
                         ++cntForVoltage;
+
+                        if (meas.Value.IsAlarm)
+                        {
+                            m.IsAlarm = true;
+                        }
                     }
                 }
 

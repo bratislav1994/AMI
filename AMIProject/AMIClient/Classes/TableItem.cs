@@ -30,6 +30,7 @@ namespace AMIClient
             this.CurrentP = 0;
             this.currentQ = 0;
             this.CurrentV = 0;
+            this.Status = new SolidColorBrush(Colors.Green);
         }
 
         public IdentifiedObject Io
@@ -110,7 +111,6 @@ namespace AMIClient
 
             set
             {
-                this.Status = value == DataGridType.ENERGY_CONSUMER ? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.Transparent);
                 type = value;
                 RaisePropertyChanged("Type");
             }
