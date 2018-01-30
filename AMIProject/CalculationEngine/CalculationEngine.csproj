@@ -101,6 +101,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AMIClient\AMIClient.csproj">
+      <Project>{E12A17FC-BCD4-4C3D-ACFA-0E36C624043E}</Project>
+      <Name>AMIClient</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{892CBE15-9ED7-4540-81FA-0EAABA592138}</Project>
       <Name>Common</Name>

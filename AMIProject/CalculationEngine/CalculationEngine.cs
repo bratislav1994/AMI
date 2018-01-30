@@ -1,4 +1,5 @@
-﻿using CalculationEngine.Access;
+﻿using AMIClient.Classes;
+using CalculationEngine.Access;
 using FTN.Common;
 using FTN.Common.Logger;
 using FTN.ServiceContracts;
@@ -34,6 +35,7 @@ namespace CalculationEngine
         private Dictionary<long, SubGeographicalRegionDb> subGeoRegionsTemp;
         private Dictionary<long, SubstationDb> substationsTemp;
         private Dictionary<long, EnergyConsumerDb> amisTemp;
+        private Dictionary<long, List<TableItemForAlarm>> alarms;
 
         public CalculationEngine()
         {
@@ -55,6 +57,7 @@ namespace CalculationEngine
             substationsTemp = new Dictionary<long, SubstationDb>();
             amisTemp = new Dictionary<long, EnergyConsumerDb>();
             meas = new List<ResourceDescription>();
+            alarms = new Dictionary<long, List<TableItemForAlarm>>();
 
             while (true)
             {
@@ -266,6 +269,7 @@ namespace CalculationEngine
             int cntForVoltage = 0;
 
             dataBaseAdapter.AddMeasurements(measurements.Values.ToList());
+            CheckAlarms(measurements.Values.ToList());
 
             Dictionary<long, DynamicMeasurement> addSubstations = new Dictionary<long, DynamicMeasurement>();
 
@@ -372,6 +376,57 @@ namespace CalculationEngine
             }
 
             Logger.LogMessageToFile(string.Format("CE.CalculationEngine.DataFromScada; line: {0}; Finish transport data SCADA-CE-Client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+        }
+
+        private void CheckAlarms(List<DynamicMeasurement> measurements)
+        {
+            foreach (DynamicMeasurement dm in measurements)
+            {
+                if (!dm.IsAlarm)
+                {
+                    if (alarms.ContainsKey(dm.PsrRef))
+                    {
+                        foreach (TableItemForAlarm alarm in alarms[dm.PsrRef])
+                        {
+                            if(alarm.Status == AMIClient.HelperClasses.Status.ACTIVE)
+                            {
+                                alarm.Status = AMIClient.HelperClasses.Status.RESOLVED;
+                                alarm.ToPeriod = dm.TimeStamp;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (alarms.ContainsKey(dm.PsrRef))
+                    {
+                        if (alarms[dm.PsrRef].Last().Status == AMIClient.HelperClasses.Status.RESOLVED)
+                        {
+                            alarms[dm.PsrRef].Add(new TableItemForAlarm()
+                            {
+                                FromPeriod = dm.TimeStamp,
+                                Status = AMIClient.HelperClasses.Status.ACTIVE,
+                                Consumer = dm.PsrRef.ToString(),
+                                Id = dm.PsrRef,
+                                TypeVoltage = AMIClient.HelperClasses.TypeVoltage.OVERVOLTAGE
+                            });
+                        }
+                    }
+                    else
+                    {
+                        alarms.Add(dm.PsrRef, new List<TableItemForAlarm>());
+
+                        alarms[dm.PsrRef].Add(new TableItemForAlarm()
+                        {
+                            FromPeriod = dm.TimeStamp,
+                            Status = AMIClient.HelperClasses.Status.ACTIVE,
+                            Consumer = dm.PsrRef.ToString(),
+                            Id = dm.PsrRef,
+                            TypeVoltage = AMIClient.HelperClasses.TypeVoltage.OVERVOLTAGE
+                        });
+                    }
+                }
+            }
         }
 
         public void Subscribe()

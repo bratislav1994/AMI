@@ -340,6 +340,10 @@ namespace AMIClient.ViewModels
                                 AmiTableItems[positionsAmi[kvp.Key]].CurrentP = kvp.Value.CurrentP != -1 ? kvp.Value.CurrentP : AmiTableItems[positionsAmi[kvp.Key]].CurrentP;
                                 AmiTableItems[positionsAmi[kvp.Key]].CurrentQ = kvp.Value.CurrentQ != -1 ? kvp.Value.CurrentQ : AmiTableItems[positionsAmi[kvp.Key]].CurrentQ;
                                 AmiTableItems[positionsAmi[kvp.Key]].CurrentV = kvp.Value.CurrentV != -1 ? kvp.Value.CurrentV : AmiTableItems[positionsAmi[kvp.Key]].CurrentV;
+                                App.Current.Dispatcher.Invoke((Action)delegate
+                                {
+                                    AmiTableItems[positionsAmi[kvp.Key]].Status = kvp.Value.IsAlarm ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Green);
+                                });
                             }
                         }
                     }

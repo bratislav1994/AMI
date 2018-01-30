@@ -48,7 +48,6 @@ namespace AMIClient
         private Dictionary<long, DynamicMeasurement> changesForAmis = new Dictionary<long, DynamicMeasurement>();
         private DateTime timeOfLastUpdate = DateTime.Now;
         private bool isTest = false;
-        private Dictionary<long, List<int>> alarmPositions;
 
         public INetworkModelGDAContractDuplexClient GdaQueryProxy
         {
@@ -247,7 +246,6 @@ namespace AMIClient
 
         public Model()
         {
-            alarmPositions = new Dictionary<long, List<int>>();
         }
 
         public void Start()
@@ -693,62 +691,15 @@ namespace AMIClient
                         TableItems[positions[dm.PsrRef]].CurrentP = dm.CurrentP != -1 ? dm.CurrentP : TableItems[positions[dm.PsrRef]].CurrentP;
                         TableItems[positions[dm.PsrRef]].CurrentQ = dm.CurrentQ != -1 ? dm.CurrentQ : TableItems[positions[dm.PsrRef]].CurrentQ;
                         TableItems[positions[dm.PsrRef]].CurrentV = dm.CurrentV != -1 ? dm.CurrentV : TableItems[positions[dm.PsrRef]].CurrentV;
-                        TableItems[positions[dm.PsrRef]].Status = dm.IsAlarm ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Green);
+                        App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
+                        {
+                            TableItems[positions[dm.PsrRef]].Status = dm.IsAlarm ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Green);
+                        });
                     }
 
                     if ((DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(dm.PsrRef) == DMSType.ENERGYCONS)
                     {
                         changesForAmis.Add(dm.PsrRef, dm);
-
-                        if (!dm.IsAlarm)
-                        {
-                            if (alarmPositions.ContainsKey(dm.PsrRef))
-                            {
-                                foreach (int pos in alarmPositions[dm.PsrRef])
-                                {
-                                    if (TableItemsForAlarm[pos].Status == HelperClasses.Status.ACTIVE)
-                                    {
-                                        TableItemsForAlarm[pos].Status = HelperClasses.Status.RESOLVED;
-                                        TableItemsForAlarm[pos].ToPeriod = dm.TimeStamp;
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (alarmPositions.ContainsKey(dm.PsrRef))
-                            {
-                                foreach (int pos in alarmPositions[dm.PsrRef])
-                                {
-                                    if (TableItemsForAlarm[pos].Status == HelperClasses.Status.RESOLVED)
-                                    {
-                                        TableItemsForAlarm.Add(new TableItemForAlarm()
-                                        {
-                                            FromPeriod = dm.TimeStamp,
-                                            Status = HelperClasses.Status.ACTIVE,
-                                            Consumer = dm.PsrRef.ToString(),
-                                            Id = dm.PsrRef,
-                                            TypeVoltage = HelperClasses.TypeVoltage.OVERVOLTAGE
-                                        });
-                                        alarmPositions[dm.PsrRef].Add(TableItemsForAlarm.Count - 1);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                TableItemsForAlarm.Add(new TableItemForAlarm()
-                                {
-                                    FromPeriod = dm.TimeStamp,
-                                    Status = HelperClasses.Status.ACTIVE,
-                                    Consumer = dm.PsrRef.ToString(),
-                                    Id = dm.PsrRef,
-                                    TypeVoltage = HelperClasses.TypeVoltage.OVERVOLTAGE
-                                });
-
-                                alarmPositions.Add(dm.PsrRef, new List<int>());
-                                alarmPositions[dm.PsrRef].Add(TableItemsForAlarm.Count - 1);
-                            }
-                        }
                     }
                 }
             }
