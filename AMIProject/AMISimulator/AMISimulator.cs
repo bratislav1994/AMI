@@ -38,6 +38,8 @@ namespace AMISimulator
         private Dictionary<int, float> firmConsumption;
         private Dictionary<long, EnergyConsumerForScada> consumers;
         private static Random rnd = new Random();
+        private Dictionary<double, double> ratiosP2V;
+        private Dictionary<long, double> activePowers;
 
         public IScadaDuplexSimulator ProxyScada
         {
@@ -82,8 +84,10 @@ namespace AMISimulator
             this.InitHousehold();
             this.InitShoppingCenter();
             this.InitFirm();
+            this.ratiosP2V = new Dictionary<double, double>();
             consumers = new Dictionary<long, EnergyConsumerForScada>();
             measurements = new Dictionary<int, Measurement>();
+            activePowers = new Dictionary<long, double>();
             this.numberOfInstalledPoints = 0;
             lockObject = new object();
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
@@ -109,7 +113,7 @@ namespace AMISimulator
             firmConsumption[6] = (float)35 / 100;
             firmConsumption[7] = (float)45 / 100;
             firmConsumption[8] = (float)75 / 100;
-            firmConsumption[9] = (float)80 / 100;
+            firmConsumption[9] = (float)100 / 100;
             firmConsumption[10] = (float)80 / 100;
             firmConsumption[11] = (float)80 / 100;
             firmConsumption[12] = (float)80 / 100;
@@ -153,7 +157,7 @@ namespace AMISimulator
             householdConsumption[15] = (float)15 / 100;
             householdConsumption[16] = (float)45 / 100;
             householdConsumption[17] = (float)55 / 100;
-            householdConsumption[18] = (float)75 / 100;
+            householdConsumption[18] = (float)100 / 100;
             householdConsumption[19] = (float)60 / 100;
             householdConsumption[20] = (float)50 / 100;
             householdConsumption[21] = (float)52 / 100;
@@ -179,7 +183,7 @@ namespace AMISimulator
             shoppingCenterConsumption[6] = (float)35 / 100;
             shoppingCenterConsumption[7] = (float)45 / 100;
             shoppingCenterConsumption[8] = (float)75 / 100;
-            shoppingCenterConsumption[9] = (float)80 / 100;
+            shoppingCenterConsumption[9] = (float)100 / 100;
             shoppingCenterConsumption[10] = (float)80 / 100;
             shoppingCenterConsumption[11] = (float)80 / 100;
             shoppingCenterConsumption[12] = (float)80 / 100;
@@ -225,6 +229,10 @@ namespace AMISimulator
 
             Console.WriteLine("Connected to scada");
             List<MeasurementForScada> measForScada = ProxyScada.GetNumberOfPoints(address);
+            foreach(MeasurementForScada m in measForScada)
+            {
+                SetRatioP2VForPoint(m.Measurement);
+            }
             List<EnergyConsumerForScada> cons = ProxyScada.GetConsumersFromScada(address);
             numberOfInstalledPoints = measForScada.Count;
 
@@ -268,30 +276,47 @@ namespace AMISimulator
 
             while (true)
             {
+                activePowers.Clear();
                 for (int i = 0; i < numberOfInstalledPoints; i++)
                 {
                     ConsumerType type = consumers[measurements[i].PowerSystemResourceRef].Type;
+                    DateTime now = DateTime.Now;
 
                     if (i % 3 == 0)
                     {
                         if (type == ConsumerType.HOUSEHOLD)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            double valueToSend = measurements[i].MaxRawValue * householdConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
+                            double valueToSend = measurements[i].MaxRawValue * householdConsumption[now.Minute % 24] + rnd.Next(-5, 5);
+                            if (valueToSend < measurements[i].MinRawValue)
+                            {
+                                valueToSend = measurements[i].MinRawValue;
+                            }
+                            activePowers.Add(measurements[i].PowerSystemResourceRef, valueToSend);
                             changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                             outstation.Load(changeset);
                         }
                         else if (type == ConsumerType.SHOPPING_CENTER)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            double valueToSend = measurements[i].MaxRawValue * shoppingCenterConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
+                            double valueToSend = measurements[i].MaxRawValue * shoppingCenterConsumption[now.Minute % 24] + rnd.Next(-5, 5);
+                            if (valueToSend < measurements[i].MinRawValue)
+                            {
+                                valueToSend = measurements[i].MinRawValue;
+                            }
+                            activePowers.Add(measurements[i].PowerSystemResourceRef, valueToSend);
                             changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                             outstation.Load(changeset);
                         }
                         else if (type == ConsumerType.FIRM)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            double valueToSend = measurements[i].MaxRawValue * firmConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
+                            double valueToSend = measurements[i].MaxRawValue * firmConsumption[now.Minute % 24] + rnd.Next(-5, 5);
+                            if(valueToSend < measurements[i].MinRawValue)
+                            {
+                                valueToSend = measurements[i].MinRawValue;
+                            }
+                            activePowers.Add(measurements[i].PowerSystemResourceRef, valueToSend);
                             changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                             outstation.Load(changeset);
                         }
@@ -301,21 +326,33 @@ namespace AMISimulator
                         if (type == ConsumerType.HOUSEHOLD)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            double valueToSend = measurements[i].MaxRawValue * householdConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
+                            double valueToSend = measurements[i].MaxRawValue * householdConsumption[now.Minute % 24] + rnd.Next(-5, 5);
+                            if (valueToSend < measurements[i].MinRawValue)
+                            {
+                                valueToSend = measurements[i].MinRawValue;
+                            }
                             changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                             outstation.Load(changeset);
                         }
                         else if (type == ConsumerType.SHOPPING_CENTER)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            double valueToSend = measurements[i].MaxRawValue * shoppingCenterConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
+                            double valueToSend = measurements[i].MaxRawValue * shoppingCenterConsumption[now.Minute % 24] + rnd.Next(-5, 5);
+                            if (valueToSend < measurements[i].MinRawValue)
+                            {
+                                valueToSend = measurements[i].MinRawValue;
+                            }
                             changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                             outstation.Load(changeset);
                         }
                         else if (type == ConsumerType.FIRM)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            double valueToSend = measurements[i].MaxRawValue * firmConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
+                            double valueToSend = measurements[i].MaxRawValue * firmConsumption[now.Minute % 24] + rnd.Next(-5, 5);
+                            if (valueToSend < measurements[i].MinRawValue)
+                            {
+                                valueToSend = measurements[i].MinRawValue;
+                            }
                             changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                             outstation.Load(changeset);
                         }
@@ -325,19 +362,51 @@ namespace AMISimulator
                         if (type == ConsumerType.HOUSEHOLD)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            changeset.Update(new Automatak.DNP3.Interface.Analog(220, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            double valueToSend = -1;
+
+                            if (householdConsumption[now.Minute % 24] < 0.1)
+                            {
+                                valueToSend = measurements[i].NormalRawValue + ratiosP2V[measurements[i].GlobalId] * measurements[i].MaxRawValue;
+                            }
+                            else
+                            {
+                                valueToSend = measurements[i].NormalRawValue - ratiosP2V[measurements[i].GlobalId] * activePowers[measurements[i].PowerSystemResourceRef];
+                            }
+                            
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                             outstation.Load(changeset);
                         }
                         else if (type == ConsumerType.SHOPPING_CENTER)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            changeset.Update(new Automatak.DNP3.Interface.Analog(10000, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            double valueToSend = -1;
+
+                            if (shoppingCenterConsumption[now.Minute % 24] < 0.1)
+                            {
+                                valueToSend = measurements[i].NormalRawValue + ratiosP2V[measurements[i].GlobalId] * measurements[i].MaxRawValue;
+                            }
+                            else
+                            {
+                                valueToSend = measurements[i].NormalRawValue - ratiosP2V[measurements[i].GlobalId] * activePowers[measurements[i].PowerSystemResourceRef];
+                            }
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                             outstation.Load(changeset);
                         }
                         else if (type == ConsumerType.FIRM)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            changeset.Update(new Automatak.DNP3.Interface.Analog(20000, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            double valueToSend = -1;
+
+                            if (firmConsumption[now.Minute % 24] < 0.1)
+                            {
+                                valueToSend = measurements[i].NormalRawValue + ratiosP2V[measurements[i].GlobalId] * measurements[i].MaxRawValue;
+                            }
+                            else
+                            {
+                                valueToSend = measurements[i].NormalRawValue - ratiosP2V[measurements[i].GlobalId] * activePowers[measurements[i].PowerSystemResourceRef];
+                            }
+                            
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                             outstation.Load(changeset);
                         }
                     }
@@ -360,6 +429,7 @@ namespace AMISimulator
                 }
 
                 measurements.Add(numberOfInstalledPoints - 1, m);
+                SetRatioP2VForPoint(m);
 
                 return this.numberOfInstalledPoints - 1;
             }
@@ -375,6 +445,20 @@ namespace AMISimulator
             consumers.Add(ec.GlobalId, ec);
 
             return true;
+        }
+
+        private void SetRatioP2VForPoint(Measurement m)
+        {
+            if (m is TC57CIM.IEC61970.Meas.Analog)
+            {
+                TC57CIM.IEC61970.Meas.Analog a = (TC57CIM.IEC61970.Meas.Analog)m;
+
+                float invalidValue = ((float)7 / 100) * a.NormalValue + a.NormalValue;
+                float step = (a.MaxValue - a.MinValue) / (a.MaxRawValue - a.MinRawValue);
+                float steps = (invalidValue - a.NormalValue) / step;
+
+                ratiosP2V.Add(m.GlobalId, steps / 100);
+            }
         }
 
         public void Rollback(int decrease, List<long> conGidsForSimulator)

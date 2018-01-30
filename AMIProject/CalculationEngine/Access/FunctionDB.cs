@@ -877,7 +877,7 @@ namespace CalculationEngine.Access
 
                             if (lastMeas != null && (m.CurrentP == -1 || m.CurrentQ == -1 || m.CurrentV == -1))
                             {
-                                if ((Math.Abs((double)(m.TimeStamp - lastMeas.TimeStamp).TotalSeconds)) < 1)
+                                if ((Math.Abs((double)(m.TimeStamp - lastMeas.TimeStamp).TotalSeconds)) < 25)
                                 {
                                     if (m.CurrentP != -1)
                                     {
@@ -893,6 +893,8 @@ namespace CalculationEngine.Access
                                     {
                                         lastMeas.CurrentV = m.CurrentV;
                                     }
+
+                                    lastMeas.IsAlarm = m.IsAlarm;
 
                                     access.Entry(lastMeas).State = System.Data.Entity.EntityState.Modified;
 

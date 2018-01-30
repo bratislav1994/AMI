@@ -20,6 +20,7 @@ namespace FTN.Services.NetworkModelService.DataModel
         private float currentQ;
         private float currentV;
         private DateTime timeStamp;
+        private bool isAlarm;
 
         public DynamicMeasurement()
         {
@@ -29,6 +30,7 @@ namespace FTN.Services.NetworkModelService.DataModel
         public DynamicMeasurement(long psr)
         {
             this.PsrRef = psr;
+            this.isAlarm = false;
             this.currentP = 0;
             this.currentQ = 0;
             this.currentV = 0;
@@ -140,6 +142,19 @@ namespace FTN.Services.NetworkModelService.DataModel
             set
             {
                 psr = value;
+            }
+        }
+
+        [DataMember]
+        public bool IsAlarm
+        {
+            get
+            {
+                return isAlarm;
+            }
+            set
+            {
+                isAlarm = value;
             }
         }
     }

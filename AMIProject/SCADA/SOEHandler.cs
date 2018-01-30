@@ -57,46 +57,49 @@ namespace SCADA
 
                     foreach (IndexedValue<Automatak.DNP3.Interface.Analog> analog in analogs)
                     {
-                        TC57CIM.IEC61970.Meas.Analog a = (TC57CIM.IEC61970.Meas.Analog)GetMeasurement(analog.Index);
-
-                        if (a != null)
+                        if (analog.Value.Value != 0)
                         {
-                            if (localDic.ContainsKey(a.PowerSystemResourceRef))
+                            TC57CIM.IEC61970.Meas.Analog a = (TC57CIM.IEC61970.Meas.Analog)GetMeasurement(analog.Index);
+
+                            if (a != null)
                             {
-                                switch (analog.Index % 3)
+                                if (localDic.ContainsKey(a.PowerSystemResourceRef))
                                 {
-                                    case 0:
-                                        localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog);
-                                        break;
-                                    case 1:
-                                        localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog);
-                                        break;
-                                    case 2:
-                                        localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog);
-                                        break;
+                                    switch (analog.Index % 3)
+                                    {
+                                        case 0:
+                                            localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog);
+                                            break;
+                                        case 1:
+                                            localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog);
+                                            break;
+                                        case 2:
+                                            localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog);
+                                            break;
+                                    }
+                                }
+                                else
+                                {
+                                    localDic.Add(a.PowerSystemResourceRef, new DynamicMeasurement(a.PowerSystemResourceRef, timeStamp));
+                                    cnt++;
+                                    switch (analog.Index % 3)
+                                    {
+                                        case 0:
+                                            localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog);
+                                            break;
+                                        case 1:
+                                            localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog);
+                                            break;
+                                        case 2:
+                                            localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog);
+                                            break;
+                                    }
                                 }
                             }
                             else
                             {
-                                localDic.Add(a.PowerSystemResourceRef, new DynamicMeasurement(a.PowerSystemResourceRef, timeStamp));
-                                cnt++;
-                                switch (analog.Index % 3)
-                                {
-                                    case 0:
-                                        localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog);
-                                        break;
-                                    case 1:
-                                        localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog);
-                                        break;
-                                    case 2:
-                                        localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog);
-                                        break;
-                                }
+                                break;
                             }
-                        }
-                        else
-                        {
-                            break;
                         }
                     }
 
@@ -128,6 +131,11 @@ namespace SCADA
                         }
                     }
 
+                    foreach(KeyValuePair<long, DynamicMeasurement> kvp in resourcesToSend)
+                    {
+                        this.SetAlarmStateForMeasurement(kvp.Value);
+                    }
+
                     Console.WriteLine("Number of measurements: " + resourcesToSend.Count + " " + cnt);
 
                     if (this.resourcesToSend.Count > 0)
@@ -144,12 +152,46 @@ namespace SCADA
         {
             TC57CIM.IEC61970.Meas.Analog analog = (TC57CIM.IEC61970.Meas.Analog)GetMeasurement(a.Index);
 
-            int totalRawValue = analog.MaxRawValue - analog.MinRawValue;
-            float total = analog.MaxValue - analog.MinValue;
-
-            float retVal = (total / totalRawValue) * (float)a.Value.Value;
+            float step = (analog.MaxValue - analog.MinValue) / (analog.MaxRawValue - analog.MinRawValue);
+            double steps = a.Value.Value - analog.MinRawValue;
+            float retVal = analog.MinValue + step * (float)steps;
 
             return retVal;
+        }
+
+        private void SetAlarmStateForMeasurement(DynamicMeasurement measurement)
+        {
+            if (resourcesToSend.ContainsKey(measurement.PsrRef))
+            {
+                if (resourcesToSend[measurement.PsrRef].IsAlarm)
+                {
+                    TC57CIM.IEC61970.Meas.Analog analog = ((TC57CIM.IEC61970.Meas.Analog)(measurements.Where(x => x.Measurement.PowerSystemResourceRef == measurement.PsrRef && x.Measurement.UnitSymbol == UnitSymbol.V).First()).Measurement);
+                    float normalValueWithLossNegative = analog.NormalValue - (((float)analog.ValidRange / 100) * analog.NormalValue);
+                    float normalValueWithLossPositive = analog.NormalValue + (((float)analog.ValidRange / 100) * analog.NormalValue);
+                    if (measurement.CurrentV >= normalValueWithLossNegative && measurement.CurrentV <= normalValueWithLossPositive)
+                    {
+                        measurement.IsAlarm = (false);
+                    }
+                    else
+                    {
+                        measurement.IsAlarm = (true);
+                    }
+                }
+                else
+                {
+                    TC57CIM.IEC61970.Meas.Analog analog = ((TC57CIM.IEC61970.Meas.Analog)(measurements.Where(x => x.Measurement.PowerSystemResourceRef == measurement.PsrRef && x.Measurement.UnitSymbol == UnitSymbol.V).First()).Measurement);
+                    float normalValueWithLossNegative = analog.NormalValue - (((float)analog.InvalidRange / 100) * analog.NormalValue);
+                    float normalValueWithLossPositive = analog.NormalValue + (((float)analog.InvalidRange / 100) * analog.NormalValue);
+                    if (measurement.CurrentV < normalValueWithLossNegative || measurement.CurrentV > normalValueWithLossPositive)
+                    {
+                        measurement.IsAlarm = (true);
+                    }
+                    else
+                    {
+                        measurement.IsAlarm = (false);
+                    }
+                }
+            }
         }
 
         private Measurement GetMeasurement(int index)
