@@ -63,7 +63,7 @@ namespace CommonTest.GDATest
         [Test]
         public void AddPropertyTest()
         {
-            Assert.DoesNotThrow(() => rd.AddProperty(new Property(ModelCode.ANALOG_ALARMHIGH, new PropertyValue(150))));
+            Assert.DoesNotThrow(() => rd.AddProperty(new Property(ModelCode.ANALOG_VALIDRANGE, new PropertyValue(150))));
 
             Assert.DoesNotThrow(() => rd.AddProperty(new Property(ModelCode.ANALOG_MINVALUE, new PropertyValue(50))));
         }

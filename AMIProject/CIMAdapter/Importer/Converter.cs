@@ -194,19 +194,14 @@
                     rd.AddProperty(new Property(ModelCode.ANALOG_NORMALVALUE, cimAnalog.NormalValue));
                 }
 
-                if (cimAnalog.AlarmHighHasValue)
+                if (cimAnalog.ValidRangeHasValue)
                 {
-                    rd.AddProperty(new Property(ModelCode.ANALOG_ALARMHIGH, cimAnalog.AlarmHigh));
+                    rd.AddProperty(new Property(ModelCode.ANALOG_VALIDRANGE, cimAnalog.ValidRange));
                 }
 
-                if (cimAnalog.AlarmLowHasValue)
+                if (cimAnalog.InvalidRangeHasValue)
                 {
-                    rd.AddProperty(new Property(ModelCode.ANALOG_ALARMLOW, cimAnalog.AlarmLow));
-                }
-
-                if (cimAnalog.IsAlarmHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.ANALOG_ISALARM, cimAnalog.IsAlarm));
+                    rd.AddProperty(new Property(ModelCode.ANALOG_INVALIDRANGE, cimAnalog.InvalidRange));
                 }
             }
         }

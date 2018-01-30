@@ -24,9 +24,9 @@ namespace FTN.Common
 
     public enum ConsumerType : int
     {
-        HOUSEHOLD = 0,
+        FIRM = 0,
+        HOUSEHOLD,
         SHOPPING_CENTER,
-        FIRM
     }//end Direction
 
     public enum ResolutionType : int

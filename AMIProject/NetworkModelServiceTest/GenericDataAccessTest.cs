@@ -117,19 +117,19 @@ namespace NetworkModelServiceTest
             //Assert.IsNotNull(gda.Prepare());
         }
 
-        [Test]
-        public void CommitTest()
-        {
-            Init();
-            gda.NetworkModel = new NetworkModel();
-            gda.NetworkModel.Dispose();
-            IDatabaseForNMS mock3 = Substitute.For<IDatabaseForNMS>();
-            Delta delta = new Delta();
-            mock3.SaveDelta(delta).ReturnsForAnyArgs(true);
-            gda.NetworkModel.DBProxy = mock3;
-            gda.NetworkModel.FirstContactDB = false;
-            Assert.DoesNotThrow(() => gda.Commit());
-        }
+        //[Test]
+        //public void CommitTest()
+        //{
+        //    Init();
+        //    gda.NetworkModel = new NetworkModel();
+        //    gda.NetworkModel.Dispose();
+        //    IDatabaseForNMS mock3 = Substitute.For<IDatabaseForNMS>();
+        //    Delta delta = new Delta();
+        //    mock3.SaveDelta(delta).ReturnsForAnyArgs(true);
+        //    gda.NetworkModel.DBProxy = mock3;
+        //    gda.NetworkModel.FirstContactDB = false;
+        //    Assert.DoesNotThrow(() => gda.Commit());
+        //}
 
         [Test]
         public void RollbackTest()

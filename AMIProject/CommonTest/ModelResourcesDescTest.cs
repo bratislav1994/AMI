@@ -48,8 +48,8 @@ namespace CommonTest
         [Test]
         public void ConstructorWithParameterTest()
         {
-            Assert.DoesNotThrow(() => new ResourcePropertiesDesc(ModelCode.ANALOG_ALARMLOW, "Analog_AlarmLow"));
-            Assert.DoesNotThrow(() => new ResourcePropertiesDesc(ModelCode.ANALOG_ALARMLOW));
+            Assert.DoesNotThrow(() => new ResourcePropertiesDesc(ModelCode.ANALOG_INVALIDRANGE, "Analog_InvalidRange"));
+            Assert.DoesNotThrow(() => new ResourcePropertiesDesc(ModelCode.ANALOG_INVALIDRANGE));
         }
 
         [Test]
@@ -183,7 +183,7 @@ namespace CommonTest
             Assert.AreEqual(2, result.Count);
 
             result = modelResDesc.GetAllSettablePropertyIds(DMSType.ANALOG);
-            Assert.AreEqual(15, result.Count);
+            Assert.AreEqual(14, result.Count);
         }
 
         //[Test]

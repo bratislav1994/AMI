@@ -288,7 +288,7 @@ namespace AMISimulator
                             changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                             outstation.Load(changeset);
                         }
-                        else
+                        else if (type == ConsumerType.FIRM)
                         {
                             ChangeSet changeset = new ChangeSet();
                             double valueToSend = measurements[i].MaxRawValue * firmConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
@@ -312,7 +312,7 @@ namespace AMISimulator
                             changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                             outstation.Load(changeset);
                         }
-                        else
+                        else if (type == ConsumerType.FIRM)
                         {
                             ChangeSet changeset = new ChangeSet();
                             double valueToSend = measurements[i].MaxRawValue * firmConsumption[DateTime.Now.Minute % 24] + rnd.Next(0, 5);
@@ -334,7 +334,7 @@ namespace AMISimulator
                             changeset.Update(new Automatak.DNP3.Interface.Analog(10000, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                             outstation.Load(changeset);
                         }
-                        else
+                        else if (type == ConsumerType.FIRM)
                         {
                             ChangeSet changeset = new ChangeSet();
                             changeset.Update(new Automatak.DNP3.Interface.Analog(20000, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));

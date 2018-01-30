@@ -64,9 +64,8 @@ namespace FTN.Common
         ANALOG_MAXVALUE                     = 0x11100000000a0105,
         ANALOG_MINVALUE                     = 0x11100000000a0205,
         ANALOG_NORMALVALUE                  = 0x11100000000a0305,
-        ANALOG_ALARMHIGH                    = 0x11100000000a0403,
-        ANALOG_ALARMLOW                     = 0x11100000000a0503,
-        ANALOG_ISALARM                      = 0x11100000000a0601,
+        ANALOG_VALIDRANGE                   = 0x11100000000a0403,
+        ANALOG_INVALIDRANGE                 = 0x11100000000a0503,
 
         DISCRETE                            = 0x11200000000b0000,
         DISCRETE_MAXVALUE                   = 0x11200000000b0103,

@@ -58,7 +58,7 @@ namespace CommonTest.GDATest
         [TestCase(100)]
         public void ConstructorWithParameter5Test(int value)
         {
-            Assert.DoesNotThrow(() => new Property(ModelCode.ANALOG_ALARMLOW, value));
+            Assert.DoesNotThrow(() => new Property(ModelCode.ANALOG_INVALIDRANGE, value));
         }
 
         [Test]
@@ -119,8 +119,8 @@ namespace CommonTest.GDATest
             Assert.AreNotEqual(true, prop1 == prop2);
 
             PropertyValue value = new PropertyValue(1000);
-            prop1 = new Property(ModelCode.ANALOG_ALARMHIGH, value);
-            prop2 = new Property(ModelCode.ANALOG_ALARMHIGH, value);
+            prop1 = new Property(ModelCode.ANALOG_VALIDRANGE, value);
+            prop2 = new Property(ModelCode.ANALOG_VALIDRANGE, value);
             Assert.AreEqual(true, prop1 == prop2);
 
             value = new PropertyValue(v);
@@ -183,7 +183,7 @@ namespace CommonTest.GDATest
             string result = property.ToString();
             Assert.AreEqual("1", result);
 
-            this.property.Id = ModelCode.ANALOG_ALARMHIGH;
+            this.property.Id = ModelCode.ANALOG_VALIDRANGE;
             this.property.PropertyValue = new PropertyValue(150);
             result = property.ToString();
             Assert.AreEqual("150", result);
@@ -280,7 +280,7 @@ namespace CommonTest.GDATest
             short result = property.AsEnum();
             Assert.AreEqual(value, result);
             
-            this.property.Id = ModelCode.ANALOG_ALARMHIGH;
+            this.property.Id = ModelCode.ANALOG_VALIDRANGE;
             Assert.Throws<Exception>(() => property.AsEnum());
         }
 
@@ -288,7 +288,7 @@ namespace CommonTest.GDATest
         public void AsIntTest()
         {
             int value = 100;
-            this.property.Id = ModelCode.ANALOG_ALARMHIGH;
+            this.property.Id = ModelCode.ANALOG_VALIDRANGE;
             property.SetValue(value);
             int result = property.AsInt();
             Assert.AreEqual(value, result);
@@ -375,7 +375,7 @@ namespace CommonTest.GDATest
             long result = property.AsReference();
             Assert.AreEqual(value, result);
 
-            this.property.Id = ModelCode.ANALOG_ALARMHIGH;
+            this.property.Id = ModelCode.ANALOG_VALIDRANGE;
             Assert.Throws<Exception>(() => property.AsReference());
         }
 
@@ -388,7 +388,7 @@ namespace CommonTest.GDATest
             List<long> result = property.AsReferences();
             Assert.AreEqual(value, result);
 
-            this.property.Id = ModelCode.ANALOG_ALARMHIGH;
+            this.property.Id = ModelCode.ANALOG_VALIDRANGE;
             Assert.Throws<Exception>(() => property.AsReferences());
         }
 
@@ -402,7 +402,7 @@ namespace CommonTest.GDATest
             bool result = property.IsCompatibleWith(newType);
             Assert.AreEqual(true, result);
 
-            this.property.Id = ModelCode.ANALOG_ALARMHIGH;
+            this.property.Id = ModelCode.ANALOG_VALIDRANGE;
             newProp.Id = ModelCode.IDOBJ_GID;
             newType = newProp.Type;
             result = property.IsCompatibleWith(newType);
@@ -417,7 +417,7 @@ namespace CommonTest.GDATest
             Assert.AreEqual(false, result);
 
             this.property.Id = ModelCode.IDOBJ_GID;
-            newProp.Id = ModelCode.ANALOG_ALARMHIGH;
+            newProp.Id = ModelCode.ANALOG_VALIDRANGE;
             newType = newProp.Type;
             result = property.IsCompatibleWith(newType);
             Assert.AreEqual(true, result);
@@ -435,7 +435,7 @@ namespace CommonTest.GDATest
             newType = newProp.Type;
             result = property.IsCompatibleWith(newType);
             Assert.AreEqual(true, result);
-            newProp.Id = ModelCode.ANALOG_ALARMHIGH;
+            newProp.Id = ModelCode.ANALOG_VALIDRANGE;
             newType = newProp.Type;
             result = property.IsCompatibleWith(newType);
             Assert.AreEqual(true, result);
@@ -449,7 +449,7 @@ namespace CommonTest.GDATest
             newType = newProp.Type;
             result = property.IsCompatibleWith(newType);
             Assert.AreEqual(false, result);
-            newProp.Id = ModelCode.ANALOG_ALARMHIGH;
+            newProp.Id = ModelCode.ANALOG_VALIDRANGE;
             newType = newProp.Type;
             result = property.IsCompatibleWith(newType);
             Assert.AreEqual(false, result);
@@ -458,7 +458,7 @@ namespace CommonTest.GDATest
             result = property.IsCompatibleWith(newType);
             Assert.AreEqual(false, result);
 
-            this.property.Id = ModelCode.ANALOG_ALARMHIGH;
+            this.property.Id = ModelCode.ANALOG_VALIDRANGE;
             newProp.Id = ModelCode.BASEVOLTAGE_CONDEQS;
             newType = newProp.Type;
             result = property.IsCompatibleWith(newType);

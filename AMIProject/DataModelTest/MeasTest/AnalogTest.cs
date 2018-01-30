@@ -84,11 +84,11 @@ namespace DataModelTest.MeasTest
             result = analog.Equals(obj);
             Assert.AreNotEqual(true, result);
 
-            obj = new Analog() { AlarmHigh = 1 };
+            obj = new Analog() { ValidRange = 1 };
             result = analog.Equals(obj);
             Assert.AreNotEqual(true, result);
             
-            obj = new Analog() { AlarmLow = 1 };
+            obj = new Analog() { InvalidRange = 1 };
             result = analog.Equals(obj);
             Assert.AreNotEqual(true, result);
         }
@@ -127,8 +127,8 @@ namespace DataModelTest.MeasTest
         [TestCase(ModelCode.ANALOG_MAXVALUE)]
         [TestCase(ModelCode.ANALOG_MINVALUE)]
         [TestCase(ModelCode.ANALOG_NORMALVALUE)]
-        [TestCase(ModelCode.ANALOG_ALARMHIGH)]
-        [TestCase(ModelCode.ANALOG_ALARMLOW)]
+        [TestCase(ModelCode.ANALOG_VALIDRANGE)]
+        [TestCase(ModelCode.ANALOG_INVALIDRANGE)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void GetPropertyTestCorrect(ModelCode t)
         {
@@ -219,15 +219,15 @@ namespace DataModelTest.MeasTest
         [Test]
         public void GetAlarmHighTest()
         {
-            analog.AlarmHigh = 12;
-            Assert.AreEqual(analog.AlarmHigh, 12);
+            analog.ValidRange = 12;
+            Assert.AreEqual(analog.ValidRange, 12);
         }
 
         [Test]
         public void GetAlarmLowTest()
         {
-            analog.AlarmLow = 12;
-            Assert.AreEqual(analog.AlarmLow, 12);
+            analog.InvalidRange = 12;
+            Assert.AreEqual(analog.InvalidRange, 12);
         }
 
         [Test]

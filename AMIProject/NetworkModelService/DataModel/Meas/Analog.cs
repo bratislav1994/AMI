@@ -38,9 +38,8 @@ namespace TC57CIM.IEC61970.Meas
         /// </summary>
         private float normalValue;
 
-        private int alarmHigh;
-        private int alarmLow;
-        private bool isAlarm;
+        private int validRange;
+        private int invalidRange;
 
         public Analog()
         {
@@ -77,44 +76,30 @@ namespace TC57CIM.IEC61970.Meas
         }
 
         [DataMember]
-        public int AlarmHigh
+        public int ValidRange
         {
             get
             {
-                return alarmHigh;
+                return validRange;
             }
 
             set
             {
-                alarmHigh = value;
+                validRange = value;
             }
         }
 
         [DataMember]
-        public int AlarmLow
+        public int InvalidRange
         {
             get
             {
-                return alarmLow;
+                return invalidRange;
             }
 
             set
             {
-                alarmLow = value;
-            }
-        }
-
-        [DataMember]
-        public bool IsAlarm
-        {
-            get
-            {
-                return isAlarm;
-            }
-
-            set
-            {
-                isAlarm = value;
+                invalidRange = value;
             }
         }
 
@@ -124,7 +109,7 @@ namespace TC57CIM.IEC61970.Meas
             {
                 Analog x = (Analog)obj;
                 return (x.maxValue == this.maxValue && x.minValue == this.minValue && x.normalValue == this.normalValue &&
-                        x.alarmHigh == this.alarmHigh && x.alarmLow == this.alarmLow && x.isAlarm == this.isAlarm);
+                        x.validRange == this.validRange && x.invalidRange == this.invalidRange);
             }
             else
             {
@@ -146,9 +131,8 @@ namespace TC57CIM.IEC61970.Meas
                 case ModelCode.ANALOG_MAXVALUE:
                 case ModelCode.ANALOG_MINVALUE:
                 case ModelCode.ANALOG_NORMALVALUE:
-                case ModelCode.ANALOG_ALARMHIGH:
-                case ModelCode.ANALOG_ALARMLOW:
-                case ModelCode.ANALOG_ISALARM:
+                case ModelCode.ANALOG_VALIDRANGE:
+                case ModelCode.ANALOG_INVALIDRANGE:
                     return true;
 
                 default:
@@ -170,14 +154,11 @@ namespace TC57CIM.IEC61970.Meas
                 case ModelCode.ANALOG_NORMALVALUE:
                     property.SetValue(normalValue);
                     break;
-                case ModelCode.ANALOG_ALARMHIGH:
-                    property.SetValue(alarmHigh);
+                case ModelCode.ANALOG_VALIDRANGE:
+                    property.SetValue(validRange);
                     break;
-                case ModelCode.ANALOG_ALARMLOW:
-                    property.SetValue(alarmLow);
-                    break;
-                case ModelCode.ANALOG_ISALARM:
-                    property.SetValue(isAlarm);
+                case ModelCode.ANALOG_INVALIDRANGE:
+                    property.SetValue(invalidRange);
                     break;
                 default:
                     base.GetProperty(property);
@@ -199,14 +180,11 @@ namespace TC57CIM.IEC61970.Meas
                 case ModelCode.ANALOG_NORMALVALUE:
                     normalValue = property.AsFloat();
                     break;
-                case ModelCode.ANALOG_ALARMHIGH:
-                    alarmHigh = property.AsInt();
+                case ModelCode.ANALOG_VALIDRANGE:
+                    validRange = property.AsInt();
                     break;
-                case ModelCode.ANALOG_ALARMLOW:
-                    alarmLow = property.AsInt();
-                    break;
-                case ModelCode.ANALOG_ISALARM:
-                    isAlarm = property.AsBool();
+                case ModelCode.ANALOG_INVALIDRANGE:
+                    invalidRange = property.AsInt();
                     break;
                 default:
                     base.SetProperty(property);
@@ -237,9 +215,8 @@ namespace TC57CIM.IEC61970.Meas
             analogCopy.UnitSymbol = this.UnitSymbol;
             analogCopy.SignalDirection = this.SignalDirection;
             analogCopy.PowerSystemResourceRef = this.PowerSystemResourceRef;
-            analogCopy.alarmHigh = this.alarmHigh;
-            analogCopy.alarmLow = this.alarmLow;
-            analogCopy.isAlarm = this.isAlarm;
+            analogCopy.validRange = this.validRange;
+            analogCopy.invalidRange = this.invalidRange;
 
             return analogCopy;
         }
