@@ -1,4 +1,5 @@
 ﻿using FTN.Common;
+using FTN.Common.ClassesForAlarmDB;
 using FTN.Services.NetworkModelService.DataModel;
 using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System;
@@ -18,6 +19,7 @@ namespace CalculationEngine.Access
         private static object lockObjH = new object();
         private static object lockObjM = new object();
         private static object lockObjD = new object();
+        private static object lockObjAlarm = new object();
         private Timer timer;
         private Timer timerHours;
         private Timer timerDays;
@@ -862,6 +864,75 @@ namespace CalculationEngine.Access
             DateTime argumentD = RoundUp(now, TimeSpan.FromDays(1));
             this.SetUpTimerForDays(argumentD);
         }
+
+        #region alarm
+
+        public bool AddActiveAlarm(AlarmActiveDB activeAlarm)
+        {
+            lock(lockObjAlarm)
+            {
+                using (var access = new AccessAlarmDB())
+                {
+                    access.ActiveAlarm.Add(activeAlarm);
+                    int i = access.SaveChanges();
+
+                    if (i > 0)
+                    {
+                        return true;
+                    }
+
+                    return false;
+                }
+            }
+        }
+
+        public bool AddResolvedAlarm(AlarmResolvedDB resolvedAlarm)
+        {
+            lock (lockObjAlarm)
+            {
+                using (var access = new AccessAlarmDB())
+                {
+                    access.ResolvedAlarm.Add(resolvedAlarm);
+                    int i = access.SaveChanges();
+
+                    if (i > 0)
+                    {
+                        return true;
+                    }
+
+                    return false;
+                }
+            }
+        }
+
+        public bool DeleteActiveAlarm(AlarmActiveDB alarm)
+        {
+            lock (lockObjAlarm)
+            {
+                using (var access = new AccessAlarmDB())
+                {
+                    var a = access.ActiveAlarm.Where(x => x.Id == alarm.Id).FirstOrDefault();
+
+                    if (a != null)
+                    {
+                        access.Entry(a).State = System.Data.Entity.EntityState.Deleted;
+                    }
+
+                    int i = access.SaveChanges();
+
+                    if (i > 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        #endregion
 
         public bool AddMeasurements(List<DynamicMeasurement> measurements)
         {

@@ -129,7 +129,7 @@ namespace AMIClient.ViewModels
                         }
                         else if (filter.Key.Equals(DataGridAlarmHeader.Status.ToString()))
                         {
-                            Status status = ((TableItemForAlarm)item).Status;
+                            FTN.Common.Status status = ((TableItemForAlarm)item).Status;
                             containsFilter = EnumDescription.GetEnumDescription(status).IndexOf(StatusFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
                         }
                         else if (filter.Key.Equals(DataGridAlarmHeader.TypeVoltage.ToString()))
