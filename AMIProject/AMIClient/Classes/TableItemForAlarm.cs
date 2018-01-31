@@ -1,4 +1,5 @@
 ﻿using AMIClient.HelperClasses;
+using FTN.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

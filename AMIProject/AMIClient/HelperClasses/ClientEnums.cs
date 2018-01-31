@@ -33,15 +33,6 @@ namespace AMIClient.HelperClasses
         TypeVoltage
     }
 
-    [TypeConverter(typeof(EnumDescriptionTypeConverter))]
-    public enum TypeVoltage : int
-    {
-        [Description("Under voltage")]
-        UNDERVOLTAGE = 0,
-        [Description("Over voltage")]
-        OVERVOLTAGE
-    }
-
     public enum Status : int
     {
         ACTIVE = 0,

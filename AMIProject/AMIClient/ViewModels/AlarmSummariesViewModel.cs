@@ -134,7 +134,7 @@ namespace AMIClient.ViewModels
                         }
                         else if (filter.Key.Equals(DataGridAlarmHeader.TypeVoltage.ToString()))
                         {
-                            TypeVoltage type = ((TableItemForAlarm)item).TypeVoltage;
+                            FTN.Common.TypeVoltage type = ((TableItemForAlarm)item).TypeVoltage;
                             containsFilter = EnumDescription.GetEnumDescription(type).IndexOf(TypeVoltageFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
                         }
 

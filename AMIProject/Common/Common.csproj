@@ -95,6 +95,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnumDescriptionTypeConverter.cs" />
     <Compile Include="GDA\Association.cs" />
     <Compile Include="EnumDescs.cs" />
     <Compile Include="Enums.cs" />

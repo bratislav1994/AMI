@@ -40,6 +40,7 @@ namespace AMISimulator
         private static Random rnd = new Random();
         private Dictionary<double, double> ratiosP2V;
         private Dictionary<long, double> activePowers;
+        private CommandHandler handler;
 
         public IScadaDuplexSimulator ProxyScada
         {
@@ -246,6 +247,8 @@ namespace AMISimulator
                 this.consumers.Add(ec.GlobalId, ec);
             }
 
+            handler = new CommandHandler();
+
             channel = mgr.AddTCPServer("master" + address, LogLevels.NORMAL, ChannelRetry.Default, ipAddress, (ushort)(basePort + address), ChannelListener.Print());
             config.outstation.config.allowUnsolicited = true;
             config.outstation.config.unsolClassMask.Class0 = true;
@@ -255,7 +258,7 @@ namespace AMISimulator
             config.link.localAddr = (ushort)address;
             config.link.remoteAddr = 1;
 
-            var outstation = channel.AddOutstation("outstation" + address, RejectingCommandHandler.Instance, DefaultOutstationApplication.Instance, config);
+            var outstation = channel.AddOutstation("outstation" + address, handler, DefaultOutstationApplication.Instance, config);
             outstation.Enable();
 
             return outstation;

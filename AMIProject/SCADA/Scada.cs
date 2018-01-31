@@ -23,7 +23,7 @@ using TC57CIM.IEC61970.Wires;
 namespace SCADA
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class Scada : IScada, IScadaDuplexSimulator, IDisposable
+    public class Scada : IScada, IScadaDuplexSimulator, IScadaForCECommand, IDisposable
     {
         private Dictionary<int, RTUAddress> addressPool;
         private bool firstTimeCoordinator = true;
@@ -605,5 +605,44 @@ namespace SCADA
 
             return retVal;
         }
+
+        #region command
+
+        private ICommandHeaders GetCommandHeader(short position)
+        {
+            var ao = new AnalogOutputInt16(position);
+
+            return CommandSet.From(CommandHeader.From(IndexedValue.From(ao, 0)));
+        }
+
+        public void Command(List<long> gids)
+        {
+            //int rtuAddress = -1;
+
+            //foreach (KeyValuePair<int, List<EnergyConsumerForScada>> kvp in energyConsumersByRtu)
+            //{
+            //    foreach (EnergyConsumerForScada ecfs in kvp.Value)
+            //    {
+            //        if (ecfs.GlobalId == gid)
+            //        {
+            //            rtuAddress = kvp.Key;
+            //            break;
+            //        }
+            //    }
+
+            //    if (rtuAddress != -1)
+            //    {
+            //        break;
+            //    }
+            //}
+
+            //if (rtuAddress != -1)
+            //{
+            //    var task = masters[rtuAddress].DirectOperate(this.GetCommandHeader(position), TaskConfig.Default);
+            //    task.ContinueWith((result) => Console.WriteLine("Result for command: " + result.Result));
+            //}
+        }
+
+        #endregion
     }
 }

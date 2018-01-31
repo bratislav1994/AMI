@@ -26,6 +26,7 @@ namespace CalculationEngine
         private List<ISmartCacheForCE> smartCachesForDeleting;
         private List<ResourceDescription> meas;
         private bool firstTimeCoordinator = true;
+        private bool firstTimeScada = true;
         private FunctionDB dataBaseAdapter;
         private Dictionary<long, GeographicalRegionDb> geoRegions;
         private Dictionary<long, SubGeographicalRegionDb> subGeoRegions;
@@ -36,6 +37,7 @@ namespace CalculationEngine
         private Dictionary<long, SubstationDb> substationsTemp;
         private Dictionary<long, EnergyConsumerDb> amisTemp;
         private Dictionary<long, List<TableItemForAlarm>> alarms;
+        private IScadaForCECommand proxyScada;
 
         public CalculationEngine()
         {
@@ -116,6 +118,34 @@ namespace CalculationEngine
             set
             {
                 proxyCoordinator = value;
+            }
+        }
+
+        public IScadaForCECommand ProxyScada
+        {
+            get
+            {
+                if (firstTimeScada)
+                {
+                    Logger.LogMessageToFile(string.Format("CE.CalculationEngine.ProxyScada; line: {0}; Create channel between CE and Scada", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    NetTcpBinding binding = new NetTcpBinding();
+                    binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    binding.MaxReceivedMessageSize = Int32.MaxValue;
+                    binding.MaxBufferSize = Int32.MaxValue;
+                    ChannelFactory<IScadaForCECommand> factory = new ChannelFactory<IScadaForCECommand>(
+                        binding,
+                        new EndpointAddress("net.tcp://localhost:10012/Scada/CE"));
+                    proxyScada = factory.CreateChannel();
+                    firstTimeScada = false;
+                }
+
+                Logger.LogMessageToFile(string.Format("CE.CalculationEngine.ProxyScada; line: {0}; Channel CE-Scada is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                return proxyScada;
+            }
+
+            set
+            {
+                proxyScada = value;
             }
         }
 
@@ -380,6 +410,8 @@ namespace CalculationEngine
 
         private void CheckAlarms(List<DynamicMeasurement> measurements)
         {
+            List<long> gidsInAlarm = new List<long>();
+
             foreach (DynamicMeasurement dm in measurements)
             {
                 if (!dm.IsAlarm)
@@ -398,6 +430,8 @@ namespace CalculationEngine
                 }
                 else
                 {
+                    gidsInAlarm.Add(dm.PsrRef);
+
                     if (alarms.ContainsKey(dm.PsrRef))
                     {
                         if (alarms[dm.PsrRef].Last().Status == AMIClient.HelperClasses.Status.RESOLVED)
@@ -408,7 +442,7 @@ namespace CalculationEngine
                                 Status = AMIClient.HelperClasses.Status.ACTIVE,
                                 Consumer = dm.PsrRef.ToString(),
                                 Id = dm.PsrRef,
-                                TypeVoltage = AMIClient.HelperClasses.TypeVoltage.OVERVOLTAGE
+                                TypeVoltage = FTN.Common.TypeVoltage.OVERVOLTAGE
                             });
                         }
                     }
@@ -422,11 +456,13 @@ namespace CalculationEngine
                             Status = AMIClient.HelperClasses.Status.ACTIVE,
                             Consumer = dm.PsrRef.ToString(),
                             Id = dm.PsrRef,
-                            TypeVoltage = AMIClient.HelperClasses.TypeVoltage.OVERVOLTAGE
+                            TypeVoltage = TypeVoltage.OVERVOLTAGE
                         });
                     }
                 }
             }
+
+            ProxyScada.Command(gidsInAlarm);
         }
 
         public void Subscribe()
