@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FTN.Services.NetworkModelService.DataModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace FTN.ServiceContracts
 {
     public interface IScadaForCECommand
     {
-        void Command(List<long> gids);
+        string Command(Dictionary<long, DynamicMeasurement> measurementsInAlarm);
     }
 }
