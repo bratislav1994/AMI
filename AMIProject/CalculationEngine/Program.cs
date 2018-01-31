@@ -26,6 +26,7 @@ namespace CalculationEngine
             AppDomain.CurrentDomain.SetData("DataDirectory", path);
 
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<AccessDB, Configuration>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AccessAlarmDB, ConfigurationAlarm>());
             Console.Title = "CE";
             Logger.Path = "CalculationEngnine.txt";
             Start();

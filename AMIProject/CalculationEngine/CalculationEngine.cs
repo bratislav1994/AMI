@@ -1,6 +1,7 @@
 ﻿using AMIClient.Classes;
 using CalculationEngine.Access;
 using FTN.Common;
+using FTN.Common.ClassesForAlarmDB;
 using FTN.Common.Logger;
 using FTN.ServiceContracts;
 using FTN.Services.NetworkModelService.DataModel;
@@ -37,6 +38,7 @@ namespace CalculationEngine
         private Dictionary<long, SubstationDb> substationsTemp;
         private Dictionary<long, EnergyConsumerDb> amisTemp;
         private Dictionary<long, List<TableItemForAlarm>> alarms;
+        private Dictionary<long, AlarmActiveDB> alarmActiveDB;
         private IScadaForCECommand proxyScada;
 
         public CalculationEngine()
@@ -60,6 +62,7 @@ namespace CalculationEngine
             amisTemp = new Dictionary<long, EnergyConsumerDb>();
             meas = new List<ResourceDescription>();
             alarms = new Dictionary<long, List<TableItemForAlarm>>();
+            alarmActiveDB = new Dictionary<long, AlarmActiveDB>();
 
             while (true)
             {
@@ -416,54 +419,101 @@ namespace CalculationEngine
             {
                 if (!dm.IsAlarm)
                 {
-                    if (alarms.ContainsKey(dm.PsrRef))
+                    if (alarmActiveDB.ContainsKey(dm.PsrRef))
                     {
-                        foreach (TableItemForAlarm alarm in alarms[dm.PsrRef])
-                        {
-                            if(alarm.Status == AMIClient.HelperClasses.Status.ACTIVE)
-                            {
-                                alarm.Status = AMIClient.HelperClasses.Status.RESOLVED;
-                                alarm.ToPeriod = dm.TimeStamp;
-                            }
-                        }
+                        AlarmActiveDB alarmA = alarmActiveDB[dm.PsrRef];
+
+                        AlarmResolvedDB alarmR = new AlarmResolvedDB();
+                        alarmR.FromPeriod = alarmA.FromPeriod;
+                        alarmR.Id = alarmA.Id;
+                        alarmR.Status = Status.RESOLVED;
+                        alarmR.ToPeriod = dm.TimeStamp;
+                        alarmR.TypeVoltage = alarmA.TypeVoltage;
+                        alarmR.Voltage = alarmA.Voltage;
+
+                        dataBaseAdapter.AddResolvedAlarm(alarmR);
+                        dataBaseAdapter.DeleteActiveAlarm(alarmA);
+                        alarmActiveDB.Remove(dm.PsrRef);
                     }
                 }
                 else
                 {
                     gidsInAlarm.Add(dm.PsrRef, dm);
 
-                    if (alarms.ContainsKey(dm.PsrRef))
+                    if (!alarmActiveDB.ContainsKey(dm.PsrRef))
                     {
-                        if (alarms[dm.PsrRef].Last().Status == AMIClient.HelperClasses.Status.RESOLVED)
-                        {
-                            alarms[dm.PsrRef].Add(new TableItemForAlarm()
-                            {
-                                FromPeriod = dm.TimeStamp,
-                                Status = AMIClient.HelperClasses.Status.ACTIVE,
-                                Consumer = dm.PsrRef.ToString(),
-                                Id = dm.PsrRef,
-                                TypeVoltage = FTN.Common.TypeVoltage.OVERVOLTAGE
-                            });
-                        }
-                    }
-                    else
-                    {
-                        alarms.Add(dm.PsrRef, new List<TableItemForAlarm>());
+                        AlarmActiveDB a = new AlarmActiveDB();
+                        a.FromPeriod = dm.TimeStamp;
+                        a.Status = Status.ACTIVE;
+                        a.Id = dm.PsrRef;
+                        a.Voltage = dm.CurrentV;
+                        a.TypeVoltage = TypeVoltage.OVERVOLTAGE;
 
-                        alarms[dm.PsrRef].Add(new TableItemForAlarm()
-                        {
-                            FromPeriod = dm.TimeStamp,
-                            Status = AMIClient.HelperClasses.Status.ACTIVE,
-                            Consumer = dm.PsrRef.ToString(),
-                            Id = dm.PsrRef,
-                            TypeVoltage = TypeVoltage.OVERVOLTAGE
-                        });
+                        alarmActiveDB[dm.PsrRef] = a;
+                        dataBaseAdapter.AddActiveAlarm(a);
                     }
                 }
             }
 
             Console.WriteLine(ProxyScada.Command(gidsInAlarm));
         }
+
+        //private void CheckAlarms(List<DynamicMeasurement> measurements)
+        //{
+        //    Dictionary<long, DynamicMeasurement> gidsInAlarm = new Dictionary<long, DynamicMeasurement>();
+
+        //    foreach (DynamicMeasurement dm in measurements)
+        //    {
+        //        if (!dm.IsAlarm)
+        //        {
+        //            if (alarms.ContainsKey(dm.PsrRef))
+        //            {
+        //                foreach (TableItemForAlarm alarm in alarms[dm.PsrRef])
+        //                {
+        //                    if (alarm.Status == Status.ACTIVE)
+        //                    {
+        //                        alarm.Status = Status.RESOLVED;
+        //                        alarm.ToPeriod = dm.TimeStamp;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            gidsInAlarm.Add(dm.PsrRef, dm);
+
+        //            if (alarms.ContainsKey(dm.PsrRef))
+        //            {
+        //                if (alarms[dm.PsrRef].Last().Status == Status.RESOLVED)
+        //                {
+        //                    alarms[dm.PsrRef].Add(new TableItemForAlarm()
+        //                    {
+        //                        FromPeriod = dm.TimeStamp,
+        //                        Status = Status.ACTIVE,
+        //                        Consumer = dm.PsrRef.ToString(),
+        //                        Id = dm.PsrRef,
+        //                        TypeVoltage = FTN.Common.TypeVoltage.OVERVOLTAGE
+        //                    });
+        //                }
+        //            }
+        //            else
+        //            {
+        //                alarms.Add(dm.PsrRef, new List<TableItemForAlarm>());
+
+        //                alarms[dm.PsrRef].Add(new TableItemForAlarm()
+        //                {
+        //                    FromPeriod = dm.TimeStamp,
+        //                    Status = Status.ACTIVE,
+        //                    Consumer = dm.PsrRef.ToString(),
+        //                    Id = dm.PsrRef,
+        //                    TypeVoltage = TypeVoltage.OVERVOLTAGE
+        //                });
+        //            }
+        //        }
+        //    }
+
+        //    Console.WriteLine(ProxyScada.Command(gidsInAlarm));
+        //}
 
         public void Subscribe()
         {

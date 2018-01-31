@@ -89,8 +89,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Access\AccessAlarmDB.cs" />
     <Compile Include="Access\AccessDB.cs" />
     <Compile Include="Access\Configuration.cs" />
+    <Compile Include="Access\ConfigurationAlarm.cs" />
     <Compile Include="Access\FunctionDB.cs" />
     <Compile Include="CalculationEngine.cs" />
     <Compile Include="Program.cs" />
@@ -135,6 +137,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DB\AlarmDb.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DB\AlarmDb_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>AlarmDb.mdf</DependentUpon>
+    </Content>
     <Content Include="DB\TimeSeriesDb.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

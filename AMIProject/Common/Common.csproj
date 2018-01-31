@@ -96,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassesForAlarmDB\AlarmActiveDB.cs" />
+    <Compile Include="ClassesForAlarmDB\AlarmResolvedDB.cs" />
     <Compile Include="EnumDescriptionTypeConverter.cs" />
     <Compile Include="GDA\Association.cs" />
     <Compile Include="EnumDescs.cs" />

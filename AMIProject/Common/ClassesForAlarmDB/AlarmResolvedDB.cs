@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -11,6 +12,7 @@ namespace FTN.Common.ClassesForAlarmDB
     [DataContract]
     public class AlarmResolvedDB
     {
+        private int idDB;
         private long id;
         private Status status;
         private DateTime fromPeriod;
@@ -22,8 +24,23 @@ namespace FTN.Common.ClassesForAlarmDB
         {
         }
 
-        [DataMember]
+        [IgnoreDataMember]
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int IdDB
+        {
+            get
+            {
+                return idDB;
+            }
+
+            set
+            {
+                idDB = value;
+            }
+        }
+
+        [DataMember]
         public long Id
         {
             get
