@@ -410,7 +410,7 @@ namespace CalculationEngine
 
         private void CheckAlarms(List<DynamicMeasurement> measurements)
         {
-            List<long> gidsInAlarm = new List<long>();
+            Dictionary<long, DynamicMeasurement> gidsInAlarm = new Dictionary<long, DynamicMeasurement>();
 
             foreach (DynamicMeasurement dm in measurements)
             {
@@ -430,7 +430,7 @@ namespace CalculationEngine
                 }
                 else
                 {
-                    gidsInAlarm.Add(dm.PsrRef);
+                    gidsInAlarm.Add(dm.PsrRef, dm);
 
                     if (alarms.ContainsKey(dm.PsrRef))
                     {
@@ -462,7 +462,7 @@ namespace CalculationEngine
                 }
             }
 
-            ProxyScada.Command(gidsInAlarm);
+            Console.WriteLine(ProxyScada.Command(gidsInAlarm));
         }
 
         public void Subscribe()

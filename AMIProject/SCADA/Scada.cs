@@ -615,32 +615,50 @@ namespace SCADA
             return CommandSet.From(CommandHeader.From(IndexedValue.From(ao, 0)));
         }
 
-        public void Command(List<long> gids)
+        public string Command(Dictionary<long, DynamicMeasurement> measurementsInAlarm)
         {
-            //int rtuAddress = -1;
+            Dictionary<int, TypeVoltage> rtuAddresses = new Dictionary<int, TypeVoltage>();
+            string retVal = "Result for command: ";
 
-            //foreach (KeyValuePair<int, List<EnergyConsumerForScada>> kvp in energyConsumersByRtu)
-            //{
-            //    foreach (EnergyConsumerForScada ecfs in kvp.Value)
-            //    {
-            //        if (ecfs.GlobalId == gid)
-            //        {
-            //            rtuAddress = kvp.Key;
-            //            break;
-            //        }
-            //    }
+            foreach (KeyValuePair<int, List<EnergyConsumerForScada>> kvp in energyConsumersByRtu)
+            {
+                foreach (EnergyConsumerForScada ecfs in kvp.Value)
+                {
+                    if (measurementsInAlarm.ContainsKey(ecfs.GlobalId))
+                    {
+                        if (rtuAddresses.ContainsKey(kvp.Key) && measurementsInAlarm[ecfs.GlobalId].TypeVoltage != rtuAddresses[kvp.Key])
+                        {
+                            retVal += "Command FAILED! Under and over voltage on the same RTU.";
+                            return retVal;
+                        }
+                        else if (!rtuAddresses.ContainsKey(kvp.Key))
+                        {
+                            rtuAddresses.Add(kvp.Key, measurementsInAlarm[ecfs.GlobalId].TypeVoltage);
+                        }
+                    }
+                }
+            }
 
-            //    if (rtuAddress != -1)
-            //    {
-            //        break;
-            //    }
-            //}
+            foreach (KeyValuePair<int, TypeVoltage> kvp in rtuAddresses)
+            {
+                short position = 0;
+                retVal += "\n";
+                retVal += "RTU: " + kvp.Key + " type voltage: " + kvp.Value + " ";
 
-            //if (rtuAddress != -1)
-            //{
-            //    var task = masters[rtuAddress].DirectOperate(this.GetCommandHeader(position), TaskConfig.Default);
-            //    task.ContinueWith((result) => Console.WriteLine("Result for command: " + result.Result));
-            //}
+                if (kvp.Value == TypeVoltage.UNDERVOLTAGE)
+                {
+                    position = 1;
+                }
+                else if (kvp.Value == TypeVoltage.OVERVOLTAGE)
+                {
+                    position = -1;
+                }
+
+                var task = masters[kvp.Key].DirectOperate(this.GetCommandHeader(position), TaskConfig.Default);
+                task.ContinueWith((result) => retVal += result.Result);
+            }
+
+            return retVal;
         }
 
         #endregion
