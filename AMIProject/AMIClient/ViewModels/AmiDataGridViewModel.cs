@@ -1,4 +1,5 @@
 ﻿using AMIClient.HelperClasses;
+using AMIClient.PagginationCommands;
 using FTN.Common;
 using FTN.Services.NetworkModelService.DataModel;
 using Prism.Commands;
@@ -33,6 +34,13 @@ namespace AMIClient.ViewModels
         private ObservableCollection<TableItem> amiTableItems = new ObservableCollection<TableItem>();
         private DateTime timeOfLastUpdate;
         private Thread checkIfThereAreNewUpdates;
+        private int itemPerPage = 4;
+        private int itemcount;
+        private int _currentPageIndex;
+        public ICommand PreviousCommand { get; private set; }
+        public ICommand NextCommand { get; private set; }
+        public ICommand FirstCommand { get; private set; }
+        public ICommand LastCommand { get; private set; }
 
         public AmiDataGridViewModel()
         {
@@ -41,7 +49,98 @@ namespace AMIClient.ViewModels
             this.ViewAmiTableItems = CollectionViewSource.GetDefaultView(this.AmiTableItems);
             this.checkIfThereAreNewUpdates = new Thread(() => CheckForUpdates());
             this.checkIfThereAreNewUpdates.Start();
+            this.ViewAmiTableItems.Filter += this.view_Filter;
+            CurrentPageIndex = 0;
+            itemcount = this.AmiTableItems.Count;
+            CalculateTotalPages();
+            NextCommand = new NextPageCommand(this);
+            PreviousCommand = new PreviousPageCommand(this);
+            FirstCommand = new FirstPageCommand(this);
+            LastCommand = new LastPageCommand(this);
         }
+
+        public int CurrentPageIndex
+        {
+            get { return _currentPageIndex; }
+            set
+            {
+                _currentPageIndex = value;
+                this.RaisePropertyChanged("CurrentPage");
+            }
+        }
+        public int CurrentPage
+        {
+            get { return _currentPageIndex + 1; }
+        }
+
+        private int _totalPages;
+        public int TotalPages
+        {
+            get { return _totalPages; }
+            private set
+            {
+                _totalPages = value;
+                this.RaisePropertyChanged("TotalPage");
+            }
+        }
+
+        #region Pagination Methods
+        public void ShowNextPage()
+        {
+            CurrentPageIndex++;
+            ViewAmiTableItems.Refresh();
+        }
+
+        public void ShowPreviousPage()
+        {
+            CurrentPageIndex--;
+            ViewAmiTableItems.Refresh();
+        }
+
+        public void ShowFirstPage()
+        {
+            CurrentPageIndex = 0;
+            ViewAmiTableItems.Refresh();
+        }
+
+        public void ShowLastPage()
+        {
+            CurrentPageIndex = TotalPages - 1;
+            ViewAmiTableItems.Refresh();
+        }
+
+        private void CalculateTotalPages()
+        {
+            if (itemcount % itemPerPage == 0)
+            {
+                TotalPages = (itemcount / itemPerPage);
+            }
+            else
+            {
+                TotalPages = (itemcount / itemPerPage) + 1;
+            }
+        }
+
+        private bool view_Filter(object sender)
+        {
+            AmiTableItems.IndexOf(((TableItem)sender));
+            int index = AmiTableItems.IndexOf(((TableItem)sender));
+
+            if (!FilterHeader(sender))
+            {
+                return false;
+            }
+
+            if (index >= itemPerPage * CurrentPageIndex && index < itemPerPage * (CurrentPageIndex + 1))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        #endregion
 
         public string NameFilter
         {
@@ -190,6 +289,9 @@ namespace AMIClient.ViewModels
                     AmiTableItems[positionsAmi[kvp.Key]].Status = kvp.Value.IsAlarm ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Green);
                 }
             }
+
+            itemcount = this.AmiTableItems.Count;
+            CalculateTotalPages();
         }
 
         public void SetModel(Model model)
@@ -213,32 +315,40 @@ namespace AMIClient.ViewModels
             {
                 this.ViewAmiTableItems.Filter = delegate (object item)
                 {
-                    bool show = true;
-
-                    foreach (KeyValuePair<string, string> filter in columnFilters)
-                    {
-                        bool containsFilter = false;
-
-                        if (filter.Key.Equals(DataGridHeader.Name.ToString()))
-                        {
-                            containsFilter = ((TableItem)item).Io.Name.IndexOf(NameFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
-                        }
-                        else if (filter.Key.Equals(DataGridHeader.Type.ToString()))
-                        {
-                            DataGridType type = ((TableItem)item).Type;
-                            containsFilter = EnumDescription.GetEnumDescription(type).IndexOf(TypeFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
-                        }
-
-                        if (!containsFilter)
-                        {
-                            show = false;
-                            break;
-                        }
-                    }
-
-                    return show;
+                    return view_Filter(item);
                 };
             }
+        }
+
+        private bool FilterHeader(object item)
+        {
+            bool show = true;
+
+            if (columnFilters != null)
+            {
+                foreach (KeyValuePair<string, string> filter in columnFilters)
+                {
+                    bool containsFilter = false;
+
+                    if (filter.Key.Equals(DataGridHeader.Name.ToString()))
+                    {
+                        containsFilter = ((TableItem)item).Io.Name.IndexOf(NameFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
+                    }
+                    else if (filter.Key.Equals(DataGridHeader.Type.ToString()))
+                    {
+                        DataGridType type = ((TableItem)item).Type;
+                        containsFilter = EnumDescription.GetEnumDescription(type).IndexOf(TypeFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
+                    }
+
+                    if (!containsFilter)
+                    {
+                        show = false;
+                        break;
+                    }
+                }
+            }
+            
+            return show;
         }
 
         #endregion
