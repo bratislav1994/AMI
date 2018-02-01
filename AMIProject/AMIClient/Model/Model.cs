@@ -20,6 +20,7 @@ using FTN.Services.NetworkModelService.DataModel;
 using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using AMIClient.Classes;
 using System.Windows.Media;
+using FTN.Common.ClassesForAlarmDB;
 
 namespace AMIClient
 {
@@ -29,6 +30,7 @@ namespace AMIClient
         private List<ResourceDescription> meas = new List<ResourceDescription>();
         private Dictionary<long, int> positions = new Dictionary<long, int>();
         private Dictionary<long, int> positionsAmi = new Dictionary<long, int>();
+        private Dictionary<long, int> positionsAlarm = new Dictionary<long, int>();
         private ObservableCollection<TableItem> tableItems = new ObservableCollection<TableItem>();
         private ObservableCollection<TableItemForAlarm> tableItemsForAlarm = new ObservableCollection<TableItemForAlarm>();
         private RootElement root;
@@ -766,6 +768,37 @@ namespace AMIClient
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propName));
+            }
+        }
+
+        public void SendAlarm(List<AlarmActiveDB> activeAlarm, List<AlarmResolvedDB> resolvedAlarm)
+        {
+            foreach (AlarmActiveDB alarm in activeAlarm)
+            {
+                App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
+                {
+                    TableItemsForAlarm.Add(new TableItemForAlarm()
+                    {
+                        Id = alarm.Id,
+                        Consumer = alarm.Id.ToString(),
+                        FromPeriod = alarm.FromPeriod,
+                        Status = alarm.Status,
+                        Voltage = alarm.Voltage,
+                        TypeVoltage = alarm.TypeVoltage
+                    });
+                });
+                positionsAlarm.Add(alarm.Id, TableItemsForAlarm.Count - 1);
+            }
+
+            foreach(AlarmResolvedDB alarmR in resolvedAlarm)
+            {
+                if (positionsAlarm.ContainsKey(alarmR.Id))
+                {
+                    App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
+                    {
+                        TableItemsForAlarm.RemoveAt(positionsAlarm[alarmR.Id]);
+                    });
+                }
             }
         }
     }

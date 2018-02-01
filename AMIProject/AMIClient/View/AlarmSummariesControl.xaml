@@ -19,6 +19,7 @@
         <DataGrid SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.ViewTableItemsForAlarm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
             
             <DataGrid.Columns>
+                <DataGridTextColumn MinWidth="100" Width="100" Header="Id" Binding="{Binding Id}"/>
 
                 <DataGridTemplateColumn Header="Consumer" CanUserSort="True" 
         SortMemberPath="Consumer" MinWidth="100" Width="100">
@@ -94,6 +95,7 @@
                     </DataGridTemplateColumn.HeaderTemplate>
                 </DataGridTemplateColumn>
                 <!--<DataGridTextColumn MinWidth="100" Width="100" Header="Status" Binding="{Binding Status}"/>-->
+                <DataGridTextColumn MinWidth="100" Width="100" Header="Voltage" Binding="{Binding Voltage}"/>
                 <DataGridTextColumn MinWidth="100" Width="100" Header="From" Binding="{Binding FromPeriod}"/>
                 <DataGridTextColumn MinWidth="100" Width="100" Header="To" Binding="{Binding ToPeriod}"/>
 

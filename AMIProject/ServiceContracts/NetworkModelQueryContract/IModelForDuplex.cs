@@ -1,4 +1,5 @@
 ﻿using FTN.Common;
+using FTN.Common.ClassesForAlarmDB;
 using FTN.Services.NetworkModelService.DataModel;
 using System;
 using System.Collections.Generic;
@@ -17,5 +18,8 @@ namespace FTN.ServiceContracts
 
         [OperationContract]
         void SendMeasurements(List<DynamicMeasurement> measurements);
+
+        [OperationContract]
+        void SendAlarm(List<AlarmActiveDB> activeAlarm, List<AlarmResolvedDB> resolvedAlarm);
     }
 }

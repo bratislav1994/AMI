@@ -63,6 +63,7 @@ namespace CalculationEngine
             meas = new List<ResourceDescription>();
             alarms = new Dictionary<long, List<TableItemForAlarm>>();
             alarmActiveDB = new Dictionary<long, AlarmActiveDB>();
+            alarmActiveDB = dataBaseAdapter.ReadActiveAlarm();
 
             while (true)
             {
@@ -396,6 +397,11 @@ namespace CalculationEngine
                 try
                 {
                     sc.SendMeasurements(measurements);
+
+                    if(newActive || newResolved)
+                    {
+                        sc.SendAlarm(newActiveAlarm, newResolvedAlarm);
+                    }
                 }
                 catch
                 {
@@ -411,8 +417,16 @@ namespace CalculationEngine
             Logger.LogMessageToFile(string.Format("CE.CalculationEngine.DataFromScada; line: {0}; Finish transport data SCADA-CE-Client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
+        bool newActive = false;
+        bool newResolved = false;
+        List<AlarmActiveDB> newActiveAlarm = new List<AlarmActiveDB>();
+        List<AlarmResolvedDB> newResolvedAlarm = new List<AlarmResolvedDB>();
         private void CheckAlarms(List<DynamicMeasurement> measurements)
         {
+            newActive = false;
+            newResolved = false;
+            newResolvedAlarm.Clear();
+            newActiveAlarm.Clear();
             Dictionary<long, DynamicMeasurement> gidsInAlarm = new Dictionary<long, DynamicMeasurement>();
 
             foreach (DynamicMeasurement dm in measurements)
@@ -434,6 +448,9 @@ namespace CalculationEngine
                         dataBaseAdapter.AddResolvedAlarm(alarmR);
                         dataBaseAdapter.DeleteActiveAlarm(alarmA);
                         alarmActiveDB.Remove(dm.PsrRef);
+
+                        newResolved = true;
+                        newResolvedAlarm.Add(alarmR);
                     }
                 }
                 else
@@ -451,6 +468,9 @@ namespace CalculationEngine
 
                         alarmActiveDB[dm.PsrRef] = a;
                         dataBaseAdapter.AddActiveAlarm(a);
+
+                        newActive = true;
+                        newActiveAlarm.Add(a);
                     }
                 }
             }
