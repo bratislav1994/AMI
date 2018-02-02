@@ -222,6 +222,10 @@
     <Compile Include="HelperClasses\EnumDescription.cs" />
     <Compile Include="HelperClasses\EnumDescriptionTypeConverter.cs" />
     <Compile Include="Model\IModel.cs" />
+    <Compile Include="PaginationCommnads\FirstPageCommand.cs" />
+    <Compile Include="PaginationCommnads\LastPageCommand.cs" />
+    <Compile Include="PaginationCommnads\NextPageCommand.cs" />
+    <Compile Include="PaginationCommnads\PreviousPageCommand.cs" />
     <Compile Include="ViewModels\ActiveAlarmsViewModel.cs" />
     <Compile Include="ViewModels\AddCimXmlViewModel.cs" />
     <Compile Include="Model\Model.cs" />

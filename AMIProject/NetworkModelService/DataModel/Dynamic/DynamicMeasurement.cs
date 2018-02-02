@@ -159,19 +159,5 @@ namespace FTN.Services.NetworkModelService.DataModel
                 typeVoltage = value;
             }
         }
-
-        [DataMember]
-        public TypeVoltage TypeVoltage
-        {
-            get
-            {
-                return typeVoltage;
-            }
-
-            set
-            {
-                typeVoltage = value;
-            }
-        }
     }
 }
