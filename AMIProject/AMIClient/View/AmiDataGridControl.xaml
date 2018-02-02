@@ -15,6 +15,12 @@
     </UserControl.Resources>
 
     <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        
         <DataGrid SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding ViewAmiTableItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
 
             <DataGrid.Resources>
@@ -139,6 +145,16 @@
 
             </DataGrid.Columns>
         </DataGrid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="First" Command="{Binding FirstCommand}"/>
+            <Button Content="Previous" Command="{Binding PreviousCommand}"/>
+            <TextBlock Width="auto" Text="{Binding CurrentPage, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Text="of"/>
+            <TextBlock Width="auto" Text="{Binding TotalPages}"/>
+            <Button Content="Next" Command="{Binding NextCommand}"/>
+            <Button Content="Last" Command="{Binding LastCommand}"/>
+        </StackPanel>
     </Grid>
 </UserControl>
 

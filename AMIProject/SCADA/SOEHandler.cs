@@ -170,11 +170,18 @@ namespace SCADA
                     float normalValueWithLossPositive = analog.NormalValue + (((float)analog.ValidRange / 100) * analog.NormalValue);
                     if (measurement.CurrentV >= normalValueWithLossNegative && measurement.CurrentV <= normalValueWithLossPositive)
                     {
-                        measurement.IsAlarm = (false);
+                        measurement.IsAlarm = false;
+                        measurement.TypeVoltage = TypeVoltage.INBOUNDS;
                     }
-                    else
+                    else if (measurement.CurrentV > normalValueWithLossPositive)
                     {
-                        measurement.IsAlarm = (true);
+                        measurement.IsAlarm = true;
+                        measurement.TypeVoltage = TypeVoltage.OVERVOLTAGE;
+                    }
+                    else if (measurement.CurrentV < normalValueWithLossNegative)
+                    {
+                        measurement.IsAlarm = true;
+                        measurement.TypeVoltage = TypeVoltage.UNDERVOLTAGE;
                     }
                 }
                 else
@@ -182,13 +189,20 @@ namespace SCADA
                     TC57CIM.IEC61970.Meas.Analog analog = ((TC57CIM.IEC61970.Meas.Analog)(measurements.Where(x => x.Measurement.PowerSystemResourceRef == measurement.PsrRef && x.Measurement.UnitSymbol == UnitSymbol.V).First()).Measurement);
                     float normalValueWithLossNegative = analog.NormalValue - (((float)analog.InvalidRange / 100) * analog.NormalValue);
                     float normalValueWithLossPositive = analog.NormalValue + (((float)analog.InvalidRange / 100) * analog.NormalValue);
-                    if (measurement.CurrentV < normalValueWithLossNegative || measurement.CurrentV > normalValueWithLossPositive)
+                    if (measurement.CurrentV < normalValueWithLossNegative)
                     {
-                        measurement.IsAlarm = (true);
+                        measurement.IsAlarm = true;
+                        measurement.TypeVoltage = TypeVoltage.UNDERVOLTAGE;
+                    }
+                    else if (measurement.CurrentV > normalValueWithLossPositive)
+                    {
+                        measurement.IsAlarm = true;
+                        measurement.TypeVoltage = TypeVoltage.OVERVOLTAGE;
                     }
                     else
                     {
-                        measurement.IsAlarm = (false);
+                        measurement.IsAlarm = false;
+                        measurement.TypeVoltage = TypeVoltage.INBOUNDS;
                     }
                 }
             }

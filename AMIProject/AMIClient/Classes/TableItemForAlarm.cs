@@ -1,4 +1,5 @@
 ﻿using AMIClient.HelperClasses;
+using FTN.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,11 +14,12 @@ namespace AMIClient.Classes
     public class TableItemForAlarm : INotifyPropertyChanged
     {
         private long id;
-        private string consumer;
         private Status status;
         private DateTime fromPeriod;
         private DateTime? toPeriod;
         private TypeVoltage typeVoltage;
+        private float voltage;
+        private string consumer;
 
         public TableItemForAlarm()
         {
@@ -104,6 +106,20 @@ namespace AMIClient.Classes
             {
                 id = value;
                 RaisePropertyChanged("Id");
+            }
+        }
+
+        public float Voltage
+        {
+            get
+            {
+                return voltage;
+            }
+
+            set
+            {
+                voltage = value;
+                RaisePropertyChanged("Voltage");
             }
         }
 

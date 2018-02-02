@@ -4,14 +4,19 @@
 	xmlns:ftn="http://www.ftnydro.com/CIM15/2010/extension#">
 	
 	<cim:BaseVoltage rdf:ID="BV_1_1">
-		<cim:BaseVoltage.nominalVoltage>12500</cim:BaseVoltage.nominalVoltage>
+		<cim:BaseVoltage.nominalVoltage>220</cim:BaseVoltage.nominalVoltage>
 		<cim:IdentifiedObject.mRID>BV_1_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>BV_1_1</cim:IdentifiedObject.name>
 	</cim:BaseVoltage>
 	<cim:BaseVoltage rdf:ID="BV_1_2">
-		<cim:BaseVoltage.nominalVoltage>15000</cim:BaseVoltage.nominalVoltage>
+		<cim:BaseVoltage.nominalVoltage>10000</cim:BaseVoltage.nominalVoltage>
 		<cim:IdentifiedObject.mRID>BV_1_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>BV_1_2</cim:IdentifiedObject.name>
+	</cim:BaseVoltage>
+	<cim:BaseVoltage rdf:ID="BV_1_3">
+		<cim:BaseVoltage.nominalVoltage>20000</cim:BaseVoltage.nominalVoltage>
+		<cim:IdentifiedObject.mRID>BV_1_3</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>BV_1_3</cim:IdentifiedObject.name>
 	</cim:BaseVoltage>
 	
 	

@@ -880,6 +880,115 @@ namespace CalculationEngine.Access
             this.SetUpTimerForDays(argumentD);
         }
 
+        #region alarm
+
+        public bool AddActiveAlarm(AlarmActiveDB activeAlarm)
+        {
+            lock(lockObjAlarm)
+            {
+                using (var access = new AccessAlarmDB())
+                {
+                    access.ActiveAlarm.Add(activeAlarm);
+                    int i = access.SaveChanges();
+
+                    if (i > 0)
+                    {
+                        return true;
+                    }
+
+                    return false;
+                }
+            }
+        }
+
+        public bool AddResolvedAlarm(AlarmResolvedDB resolvedAlarm)
+        {
+            lock (lockObjAlarm)
+            {
+                using (var access = new AccessAlarmDB())
+                {
+                    access.ResolvedAlarm.Add(resolvedAlarm);
+                    int i = access.SaveChanges();
+
+                    if (i > 0)
+                    {
+                        return true;
+                    }
+
+                    return false;
+                }
+            }
+        }
+
+        public bool DeleteActiveAlarm(AlarmActiveDB alarm)
+        {
+            lock (lockObjAlarm)
+            {
+                using (var access = new AccessAlarmDB())
+                {
+                    var a = access.ActiveAlarm.Where(x => x.Id == alarm.Id).FirstOrDefault();
+
+                    if (a != null)
+                    {
+                        access.Entry(a).State = System.Data.Entity.EntityState.Deleted;
+                    }
+
+                    int i = access.SaveChanges();
+
+                    if (i > 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        public Dictionary<long, AlarmActiveDB> ReadActiveAlarm()
+        {
+            Dictionary<long, AlarmActiveDB> retVal = new Dictionary<long, AlarmActiveDB>();
+
+            lock (lockObjAlarm)
+            {
+                using (var access = new AccessAlarmDB())
+                {
+                    var alarm = access.ActiveAlarm.ToList();
+
+                    foreach (AlarmActiveDB a in alarm)
+                    {
+                        retVal.Add(a.Id, a);
+                    }
+                }
+
+                return retVal;
+            }
+        }
+
+        public Dictionary<long, AlarmResolvedDB> ReadResolvedAlarm()
+        {
+            Dictionary<long, AlarmResolvedDB> retVal = new Dictionary<long, AlarmResolvedDB>();
+
+            lock (lockObjAlarm)
+            {
+                using (var access = new AccessAlarmDB())
+                {
+                    var alarm = access.ResolvedAlarm.ToList();
+
+                    foreach (AlarmResolvedDB a in alarm)
+                    {
+                        retVal.Add(a.Id, a);
+                    }
+                }
+
+                return retVal;
+            }
+        }
+
+        #endregion
+
         public bool AddMeasurements(List<DynamicMeasurement> measurements)
         {
             lock (lockObj)

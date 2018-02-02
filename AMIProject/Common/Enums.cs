@@ -35,4 +35,20 @@ namespace FTN.Common
         HOUR,
         DAY
     }
+
+    [TypeConverter(typeof(EnumDescriptionTypeConverter))]
+    public enum TypeVoltage : int
+    {
+        [Description("Under voltage")]
+        UNDERVOLTAGE = 0,
+        [Description("Over voltage")]
+        OVERVOLTAGE,
+        INBOUNDS
+    }
+
+    public enum Status : int
+    {
+        ACTIVE = 0,
+        RESOLVED
+    }
 }

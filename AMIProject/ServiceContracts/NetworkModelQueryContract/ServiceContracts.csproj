@@ -101,6 +101,7 @@
     <Compile Include="INetworkModelGDAContractDuplexClient.cs" />
     <Compile Include="INMSForScript.cs" />
     <Compile Include="IScadaDuplexSimulator.cs" />
+    <Compile Include="IScadaForCECommand.cs" />
     <Compile Include="ISmartCacheDuplexForClient.cs" />
     <Compile Include="ISmartCacheForCE.cs" />
     <Compile Include="ITransactionCoordinator.cs" />
