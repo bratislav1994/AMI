@@ -8,6 +8,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using FTN.Common.ClassesForAlarmDB;
 
 namespace SmartCacheCE
 {
@@ -105,6 +106,28 @@ namespace SmartCacheCE
         public List<DynamicMeasurement> GetLastMeas()
         {
             return this.measurements.Values.ToList();
+        }
+
+        public void SendAlarm(DeltaForAlarm delta)
+        {
+            clientsForDeleting.Clear();
+
+            foreach (IModelForDuplex client in clients)
+            {
+                try
+                {
+                    client.SendAlarm(delta);
+                }
+                catch
+                {
+                    clientsForDeleting.Add(client);
+                }
+            }
+
+            foreach (IModelForDuplex client in clientsForDeleting)
+            {
+                clients.Remove(client);
+            }
         }
     }
 }

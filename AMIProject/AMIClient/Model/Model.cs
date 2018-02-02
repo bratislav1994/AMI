@@ -18,8 +18,8 @@ using System.ComponentModel;
 using FTN.Common.Logger;
 using FTN.Services.NetworkModelService.DataModel;
 using FTN.Services.NetworkModelService.DataModel.Dynamic;
-using AMIClient.Classes;
 using System.Windows.Media;
+using FTN.Common.ClassesForAlarmDB;
 
 namespace AMIClient
 {
@@ -29,8 +29,10 @@ namespace AMIClient
         private List<ResourceDescription> meas = new List<ResourceDescription>();
         private Dictionary<long, int> positions = new Dictionary<long, int>();
         private Dictionary<long, int> positionsAmi = new Dictionary<long, int>();
+        private Dictionary<long, int> positionsAlarm = new Dictionary<long, int>();
         private ObservableCollection<TableItem> tableItems = new ObservableCollection<TableItem>();
-        private ObservableCollection<TableItemForAlarm> tableItemsForAlarm = new ObservableCollection<TableItemForAlarm>();
+        private ObservableCollection<ActiveAlarm> tableItemsForActiveAlarm = new ObservableCollection<ActiveAlarm>();
+        private ObservableCollection<ResolvedAlarm> tableItemsForResolvedAlarm = new ObservableCollection<ResolvedAlarm>();
         private RootElement root;
         private bool firstContact = true;
         private bool firstContactCE = true;
@@ -44,7 +46,8 @@ namespace AMIClient
         private ChannelFactory<ICalculationForClient> factoryCE;
         private Thread checkNMS;
         private ICollectionView viewTableItems;
-        private ICollectionView viewTableItemsForAlarm;
+        private ICollectionView viewTableItemsForActiveAlarm;
+        private ICollectionView viewTableItemsForResolvedAlarm;
         private Dictionary<long, DynamicMeasurement> changesForAmis = new Dictionary<long, DynamicMeasurement>();
         private DateTime timeOfLastUpdate = DateTime.Now;
         private bool isTest = false;
@@ -164,31 +167,59 @@ namespace AMIClient
             }
         }
 
-        public ObservableCollection<TableItemForAlarm> TableItemsForAlarm
+        public ObservableCollection<ActiveAlarm> TableItemsForActiveAlarm
         {
             get
             {
-                return tableItemsForAlarm;
+                return tableItemsForActiveAlarm;
             }
 
             set
             {
-                tableItemsForAlarm = value;
-                RaisePropertyChanged("TableItemsForAlarm");
+                tableItemsForActiveAlarm = value;
+                RaisePropertyChanged("TableItemsForActiveAlarm");
             }
         }
 
-        public ICollectionView ViewTableItemsForAlarm
+        public ICollectionView ViewTableItemsForActiveAlarm
         {
             get
             {
-                return viewTableItemsForAlarm;
+                return viewTableItemsForActiveAlarm;
             }
 
             set
             {
-                viewTableItemsForAlarm = value;
-                RaisePropertyChanged("ViewTableItemsForAlarm");
+                viewTableItemsForActiveAlarm = value;
+                RaisePropertyChanged("ViewTableItemsForActiveAlarm");
+            }
+        }
+
+        public ObservableCollection<ResolvedAlarm> TableItemsForResolvedAlarm
+        {
+            get
+            {
+                return tableItemsForResolvedAlarm;
+            }
+
+            set
+            {
+                tableItemsForResolvedAlarm = value;
+                RaisePropertyChanged("TableItemsForResolvedAlarm");
+            }
+        }
+
+        public ICollectionView ViewTableItemsForResolvedAlarm
+        {
+            get
+            {
+                return viewTableItemsForResolvedAlarm;
+            }
+
+            set
+            {
+                viewTableItemsForResolvedAlarm = value;
+                RaisePropertyChanged("ViewTableItemsForResolvedAlarm");
             }
         }
 
@@ -766,6 +797,36 @@ namespace AMIClient
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propName));
+            }
+        }
+
+        public void SendAlarm(DeltaForAlarm delta)
+        {
+            foreach (ActiveAlarm alarm in delta.InsertOperations)
+            {
+                App.Current.Dispatcher.Invoke((Action)delegate
+                {
+                    TableItemsForActiveAlarm.Add(new ActiveAlarm()
+                    {
+                        Id = alarm.Id,
+                        FromPeriod = alarm.FromPeriod,
+                        Status = alarm.Status,
+                        Voltage = alarm.Voltage,
+                        TypeVoltage = alarm.TypeVoltage
+                    });
+                });
+                positionsAlarm.Add(alarm.Id, TableItemsForActiveAlarm.Count - 1);
+            }
+
+            foreach (long psrRef in delta.DeleteOperations)
+            {
+                if (positionsAlarm.ContainsKey(psrRef))
+                {
+                    App.Current.Dispatcher.Invoke((Action)delegate
+                    {
+                        TableItemsForActiveAlarm.RemoveAt(positionsAlarm[psrRef]);
+                    });
+                }
             }
         }
     }

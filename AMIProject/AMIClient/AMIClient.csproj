@@ -208,6 +208,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\AlarmViewModel.cs" />
     <Compile Include="Classes\TableItem.cs" />
     <Compile Include="Classes\GeoRegionForTree.cs" />
     <Compile Include="Classes\RootElement.cs" />
@@ -221,12 +222,17 @@
     <Compile Include="HelperClasses\EnumDescription.cs" />
     <Compile Include="HelperClasses\EnumDescriptionTypeConverter.cs" />
     <Compile Include="Model\IModel.cs" />
+    <Compile Include="ViewModels\ActiveAlarmsViewModel.cs" />
     <Compile Include="ViewModels\AddCimXmlViewModel.cs" />
     <Compile Include="Model\Model.cs" />
     <Compile Include="ViewModels\AlarmSummariesViewModel.cs" />
     <Compile Include="ViewModels\AmiDataGridViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModel.cs" />
     <Compile Include="ViewModels\DataGridViewModel.cs" />
+    <Compile Include="ViewModels\ResolvedAlarmsViewModel.cs" />
+    <Compile Include="View\ActiveAlarmsControl.xaml.cs">
+      <DependentUpon>ActiveAlarmsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\AddCimXmlControl.xaml.cs">
       <DependentUpon>AddCimXmlControl.xaml</DependentUpon>
     </Compile>
@@ -245,7 +251,14 @@
     <Compile Include="View\NetworkPreviewControl.xaml.cs">
       <DependentUpon>NetworkPreviewControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ResolvedAlarmsControl.xaml.cs">
+      <DependentUpon>ResolvedAlarmsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VML\ViewModelLocator.cs" />
+    <Page Include="View\ActiveAlarmsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\AddCimXmlControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -285,6 +298,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\NetworkPreviewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ResolvedAlarmsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CalculationEngine.Access
 {
-    public class Configuration : DbMigrationsConfiguration<AccessDB>
+    public class ConfigurationTSDB : DbMigrationsConfiguration<AccessTSDB>
     {
-        public Configuration()
+        public ConfigurationTSDB()
         {
             AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;

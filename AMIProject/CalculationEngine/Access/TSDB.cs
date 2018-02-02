@@ -1,4 +1,5 @@
 ﻿using FTN.Common;
+using FTN.Common.ClassesForAlarmDB;
 using FTN.Services.NetworkModelService.DataModel;
 using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System;
@@ -12,12 +13,13 @@ using TC57CIM.IEC61970.Wires;
 
 namespace CalculationEngine.Access
 {
-    public class FunctionDB
+    public class TSDB
     {
         private static object lockObj = new object();
         private static object lockObjH = new object();
         private static object lockObjM = new object();
         private static object lockObjD = new object();
+        private static object lockObjAlarm = new object();
         private Timer timer;
         private Timer timerHours;
         private Timer timerDays;
@@ -26,10 +28,24 @@ namespace CalculationEngine.Access
         private bool isDayDone = false;
         private DateTime lastMeasForHoursBeforeAppStart;
         private DateTime lastMeasForMinutesBeforeAppStart;
+        private DB dbAdapter;
 
-        public FunctionDB()
+        public TSDB()
         {
 
+        }
+
+        public DB DbAdapter
+        {
+            get
+            {
+                return this.dbAdapter;
+            }
+
+            set
+            {
+                this.dbAdapter = value;
+            }
         }
 
         public void DoUndone()
@@ -47,7 +63,7 @@ namespace CalculationEngine.Access
 
             lock (lockObjM)
             {
-                using (var access = new AccessDB())
+                using (var access = new AccessTSDB())
                 {
                     try
                     {
@@ -63,7 +79,7 @@ namespace CalculationEngine.Access
 
                                 if (DateTime.Compare(temp, lastMeasMinute) < 0) // postoje merenja u minutnoj tabeli koje treba upisati u satnu
                                 {
-                                    access.Consumers.ToList().ForEach(x => numberOfUniqueConsumers.Add(x.GlobalId));
+                                    dbAdapter.ReadConsumers().Values.ToList().ForEach(x => numberOfUniqueConsumers.Add(x.GlobalId));
                                     DateTime now = RoundDown(DateTime.Now, TimeSpan.FromHours(1));
                                     DateTime roundDownLastMinute = RoundDown(lastMeasForMinutesBeforeAppStart, TimeSpan.FromHours(1));
                                     List<MinuteAggregation> tempList = new List<MinuteAggregation>();
@@ -266,13 +282,13 @@ namespace CalculationEngine.Access
 
             lock (lockObjM)
             {
-                using (var access = new AccessDB())
+                using (var access = new AccessTSDB())
                 {
                     var measurements = access.AggregationForMinutes.Where(x => DateTime.Compare(x.TimeStamp, to) < 0 && DateTime.Compare(x.TimeStamp, from) > 0).ToList();
 
                     if (measurements == null || measurements.Count == 0)
                     {
-                        var totalConsumers = access.Consumers.ToList();
+                        var totalConsumers = dbAdapter.ReadConsumers().Values.ToList();
 
                         if (totalConsumers != null || totalConsumers.Count != 0)
                         {
@@ -333,7 +349,7 @@ namespace CalculationEngine.Access
 
             lock (lockObj)
             {
-                using (var access = new AccessDB())
+                using (var access = new AccessTSDB())
                 {
                     var rawMeas = access.AggregationForHours.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList();
                     Dictionary<DateTime, int> cntForVoltage = new Dictionary<DateTime, int>();
@@ -376,7 +392,7 @@ namespace CalculationEngine.Access
 
             lock (lockObjH)
             {
-                using (var access = new AccessDB())
+                using (var access = new AccessTSDB())
                 {
                     try
                     {
@@ -392,7 +408,7 @@ namespace CalculationEngine.Access
 
                                 if (DateTime.Compare(temp, lastMeasHour) < 0) // postoje merenja u minutnoj tabeli koje treba upisati u satnu
                                 {
-                                    var consumers = access.Consumers.ToList();
+                                    var consumers = dbAdapter.ReadConsumers().Values.ToList();
                                     consumers.ForEach(x => numberOfUniqueConsumers.Add(x.GlobalId));
                                     DateTime now = RoundDown(DateTime.Now, TimeSpan.FromDays(1));
                                     DateTime roundDownLastMeasHour = RoundDown(lastMeasForHoursBeforeAppStart, TimeSpan.FromDays(1));
@@ -593,13 +609,13 @@ namespace CalculationEngine.Access
 
             lock (lockObjM)
             {
-                using (var access = new AccessDB())
+                using (var access = new AccessTSDB())
                 {
                     var measurements = access.AggregationForHours.Where(x => DateTime.Compare(x.TimeStamp, to) < 0 && DateTime.Compare(x.TimeStamp, from) > 0).ToList();
 
                     if (measurements == null || measurements.Count == 0)
                     {
-                        var totalConsumers = access.Consumers.ToList();
+                        var totalConsumers = dbAdapter.ReadConsumers().Values.ToList();
 
                         if (totalConsumers != null || totalConsumers.Count != 0)
                         {
@@ -660,7 +676,7 @@ namespace CalculationEngine.Access
 
             lock (lockObj)
             {
-                using (var access = new AccessDB())
+                using (var access = new AccessTSDB())
                 {
                     var rawMeas = access.AggregationForDays.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList();
                     Dictionary<DateTime, int> cntForVoltage = new Dictionary<DateTime, int>();
@@ -703,7 +719,7 @@ namespace CalculationEngine.Access
 
             lock (lockObj)
             {
-                using (var access = new AccessDB())
+                using (var access = new AccessTSDB())
                 {
                     try
                     {
@@ -851,6 +867,7 @@ namespace CalculationEngine.Access
         }
 
         #endregion minutes
+
         public void StartThreads()
         {
             DateTime now = DateTime.Now;
@@ -867,7 +884,7 @@ namespace CalculationEngine.Access
         {
             lock (lockObj)
             {
-                using (var access = new AccessDB())
+                using (var access = new AccessTSDB())
                 {
                     foreach (DynamicMeasurement m in measurements)
                     {
@@ -970,7 +987,7 @@ namespace CalculationEngine.Access
 
             lock (lockObj)
             {
-                using (var access = new AccessDB())
+                using (var access = new AccessTSDB())
                 {
                     foreach (var meas in access.Collect.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp <= to).ToList())
                     {
@@ -982,177 +999,6 @@ namespace CalculationEngine.Access
             }
         }
 
-        public bool AddGeoRegions(List<GeographicalRegionDb> geoRegions)
-        {
-            lock (lockObj)
-            {
-                using (var access = new AccessDB())
-                {
-                    foreach (GeographicalRegionDb gr in geoRegions)
-                    {
-                        access.GeoRegions.Add(gr);
-                    }
-
-                    int i = access.SaveChanges();
-
-                    if (i == 0)
-                    {
-                        return false;
-                    }
-
-                    return true;
-                }
-            }
-        }
-
-        public bool AddSubGeoRegions(List<SubGeographicalRegionDb> subGeoRegions)
-        {
-            lock (lockObj)
-            {
-                using (var access = new AccessDB())
-                {
-                    foreach (SubGeographicalRegionDb sgr in subGeoRegions)
-                    {
-                        access.SubGeoRegions.Add(sgr);
-                    }
-
-                    int i = access.SaveChanges();
-
-                    if (i == 0)
-                    {
-                        return false;
-                    }
-
-                    return true;
-                }
-            }
-        }
-
-        public bool AddSubstations(List<SubstationDb> substations)
-        {
-            lock (lockObj)
-            {
-                using (var access = new AccessDB())
-                {
-                    foreach (SubstationDb ss in substations)
-                    {
-                        access.Substations.Add(ss);
-                    }
-
-                    int i = access.SaveChanges();
-
-                    if (i == 0)
-                    {
-                        return false;
-                    }
-
-                    return true;
-                }
-            }
-        }
-
-        public bool AddConsumers(List<EnergyConsumerDb> consumers)
-        {
-            lock (lockObj)
-            {
-                using (var access = new AccessDB())
-                {
-                    foreach (EnergyConsumerDb ec in consumers)
-                    {
-                        access.Consumers.Add(ec);
-                    }
-
-                    int i = access.SaveChanges();
-
-                    if (i == 0)
-                    {
-                        return false;
-                    }
-
-                    return true;
-                }
-            }
-        }
-
-        public Dictionary<long, EnergyConsumerDb> ReadConsumers()
-        {
-            Dictionary<long, EnergyConsumerDb> retVal = new Dictionary<long, EnergyConsumerDb>();
-
-            lock (lockObj)
-            {
-                using (var access = new AccessDB())
-                {
-                    var consumers = access.Consumers.ToList();
-
-                    foreach (EnergyConsumerDb ec in consumers)
-                    {
-                        retVal.Add(ec.GlobalId, ec);
-                    }
-                }
-
-                return retVal;
-            }
-        }
-
-        public Dictionary<long, SubstationDb> ReadSubstations()
-        {
-            Dictionary<long, SubstationDb> retVal = new Dictionary<long, SubstationDb>();
-
-            lock (lockObj)
-            {
-                using (var access = new AccessDB())
-                {
-                    var substations = access.Substations.ToList();
-
-                    foreach (SubstationDb ss in substations)
-                    {
-                        retVal.Add(ss.GlobalId, ss);
-                    }
-                }
-
-                return retVal;
-            }
-        }
-
-        public Dictionary<long, SubGeographicalRegionDb> ReadSubGeoRegions()
-        {
-            Dictionary<long, SubGeographicalRegionDb> retVal = new Dictionary<long, SubGeographicalRegionDb>();
-
-            lock (lockObj)
-            {
-                using (var access = new AccessDB())
-                {
-                    var subGeoRegions = access.SubGeoRegions.ToList();
-
-                    foreach (SubGeographicalRegionDb sgr in subGeoRegions)
-                    {
-                        retVal.Add(sgr.GlobalId, sgr);
-                    }
-                }
-
-                return retVal;
-            }
-        }
-
-        public Dictionary<long, GeographicalRegionDb> ReadGeoRegions()
-        {
-            Dictionary<long, GeographicalRegionDb> retVal = new Dictionary<long, GeographicalRegionDb>();
-
-            lock (lockObj)
-            {
-                using (var access = new AccessDB())
-                {
-                    var geoRegions = access.GeoRegions.ToList();
-
-                    foreach (GeographicalRegionDb gr in geoRegions)
-                    {
-                        retVal.Add(gr.GlobalId, gr);
-                    }
-                }
-
-                return retVal;
-            }
-        }
         #region private methods
 
         private void SetUpTimer(DateTime argument)
@@ -1179,13 +1025,13 @@ namespace CalculationEngine.Access
 
             lock (lockObj)
             {
-                using (var access = new AccessDB())
+                using (var access = new AccessTSDB())
                 {
                     var measurements = access.Collect.Where(x => DateTime.Compare(x.TimeStamp, to) < 0 && DateTime.Compare(x.TimeStamp, from) > 0).ToList();
 
                     if (measurements == null || measurements.Count == 0)
                     {
-                        var totalConsumers = access.Consumers.ToList();
+                        var totalConsumers = dbAdapter.ReadConsumers().Values.ToList();
 
                         if (totalConsumers != null || totalConsumers.Count != 0)
                         {
@@ -1345,7 +1191,7 @@ namespace CalculationEngine.Access
 
             lock (lockObj)
             {
-                using (var access = new AccessDB())
+                using (var access = new AccessTSDB())
                 {
                     var rawMeas = access.AggregationForMinutes.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList();
                     Dictionary<DateTime, int> cntForVoltage = new Dictionary<DateTime, int>();
@@ -1394,7 +1240,7 @@ namespace CalculationEngine.Access
 
         public void DoUndoneFill()
         {
-            using (var access = new AccessDB())
+            using (var access = new AccessTSDB())
             {
                 FillMinuteTable(access);
                 FillHourTable(access);
@@ -1402,7 +1248,7 @@ namespace CalculationEngine.Access
             }
         }
 
-        private void FillMinuteTable(AccessDB access)
+        private void FillMinuteTable(AccessTSDB access)
         {
             try
             {
@@ -1450,13 +1296,13 @@ namespace CalculationEngine.Access
                     roundDownCollect = roundDownCollect.AddMinutes(15);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
         }
 
-        private void FillHourTable(AccessDB access)
+        private void FillHourTable(AccessTSDB access)
         {
             try
             {
@@ -1481,14 +1327,14 @@ namespace CalculationEngine.Access
                     roundDownMinute = roundDownMinute.AddHours(1);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
         }
 
 
-        private void FillMonthTable(AccessDB access)
+        private void FillMonthTable(AccessTSDB access)
         {
             try
             {
@@ -1513,7 +1359,7 @@ namespace CalculationEngine.Access
                     roundDownHour = roundDownHour.AddDays(1);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }

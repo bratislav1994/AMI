@@ -1,6 +1,6 @@
-﻿using AMIClient.Classes;
-using CalculationEngine.Access;
+﻿using CalculationEngine.Access;
 using FTN.Common;
+using FTN.Common.ClassesForAlarmDB;
 using FTN.Common.Logger;
 using FTN.ServiceContracts;
 using FTN.Services.NetworkModelService.DataModel;
@@ -26,7 +26,9 @@ namespace CalculationEngine
         private List<ISmartCacheForCE> smartCachesForDeleting;
         private List<ResourceDescription> meas;
         private bool firstTimeCoordinator = true;
-        private FunctionDB dataBaseAdapter;
+        private bool firstTimeScada = true;
+        private TSDB timeSeriesDataBaseAdapter;
+        private DB dataBaseAdapter;
         private Dictionary<long, GeographicalRegionDb> geoRegions;
         private Dictionary<long, SubGeographicalRegionDb> subGeoRegions;
         private Dictionary<long, SubstationDb> substations;
@@ -35,15 +37,26 @@ namespace CalculationEngine
         private Dictionary<long, SubGeographicalRegionDb> subGeoRegionsTemp;
         private Dictionary<long, SubstationDb> substationsTemp;
         private Dictionary<long, EnergyConsumerDb> amisTemp;
-        private Dictionary<long, List<TableItemForAlarm>> alarms;
+        private Dictionary<long, ActiveAlarm> alarmActiveDB;
+        private IScadaForCECommand proxyScada;
 
         public CalculationEngine()
         {
             smartCaches = new List<ISmartCacheForCE>();
             smartCachesForDeleting = new List<ISmartCacheForCE>();
-            dataBaseAdapter = new FunctionDB();
-            dataBaseAdapter.DoUndone();
-            dataBaseAdapter.StartThreads();
+            dataBaseAdapter = new DB();
+            timeSeriesDataBaseAdapter = new TSDB();
+            timeSeriesDataBaseAdapter.DbAdapter = dataBaseAdapter;
+            // ako se ove 2 linije zakomentarisu, narednih 5 se otkomentarisu i obrnuto
+            //timeSeriesDataBaseAdapter.DoUndone();
+            //timeSeriesDataBaseAdapter.StartThreads();
+            //
+            //Filler f = new Filler();
+            //f.DbAdapter = dataBaseAdapter;
+            //f.TimeSeriesDbAdapter = timeSeriesDataBaseAdapter;
+            //f.Fill();
+            //this.DoUndoneFill();
+            //
             geoRegions = new Dictionary<long, GeographicalRegionDb>();
             subGeoRegions = new Dictionary<long, SubGeographicalRegionDb>();
             substations = new Dictionary<long, SubstationDb>();
@@ -57,7 +70,8 @@ namespace CalculationEngine
             substationsTemp = new Dictionary<long, SubstationDb>();
             amisTemp = new Dictionary<long, EnergyConsumerDb>();
             meas = new List<ResourceDescription>();
-            alarms = new Dictionary<long, List<TableItemForAlarm>>();
+            alarmActiveDB = new Dictionary<long, ActiveAlarm>();
+            alarmActiveDB = dataBaseAdapter.ReadActiveAlarm();
 
             while (true)
             {
@@ -119,6 +133,34 @@ namespace CalculationEngine
             }
         }
 
+        public IScadaForCECommand ProxyScada
+        {
+            get
+            {
+                if (firstTimeScada)
+                {
+                    Logger.LogMessageToFile(string.Format("CE.CalculationEngine.ProxyScada; line: {0}; Create channel between CE and Scada", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    NetTcpBinding binding = new NetTcpBinding();
+                    binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    binding.MaxReceivedMessageSize = Int32.MaxValue;
+                    binding.MaxBufferSize = Int32.MaxValue;
+                    ChannelFactory<IScadaForCECommand> factory = new ChannelFactory<IScadaForCECommand>(
+                        binding,
+                        new EndpointAddress("net.tcp://localhost:10012/Scada/CE"));
+                    proxyScada = factory.CreateChannel();
+                    firstTimeScada = false;
+                }
+
+                Logger.LogMessageToFile(string.Format("CE.CalculationEngine.ProxyScada; line: {0}; Channel CE-Scada is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                return proxyScada;
+            }
+
+            set
+            {
+                proxyScada = value;
+            }
+        }
+
         public void ConnectClient()
         {
             return;
@@ -131,13 +173,13 @@ namespace CalculationEngine
             switch (resolution)
             {
                 case ResolutionType.MINUTE:
-                    result = this.dataBaseAdapter.ReadMinuteAggregationTable(gids, from);
+                    result = this.timeSeriesDataBaseAdapter.ReadMinuteAggregationTable(gids, from);
                     break;
                 case ResolutionType.HOUR:
-                    result = this.dataBaseAdapter.ReadHourAggregationTable(gids, from);
+                    result = this.timeSeriesDataBaseAdapter.ReadHourAggregationTable(gids, from);
                     break;
                 case ResolutionType.DAY:
-                    result = this.dataBaseAdapter.ReadDayAggregationTable(gids, from);
+                    result = this.timeSeriesDataBaseAdapter.ReadDayAggregationTable(gids, from);
                     break;
             }
 
@@ -267,11 +309,10 @@ namespace CalculationEngine
             Console.WriteLine("Send data to client");
             Console.WriteLine("Data from scada: " + measurements.Count);
             int cntForVoltage = 0;
-
-            dataBaseAdapter.AddMeasurements(measurements.Values.ToList());
-            CheckAlarms(measurements.Values.ToList());
-
             Dictionary<long, DynamicMeasurement> addSubstations = new Dictionary<long, DynamicMeasurement>();
+
+            timeSeriesDataBaseAdapter.AddMeasurements(measurements.Values.ToList());
+            DeltaForAlarm delta = CheckAlarms(measurements.Values.ToList());
 
             foreach (KeyValuePair<long, SubstationDb> ss in substations)
             {
@@ -363,6 +404,7 @@ namespace CalculationEngine
                 try
                 {
                     sc.SendMeasurements(measurements);
+                    sc.SendAlarm(delta);
                 }
                 catch
                 {
@@ -378,55 +420,57 @@ namespace CalculationEngine
             Logger.LogMessageToFile(string.Format("CE.CalculationEngine.DataFromScada; line: {0}; Finish transport data SCADA-CE-Client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
-        private void CheckAlarms(List<DynamicMeasurement> measurements)
+        private DeltaForAlarm CheckAlarms(List<DynamicMeasurement> measurements)
         {
+            DeltaForAlarm delta = new DeltaForAlarm();
+            Dictionary<long, DynamicMeasurement> gidsInAlarm = new Dictionary<long, DynamicMeasurement>();
+
             foreach (DynamicMeasurement dm in measurements)
             {
                 if (!dm.IsAlarm)
                 {
-                    if (alarms.ContainsKey(dm.PsrRef))
+                    if (alarmActiveDB.ContainsKey(dm.PsrRef))
                     {
-                        foreach (TableItemForAlarm alarm in alarms[dm.PsrRef])
-                        {
-                            if(alarm.Status == AMIClient.HelperClasses.Status.ACTIVE)
-                            {
-                                alarm.Status = AMIClient.HelperClasses.Status.RESOLVED;
-                                alarm.ToPeriod = dm.TimeStamp;
-                            }
-                        }
+                        ActiveAlarm alarmA = alarmActiveDB[dm.PsrRef];
+
+                        ResolvedAlarm alarmR = new ResolvedAlarm();
+                        alarmR.FromPeriod = alarmA.FromPeriod;
+                        alarmR.Id = alarmA.Id;
+                        alarmR.Status = Status.RESOLVED;
+                        alarmR.ToPeriod = dm.TimeStamp;
+                        alarmR.TypeVoltage = alarmA.TypeVoltage;
+                        dataBaseAdapter.AddResolvedAlarm(alarmR);
+                        dataBaseAdapter.DeleteActiveAlarm(alarmA);
+                        alarmActiveDB.Remove(dm.PsrRef);
+                        delta.DeleteOperations.Add(alarmA.Id);
                     }
                 }
                 else
                 {
-                    if (alarms.ContainsKey(dm.PsrRef))
-                    {
-                        if (alarms[dm.PsrRef].Last().Status == AMIClient.HelperClasses.Status.RESOLVED)
-                        {
-                            alarms[dm.PsrRef].Add(new TableItemForAlarm()
-                            {
-                                FromPeriod = dm.TimeStamp,
-                                Status = AMIClient.HelperClasses.Status.ACTIVE,
-                                Consumer = dm.PsrRef.ToString(),
-                                Id = dm.PsrRef,
-                                TypeVoltage = AMIClient.HelperClasses.TypeVoltage.OVERVOLTAGE
-                            });
-                        }
-                    }
-                    else
-                    {
-                        alarms.Add(dm.PsrRef, new List<TableItemForAlarm>());
+                    gidsInAlarm.Add(dm.PsrRef, dm);
 
-                        alarms[dm.PsrRef].Add(new TableItemForAlarm()
-                        {
-                            FromPeriod = dm.TimeStamp,
-                            Status = AMIClient.HelperClasses.Status.ACTIVE,
-                            Consumer = dm.PsrRef.ToString(),
-                            Id = dm.PsrRef,
-                            TypeVoltage = AMIClient.HelperClasses.TypeVoltage.OVERVOLTAGE
-                        });
+                    if (!alarmActiveDB.ContainsKey(dm.PsrRef))
+                    {
+                        ActiveAlarm a = new ActiveAlarm();
+                        a.FromPeriod = dm.TimeStamp;
+                        a.Status = Status.ACTIVE;
+                        a.Id = dm.PsrRef;
+                        a.Voltage = dm.CurrentV;
+                        a.TypeVoltage = TypeVoltage.OVERVOLTAGE;
+
+                        alarmActiveDB[dm.PsrRef] = a;
+                        dataBaseAdapter.AddActiveAlarm(a);
+                        delta.InsertOperations.Add(a);
                     }
                 }
             }
+
+            if (delta.InsertOperations.Count > 0)
+            {
+                Console.WriteLine(ProxyScada.Command(gidsInAlarm));
+            }
+
+            return delta;
         }
 
         public void Subscribe()
@@ -436,12 +480,12 @@ namespace CalculationEngine
 
         public void FillDataBase(List<DynamicMeasurement> measurements)
         {
-            dataBaseAdapter.AddMeasurements(measurements);
+            timeSeriesDataBaseAdapter.AddMeasurements(measurements);
         }
 
         public void DoUndoneFill()
         {
-            dataBaseAdapter.DoUndoneFill();
+            timeSeriesDataBaseAdapter.DoUndoneFill();
         }
     }
 }

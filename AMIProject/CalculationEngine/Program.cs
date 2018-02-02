@@ -25,7 +25,8 @@ namespace CalculationEngine
             path = path.Substring(0, path.LastIndexOf("bin")) + "DB";
             AppDomain.CurrentDomain.SetData("DataDirectory", path);
 
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AccessDB, Configuration>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AccessTSDB, ConfigurationTSDB>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AccessDB, ConfigurationDB>());
             Console.Title = "CE";
             Logger.Path = "CalculationEngnine.txt";
             Start();

@@ -14,23 +14,25 @@ namespace AMIClient.ViewModels
     {
         private static AlarmSummariesViewModel instance;
         private Model model;
-        private Dictionary<string, string> columnFilters;
-        private string consumerFilter = string.Empty;
-        private string statusFilter = string.Empty;
-        private string typeVoltageFilter = string.Empty;
+        private ActiveAlarmsViewModel activeAlarmsVM;
+        private ResolvedAlarmsViewModel resolvedAlarmsVM;
+        private BindingList<AlarmViewModel> alarmViewModels;
+        private AlarmViewModel selectedTab;
 
         public AlarmSummariesViewModel()
-        { }
+        {
+
+        }
 
         public void SetModel(Model model)
         {
             this.Model = model;
-            columnFilters = new Dictionary<string, string>();
-            columnFilters[DataGridAlarmHeader.Consumer.ToString()] = string.Empty;
-            columnFilters[DataGridAlarmHeader.Status.ToString()] = string.Empty;
-            columnFilters[DataGridAlarmHeader.TypeVoltage.ToString()] = string.Empty;
-            this.Model.ViewTableItemsForAlarm = new CollectionViewSource { Source = this.Model.TableItemsForAlarm }.View;
-            this.Model.ViewTableItemsForAlarm = CollectionViewSource.GetDefaultView(this.Model.TableItemsForAlarm);
+            this.ActiveAlarmsVM = new ActiveAlarmsViewModel(model) { Header = "Active alarms" };
+            this.ResolvedAlarmsVM = new ResolvedAlarmsViewModel(model) { Header = "Resolved alarms" };
+            this.AlarmViewModels = new BindingList<AlarmViewModel>();
+            this.AlarmViewModels.Add(this.ActiveAlarmsVM);
+            this.AlarmViewModels.Add(this.ResolvedAlarmsVM);
+            this.SelectedTab = this.AlarmViewModels[0];
         }
 
         public static AlarmSummariesViewModel Instance
@@ -59,98 +61,61 @@ namespace AMIClient.ViewModels
             }
         }
 
-        public string ConsumerFilter
+        public ActiveAlarmsViewModel ActiveAlarmsVM
         {
             get
             {
-                return consumerFilter;
+                return activeAlarmsVM;
             }
 
             set
             {
-                consumerFilter = value;
-                this.RaisePropertyChanged("ConsumerFilter");
-                columnFilters[DataGridAlarmHeader.Consumer.ToString()] = this.consumerFilter;
-                this.OnFilterApply();
+                activeAlarmsVM = value;
+                this.RaisePropertyChanged("ActiveAlarmsVM");
             }
         }
 
-        public string StatusFilter
+        public ResolvedAlarmsViewModel ResolvedAlarmsVM
         {
             get
             {
-                return statusFilter;
+                return resolvedAlarmsVM;
             }
 
             set
             {
-                statusFilter = value;
-                this.RaisePropertyChanged("StatusFilter");
-                columnFilters[DataGridAlarmHeader.Status.ToString()] = this.statusFilter;
-                this.OnFilterApply();
+                resolvedAlarmsVM = value;
+                this.RaisePropertyChanged("ResolvedAlarmsVM");
             }
         }
 
-        public string TypeVoltageFilter
+        public BindingList<AlarmViewModel> AlarmViewModels
         {
             get
             {
-                return typeVoltageFilter;
+                return alarmViewModels;
             }
 
             set
             {
-                typeVoltageFilter = value;
-                this.RaisePropertyChanged("TypeVoltageFilter");
-                columnFilters[DataGridAlarmHeader.TypeVoltage.ToString()] = this.typeVoltageFilter;
-                this.OnFilterApply();
+                alarmViewModels = value;
+                this.RaisePropertyChanged("AlarmViewModels");
             }
         }
 
-        #region filter
-
-        public void OnFilterApply()
+        public AlarmViewModel SelectedTab
         {
-            this.Model.ViewTableItemsForAlarm = CollectionViewSource.GetDefaultView(this.Model.TableItemsForAlarm);
-
-            if (this.Model.ViewTableItemsForAlarm != null)
+            get
             {
-                this.Model.ViewTableItemsForAlarm.Filter = delegate (object item)
-                {
-                    bool show = true;
+                return selectedTab;
+            }
 
-                    foreach (KeyValuePair<string, string> filter in columnFilters)
-                    {
-                        bool containsFilter = false;
-
-                        if (filter.Key.Equals(DataGridAlarmHeader.Consumer.ToString()))
-                        {
-                            containsFilter = ((TableItemForAlarm)item).Consumer.IndexOf(ConsumerFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
-                        }
-                        else if (filter.Key.Equals(DataGridAlarmHeader.Status.ToString()))
-                        {
-                            Status status = ((TableItemForAlarm)item).Status;
-                            containsFilter = EnumDescription.GetEnumDescription(status).IndexOf(StatusFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
-                        }
-                        else if (filter.Key.Equals(DataGridAlarmHeader.TypeVoltage.ToString()))
-                        {
-                            TypeVoltage type = ((TableItemForAlarm)item).TypeVoltage;
-                            containsFilter = EnumDescription.GetEnumDescription(type).IndexOf(TypeVoltageFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
-                        }
-
-                        if (!containsFilter)
-                        {
-                            show = false;
-                            break;
-                        }
-                    }
-
-                    return show;
-                };
+            set
+            {
+                selectedTab = value;
+                this.RaisePropertyChanged("SelectedTab");
             }
         }
-
-        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 

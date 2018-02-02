@@ -95,6 +95,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClassesForAlarmDB\ActiveAlarm.cs" />
+    <Compile Include="ClassesForAlarmDB\DeltaForAlarm.cs" />
+    <Compile Include="ClassesForAlarmDB\ResolvedAlarm.cs" />
+    <Compile Include="EnumDescriptionTypeConverter.cs" />
     <Compile Include="GDA\Association.cs" />
     <Compile Include="EnumDescs.cs" />
     <Compile Include="Enums.cs" />

@@ -90,9 +90,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Access\AccessDB.cs" />
-    <Compile Include="Access\Configuration.cs" />
-    <Compile Include="Access\FunctionDB.cs" />
+    <Compile Include="Access\AccessTSDB.cs" />
+    <Compile Include="Access\ConfigurationDB.cs" />
+    <Compile Include="Access\ConfigurationTSDB.cs" />
+    <Compile Include="Access\DB.cs" />
+    <Compile Include="Access\TSDB.cs" />
     <Compile Include="CalculationEngine.cs" />
+    <Compile Include="Filler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
