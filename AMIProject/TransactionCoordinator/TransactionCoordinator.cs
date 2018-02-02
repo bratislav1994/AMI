@@ -89,17 +89,17 @@ namespace TransactionCoordinator
                     }
                 }
 
-                foreach (IScada scada in scadas)
-                {
-                    try
-                    {
-                        scada.EnlistMeas(dataForScada);
-                    }
-                    catch
-                    {
-                        scadasForDeleting.Add(scada);
-                    }
-                }
+                //foreach (IScada scada in scadas)
+                //{
+                //    try
+                //    {
+                //        scada.EnlistMeas(dataForScada);
+                //    }
+                //    catch
+                //    {
+                //        scadasForDeleting.Add(scada);
+                //    }
+                //}
 
                 if (scadasForDeleting.Count > 0)
                 {
@@ -120,17 +120,17 @@ namespace TransactionCoordinator
 
                 List<bool> list = new List<bool>(scadas.Count);
 
-                foreach (IScada scada in scadas)
-                {
-                    try
-                    {
-                        list.Add(scada.Prepare());
-                    }
-                    catch
-                    {
-                        scadasForDeleting.Add(scada);
-                    }
-                }
+                //foreach (IScada scada in scadas)
+                //{
+                //    try
+                //    {
+                //        list.Add(scada.Prepare());
+                //    }
+                //    catch
+                //    {
+                //        scadasForDeleting.Add(scada);
+                //    }
+                //}
 
                 if (scadasForDeleting.Count > 0)
                 {
@@ -140,17 +140,17 @@ namespace TransactionCoordinator
 
                 if (list.All(x => x == true) && CalculationEnginePrepareSuccess)
                 {
-                    foreach (IScada scada in scadas)
-                    {
-                        try
-                        {
-                            scada.Commit();
-                        }
-                        catch
-                        {
-                            scadasForDeleting.Add(scada);
-                        }
-                    }
+                    //foreach (IScada scada in scadas)
+                    //{
+                    //    try
+                    //    {
+                    //        scada.Commit();
+                    //    }
+                    //    catch
+                    //    {
+                    //        scadasForDeleting.Add(scada);
+                    //    }
+                    //}
 
                     if (scadasForDeleting.Count > 0)
                     {
@@ -201,17 +201,17 @@ namespace TransactionCoordinator
                         proxyCE = null;
                     }
 
-                    foreach (IScada scada in scadas)
-                    {
-                        try
-                        {
-                            scada.Rollback();
-                        }
-                        catch
-                        {
-                            scadasForDeleting.Add(scada);
-                        }
-                    }
+                    //foreach (IScada scada in scadas)
+                    //{
+                    //    try
+                    //    {
+                    //        scada.Rollback();
+                    //    }
+                    //    catch
+                    //    {
+                    //        scadasForDeleting.Add(scada);
+                    //    }
+                    //}
 
                     if (scadasForDeleting.Count > 0)
                     {

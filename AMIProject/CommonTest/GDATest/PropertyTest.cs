@@ -13,7 +13,7 @@ namespace CommonTest.GDATest
     public class PropertyTest
     {
         private Property property;
-        private ModelCode id = ModelCode.ANALOG_NORMALVALUE;
+        private ModelCode id = ModelCode.ENERGYCONS_PMAX;
         private PropertyValue value = new PropertyValue(100);
 
         [OneTimeSetUp]
@@ -39,33 +39,33 @@ namespace CommonTest.GDATest
         [Test]
         public void ConstructorWithParameter2Test()
         {
-            Assert.DoesNotThrow(() => new Property(ModelCode.ANALOG_NORMALVALUE));
+            Assert.DoesNotThrow(() => new Property(ModelCode.ENERGYCONS_PMAX));
         }
 
         [Test]
         public void ConstructorWithParameter3Test()
         {
-            Assert.DoesNotThrow(() => new Property(ModelCode.ANALOG_NORMALVALUE, value));
+            Assert.DoesNotThrow(() => new Property(ModelCode.ENERGYCONS_PMAX, value));
         }
 
         [Test]
         public void ConstructorWithParameter42Test()
         {
-            Assert.Throws<Exception>(() => new Property(ModelCode.ANALOG_NORMALVALUE, false));
+            Assert.Throws<Exception>(() => new Property(ModelCode.ENERGYCONS_PMAX, false));
         }
 
         [Test]
         [TestCase(100)]
-        public void ConstructorWithParameter5Test(int value)
+        public void ConstructorWithParameter5Test(float value)
         {
-            Assert.DoesNotThrow(() => new Property(ModelCode.ANALOG_INVALIDRANGE, value));
+            Assert.DoesNotThrow(() => new Property(ModelCode.ENERGYCONS_PMAX, value));
         }
 
         [Test]
         [TestCase(100)]
         public void ConstructorWithParameter6Test(float value)
         {
-            Assert.DoesNotThrow(() => new Property(ModelCode.ANALOG_NORMALVALUE, value));
+            Assert.DoesNotThrow(() => new Property(ModelCode.ENERGYCONS_PMAX, value));
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace CommonTest.GDATest
         [Test]
         public void TypeTest()
         {
-            this.property.Id = ModelCode.ANALOG_MAXVALUE;
+            this.property.Id = ModelCode.ENERGYCONS_PMAX;
             Assert.AreEqual(PropertyType.Float, property.Type);
         }
 
@@ -119,13 +119,13 @@ namespace CommonTest.GDATest
             Assert.AreNotEqual(true, prop1 == prop2);
 
             PropertyValue value = new PropertyValue(1000);
-            prop1 = new Property(ModelCode.ANALOG_VALIDRANGE, value);
-            prop2 = new Property(ModelCode.ANALOG_VALIDRANGE, value);
+            prop1 = new Property(ModelCode.ENERGYCONS_PMAX, value);
+            prop2 = new Property(ModelCode.ENERGYCONS_PMAX, value);
             Assert.AreEqual(true, prop1 == prop2);
 
             value = new PropertyValue(v);
-            prop1 = new Property(ModelCode.ANALOG_NORMALVALUE, value);
-            prop2 = new Property(ModelCode.ANALOG_NORMALVALUE, value);
+            prop1 = new Property(ModelCode.ENERGYCONS_QMAX, value);
+            prop2 = new Property(ModelCode.ENERGYCONS_QMAX, value);
             Assert.AreEqual(true, prop1 == prop2);
 
             List<long> gid = new List<long>() { 48562846284, 485628462845 };
@@ -158,7 +158,7 @@ namespace CommonTest.GDATest
         [Test]
         public void GetPropertyType()
         {
-            Assert.AreEqual(PropertyType.Float, Property.GetPropertyType(ModelCode.ANALOG_MAXVALUE));
+            Assert.AreEqual(PropertyType.Float, Property.GetPropertyType(ModelCode.ENERGYCONS_PMAX));
         }
 
         [Test]
@@ -183,9 +183,9 @@ namespace CommonTest.GDATest
             string result = property.ToString();
             Assert.AreEqual("1", result);
 
-            this.property.Id = ModelCode.ANALOG_VALIDRANGE;
+            this.property.Id = ModelCode.ENERGYCONS_PMAX;
             this.property.PropertyValue = new PropertyValue(150);
-            result = property.ToString();
+            result = property.PropertyValue.LongValue.ToString();
             Assert.AreEqual("150", result);
 
             this.property.Id = ModelCode.IDOBJ_GID;
@@ -207,11 +207,6 @@ namespace CommonTest.GDATest
             this.property.PropertyValue = new PropertyValue();
             result = property.ToString();
             Assert.AreEqual(null, result);
-
-            this.property.Id = ModelCode.ANALOG_NORMALVALUE;
-            this.property.PropertyValue = new PropertyValue(100);
-            result = property.ToString();
-            Assert.AreEqual("0", result);
         }
 
         [Test]
@@ -220,7 +215,7 @@ namespace CommonTest.GDATest
             this.property.Id = ModelCode.IDOBJ_MRID;
             int valueI = 1000;
             Assert.Throws<Exception>(() => property.SetValue(valueI));
-            this.property.Id = ModelCode.MEASUREMENT_MAXRAWVAL;
+            this.property.Id = ModelCode.ENERGYCONS_PMAX;
             Assert.DoesNotThrow(() => property.SetValue(valueI));
             this.property.Id = ModelCode.IDOBJ_GID;
             Assert.DoesNotThrow(() => property.SetValue(valueI));
@@ -229,14 +224,14 @@ namespace CommonTest.GDATest
 
             float valueF = 1000;
             Assert.Throws<Exception>(() => property.SetValue(valueF));
-            this.property.Id = ModelCode.ANALOG_MINVALUE;
+            this.property.Id = ModelCode.ENERGYCONS_PMAX;
             Assert.DoesNotThrow(() => property.SetValue(valueF));
 
             long valueL = 1000;
             Assert.Throws<Exception>(() => property.SetValue(valueL));
             this.property.Id = ModelCode.IDOBJ_GID;
             Assert.DoesNotThrow(() => property.SetValue(valueL));
-            this.property.Id = ModelCode.MEASUREMENT_MAXRAWVAL;
+            this.property.Id = ModelCode.ENERGYCONS_PMAX;
             Assert.DoesNotThrow(() => property.SetValue(valueL));
             this.property.Id = ModelCode.MEASUREMENT_DIRECTION;
             Assert.DoesNotThrow(() => property.SetValue(valueL));
@@ -252,7 +247,7 @@ namespace CommonTest.GDATest
             Assert.Throws<Exception>(() => property.SetValue(valueSh));
             this.property.Id = ModelCode.MEASUREMENT_DIRECTION;
             Assert.DoesNotThrow(() => property.SetValue(valueSh));
-            this.property.Id = ModelCode.MEASUREMENT_MAXRAWVAL;
+            this.property.Id = ModelCode.ENERGYCONS_PMAX;
             Assert.DoesNotThrow(() => property.SetValue(valueSh));
             this.property.Id = ModelCode.IDOBJ_GID;
             Assert.DoesNotThrow(() => property.SetValue(valueSh));
@@ -280,24 +275,24 @@ namespace CommonTest.GDATest
             short result = property.AsEnum();
             Assert.AreEqual(value, result);
             
-            this.property.Id = ModelCode.ANALOG_VALIDRANGE;
+            this.property.Id = ModelCode.ENERGYCONS_PMAX;
             Assert.Throws<Exception>(() => property.AsEnum());
         }
 
         [Test]
         public void AsIntTest()
         {
-            int value = 100;
-            this.property.Id = ModelCode.ANALOG_VALIDRANGE;
+            float value = 100;
+            this.property.Id = ModelCode.ENERGYCONS_PMAX;
             property.SetValue(value);
-            int result = property.AsInt();
+            float result = property.AsFloat();
             Assert.AreEqual(value, result);
 
-            value = 1;
+            int value1 = 1;
             this.property.Id = ModelCode.MEASUREMENT_DIRECTION;
-            property.SetValue(value);
-            result = property.AsInt();
-            Assert.AreEqual(value, result);
+            property.SetValue(value1);
+            int result1 = property.AsInt();
+            Assert.AreEqual(value1, result1);
 
             this.property.Id = ModelCode.MEASUREMENT_PSR;
             Assert.Throws<Exception>(() => property.AsInt());
@@ -338,7 +333,7 @@ namespace CommonTest.GDATest
         public void AsFloatTest()
         {
             float value = 100;
-            this.property.Id = ModelCode.ANALOG_MINVALUE;
+            this.property.Id = ModelCode.ENERGYCONS_PMAX;
             property.SetValue(value);
             float result = property.AsFloat();
             Assert.AreEqual(value, result);
@@ -362,7 +357,7 @@ namespace CommonTest.GDATest
             result = property.AsString();
             Assert.AreEqual(value, result);
 
-            this.property.Id = ModelCode.MEASUREMENT_MAXRAWVAL;
+            this.property.Id = ModelCode.ENERGYCONS_PMAX;
             Assert.Throws<Exception>(() => property.AsString());
         }
 
@@ -375,7 +370,7 @@ namespace CommonTest.GDATest
             long result = property.AsReference();
             Assert.AreEqual(value, result);
 
-            this.property.Id = ModelCode.ANALOG_VALIDRANGE;
+            this.property.Id = ModelCode.ENERGYCONS_PMAX;
             Assert.Throws<Exception>(() => property.AsReference());
         }
 
@@ -388,7 +383,7 @@ namespace CommonTest.GDATest
             List<long> result = property.AsReferences();
             Assert.AreEqual(value, result);
 
-            this.property.Id = ModelCode.ANALOG_VALIDRANGE;
+            this.property.Id = ModelCode.ENERGYCONS_PMAX;
             Assert.Throws<Exception>(() => property.AsReferences());
         }
 
@@ -396,13 +391,13 @@ namespace CommonTest.GDATest
         public void IsCompatibleWithTest()
         {
             Property newProp = new Property();
-            newProp.Id = ModelCode.ANALOG_NORMALVALUE;
+            newProp.Id = ModelCode.ENERGYCONS_PMAX;
             newProp.PropertyValue = new PropertyValue(100);
             PropertyType newType = newProp.Type;
             bool result = property.IsCompatibleWith(newType);
             Assert.AreEqual(true, result);
 
-            this.property.Id = ModelCode.ANALOG_VALIDRANGE;
+            this.property.Id = ModelCode.ENERGYCONS_PMAX;
             newProp.Id = ModelCode.IDOBJ_GID;
             newType = newProp.Type;
             result = property.IsCompatibleWith(newType);
@@ -417,7 +412,7 @@ namespace CommonTest.GDATest
             Assert.AreEqual(false, result);
 
             this.property.Id = ModelCode.IDOBJ_GID;
-            newProp.Id = ModelCode.ANALOG_VALIDRANGE;
+            newProp.Id = ModelCode.ENERGYCONS_PMAX;
             newType = newProp.Type;
             result = property.IsCompatibleWith(newType);
             Assert.AreEqual(true, result);
@@ -435,7 +430,7 @@ namespace CommonTest.GDATest
             newType = newProp.Type;
             result = property.IsCompatibleWith(newType);
             Assert.AreEqual(true, result);
-            newProp.Id = ModelCode.ANALOG_VALIDRANGE;
+            newProp.Id = ModelCode.ENERGYCONS_PMAX;
             newType = newProp.Type;
             result = property.IsCompatibleWith(newType);
             Assert.AreEqual(true, result);
@@ -449,7 +444,7 @@ namespace CommonTest.GDATest
             newType = newProp.Type;
             result = property.IsCompatibleWith(newType);
             Assert.AreEqual(false, result);
-            newProp.Id = ModelCode.ANALOG_VALIDRANGE;
+            newProp.Id = ModelCode.ENERGYCONS_PMAX;
             newType = newProp.Type;
             result = property.IsCompatibleWith(newType);
             Assert.AreEqual(false, result);
@@ -458,7 +453,7 @@ namespace CommonTest.GDATest
             result = property.IsCompatibleWith(newType);
             Assert.AreEqual(false, result);
 
-            this.property.Id = ModelCode.ANALOG_VALIDRANGE;
+            this.property.Id = ModelCode.ENERGYCONS_PMAX;
             newProp.Id = ModelCode.BASEVOLTAGE_CONDEQS;
             newType = newProp.Type;
             result = property.IsCompatibleWith(newType);

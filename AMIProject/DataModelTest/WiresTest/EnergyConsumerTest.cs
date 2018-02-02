@@ -22,8 +22,8 @@ namespace DataModelTest.WiresTest
         public void SetupTest()
         {
             this.consumer = new EnergyConsumer();
-            this.consumer.Pfixed = pfixed;
-            this.consumer.Qfixed = qfixed;
+            this.consumer.PMax = pfixed;
+            this.consumer.QMax = qfixed;
         }
 
         [Test]
@@ -39,19 +39,19 @@ namespace DataModelTest.WiresTest
         }
 
         [Test]
-        public void PfixedTest()
+        public void PMaxTest()
         {
-            consumer.Pfixed = pfixed;
+            consumer.PMax = pfixed;
 
-            Assert.AreEqual(pfixed, consumer.Pfixed);
+            Assert.AreEqual(pfixed, consumer.PMax);
         }
 
         [Test]
-        public void QfixedTest()
+        public void QMaxTest()
         {
-            consumer.Qfixed = qfixed;
+            consumer.QMax = qfixed;
 
-            Assert.AreEqual(qfixed, consumer.Qfixed);
+            Assert.AreEqual(qfixed, consumer.QMax);
         }
 
         [Test]
@@ -63,11 +63,19 @@ namespace DataModelTest.WiresTest
             Assert.AreEqual(true, result);
 
             // incorrect
-            obj = new EnergyConsumer() { Pfixed = 1 };
+            obj = new EnergyConsumer() { PMax = 1 };
             result = consumer.Equals(obj);
             Assert.AreNotEqual(true, result);
 
-            obj = new EnergyConsumer() { Qfixed = 1 };
+            obj = new EnergyConsumer() { QMax = 1 };
+            result = consumer.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new EnergyConsumer() { ValidRangePercent = 1 };
+            result = consumer.Equals(obj);
+            Assert.AreNotEqual(true, result);
+
+            obj = new EnergyConsumer() { InvalidRangePercent = 1 };
             result = consumer.Equals(obj);
             Assert.AreNotEqual(true, result);
         }
@@ -94,8 +102,6 @@ namespace DataModelTest.WiresTest
         }
 
         [Test]
-        [TestCase(ModelCode.ENERGYCONS_PFIXED)]
-        [TestCase(ModelCode.ENERGYCONS_QFIXED)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void HasPropertyTestTrue(ModelCode t)
         {
@@ -114,8 +120,6 @@ namespace DataModelTest.WiresTest
         }
 
         [Test]
-        [TestCase(ModelCode.ENERGYCONS_PFIXED)]
-        [TestCase(ModelCode.ENERGYCONS_QFIXED)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void GetPropertyTestCorrect(ModelCode t)
         {
@@ -136,8 +140,6 @@ namespace DataModelTest.WiresTest
         }
 
         [Test]
-        [TestCase(ModelCode.ENERGYCONS_PFIXED)]
-        [TestCase(ModelCode.ENERGYCONS_QFIXED)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void SetPropertyTestCorrects(ModelCode t)
         {
@@ -146,13 +148,6 @@ namespace DataModelTest.WiresTest
 
             switch (property.Id)
             {
-                case ModelCode.ENERGYCONS_PFIXED:
-                    property.SetValue(pfixed);
-                    break;
-
-                case ModelCode.ENERGYCONS_QFIXED:
-                    property.SetValue(qfixed);
-                    break;
                 case ModelCode.IDOBJ_NAME:
                     property.SetValue("Consumer_1");
                     break;

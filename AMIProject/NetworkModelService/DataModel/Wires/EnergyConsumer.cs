@@ -24,9 +24,11 @@ namespace TC57CIM.IEC61970.Wires {
     [DataContract]
     public class EnergyConsumer : ConductingEquipment {
 
-        private float pfixed;
-        private float qfixed;
+        private float pMax;
+        private float qMax;
         private ConsumerType type;
+        private float validRangePercent;
+        private float invalidRangePercent;
 
         public EnergyConsumer()
         {
@@ -38,17 +40,45 @@ namespace TC57CIM.IEC61970.Wires {
         }
 
         [DataMember]
-        public float Pfixed
+        public float ValidRangePercent
         {
-            get { return pfixed; }
-            set { pfixed = value; }
+            get
+            {
+                return validRangePercent;
+            }
+
+            set
+            {
+                validRangePercent = value;
+            }
         }
 
         [DataMember]
-        public float Qfixed
+        public float InvalidRangePercent
         {
-            get { return qfixed; }
-            set { qfixed = value; }
+            get
+            {
+                return invalidRangePercent;
+            }
+
+            set
+            {
+                invalidRangePercent = value;
+            }
+        }
+
+        [DataMember]
+        public float PMax
+        {
+            get { return pMax; }
+            set { pMax = value; }
+        }
+
+        [DataMember]
+        public float QMax
+        {
+            get { return qMax; }
+            set { qMax = value; }
         }
 
         [DataMember]
@@ -68,7 +98,8 @@ namespace TC57CIM.IEC61970.Wires {
             if (base.Equals(obj))
             {
                 EnergyConsumer x = (EnergyConsumer)obj;
-                return (x.pfixed == this.pfixed && x.qfixed == this.qfixed && x.type == this.type);
+                return (x.pMax == this.pMax && x.qMax == this.qMax && x.type == this.type && x.validRangePercent == this.validRangePercent &&
+                        x.invalidRangePercent == this.invalidRangePercent);
             }
             else
             {
@@ -87,9 +118,11 @@ namespace TC57CIM.IEC61970.Wires {
         {
             switch (t)
             {
-                case ModelCode.ENERGYCONS_PFIXED:
-                case ModelCode.ENERGYCONS_QFIXED:
+                case ModelCode.ENERGYCONS_PMAX:
+                case ModelCode.ENERGYCONS_QMAX:
                 case ModelCode.ENERGYCONS_TYPE:
+                case ModelCode.ENERGYCONS_VALIDRANGEPERCENT:
+                case ModelCode.ENERGYCONS_INVALIDRANGEPERCENT:
                     return true;
 
                 default:
@@ -101,14 +134,20 @@ namespace TC57CIM.IEC61970.Wires {
         {
             switch (property.Id)
             {
-                case ModelCode.ENERGYCONS_PFIXED:
-                    property.SetValue(pfixed);
+                case ModelCode.ENERGYCONS_PMAX:
+                    property.SetValue(pMax);
                     break;
-                case ModelCode.ENERGYCONS_QFIXED:
-                    property.SetValue(qfixed);
+                case ModelCode.ENERGYCONS_QMAX:
+                    property.SetValue(qMax);
                     break;
                 case ModelCode.ENERGYCONS_TYPE:
                     property.SetValue((int)type);
+                    break;
+                case ModelCode.ENERGYCONS_VALIDRANGEPERCENT:
+                    property.SetValue(validRangePercent);
+                    break;
+                case ModelCode.ENERGYCONS_INVALIDRANGEPERCENT:
+                    property.SetValue(invalidRangePercent);
                     break;
                 default:
                     base.GetProperty(property);
@@ -120,14 +159,20 @@ namespace TC57CIM.IEC61970.Wires {
         {
             switch (property.Id)
             {
-                case ModelCode.ENERGYCONS_PFIXED:
-                    pfixed = property.AsFloat();
+                case ModelCode.ENERGYCONS_PMAX:
+                    pMax = property.AsFloat();
                     break;
-                case ModelCode.ENERGYCONS_QFIXED:
-                    qfixed = property.AsFloat();
+                case ModelCode.ENERGYCONS_QMAX:
+                    qMax = property.AsFloat();
                     break;
                 case ModelCode.ENERGYCONS_TYPE:
                     type = (ConsumerType)property.AsInt();
+                    break;
+                case ModelCode.ENERGYCONS_VALIDRANGEPERCENT:
+                    validRangePercent = property.AsFloat();
+                    break;
+                case ModelCode.ENERGYCONS_INVALIDRANGEPERCENT:
+                    invalidRangePercent = property.AsFloat();
                     break;
                 default:
                     base.SetProperty(property);
@@ -165,8 +210,10 @@ namespace TC57CIM.IEC61970.Wires {
             consumerCopy.BaseVoltage = this.BaseVoltage;
             consumerCopy.EqContainer = this.EqContainer;
             consumerCopy.Measurements = this.Measurements;
-            consumerCopy.Pfixed = this.Pfixed;
-            consumerCopy.Qfixed = this.Qfixed;
+            consumerCopy.PMax = this.PMax;
+            consumerCopy.QMax = this.QMax;
+            consumerCopy.ValidRangePercent = this.ValidRangePercent;
+            consumerCopy.InvalidRangePercent = this.InvalidRangePercent;
             consumerCopy.Type = this.Type;
 
             return consumerCopy;

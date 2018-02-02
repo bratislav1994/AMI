@@ -121,8 +121,8 @@ namespace FTN.Services.NetworkModelService
         public IdentifiedObject CreateEntity(long globalId)
         {
             short type = ModelCodeHelper.ExtractTypeFromGlobalId(globalId);
-
             IdentifiedObject io = null;
+
             switch ((DMSType)type)
             {
                 case DMSType.GEOREGION:
@@ -137,20 +137,11 @@ namespace FTN.Services.NetworkModelService
                 case DMSType.SUBSTATION:
                     io = new Substation(globalId);
                     break;
-                case DMSType.VOLTAGELEVEL:
-                    io = new VoltageLevel(globalId);
-                    break;
                 case DMSType.ENERGYCONS:
                     io = new EnergyConsumer(globalId);
                     break;
                 case DMSType.POWERTRANSFORMER:
                     io = new PowerTransformer(globalId);
-                    break;
-                case DMSType.POWERTRANSEND:
-                    io = new PowerTransformerEnd(globalId);
-                    break;
-                case DMSType.RATIOTAPCHANGER:
-                    io = new RatioTapChanger(globalId);
                     break;
                 case DMSType.ANALOG:
                     io = new Analog(globalId);

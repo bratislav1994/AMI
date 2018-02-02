@@ -72,7 +72,7 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.ANALOG_MAXVALUE)]
+        [TestCase(ModelCode.ENERGYCONS_PMAX)]
         public void HasPropertyTestFalse(ModelCode t)
         {
             bool result = psr.HasProperty(t);
@@ -92,7 +92,7 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.ANALOG_MAXVALUE)]
+        [TestCase(ModelCode.ENERGYCONS_PMAX)]
         public void GetPropertyTestFalse(ModelCode t)
         {
             property.Id = t;
@@ -113,7 +113,7 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.ANALOG_MAXVALUE, 15000)]
+        [TestCase(ModelCode.ENERGYCONS_PMAX, 15000)]
         public void SetPropertyTestFalse(ModelCode t, float value)
         {
             property.Id = t;
@@ -146,23 +146,9 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949682115)]
-        public void AddReferenceTestFalse(ModelCode referenceId, long globalId)
-        {
-            Assert.DoesNotThrow(() => psr.AddReference(referenceId, globalId));
-        }
-
-        [Test]
         [TestCase(ModelCode.MEASUREMENT_PSR, 42949682113)]
         [TestCase(ModelCode.MEASUREMENT_PSR, 42949682114)]
         public void RemoveReferenceTestCorrect(ModelCode referenceId, long globalId)
-        {
-            Assert.DoesNotThrow(() => psr.RemoveReference(referenceId, globalId));
-        }
-
-        [Test]
-        [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949682115)]
-        public void RemoveReferenceTestFalse(ModelCode referenceId, long globalId)
         {
             Assert.DoesNotThrow(() => psr.RemoveReference(referenceId, globalId));
         }

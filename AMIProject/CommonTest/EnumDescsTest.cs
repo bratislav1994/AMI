@@ -26,8 +26,6 @@ namespace CommonTest
             Type result = enumDesc.GetEnumTypeForPropertyId(ModelCode.MEASUREMENT_DIRECTION);
             Type expected = typeof(Direction);
             Assert.AreEqual(expected, result);
-
-            Assert.Throws<Exception>(() => enumDesc.GetEnumTypeForPropertyId(ModelCode.MEASUREMENT_MAXRAWVAL));
         }
 
         [Test]
@@ -38,9 +36,6 @@ namespace CommonTest
 
             result = enumDesc.GetStringFromEnum(ModelCode.MEASUREMENT_DIRECTION, 4);
             Assert.AreEqual("4", result);
-
-            result = enumDesc.GetStringFromEnum(ModelCode.MEASUREMENT_MAXRAWVAL, 1);
-            Assert.AreEqual("1", result);
         }
     }
 }

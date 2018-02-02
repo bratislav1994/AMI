@@ -17,8 +17,10 @@ namespace FTN.Services.NetworkModelService.DataModel
         private long globalId;
         private string mRID;
         private string name;
-        private float pfixed;
-        private float qfixed;
+        private float pMax;
+        private float qMax;
+        private float validRangePercent;
+        private float invalidRangePercent;
         private long baseVoltage;
         private long eqContainerId;
         private ConsumerType type;
@@ -32,8 +34,10 @@ namespace FTN.Services.NetworkModelService.DataModel
             this.globalId = consumer.GlobalId;
             this.mRID = consumer.Mrid;
             this.name = consumer.Name;
-            this.pfixed = consumer.Pfixed;
-            this.qfixed = consumer.Qfixed;
+            this.pMax = consumer.PMax;
+            this.qMax = consumer.QMax;
+            this.ValidRangePercent = consumer.ValidRangePercent;
+            this.InvalidRangePercent = consumer.InvalidRangePercent;
             this.baseVoltage = consumer.BaseVoltage;
             this.eqContainerId = consumer.EqContainer;
             this.type = consumer.Type;
@@ -84,30 +88,58 @@ namespace FTN.Services.NetworkModelService.DataModel
         }
 
         [DataMember]
-        public float Pfixed
+        public float PMax
         {
             get
             {
-                return pfixed;
+                return pMax;
             }
 
             set
             {
-                pfixed = value;
+                pMax = value;
             }
         }
 
         [DataMember]
-        public float Qfixed
+        public float QMax
         {
             get
             {
-                return qfixed;
+                return qMax;
             }
 
             set
             {
-                qfixed = value;
+                qMax = value;
+            }
+        }
+
+        [DataMember]
+        public float ValidRangePercent
+        {
+            get
+            {
+                return validRangePercent;
+            }
+
+            set
+            {
+                validRangePercent = value;
+            }
+        }
+
+        [DataMember]
+        public float InvalidRangePercent
+        {
+            get
+            {
+                return invalidRangePercent;
+            }
+
+            set
+            {
+                invalidRangePercent = value;
             }
         }
 

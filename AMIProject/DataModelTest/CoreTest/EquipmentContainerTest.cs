@@ -72,7 +72,7 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.ANALOG_MAXVALUE)]
+        [TestCase(ModelCode.ENERGYCONS_PMAX)]
         public void HasPropertyTestFalse(ModelCode t)
         {
             bool result = eqContainer.HasProperty(t);
@@ -92,7 +92,7 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.ANALOG_MAXVALUE)]
+        [TestCase(ModelCode.ENERGYCONS_PMAX)]
         public void GetPropertyTestFalse(ModelCode t)
         {
             property.Id = t;
@@ -113,7 +113,7 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.ANALOG_MAXVALUE, 15000)]
+        [TestCase(ModelCode.ENERGYCONS_PMAX, 15000)]
         public void SetPropertyTestFalse(ModelCode t, float value)
         {
             property.Id = t;
@@ -150,23 +150,9 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949672843)]
-        public void AddReferenceTestFalse(ModelCode referenceId, long globalId)
-        {
-            Assert.DoesNotThrow(() => eqContainer.AddReference(referenceId, globalId));
-        }
-
-        [Test]
         [TestCase(ModelCode.EQUIPMENT_EQCONTAINER, 42949672913)]
         [TestCase(ModelCode.EQUIPMENT_EQCONTAINER, 42949672914)]
         public void RemoveReferenceTestCorrect(ModelCode referenceId, long globalId)
-        {
-            Assert.DoesNotThrow(() => eqContainer.RemoveReference(referenceId, globalId));
-        }
-
-        [Test]
-        [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949672843)]
-        public void RemoveReferenceTestFalse(ModelCode referenceId, long globalId)
         {
             Assert.DoesNotThrow(() => eqContainer.RemoveReference(referenceId, globalId));
         }

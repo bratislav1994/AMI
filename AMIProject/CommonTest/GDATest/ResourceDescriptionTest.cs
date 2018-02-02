@@ -16,7 +16,7 @@ namespace CommonTest.GDATest
     {
         private ResourceDescription rd;
         private long id = 183843728945;
-        private List<Property> properties = new List<Property>() { new Property(ModelCode.ANALOG_MAXVALUE, new PropertyValue(100)), new Property(ModelCode.ANALOG_MINVALUE, new PropertyValue(50)) };
+        private List<Property> properties = new List<Property>() { new Property(ModelCode.ENERGYCONS_PMAX, new PropertyValue(100)), new Property(ModelCode.ENERGYCONS_QMAX, new PropertyValue(50)) };
 
         private EqualityComparer ec;
 
@@ -63,9 +63,9 @@ namespace CommonTest.GDATest
         [Test]
         public void AddPropertyTest()
         {
-            Assert.DoesNotThrow(() => rd.AddProperty(new Property(ModelCode.ANALOG_VALIDRANGE, new PropertyValue(150))));
+            Assert.DoesNotThrow(() => rd.AddProperty(new Property(ModelCode.ENERGYCONS_PMAX, new PropertyValue(150))));
 
-            Assert.DoesNotThrow(() => rd.AddProperty(new Property(ModelCode.ANALOG_MINVALUE, new PropertyValue(50))));
+            Assert.DoesNotThrow(() => rd.AddProperty(new Property(ModelCode.ENERGYCONS_QMAX, new PropertyValue(50))));
         }
 
         #region EqualityComparerTest
@@ -94,7 +94,7 @@ namespace CommonTest.GDATest
             result = ec.Equals(rd, rd2);
             Assert.AreEqual(true, result);
 
-            rd.Properties = new List<Property>() { new Property(ModelCode.ANALOG_MAXVALUE, new PropertyValue(100)), new Property(ModelCode.ANALOG_MINVALUE, new PropertyValue(50)) };
+            rd.Properties = new List<Property>() { new Property(ModelCode.ENERGYCONS_PMAX, new PropertyValue(100)), new Property(ModelCode.ENERGYCONS_QMAX, new PropertyValue(50)) };
             result = ec.Equals(rd, rd2);
             Assert.AreNotEqual(true, result);
 

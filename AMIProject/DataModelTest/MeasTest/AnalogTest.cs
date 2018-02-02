@@ -13,18 +13,12 @@ namespace DataModelTest.MeasTest
     public class AnalogTest
     {
         private Analog analog;
-        private float maxValue = 100;
-        private float minValue = 7;
-        private float normalValue = 50;
         public Property property = new Property();
 
         [OneTimeSetUp]
         public void SetupTest()
         {
             this.analog = new Analog();
-            this.analog.MaxValue = maxValue;
-            this.analog.MinValue = minValue;
-            this.analog.NormalValue = normalValue;
         }
 
         [Test]
@@ -40,57 +34,12 @@ namespace DataModelTest.MeasTest
         }
 
         [Test]
-        public void MaxValueTest()
-        {
-            analog.MaxValue = maxValue;
-
-            Assert.AreEqual(maxValue, analog.MaxValue);
-        }
-
-        [Test]
-        public void MinValueTest()
-        {
-            analog.MinValue = minValue;
-
-            Assert.AreEqual(minValue, analog.MinValue);
-        }
-
-        [Test]
-        public void NormalValueTest()
-        {
-            analog.NormalValue = normalValue;
-
-            Assert.AreEqual(normalValue, analog.NormalValue);
-        }
-
-        [Test]
         public void EqualsTestCorrect()
         {
             object obj = this.analog;
             bool result = analog.Equals(obj);
 
             Assert.AreEqual(true, result);
-
-            // incorrect
-            obj = new Analog() { MaxValue = 1 };
-            result = analog.Equals(obj);
-            Assert.AreNotEqual(true, result);
-
-            obj = new Analog() { MinValue = 1 };
-            result = analog.Equals(obj);
-            Assert.AreNotEqual(true, result);
-            
-            obj = new Analog() { NormalValue = 1 };
-            result = analog.Equals(obj);
-            Assert.AreNotEqual(true, result);
-
-            obj = new Analog() { ValidRange = 1 };
-            result = analog.Equals(obj);
-            Assert.AreNotEqual(true, result);
-            
-            obj = new Analog() { InvalidRange = 1 };
-            result = analog.Equals(obj);
-            Assert.AreNotEqual(true, result);
         }
 
         [Test]
@@ -103,9 +52,6 @@ namespace DataModelTest.MeasTest
         }
 
         [Test]
-        [TestCase(ModelCode.ANALOG_MAXVALUE)]
-        [TestCase(ModelCode.ANALOG_MINVALUE)]
-        [TestCase(ModelCode.ANALOG_NORMALVALUE)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void HasPropertyTestTrue(ModelCode t)
         {
@@ -124,11 +70,6 @@ namespace DataModelTest.MeasTest
         }
 
         [Test]
-        [TestCase(ModelCode.ANALOG_MAXVALUE)]
-        [TestCase(ModelCode.ANALOG_MINVALUE)]
-        [TestCase(ModelCode.ANALOG_NORMALVALUE)]
-        [TestCase(ModelCode.ANALOG_VALIDRANGE)]
-        [TestCase(ModelCode.ANALOG_INVALIDRANGE)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void GetPropertyTestCorrect(ModelCode t)
         {
@@ -149,9 +90,6 @@ namespace DataModelTest.MeasTest
         }
 
         [Test]
-        [TestCase(ModelCode.ANALOG_MAXVALUE)]
-        [TestCase(ModelCode.ANALOG_MINVALUE)]
-        [TestCase(ModelCode.ANALOG_NORMALVALUE)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void SetPropertyTestCorrects(ModelCode t)
         {
@@ -160,15 +98,6 @@ namespace DataModelTest.MeasTest
 
             switch (property.Id)
             {
-                case ModelCode.ANALOG_MAXVALUE:
-                    property.SetValue(maxValue);
-                    break;
-                case ModelCode.ANALOG_MINVALUE:
-                    property.SetValue(minValue);
-                    break;
-                case ModelCode.ANALOG_NORMALVALUE:
-                    property.SetValue(normalValue);
-                    break;
                 case ModelCode.IDOBJ_NAME:
                     property.SetValue("Analog_1");
                     break;
@@ -204,7 +133,6 @@ namespace DataModelTest.MeasTest
         public void RD2ClassTest()
         {
             ResourceDescription rd = new ResourceDescription(235);
-
             ModelResourcesDesc modelResourcesDesc = new ModelResourcesDesc();
             List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.ANALOG);
 
@@ -214,20 +142,6 @@ namespace DataModelTest.MeasTest
             }
 
             Assert.DoesNotThrow(() => analog.RD2Class(rd));
-        }
-
-        [Test]
-        public void GetAlarmHighTest()
-        {
-            analog.ValidRange = 12;
-            Assert.AreEqual(analog.ValidRange, 12);
-        }
-
-        [Test]
-        public void GetAlarmLowTest()
-        {
-            analog.InvalidRange = 12;
-            Assert.AreEqual(analog.InvalidRange, 12);
         }
 
         [Test]

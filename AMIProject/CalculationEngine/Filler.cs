@@ -74,92 +74,92 @@ namespace CalculationEngine
 
             Tuple<Dictionary<long, IdentifiedObject>, List<IdentifiedObject>> consumers = proxyNMS.GetConsumers();
 
-            while (beginning < end)
-            {
-                Dictionary<long, DynamicMeasurement> measurements = new Dictionary<long, DynamicMeasurement>();
+            //while (beginning < end)
+            //{
+            //    Dictionary<long, DynamicMeasurement> measurements = new Dictionary<long, DynamicMeasurement>();
 
-                foreach (Measurement m in consumers.Item2)
-                {
-                    switch (((EnergyConsumer)consumers.Item1[m.PowerSystemResourceRef]).Type)
-                    {
-                        case ConsumerType.FIRM:
-                            if (!measurements.ContainsKey(m.PowerSystemResourceRef))
-                            {
-                                measurements.Add(m.PowerSystemResourceRef, new DynamicMeasurement(m.PowerSystemResourceRef, beginning));
-                            }
+            //    foreach (Measurement m in consumers.Item2)
+            //    {
+            //        switch (((EnergyConsumer)consumers.Item1[m.PowerSystemResourceRef]).Type)
+            //        {
+            //            case ConsumerType.FIRM:
+            //                if (!measurements.ContainsKey(m.PowerSystemResourceRef))
+            //                {
+            //                    measurements.Add(m.PowerSystemResourceRef, new DynamicMeasurement(m.PowerSystemResourceRef, beginning));
+            //                }
 
-                            float valueToSendFirm = 0;
+            //                float valueToSendFirm = 0;
 
-                            switch (m.UnitSymbol)
-                            {
-                                case UnitSymbol.P:
-                                    valueToSendFirm = m.MaxRawValue * firmConsumption[beginning.Hour];
-                                    measurements[m.PowerSystemResourceRef].CurrentP = valueToSendFirm;
-                                    break;
-                                case UnitSymbol.Q:
-                                    valueToSendFirm = m.MaxRawValue * firmConsumption[beginning.Hour];
-                                    measurements[m.PowerSystemResourceRef].CurrentQ = valueToSendFirm;
-                                    break;
-                                case UnitSymbol.V:
-                                    valueToSendFirm = m.MaxRawValue * firmConsumption[beginning.Hour];
-                                    measurements[m.PowerSystemResourceRef].CurrentV = valueToSendFirm;
-                                    break;
-                            }
-                            break;
-                        case ConsumerType.HOUSEHOLD:
-                            if (!measurements.ContainsKey(m.PowerSystemResourceRef))
-                            {
-                                measurements.Add(m.PowerSystemResourceRef, new DynamicMeasurement(m.PowerSystemResourceRef, beginning));
-                            }
+            //                switch (m.UnitSymbol)
+            //                {
+            //                    case UnitSymbol.P:
+            //                        valueToSendFirm = m.MaxRawValue * firmConsumption[beginning.Hour];
+            //                        measurements[m.PowerSystemResourceRef].CurrentP = valueToSendFirm;
+            //                        break;
+            //                    case UnitSymbol.Q:
+            //                        valueToSendFirm = m.MaxRawValue * firmConsumption[beginning.Hour];
+            //                        measurements[m.PowerSystemResourceRef].CurrentQ = valueToSendFirm;
+            //                        break;
+            //                    case UnitSymbol.V:
+            //                        valueToSendFirm = m.MaxRawValue * firmConsumption[beginning.Hour];
+            //                        measurements[m.PowerSystemResourceRef].CurrentV = valueToSendFirm;
+            //                        break;
+            //                }
+            //                break;
+            //            case ConsumerType.HOUSEHOLD:
+            //                if (!measurements.ContainsKey(m.PowerSystemResourceRef))
+            //                {
+            //                    measurements.Add(m.PowerSystemResourceRef, new DynamicMeasurement(m.PowerSystemResourceRef, beginning));
+            //                }
 
-                            float valueToSendHouseHold = 0;
+            //                float valueToSendHouseHold = 0;
 
-                            switch (m.UnitSymbol)
-                            {
-                                case UnitSymbol.P:
-                                    valueToSendHouseHold = m.MaxRawValue * householdConsumption[beginning.Hour];
-                                    measurements[m.PowerSystemResourceRef].CurrentP = valueToSendHouseHold;
-                                    break;
-                                case UnitSymbol.Q:
-                                    valueToSendHouseHold = m.MaxRawValue * householdConsumption[beginning.Hour];
-                                    measurements[m.PowerSystemResourceRef].CurrentQ = valueToSendHouseHold;
-                                    break;
-                                case UnitSymbol.V:
-                                    valueToSendHouseHold = m.MaxRawValue * householdConsumption[beginning.Hour];
-                                    measurements[m.PowerSystemResourceRef].CurrentV = valueToSendHouseHold;
-                                    break;
-                            }
-                            break;
-                        case ConsumerType.SHOPPING_CENTER:
-                            if (!measurements.ContainsKey(m.PowerSystemResourceRef))
-                            {
-                                measurements.Add(m.PowerSystemResourceRef, new DynamicMeasurement(m.PowerSystemResourceRef, beginning));
-                            }
+            //                switch (m.UnitSymbol)
+            //                {
+            //                    case UnitSymbol.P:
+            //                        valueToSendHouseHold = m.MaxRawValue * householdConsumption[beginning.Hour];
+            //                        measurements[m.PowerSystemResourceRef].CurrentP = valueToSendHouseHold;
+            //                        break;
+            //                    case UnitSymbol.Q:
+            //                        valueToSendHouseHold = m.MaxRawValue * householdConsumption[beginning.Hour];
+            //                        measurements[m.PowerSystemResourceRef].CurrentQ = valueToSendHouseHold;
+            //                        break;
+            //                    case UnitSymbol.V:
+            //                        valueToSendHouseHold = m.MaxRawValue * householdConsumption[beginning.Hour];
+            //                        measurements[m.PowerSystemResourceRef].CurrentV = valueToSendHouseHold;
+            //                        break;
+            //                }
+            //                break;
+            //            case ConsumerType.SHOPPING_CENTER:
+            //                if (!measurements.ContainsKey(m.PowerSystemResourceRef))
+            //                {
+            //                    measurements.Add(m.PowerSystemResourceRef, new DynamicMeasurement(m.PowerSystemResourceRef, beginning));
+            //                }
 
-                            float valueToSendShoppingCenter = 0;
+            //                float valueToSendShoppingCenter = 0;
 
-                            switch (m.UnitSymbol)
-                            {
-                                case UnitSymbol.P:
-                                    valueToSendShoppingCenter = m.MaxRawValue * shoppingCenterConsumption[beginning.Hour];
-                                    measurements[m.PowerSystemResourceRef].CurrentP = valueToSendShoppingCenter;
-                                    break;
-                                case UnitSymbol.Q:
-                                    valueToSendShoppingCenter = m.MaxRawValue * shoppingCenterConsumption[beginning.Hour];
-                                    measurements[m.PowerSystemResourceRef].CurrentQ = valueToSendShoppingCenter;
-                                    break;
-                                case UnitSymbol.V:
-                                    valueToSendShoppingCenter = m.MaxRawValue * shoppingCenterConsumption[beginning.Hour];
-                                    measurements[m.PowerSystemResourceRef].CurrentV = valueToSendShoppingCenter;
-                                    break;
-                            }
-                            break;
-                    }
-                }
+            //                switch (m.UnitSymbol)
+            //                {
+            //                    case UnitSymbol.P:
+            //                        valueToSendShoppingCenter = m.MaxRawValue * shoppingCenterConsumption[beginning.Hour];
+            //                        measurements[m.PowerSystemResourceRef].CurrentP = valueToSendShoppingCenter;
+            //                        break;
+            //                    case UnitSymbol.Q:
+            //                        valueToSendShoppingCenter = m.MaxRawValue * shoppingCenterConsumption[beginning.Hour];
+            //                        measurements[m.PowerSystemResourceRef].CurrentQ = valueToSendShoppingCenter;
+            //                        break;
+            //                    case UnitSymbol.V:
+            //                        valueToSendShoppingCenter = m.MaxRawValue * shoppingCenterConsumption[beginning.Hour];
+            //                        measurements[m.PowerSystemResourceRef].CurrentV = valueToSendShoppingCenter;
+            //                        break;
+            //                }
+            //                break;
+            //        }
+            //    }
 
-                measurementsList.AddRange(measurements.Values.ToList());
-                beginning = beginning.AddSeconds(resolution);
-            }
+            //    measurementsList.AddRange(measurements.Values.ToList());
+            //    beginning = beginning.AddSeconds(resolution);
+            //}
 
             TimeSeriesDbAdapter.AddMeasurements(measurementsList);
         }

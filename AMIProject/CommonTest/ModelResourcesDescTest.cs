@@ -46,13 +46,6 @@ namespace CommonTest
         #region ResourcePropertiesDesc
 
         [Test]
-        public void ConstructorWithParameterTest()
-        {
-            Assert.DoesNotThrow(() => new ResourcePropertiesDesc(ModelCode.ANALOG_INVALIDRANGE, "Analog_InvalidRange"));
-            Assert.DoesNotThrow(() => new ResourcePropertiesDesc(ModelCode.ANALOG_INVALIDRANGE));
-        }
-
-        [Test]
         public void ResourceIdTest()
         {
             resourceId = this.resPropDesc.ResourceId;

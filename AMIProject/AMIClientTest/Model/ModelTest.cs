@@ -45,22 +45,15 @@ namespace AMIClientTest.ModelTest
             this.model.ViewTableItems = CollectionViewSource.GetDefaultView(this.model.TableItems);
             Assert.IsNotNull(this.model.ViewTableItems);
         }
-
-        [Test]
-        public void TableItemsForAlarmTest()
-        {
-            this.model.TableItemsForAlarm = new System.Collections.ObjectModel.ObservableCollection<AMIClient.Classes.TableItemForAlarm>();
-            Assert.IsNotNull(this.model.TableItemsForAlarm);
-        }
-
-        [Test]
-        public void ViewTableItemsForAlarmTest()
-        {
-            this.model.TableItemsForAlarm = new System.Collections.ObjectModel.ObservableCollection<AMIClient.Classes.TableItemForAlarm>();
-            this.model.ViewTableItemsForAlarm = new CollectionViewSource { Source = this.model.TableItemsForAlarm }.View;
-            this.model.ViewTableItemsForAlarm = CollectionViewSource.GetDefaultView(this.model.TableItemsForAlarm);
-            Assert.IsNotNull(this.model.ViewTableItemsForAlarm);
-        }
+        
+        //[Test]
+        //public void ViewTableItemsForAlarmTest()
+        //{
+        //    this.model.TableItemsForAlarm = new System.Collections.ObjectModel.ObservableCollection<AMIClient.Classes.TableItemForAlarm>();
+        //    this.model.ViewTableItemsForAlarm = new CollectionViewSource { Source = this.model.TableItemsForAlarm }.View;
+        //    this.model.ViewTableItemsForAlarm = CollectionViewSource.GetDefaultView(this.model.TableItemsForAlarm);
+        //    Assert.IsNotNull(this.model.ViewTableItemsForAlarm);
+        //}
 
         [Test]
         public void StartTest()

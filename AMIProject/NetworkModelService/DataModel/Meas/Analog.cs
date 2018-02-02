@@ -22,25 +22,6 @@ namespace TC57CIM.IEC61970.Meas
     [Serializable]
     public class Analog : Measurement
     {
-
-        /// <summary>
-        /// Normal value range maximum for any of the MeasurementValue.values. Used for
-        /// scaling, e.g. in bar graphs or of telemetered raw values.
-        /// </summary>
-        private float maxValue;
-        /// <summary>
-        /// Normal value range minimum for any of the MeasurementValue.values. Used for
-        /// scaling, e.g. in bar graphs or of telemetered raw values.
-        /// </summary>
-        private float minValue;
-        /// <summary>
-        /// Normal measurement value, e.g., used for percentage calculations.
-        /// </summary>
-        private float normalValue;
-
-        private int validRange;
-        private int invalidRange;
-
         public Analog()
         {
 
@@ -50,66 +31,12 @@ namespace TC57CIM.IEC61970.Meas
             : base(globalId)
         {
         }
-
-        [DataMember]
-        public float MaxValue
-        {
-            get { return maxValue; }
-
-            set { maxValue = value; }
-        }
-
-        [DataMember]
-        public float MinValue
-        {
-            get { return minValue; }
-
-            set { minValue = value; }
-        }
-
-        [DataMember]
-        public float NormalValue
-        {
-            get { return normalValue; }
-
-            set { normalValue = value; }
-        }
-
-        [DataMember]
-        public int ValidRange
-        {
-            get
-            {
-                return validRange;
-            }
-
-            set
-            {
-                validRange = value;
-            }
-        }
-
-        [DataMember]
-        public int InvalidRange
-        {
-            get
-            {
-                return invalidRange;
-            }
-
-            set
-            {
-                invalidRange = value;
-            }
-        }
-
+        
         public override bool Equals(object obj)
         {
             if (base.Equals(obj))
             {
-                Analog x = (Analog)obj;
-                return (x.maxValue == this.maxValue && x.minValue == this.minValue && x.normalValue == this.normalValue &&
-                        x.validRange == this.validRange && x.invalidRange == this.invalidRange);
+                return true;
             }
             else
             {
@@ -128,13 +55,6 @@ namespace TC57CIM.IEC61970.Meas
         {
             switch (t)
             {
-                case ModelCode.ANALOG_MAXVALUE:
-                case ModelCode.ANALOG_MINVALUE:
-                case ModelCode.ANALOG_NORMALVALUE:
-                case ModelCode.ANALOG_VALIDRANGE:
-                case ModelCode.ANALOG_INVALIDRANGE:
-                    return true;
-
                 default:
                     return base.HasProperty(t);
 
@@ -145,21 +65,6 @@ namespace TC57CIM.IEC61970.Meas
         {
             switch (property.Id)
             {
-                case ModelCode.ANALOG_MAXVALUE:
-                    property.SetValue(maxValue);
-                    break;
-                case ModelCode.ANALOG_MINVALUE:
-                    property.SetValue(minValue);
-                    break;
-                case ModelCode.ANALOG_NORMALVALUE:
-                    property.SetValue(normalValue);
-                    break;
-                case ModelCode.ANALOG_VALIDRANGE:
-                    property.SetValue(validRange);
-                    break;
-                case ModelCode.ANALOG_INVALIDRANGE:
-                    property.SetValue(invalidRange);
-                    break;
                 default:
                     base.GetProperty(property);
                     break;
@@ -169,23 +74,7 @@ namespace TC57CIM.IEC61970.Meas
         public override void SetProperty(Property property)
         {
             switch (property.Id)
-            {
-                case ModelCode.ANALOG_MAXVALUE:
-
-                    maxValue = property.AsFloat();
-                    break;
-                case ModelCode.ANALOG_MINVALUE:
-                    minValue = property.AsFloat();
-                    break;
-                case ModelCode.ANALOG_NORMALVALUE:
-                    normalValue = property.AsFloat();
-                    break;
-                case ModelCode.ANALOG_VALIDRANGE:
-                    validRange = property.AsInt();
-                    break;
-                case ModelCode.ANALOG_INVALIDRANGE:
-                    invalidRange = property.AsInt();
-                    break;
+            {  
                 default:
                     base.SetProperty(property);
                     break;
@@ -209,14 +98,9 @@ namespace TC57CIM.IEC61970.Meas
             analogCopy.GlobalId = this.GlobalId;
             analogCopy.Mrid = this.Mrid;
             analogCopy.Name = this.Name;
-            analogCopy.MinValue = this.MinValue;
-            analogCopy.MaxValue = this.MaxValue;
-            analogCopy.NormalValue = this.NormalValue;
             analogCopy.UnitSymbol = this.UnitSymbol;
             analogCopy.SignalDirection = this.SignalDirection;
             analogCopy.PowerSystemResourceRef = this.PowerSystemResourceRef;
-            analogCopy.validRange = this.validRange;
-            analogCopy.invalidRange = this.invalidRange;
 
             return analogCopy;
         }

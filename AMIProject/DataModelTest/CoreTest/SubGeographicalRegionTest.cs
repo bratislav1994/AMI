@@ -105,7 +105,7 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.ANALOG_MAXVALUE)]
+        [TestCase(ModelCode.ENERGYCONS_PMAX)]
         public void HasPropertyTestFalse(ModelCode t)
         {
             bool result = subGeoRegion.HasProperty(t);
@@ -126,7 +126,7 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.ANALOG_MAXVALUE)]
+        [TestCase(ModelCode.ENERGYCONS_PMAX)]
         public void GetPropertyTestFalse(ModelCode t)
         {
             property.Id = t;
@@ -157,7 +157,7 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.ANALOG_MAXVALUE, 15000)]
+        [TestCase(ModelCode.ENERGYCONS_PMAX, 15000)]
         public void SetPropertyTestFalse(ModelCode t, float value)
         {
             property.Id = t;
@@ -195,23 +195,9 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949682346)]
-        public void AddReferenceTestFalse(ModelCode referenceId, long globalId)
-        {
-            Assert.DoesNotThrow(() => subGeoRegion.AddReference(referenceId, globalId));
-        }
-
-        [Test]
         [TestCase(ModelCode.SUBSTATION_SUBGEOREGION, 42949682345)]
         [TestCase(ModelCode.SUBSTATION_SUBGEOREGION, 42949682347)]
         public void RemoveReferenceTestCorrect(ModelCode referenceId, long globalId)
-        {
-            Assert.DoesNotThrow(() => subGeoRegion.RemoveReference(referenceId, globalId));
-        }
-
-        [Test]
-        [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949682346)]
-        public void RemoveReferenceTestFalse(ModelCode referenceId, long globalId)
         {
             Assert.DoesNotThrow(() => subGeoRegion.RemoveReference(referenceId, globalId));
         }

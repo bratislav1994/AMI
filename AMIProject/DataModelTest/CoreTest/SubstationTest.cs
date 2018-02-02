@@ -15,7 +15,6 @@ namespace DataModelTest.CoreTest
         private Substation substation;
         private long globalID = 42949682351;
         private long subGeoRegion = 42949682352;
-        private List<long> voltageLevels = new List<long>() { 42949682353, 42949682354};
         public Property property = new Property();
 
         [OneTimeSetUp]
@@ -23,7 +22,6 @@ namespace DataModelTest.CoreTest
         {
             this.substation = new Substation();
             this.substation.SubGeoRegion = subGeoRegion;
-            this.substation.VoltageLevels = voltageLevels;
         }
 
         [Test]
@@ -47,14 +45,6 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        public void VoltageLevelsTest()
-        {
-            substation.VoltageLevels = voltageLevels;
-
-            Assert.AreEqual(voltageLevels, substation.VoltageLevels);
-        }
-
-        [Test]
         public void EqualsTestCorrect()
         {
             object obj = this.substation;
@@ -64,10 +54,6 @@ namespace DataModelTest.CoreTest
 
             // incorrect
             obj = new Substation() { SubGeoRegion = 100 };
-            result = substation.Equals(obj);
-            Assert.AreNotEqual(true, result);
-
-            obj = new Substation() { VoltageLevels = new List<long>() };
             result = substation.Equals(obj);
             Assert.AreNotEqual(true, result);
         }
@@ -95,7 +81,6 @@ namespace DataModelTest.CoreTest
 
         [Test]
         [TestCase(ModelCode.SUBSTATION_SUBGEOREGION)]
-        [TestCase(ModelCode.SUBSTATION_VOLTLEVELS)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void HasPropertyTestTrue(ModelCode t)
         {
@@ -105,7 +90,7 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.ANALOG_MAXVALUE)]
+        [TestCase(ModelCode.ENERGYCONS_PMAX)]
         public void HasPropertyTestFalse(ModelCode t)
         {
             bool result = substation.HasProperty(t);
@@ -115,7 +100,6 @@ namespace DataModelTest.CoreTest
 
         [Test]
         [TestCase(ModelCode.SUBSTATION_SUBGEOREGION)]
-        [TestCase(ModelCode.SUBSTATION_VOLTLEVELS)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void GetPropertyTestCorrect(ModelCode t)
         {
@@ -126,7 +110,7 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.ANALOG_MAXVALUE)]
+        [TestCase(ModelCode.ENERGYCONS_PMAX)]
         public void GetPropertyTestFalse(ModelCode t)
         {
             property.Id = t;
@@ -157,7 +141,7 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.ANALOG_MAXVALUE, 15000)]
+        [TestCase(ModelCode.ENERGYCONS_PMAX, 15000)]
         public void SetPropertyTestFalse(ModelCode t, float value)
         {
             property.Id = t;
@@ -173,8 +157,6 @@ namespace DataModelTest.CoreTest
             Assert.AreEqual(true, substation.IsReferenced);
             Substation s = new Substation();
             Assert.AreEqual(false, s.IsReferenced);
-            s.VoltageLevels = voltageLevels;
-            Assert.AreEqual(true, s.IsReferenced);
         }
 
         [Test]
@@ -188,13 +170,6 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949682355)]
-        public void AddReferenceTestCorrect(ModelCode referenceId, long globalId)
-        {
-            Assert.DoesNotThrow(() => substation.AddReference(referenceId, globalId));
-        }
-
-        [Test]
         [TestCase(ModelCode.BASEVOLTAGE_NOMINALVOL, 42949682356)]
         public void AddReferenceTestFalse(ModelCode referenceId, long globalId)
         {
@@ -202,36 +177,10 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949682355)]
-        [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949682357)]
-        public void RemoveReferenceTestCorrect(ModelCode referenceId, long globalId)
-        {
-            Assert.DoesNotThrow(() => substation.RemoveReference(referenceId, globalId));
-        }
-
-        [Test]
         [TestCase(ModelCode.BASEVOLTAGE_NOMINALVOL, 42949682356)]
         public void RemoveReferenceTestFalse(ModelCode referenceId, long globalId)
         {
             Assert.DoesNotThrow(() => substation.RemoveReference(referenceId, globalId));
-        }
-
-        [Test]
-        public void RD2ClassTest()
-        {
-            ResourceDescription rd = new ResourceDescription(globalID);
-
-            ModelResourcesDesc modelResourcesDesc = new ModelResourcesDesc();
-            List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.SUBSTATION_VOLTLEVELS);
-
-            for(int i=0; i<properties.Count; i++)
-            {
-                rd.AddProperty(new Property(properties[i]));
-            }
-
-            rd.Properties.Where(x => x.Id == ModelCode.SUBSTATION_VOLTLEVELS).First().PropertyValue.LongValues = new List<long>() { 424 };
-            //rd.Properties.First().PropertyValue.LongValue = 6378;
-            Assert.DoesNotThrow(() => substation.RD2Class(rd));
         }
 
         [Test]

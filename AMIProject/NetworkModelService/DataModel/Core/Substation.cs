@@ -24,7 +24,6 @@ namespace TC57CIM.IEC61970.Core {
 	public class Substation : EquipmentContainer {
 
         private long subGeoRegion = 0;
-        private List<long> voltageLevels = new List<long>();
 
         public Substation()
         {
@@ -41,12 +40,6 @@ namespace TC57CIM.IEC61970.Core {
             set { subGeoRegion = value; }
         }
 
-        public List<long> VoltageLevels
-        {
-            get { return voltageLevels; }
-            set { voltageLevels = value; }
-        }
-
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -57,8 +50,7 @@ namespace TC57CIM.IEC61970.Core {
             if (base.Equals(obj))
             {
                 Substation x = (Substation)obj;
-                return (x.subGeoRegion == this.subGeoRegion &&
-                        CompareHelper.CompareLists(x.voltageLevels, this.voltageLevels));
+                return (x.subGeoRegion == this.subGeoRegion);
             }
             else
             {
@@ -78,7 +70,6 @@ namespace TC57CIM.IEC61970.Core {
             switch (t)
             {
                 case ModelCode.SUBSTATION_SUBGEOREGION:
-                case ModelCode.SUBSTATION_VOLTLEVELS:
                     return true;
 
                 default:
@@ -93,11 +84,6 @@ namespace TC57CIM.IEC61970.Core {
                 case ModelCode.SUBSTATION_SUBGEOREGION:
                     property.SetValue(subGeoRegion);
                     break;
-
-                case ModelCode.SUBSTATION_VOLTLEVELS:
-                    property.SetValue(voltageLevels);
-                    break;
-
                 default:
                     base.GetProperty(property);
                     break;
@@ -126,7 +112,7 @@ namespace TC57CIM.IEC61970.Core {
         {
             get
             {
-                return voltageLevels.Count != 0 || base.IsReferenced;
+                return base.IsReferenced;
             }
         }
 
@@ -138,11 +124,6 @@ namespace TC57CIM.IEC61970.Core {
                 references[ModelCode.SUBSTATION_SUBGEOREGION].Add(subGeoRegion);
             }
 
-            if (voltageLevels != null && voltageLevels.Count != 0 && (refType == TypeOfReference.Target || refType == TypeOfReference.Both))
-            {
-                references[ModelCode.SUBSTATION_VOLTLEVELS] = voltageLevels.GetRange(0, voltageLevels.Count);
-            }
-
             base.GetReferences(references, refType);
         }
 
@@ -150,10 +131,6 @@ namespace TC57CIM.IEC61970.Core {
         {
             switch (referenceId)
             {
-                case ModelCode.VOLTAGELEVEL_SUBSTATION:
-                    voltageLevels.Add(globalId);
-                    break;
-
                 default:
                     base.AddReference(referenceId, globalId);
                     break;
@@ -164,19 +141,6 @@ namespace TC57CIM.IEC61970.Core {
         {
             switch (referenceId)
             {
-                case ModelCode.VOLTAGELEVEL_SUBSTATION:
-
-                    if (voltageLevels.Contains(globalId))
-                    {
-                        voltageLevels.Remove(globalId);
-                    }
-                    else
-                    {
-                        CommonTrace.WriteTrace(CommonTrace.TraceWarning, "Entity (GID = 0x{0:x16}) doesn't contain reference 0x{1:x16}.", this.GlobalId, globalId);
-                    }
-
-                    break;
-
                 default:
                     base.RemoveReference(referenceId, globalId);
                     break;
@@ -189,14 +153,7 @@ namespace TC57CIM.IEC61970.Core {
         {
             foreach (Property p in rd.Properties)
             {
-                if (p.Id == ModelCode.SUBSTATION_VOLTLEVELS)
-                {
-                    foreach (long l in p.PropertyValue.LongValues)
-                    {
-                        this.AddReference(ModelCode.VOLTAGELEVEL_SUBSTATION, l);
-                    }
-                }
-                else if (p.Id != ModelCode.PSR_MEASUREMENTS && p.Id != ModelCode.EQCONTAINER_EQUIPMENTS)
+                if (p.Id != ModelCode.PSR_MEASUREMENTS && p.Id != ModelCode.EQCONTAINER_EQUIPMENTS)
                 {
                     SetProperty(p);
                 }
@@ -213,7 +170,6 @@ namespace TC57CIM.IEC61970.Core {
             subCopy.Equipments = this.Equipments;
             subCopy.Measurements = this.Measurements;
             subCopy.SubGeoRegion = this.SubGeoRegion;
-            subCopy.VoltageLevels = this.VoltageLevels;
 
             return subCopy;
         }

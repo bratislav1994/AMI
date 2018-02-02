@@ -80,19 +80,29 @@
             {
                 Converter.PopulateConductingEquipmentProperties(cimEnergyConsumer, rd, importHelper, report);
 
-                if (cimEnergyConsumer.PfixedHasValue)
+                if (cimEnergyConsumer.PMaxHasValue)
                 {
-                    rd.AddProperty(new Property(ModelCode.ENERGYCONS_PFIXED, cimEnergyConsumer.Pfixed));
+                    rd.AddProperty(new Property(ModelCode.ENERGYCONS_PMAX, cimEnergyConsumer.PMax));
                 }
 
-                if (cimEnergyConsumer.QfixedHasValue)
+                if (cimEnergyConsumer.QMaxHasValue)
                 {
-                    rd.AddProperty(new Property(ModelCode.ENERGYCONS_QFIXED, cimEnergyConsumer.Qfixed));
+                    rd.AddProperty(new Property(ModelCode.ENERGYCONS_QMAX, cimEnergyConsumer.QMax));
                 }
 
                 if (cimEnergyConsumer.ConsumerTypeHasValue)
                 {
                     rd.AddProperty(new Property(ModelCode.ENERGYCONS_TYPE, (int)cimEnergyConsumer.ConsumerType));
+                }
+
+                if (cimEnergyConsumer.ValidRangePercentHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.ENERGYCONS_VALIDRANGEPERCENT, cimEnergyConsumer.ValidRangePercent));
+                }
+
+                if (cimEnergyConsumer.InvalidRangePercentHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.ENERGYCONS_INVALIDRANGEPERCENT, cimEnergyConsumer.InvalidRangePercent));
                 }
             }
         }
@@ -102,6 +112,16 @@
             if ((cimPowerTrans != null) && (rd != null))
             {
                 Converter.PopulateConductingEquipmentProperties(cimPowerTrans, rd, importHelper, report);
+
+                if (cimPowerTrans.ValidRangePercentHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.POWERTRANSFORMER_VALIDRANGEPERCENT, cimPowerTrans.ValidRangePercent));
+                }
+
+                if (cimPowerTrans.InvalidRangePercentHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.POWERTRANSFORMER_INVALIDRANGEPERCENT, cimPowerTrans.InvalidRangePercent));
+                }
             }
         }
 
@@ -115,25 +135,15 @@
                 {
                     rd.AddProperty(new Property(ModelCode.MEASUREMENT_UNITSYMBOL, (int)cimMeas.UnitSymbol));
                 }
+
                 if (cimMeas.SignalDirectionHasValue)
                 {
                     rd.AddProperty(new Property(ModelCode.MEASUREMENT_DIRECTION, (int)cimMeas.SignalDirection));
                 }
+
                 if (cimMeas.RtuAddressHasValue)
                 {
                     rd.AddProperty(new Property(ModelCode.MEASUREMENT_RTUADDRESS, (int)cimMeas.RtuAddress));
-                }
-                if (cimMeas.MinRawValueHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.MEASUREMENT_MINRAWVAL, (int)cimMeas.MinRawValue));
-                }
-                if (cimMeas.MaxRawValueHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.MEASUREMENT_MAXRAWVAL, (int)cimMeas.MaxRawValue));
-                }
-                if (cimMeas.NormalRawValueHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.MEASUREMENT_NORMALRAWVAL, (int)cimMeas.NormalRawValue));
                 }
 
                 if (cimMeas.PowerSystemResourceHasValue)
@@ -178,31 +188,6 @@
             if ((cimAnalog != null) && (rd != null))
             {
                 Converter.PopulateMeasurementProperties(cimAnalog, rd, importHelper, report);
-
-                if (cimAnalog.MaxValueHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.ANALOG_MAXVALUE, cimAnalog.MaxValue));
-                }
-
-                if (cimAnalog.MinValueHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.ANALOG_MINVALUE, cimAnalog.MinValue));
-                }
-
-                if (cimAnalog.NormalValueHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.ANALOG_NORMALVALUE, cimAnalog.NormalValue));
-                }
-
-                if (cimAnalog.ValidRangeHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.ANALOG_VALIDRANGE, cimAnalog.ValidRange));
-                }
-
-                if (cimAnalog.InvalidRangeHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.ANALOG_INVALIDRANGE, cimAnalog.InvalidRange));
-                }
             }
         }
 
@@ -218,27 +203,7 @@
                 }
             }
         }
-
-        public static void PopulateTransformerEndProperties(TransformerEnd cimTransEnd, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
-        {
-            if ((cimTransEnd != null) && (rd != null))
-            {
-                Converter.PopulateIdentifiedObjectProperties(cimTransEnd, rd);
-
-                if (cimTransEnd.BaseVoltageHasValue)
-                {
-                    long gid = importHelper.GetMappedGID(cimTransEnd.BaseVoltage.ID);
-                    if (gid < 0)
-                    {
-                        report.Report.Append("WARNING: Convert ").Append(cimTransEnd.GetType().ToString()).Append(" rdfID = \"").Append(cimTransEnd.ID);
-                        report.Report.Append("\" - Failed to set reference to BaseVoltage: rdfID \"").Append(cimTransEnd.BaseVoltage.ID).AppendLine(" \" is not mapped to GID!");
-                    }
-
-                    rd.AddProperty(new Property(ModelCode.TRANSFORMEREND_BASEVOLT, gid));
-                }
-            }
-        }
-
+        
         public static void PopulateConnectivityNodeContainerProperties(ConnectivityNodeContainer cimCNC, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
         {
             if ((cimCNC != null) && (rd != null))
@@ -302,107 +267,7 @@
                 }
             }
         }
-
-        public static void PopulateTapChangerProperties(TapChanger cimTapChanger, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
-        {
-            if ((cimTapChanger != null) && (rd != null))
-            {
-                Converter.PopulatePowerSystemResourceProperties(cimTapChanger, rd, importHelper, report);
-
-                if (cimTapChanger.HighStepHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.TAPCHANGER_HIGHSTEP, cimTapChanger.HighStep));
-                }
-
-                if (cimTapChanger.LowStepHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.TAPCHANGER_LOWSTEP, cimTapChanger.LowStep));
-                }
-
-                if (cimTapChanger.NeutralStepHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.TAPCHANGER_NEUTRALSTEP, cimTapChanger.NeutralStep));
-                }
-
-                if (cimTapChanger.NormalStepHasValue)
-                {
-                    rd.AddProperty(new Property(ModelCode.TAPCHANGER_NORMALSTEP, cimTapChanger.NormalStep));
-                }
-            }
-        }
-
-        public static void PopulateRatioTapChangerProperties(RatioTapChanger cimRation, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
-        {
-            if ((cimRation != null) && (rd != null))
-            {
-                Converter.PopulateTapChangerProperties(cimRation, rd, importHelper, report);
-
-                if (cimRation.TransformerEndHasValue)
-                {
-                    long gid = importHelper.GetMappedGID(cimRation.TransformerEnd.ID);
-                    if (gid < 0)
-                    {
-                        report.Report.Append("WARNING: Convert ").Append(cimRation.GetType().ToString()).Append(" rdfID = \"").Append(cimRation.ID);
-                        report.Report.Append("\" - Failed to set reference to TransformerEnd: rdfID \"").Append(cimRation.TransformerEnd.ID).AppendLine(" \" is not mapped to GID!");
-                    }
-
-                    rd.AddProperty(new Property(ModelCode.RATIOTAPCHANGER_TRANSEND, gid));
-                }
-            }
-        }
-
-        public static void PopulateVoltageLevelProperties(VoltageLevel cimVolLevel, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
-        {
-            if ((cimVolLevel != null) && (rd != null))
-            {
-                Converter.PopulateEquipmentContainerProperties(cimVolLevel, rd, importHelper, report);
-
-                if (cimVolLevel.BaseVoltageHasValue)
-                {
-                    long gid = importHelper.GetMappedGID(cimVolLevel.BaseVoltage.ID);
-                    if (gid < 0)
-                    {
-                        report.Report.Append("WARNING: Convert ").Append(cimVolLevel.GetType().ToString()).Append(" rdfID = \"").Append(cimVolLevel.ID);
-                        report.Report.Append("\" - Failed to set reference to BaseVoltage: rdfID \"").Append(cimVolLevel.BaseVoltage.ID).AppendLine(" \" is not mapped to GID!");
-                    }
-
-                    rd.AddProperty(new Property(ModelCode.VOLTAGELEVEL_BASEVOLTAGE, gid));
-                }
-
-                if (cimVolLevel.SubstationHasValue)
-                {
-                    long gid = importHelper.GetMappedGID(cimVolLevel.Substation.ID);
-                    if (gid < 0)
-                    {
-                        report.Report.Append("WARNING: Convert ").Append(cimVolLevel.GetType().ToString()).Append(" rdfID = \"").Append(cimVolLevel.ID);
-                        report.Report.Append("\" - Failed to set reference to Substation: rdfID \"").Append(cimVolLevel.Substation.ID).AppendLine(" \" is not mapped to GID!");
-                    }
-
-                    rd.AddProperty(new Property(ModelCode.VOLTAGELEVEL_SUBSTATION, gid));
-                }
-            }
-        }
-
-        public static void PopulatePowerTransformerEndProperties(PowerTransformerEnd cimPowerTransEnd, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
-        {
-            if ((cimPowerTransEnd != null) && (rd != null))
-            {
-                Converter.PopulateTransformerEndProperties(cimPowerTransEnd, rd, importHelper, report);
-
-                if (cimPowerTransEnd.PowerTransformerHasValue)
-                {
-                    long gid = importHelper.GetMappedGID(cimPowerTransEnd.PowerTransformer.ID);
-                    if (gid < 0)
-                    {
-                        report.Report.Append("WARNING: Convert ").Append(cimPowerTransEnd.GetType().ToString()).Append(" rdfID = \"").Append(cimPowerTransEnd.ID);
-                        report.Report.Append("\" - Failed to set reference to PowerTransformer: rdfID \"").Append(cimPowerTransEnd.PowerTransformer.ID).AppendLine(" \" is not mapped to GID!");
-                    }
-
-                    rd.AddProperty(new Property(ModelCode.POWERTRANSEND_POWERTRANSF, gid));
-                }
-            }
-        }
-
+        
         #endregion Populate ResourceDescription
 
         #region Enums convert

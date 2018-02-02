@@ -124,10 +124,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
             ImportGeographicalRegion();
             ImportSubGeographicalRegion();
             ImportSubstation();
-            ImportVoltageLevel();
             ImportPowerTransformer();
-            ImportPowerTransformerEnd();
-            ImportRatioTapChanger();
             ImportEnergyConsumer();
             ImportAnalogMeasurement();
             ImportDiscreteMeasurement();
@@ -291,46 +288,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
             }
             return rd;
         }
-
-        private void ImportVoltageLevel()
-        {
-            SortedDictionary<string, object> cimVoltageLevels = ConcreteModel.GetAllObjectsOfType("AMIProfile.VoltageLevel");
-            if (cimVoltageLevels != null)
-            {
-                foreach (KeyValuePair<string, object> cimVoltageLevelPair in cimVoltageLevels)
-                {
-                    VoltageLevel cimVoltageLevel = cimVoltageLevelPair.Value as VoltageLevel;
-
-                    ResourceDescription rd = CreateVoltageLevelResourceDescription(cimVoltageLevel);
-                    if (rd != null)
-                    {
-                        delta.AddDeltaOperation(DeltaOpType.Insert, rd, true);
-                        Report.Report.Append("VoltageLevel ID = ").Append(cimVoltageLevel.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
-                    }
-                    else
-                    {
-                        Report.Report.Append("VoltageLevel ID = ").Append(cimVoltageLevel.ID).AppendLine(" FAILED to be converted");
-                    }
-                }
-                Report.Report.AppendLine();
-            }
-        }
-
-        private ResourceDescription CreateVoltageLevelResourceDescription(VoltageLevel cimVoltageLevel)
-        {
-            ResourceDescription rd = null;
-            if (cimVoltageLevel != null)
-            {
-                long gid = ModelCodeHelper.CreateGlobalId(0, (short)DMSType.VOLTAGELEVEL, importHelper.CheckOutIndexForDMSType(DMSType.VOLTAGELEVEL));
-                rd = new ResourceDescription(gid);
-                importHelper.DefineIDMapping(cimVoltageLevel.ID, gid);
-
-                ////populate ResourceDescription
-                Converter.PopulateVoltageLevelProperties(cimVoltageLevel, rd, importHelper, Report);
-            }
-            return rd;
-        }
-
+        
         private void ImportPowerTransformer()
         {
             SortedDictionary<string, object> cimPowerTransformers = ConcreteModel.GetAllObjectsOfType("AMIProfile.PowerTransformer");
@@ -369,85 +327,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
             }
             return rd;
         }
-
-        private void ImportPowerTransformerEnd()
-        {
-            SortedDictionary<string, object> cimPowerTransformerEnds = ConcreteModel.GetAllObjectsOfType("AMIProfile.PowerTransformerEnd");
-            if (cimPowerTransformerEnds != null)
-            {
-                foreach (KeyValuePair<string, object> cimPowerTransformerEndPair in cimPowerTransformerEnds)
-                {
-                    PowerTransformerEnd cimPowerTransformerEnd = cimPowerTransformerEndPair.Value as PowerTransformerEnd;
-
-                    ResourceDescription rd = CreatePowerTransformerEndResourceDescription(cimPowerTransformerEnd);
-                    if (rd != null)
-                    {
-                        delta.AddDeltaOperation(DeltaOpType.Insert, rd, true);
-                        Report.Report.Append("PowerTransformerEnd ID = ").Append(cimPowerTransformerEnd.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
-                    }
-                    else
-                    {
-                        Report.Report.Append("PowerTransformerEnd ID = ").Append(cimPowerTransformerEnd.ID).AppendLine(" FAILED to be converted");
-                    }
-                }
-                Report.Report.AppendLine();
-            }
-        }
-
-        private ResourceDescription CreatePowerTransformerEndResourceDescription(PowerTransformerEnd cimPowerTransformerEnd)
-        {
-            ResourceDescription rd = null;
-            if (cimPowerTransformerEnd != null)
-            {
-                long gid = ModelCodeHelper.CreateGlobalId(0, (short)DMSType.POWERTRANSEND, importHelper.CheckOutIndexForDMSType(DMSType.POWERTRANSEND));
-                rd = new ResourceDescription(gid);
-                importHelper.DefineIDMapping(cimPowerTransformerEnd.ID, gid);
-
-                ////populate ResourceDescription
-                Converter.PopulatePowerTransformerEndProperties(cimPowerTransformerEnd, rd, importHelper, Report);
-            }
-            return rd;
-        }
-
-        private void ImportRatioTapChanger()
-        {
-            SortedDictionary<string, object> cimRatioTapChangers = ConcreteModel.GetAllObjectsOfType("AMIProfile.RatioTapChanger");
-            if (cimRatioTapChangers != null)
-            {
-                foreach (KeyValuePair<string, object> cimRatioTapChangerPair in cimRatioTapChangers)
-                {
-                    RatioTapChanger cimRatioTapChanger = cimRatioTapChangerPair.Value as RatioTapChanger;
-
-                    ResourceDescription rd = CreateRatioTapChangerResourceDescription(cimRatioTapChanger);
-                    if (rd != null)
-                    {
-                        delta.AddDeltaOperation(DeltaOpType.Insert, rd, true);
-                        Report.Report.Append("RatioTapChanger ID = ").Append(cimRatioTapChanger.ID).Append(" SUCCESSFULLY converted to GID = ").AppendLine(rd.Id.ToString());
-                    }
-                    else
-                    {
-                        Report.Report.Append("RatioTapChanger ID = ").Append(cimRatioTapChanger.ID).AppendLine(" FAILED to be converted");
-                    }
-                }
-                Report.Report.AppendLine();
-            }
-        }
-
-        private ResourceDescription CreateRatioTapChangerResourceDescription(RatioTapChanger cimRatioTapChanger)
-        {
-            ResourceDescription rd = null;
-            if (cimRatioTapChanger != null)
-            {
-                long gid = ModelCodeHelper.CreateGlobalId(0, (short)DMSType.RATIOTAPCHANGER, importHelper.CheckOutIndexForDMSType(DMSType.RATIOTAPCHANGER));
-                rd = new ResourceDescription(gid);
-                importHelper.DefineIDMapping(cimRatioTapChanger.ID, gid);
-
-                ////populate ResourceDescription
-                Converter.PopulateRatioTapChangerProperties(cimRatioTapChanger, rd, importHelper, Report);
-            }
-            return rd;
-        }
-
+        
         private void ImportEnergyConsumer()
         {
             SortedDictionary<string, object> cimEnergyConsumers = ConcreteModel.GetAllObjectsOfType("AMIProfile.EnergyConsumer");

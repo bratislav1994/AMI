@@ -150,62 +150,63 @@ namespace SCADA
 
         private float Crunching(IndexedValue<Automatak.DNP3.Interface.Analog> a)
         {
-            TC57CIM.IEC61970.Meas.Analog analog = (TC57CIM.IEC61970.Meas.Analog)GetMeasurement(a.Index);
+            //    TC57CIM.IEC61970.Meas.Analog analog = (TC57CIM.IEC61970.Meas.Analog)GetMeasurement(a.Index);
 
-            float step = (analog.MaxValue - analog.MinValue) / (analog.MaxRawValue - analog.MinRawValue);
-            double steps = a.Value.Value - analog.MinRawValue;
-            float retVal = analog.MinValue + step * (float)steps;
+            //    float step = (analog.MaxValue - analog.MinValue) / (analog.MaxRawValue - analog.MinRawValue);
+            //    double steps = a.Value.Value - analog.MinRawValue;
+            //    float retVal = analog.MinValue + step * (float)steps;
 
-            return retVal;
+            //    return retVal;
+            return (float)a.Value.Value;
         }
 
         private void SetAlarmStateForMeasurement(DynamicMeasurement measurement)
         {
-            if (resourcesToSend.ContainsKey(measurement.PsrRef))
-            {
-                if (resourcesToSend[measurement.PsrRef].IsAlarm)
-                {
-                    TC57CIM.IEC61970.Meas.Analog analog = ((TC57CIM.IEC61970.Meas.Analog)(measurements.Where(x => x.Measurement.PowerSystemResourceRef == measurement.PsrRef && x.Measurement.UnitSymbol == UnitSymbol.V).First()).Measurement);
-                    float normalValueWithLossNegative = analog.NormalValue - (((float)analog.ValidRange / 100) * analog.NormalValue);
-                    float normalValueWithLossPositive = analog.NormalValue + (((float)analog.ValidRange / 100) * analog.NormalValue);
-                    if (measurement.CurrentV >= normalValueWithLossNegative && measurement.CurrentV <= normalValueWithLossPositive)
-                    {
-                        measurement.IsAlarm = false;
-                        measurement.TypeVoltage = TypeVoltage.INBOUNDS;
-                    }
-                    else if (measurement.CurrentV > normalValueWithLossPositive)
-                    {
-                        measurement.IsAlarm = true;
-                        measurement.TypeVoltage = TypeVoltage.OVERVOLTAGE;
-                    }
-                    else if (measurement.CurrentV < normalValueWithLossNegative)
-                    {
-                        measurement.IsAlarm = true;
-                        measurement.TypeVoltage = TypeVoltage.UNDERVOLTAGE;
-                    }
-                }
-                else
-                {
-                    TC57CIM.IEC61970.Meas.Analog analog = ((TC57CIM.IEC61970.Meas.Analog)(measurements.Where(x => x.Measurement.PowerSystemResourceRef == measurement.PsrRef && x.Measurement.UnitSymbol == UnitSymbol.V).First()).Measurement);
-                    float normalValueWithLossNegative = analog.NormalValue - (((float)analog.InvalidRange / 100) * analog.NormalValue);
-                    float normalValueWithLossPositive = analog.NormalValue + (((float)analog.InvalidRange / 100) * analog.NormalValue);
-                    if (measurement.CurrentV < normalValueWithLossNegative)
-                    {
-                        measurement.IsAlarm = true;
-                        measurement.TypeVoltage = TypeVoltage.UNDERVOLTAGE;
-                    }
-                    else if (measurement.CurrentV > normalValueWithLossPositive)
-                    {
-                        measurement.IsAlarm = true;
-                        measurement.TypeVoltage = TypeVoltage.OVERVOLTAGE;
-                    }
-                    else
-                    {
-                        measurement.IsAlarm = false;
-                        measurement.TypeVoltage = TypeVoltage.INBOUNDS;
-                    }
-                }
-            }
+            //if (resourcesToSend.ContainsKey(measurement.PsrRef))
+            //{
+            //    if (resourcesToSend[measurement.PsrRef].IsAlarm)
+            //    {
+            //        TC57CIM.IEC61970.Meas.Analog analog = ((TC57CIM.IEC61970.Meas.Analog)(measurements.Where(x => x.Measurement.PowerSystemResourceRef == measurement.PsrRef && x.Measurement.UnitSymbol == UnitSymbol.V).First()).Measurement);
+            //        float normalValueWithLossNegative = analog.NormalValue - (((float)analog.ValidRange / 100) * analog.NormalValue);
+            //        float normalValueWithLossPositive = analog.NormalValue + (((float)analog.ValidRange / 100) * analog.NormalValue);
+            //        if (measurement.CurrentV >= normalValueWithLossNegative && measurement.CurrentV <= normalValueWithLossPositive)
+            //        {
+            //            measurement.IsAlarm = false;
+            //            measurement.TypeVoltage = TypeVoltage.INBOUNDS;
+            //        }
+            //        else if (measurement.CurrentV > normalValueWithLossPositive)
+            //        {
+            //            measurement.IsAlarm = true;
+            //            measurement.TypeVoltage = TypeVoltage.OVERVOLTAGE;
+            //        }
+            //        else if (measurement.CurrentV < normalValueWithLossNegative)
+            //        {
+            //            measurement.IsAlarm = true;
+            //            measurement.TypeVoltage = TypeVoltage.UNDERVOLTAGE;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        TC57CIM.IEC61970.Meas.Analog analog = ((TC57CIM.IEC61970.Meas.Analog)(measurements.Where(x => x.Measurement.PowerSystemResourceRef == measurement.PsrRef && x.Measurement.UnitSymbol == UnitSymbol.V).First()).Measurement);
+            //        float normalValueWithLossNegative = analog.NormalValue - (((float)analog.InvalidRange / 100) * analog.NormalValue);
+            //        float normalValueWithLossPositive = analog.NormalValue + (((float)analog.InvalidRange / 100) * analog.NormalValue);
+            //        if (measurement.CurrentV < normalValueWithLossNegative)
+            //        {
+            //            measurement.IsAlarm = true;
+            //            measurement.TypeVoltage = TypeVoltage.UNDERVOLTAGE;
+            //        }
+            //        else if (measurement.CurrentV > normalValueWithLossPositive)
+            //        {
+            //            measurement.IsAlarm = true;
+            //            measurement.TypeVoltage = TypeVoltage.OVERVOLTAGE;
+            //        }
+            //        else
+            //        {
+            //            measurement.IsAlarm = false;
+            //            measurement.TypeVoltage = TypeVoltage.INBOUNDS;
+            //        }
+            //    }
+            //}
         }
 
         private Measurement GetMeasurement(int index)

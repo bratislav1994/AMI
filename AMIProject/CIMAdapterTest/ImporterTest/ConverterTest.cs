@@ -120,7 +120,7 @@ namespace CIMAdapterTest.ImporterTest
             Converter.PopulateEnergyConsumerProperties(new AMIProfile.EnergyConsumer(), resDesc, impHelp, report);
             Assert.AreEqual(resDesc.Properties.Count, 0);
 
-            AMIProfile.EnergyConsumer ec = new AMIProfile.EnergyConsumer() { ID = "EC_1", Pfixed = 15, Qfixed = 15 };
+            AMIProfile.EnergyConsumer ec = new AMIProfile.EnergyConsumer() { ID = "EC_1", PMax = 15, QMax = 15 };
             Converter.PopulateEnergyConsumerProperties(ec, resDesc, impHelp, report);
             Assert.AreEqual(resDesc.Properties.Count, 2);
         }
@@ -185,10 +185,10 @@ namespace CIMAdapterTest.ImporterTest
             Converter.PopulateAnalogProperties(new AMIProfile.Analog(), resDesc, impHelp, report);
             Assert.AreEqual(resDesc.Properties.Count, 0);
 
-            AMIProfile.Analog a = new AMIProfile.Analog() { ID = "M_1", MaxValue = 15, MinValue = -15, NormalValue = 0, ValidRange = 5, InvalidRange = 6 };
+            AMIProfile.Analog a = new AMIProfile.Analog() { ID = "M_1" };
             impHelp.DefineIDMapping(a.ID, 1234567);
             Converter.PopulateAnalogProperties(a, resDesc, impHelp, report);
-            Assert.AreEqual(resDesc.Properties.Count, 5);
+            Assert.AreEqual(resDesc.Properties.Count, 1);
 
             Converter.PopulateAnalogProperties(a, resDesc, new ImportHelper(), report); // gid < 0
         }
@@ -210,28 +210,7 @@ namespace CIMAdapterTest.ImporterTest
 
             Converter.PopulateBaseVoltageProperties(bv, resDesc, new ImportHelper(), report); // gid < 0
         }
-
-        [Test]
-        public void PopulateTransformerEndPropertiesTest()
-        {
-            Init();
-            Converter.PopulateTransformerEndProperties(null, resDesc, impHelp, report);
-            Assert.AreEqual(resDesc.Properties.Count, 0);
-
-            Converter.PopulateTransformerEndProperties(new AMIProfile.TransformerEnd(), resDesc, impHelp, report);
-            Assert.AreEqual(resDesc.Properties.Count, 0);
-
-            AMIProfile.TransformerEnd te = new AMIProfile.TransformerEnd() { ID = "TE_1", MRID = "bv_1" };
-            AMIProfile.BaseVoltage bv = new AMIProfile.BaseVoltage() { ID = "bv_1" };
-            te.BaseVoltage = bv;
-            impHelp.DefineIDMapping(te.ID, 1234567);
-            impHelp.DefineIDMapping(te.BaseVoltage.ID, 12345678);
-            Converter.PopulateTransformerEndProperties(te, resDesc, impHelp, report);
-            Assert.AreEqual(resDesc.Properties.Count, 2);
-
-            Converter.PopulateTransformerEndProperties(te, resDesc, new ImportHelper(), report); // gid < 0
-        }
-
+        
         [Test]
         public void PopulateConnectivityNodeContainerPropertiesTest()
         {
@@ -321,91 +300,7 @@ namespace CIMAdapterTest.ImporterTest
 
             Converter.PopulateSubstationProperties(sub, resDesc, new ImportHelper(), report); // gid < 0
         }
-
-        [Test]
-        public void PopulateTapChangerPropertiesTest()
-        {
-            Init();
-            Converter.PopulateTapChangerProperties(null, resDesc, impHelp, report);
-            Assert.AreEqual(resDesc.Properties.Count, 0);
-
-            Converter.PopulateTapChangerProperties(new AMIProfile.TapChanger(), resDesc, impHelp, report);
-            Assert.AreEqual(resDesc.Properties.Count, 0);
-
-            AMIProfile.TapChanger tapC = new AMIProfile.TapChanger() { ID = "sub1", MRID = "sub1", HighStep = 4, LowStep = 1, NeutralStep = 0, NormalStep = 1 };
-            impHelp.DefineIDMapping(tapC.ID, 1234567);
-            Converter.PopulateTapChangerProperties(tapC, resDesc, impHelp, report);
-            Assert.AreEqual(resDesc.Properties.Count, 5);
-
-            Converter.PopulateTapChangerProperties(tapC, resDesc, new ImportHelper(), report); // gid < 0
-        }
-
-        [Test]
-        public void PopulateRatioTapChangerPropertiesTest()
-        {
-            Init();
-            Converter.PopulateRatioTapChangerProperties(null, resDesc, impHelp, report);
-            Assert.AreEqual(resDesc.Properties.Count, 0);
-
-            Converter.PopulateRatioTapChangerProperties(new AMIProfile.RatioTapChanger(), resDesc, impHelp, report);
-            Assert.AreEqual(resDesc.Properties.Count, 0);
-
-            AMIProfile.RatioTapChanger ratio = new AMIProfile.RatioTapChanger() { ID = "ratio1", MRID = "ratio1"};
-            AMIProfile.TransformerEnd trEnd = new AMIProfile.TransformerEnd() { ID = "trEnd_1" };
-            ratio.TransformerEnd = trEnd;
-            impHelp.DefineIDMapping(ratio.ID, 1234567);
-            impHelp.DefineIDMapping(ratio.TransformerEnd.ID, 12345678);
-            Converter.PopulateRatioTapChangerProperties(ratio, resDesc, impHelp, report);
-            Assert.AreEqual(resDesc.Properties.Count, 2);
-
-            Converter.PopulateRatioTapChangerProperties(ratio, resDesc, new ImportHelper(), report); // gid < 0
-        }
-
-        [Test]
-        public void PopulateVoltageLevelPropertiesTest()
-        {
-            Init();
-            Converter.PopulateVoltageLevelProperties(null, resDesc, impHelp, report);
-            Assert.AreEqual(resDesc.Properties.Count, 0);
-
-            Converter.PopulateVoltageLevelProperties(new AMIProfile.VoltageLevel(), resDesc, impHelp, report);
-            Assert.AreEqual(resDesc.Properties.Count, 0);
-
-            AMIProfile.VoltageLevel volLevel = new AMIProfile.VoltageLevel() { ID = "volLevel1", MRID = "volLevel1" };
-            AMIProfile.BaseVoltage baseVol = new AMIProfile.BaseVoltage() { ID = "baseVol_1" };
-            AMIProfile.Substation sub = new AMIProfile.Substation() { ID = "sub_1" };
-            volLevel.BaseVoltage = baseVol;
-            volLevel.Substation = sub;
-            impHelp.DefineIDMapping(volLevel.ID, 1234567);
-            impHelp.DefineIDMapping(volLevel.BaseVoltage.ID, 12345678);
-            impHelp.DefineIDMapping(volLevel.Substation.ID, 34267);
-            Converter.PopulateVoltageLevelProperties(volLevel, resDesc, impHelp, report);
-            Assert.AreEqual(resDesc.Properties.Count, 3);
-
-            Converter.PopulateVoltageLevelProperties(volLevel, resDesc, new ImportHelper(), report); // gid < 0
-        }
-
-        [Test]
-        public void PopulatePowerTransformerEndPropertiesTest()
-        {
-            Init();
-            Converter.PopulatePowerTransformerEndProperties(null, resDesc, impHelp, report);
-            Assert.AreEqual(resDesc.Properties.Count, 0);
-
-            Converter.PopulatePowerTransformerEndProperties(new AMIProfile.PowerTransformerEnd(), resDesc, impHelp, report);
-            Assert.AreEqual(resDesc.Properties.Count, 0);
-
-            AMIProfile.PowerTransformerEnd powerEnd = new AMIProfile.PowerTransformerEnd() { ID = "powerTransEnd_1", MRID = "powerTransEnd_1" };
-            AMIProfile.PowerTransformer powerTrans = new AMIProfile.PowerTransformer() { ID = "powerTrans_1" };
-            powerEnd.PowerTransformer = powerTrans;
-            impHelp.DefineIDMapping(powerEnd.ID, 1234567);
-            impHelp.DefineIDMapping(powerEnd.PowerTransformer.ID, 12345678);
-            Converter.PopulatePowerTransformerEndProperties(powerEnd, resDesc, impHelp, report);
-            Assert.AreEqual(resDesc.Properties.Count, 2);
-
-            Converter.PopulatePowerTransformerEndProperties(powerEnd, resDesc, new ImportHelper(), report); // gid < 0
-        }
-
+        
         [Test]
         [TestCase(AMIProfile.UnitSymbol.P)]
         [TestCase(AMIProfile.UnitSymbol.Q)]

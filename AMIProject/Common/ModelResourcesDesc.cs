@@ -870,11 +870,8 @@ namespace FTN.Common
             typeIdsInInsertOrder.Add(ModelCode.SUBGEOREGION);
             typeIdsInInsertOrder.Add(ModelCode.BASEVOLTAGE);
             typeIdsInInsertOrder.Add(ModelCode.SUBSTATION);
-            typeIdsInInsertOrder.Add(ModelCode.VOLTAGELEVEL);
             typeIdsInInsertOrder.Add(ModelCode.ENERGYCONS);
             typeIdsInInsertOrder.Add(ModelCode.POWERTRANSFORMER);
-            typeIdsInInsertOrder.Add(ModelCode.POWERTRANSEND);
-            typeIdsInInsertOrder.Add(ModelCode.RATIOTAPCHANGER);
             typeIdsInInsertOrder.Add(ModelCode.ANALOG);
             typeIdsInInsertOrder.Add(ModelCode.DISCRETE);
         }
@@ -882,15 +879,11 @@ namespace FTN.Common
 		private void InitializeNotSettablePropertyIds()
 		{			
 			notSettablePropertyIds.Add(ModelCode.IDOBJ_GID);
-			notSettablePropertyIds.Add(ModelCode.POWERTRANSFORMER_POWTRANSENDS);
 			notSettablePropertyIds.Add(ModelCode.BASEVOLTAGE_CONDEQS);
-			notSettablePropertyIds.Add(ModelCode.BASEVOLTAGE_TRANSENDS);
-            notSettablePropertyIds.Add(ModelCode.BASEVOLTAGE_VOLTLEVELS);
             notSettablePropertyIds.Add(ModelCode.EQCONTAINER_EQUIPMENTS);
             notSettablePropertyIds.Add(ModelCode.GEOREGION_SUBGEOREGIONS);
             notSettablePropertyIds.Add(ModelCode.PSR_MEASUREMENTS);
             notSettablePropertyIds.Add(ModelCode.SUBGEOREGION_SUBS);
-            notSettablePropertyIds.Add(ModelCode.SUBSTATION_VOLTLEVELS);
         }
 	
 		# endregion Initialization of metadata

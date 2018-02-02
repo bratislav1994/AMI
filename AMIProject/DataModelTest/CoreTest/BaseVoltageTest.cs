@@ -15,8 +15,6 @@ namespace DataModelTest.CoreTest
         private BaseVoltage baseVoltage;
         private float nominalVoltage = 15000;
         private List<long> conductingEquipments = new List<long>() { 42949672811, 42949672812 };
-        private List<long> transformerEnds = new List<long>() { 42949672821, 42949672822 };
-        private List<long> voltageLevels = new List<long>() { 42949672831, 42949672832 };
         public Property property = new Property();
 
 
@@ -26,8 +24,6 @@ namespace DataModelTest.CoreTest
             this.baseVoltage = new BaseVoltage();
             this.baseVoltage.NominalVoltage = nominalVoltage;
             this.baseVoltage.ConductingEquipments = conductingEquipments;
-            this.baseVoltage.TransformerEnds = transformerEnds;
-            this.baseVoltage.VoltageLevels = voltageLevels;
         }
 
         [Test]
@@ -59,22 +55,6 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        public void TransformerEndsTest()
-        {
-            baseVoltage.TransformerEnds = transformerEnds;
-
-            Assert.AreEqual(transformerEnds, baseVoltage.TransformerEnds);
-        }
-
-        [Test]
-        public void voltageLevelsTest()
-        {
-            baseVoltage.VoltageLevels = voltageLevels;
-
-            Assert.AreEqual(voltageLevels, baseVoltage.VoltageLevels);
-        }
-
-        [Test]
         public void EqualsTestCorrect()
         {
             object obj = this.baseVoltage;
@@ -84,14 +64,6 @@ namespace DataModelTest.CoreTest
 
             // incorrect
             obj = new BaseVoltage() { NominalVoltage = 100 };
-            result = baseVoltage.Equals(obj);
-            Assert.AreNotEqual(true, result);
-
-            obj = new BaseVoltage() { TransformerEnds = new List<long>() };
-            result = baseVoltage.Equals(obj);
-            Assert.AreNotEqual(true, result);
-
-            obj = new BaseVoltage() { VoltageLevels = new List<long>() };
             result = baseVoltage.Equals(obj);
             Assert.AreNotEqual(true, result);
 
@@ -112,8 +84,6 @@ namespace DataModelTest.CoreTest
         [Test]
         [TestCase(ModelCode.BASEVOLTAGE_NOMINALVOL)]
         [TestCase(ModelCode.BASEVOLTAGE_CONDEQS)]
-        [TestCase(ModelCode.BASEVOLTAGE_TRANSENDS)]
-        [TestCase(ModelCode.BASEVOLTAGE_VOLTLEVELS)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void HasPropertyTestTrue(ModelCode t)
         {
@@ -123,7 +93,7 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.ANALOG_MAXVALUE)]
+        [TestCase(ModelCode.ENERGYCONS_PMAX)]
         public void HasPropertyTestFalse(ModelCode t)
         {
             bool result = baseVoltage.HasProperty(t);
@@ -134,8 +104,6 @@ namespace DataModelTest.CoreTest
         [Test]
         [TestCase(ModelCode.BASEVOLTAGE_NOMINALVOL)]
         [TestCase(ModelCode.BASEVOLTAGE_CONDEQS)]
-        [TestCase(ModelCode.BASEVOLTAGE_TRANSENDS)]
-        [TestCase(ModelCode.BASEVOLTAGE_VOLTLEVELS)]
         [TestCase(ModelCode.IDOBJ_NAME)]
         public void GetPropertyTestCorrect(ModelCode t)
         {
@@ -146,7 +114,7 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.ANALOG_MAXVALUE)]
+        [TestCase(ModelCode.ENERGYCONS_PMAX)]
         public void GetPropertyTestFalse(ModelCode t)
         {
             property.Id = t;
@@ -177,7 +145,7 @@ namespace DataModelTest.CoreTest
         }
 
         [Test]
-        [TestCase(ModelCode.ANALOG_MAXVALUE, 15000)]
+        [TestCase(ModelCode.ENERGYCONS_PMAX, 15000)]
         public void SetPropertyTestFalse(ModelCode t, float value)
         {
             property.Id = t;
@@ -196,10 +164,8 @@ namespace DataModelTest.CoreTest
             bv.ConductingEquipments = conductingEquipments;
             Assert.AreEqual(true, bv.IsReferenced);
             bv = new BaseVoltage();
-            bv.TransformerEnds = transformerEnds;
             Assert.AreEqual(true, bv.IsReferenced);
             bv = new BaseVoltage();
-            bv.VoltageLevels = voltageLevels;
             Assert.AreEqual(true, bv.IsReferenced);
         }
 
@@ -223,35 +189,15 @@ namespace DataModelTest.CoreTest
 
         [Test]
         [TestCase(ModelCode.CONDEQ_BASEVOLTAGE, 42949672813)]
-        [TestCase(ModelCode.TRANSFORMEREND_BASEVOLT, 42949672823)]
-        [TestCase(ModelCode.VOLTAGELEVEL_BASEVOLTAGE, 42949672833)]
         public void AddReferenceTestCorrect(ModelCode referenceId, long globalId)
         {
             Assert.DoesNotThrow(() => baseVoltage.AddReference(referenceId, globalId));
         }
 
         [Test]
-        [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949672843)]
-        public void AddReferenceTestFalse(ModelCode referenceId, long globalId)
-        {
-            Assert.DoesNotThrow(() => baseVoltage.AddReference(referenceId, globalId));
-        }
-
-        [Test]
         [TestCase(ModelCode.CONDEQ_BASEVOLTAGE, 42949672813)]
-        [TestCase(ModelCode.TRANSFORMEREND_BASEVOLT, 42949672823)]
-        [TestCase(ModelCode.VOLTAGELEVEL_BASEVOLTAGE, 42949672833)]
         [TestCase(ModelCode.CONDEQ_BASEVOLTAGE, 42949672814)]
-        [TestCase(ModelCode.TRANSFORMEREND_BASEVOLT, 42949672824)]
-        [TestCase(ModelCode.VOLTAGELEVEL_BASEVOLTAGE, 42949672834)]
         public void RemoveReferenceTestCorrect(ModelCode referenceId, long globalId)
-        {
-            Assert.DoesNotThrow(() => baseVoltage.RemoveReference(referenceId, globalId));
-        }
-
-        [Test]
-        [TestCase(ModelCode.VOLTAGELEVEL_SUBSTATION, 42949672843)]
-        public void RemoveReferenceTestFalse(ModelCode referenceId, long globalId)
         {
             Assert.DoesNotThrow(() => baseVoltage.RemoveReference(referenceId, globalId));
         }

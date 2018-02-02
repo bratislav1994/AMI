@@ -402,104 +402,104 @@ namespace FTN.Common
             }
 
             // change ids and reference ids in update operations
-            foreach (ResourceDescription rd in updateOps)
-            {
-                long gidOld = rd.Id;
-                int idOld = ModelCodeHelper.ExtractEntityIdFromGlobalId(rd.Id);
-                if (idOld < 0)
-                {
-                    if (globaldChanges.ContainsKey(gidOld))
-                    {
-                        rd.Id = globaldChanges[gidOld];
-                    }
-                    else
-                    {
-                        message = String.Format("Failed to fix negative to positive IDs in update delta operations for delta with ID = {0} because negative resource ID = 0x{1:x16} does not exists in insert delta operations.", GetCompositeId(id), gidOld);
-                        CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+            //foreach (ResourceDescription rd in updateOps)
+            //{
+            //    long gidOld = rd.Id;
+            //    int idOld = ModelCodeHelper.ExtractEntityIdFromGlobalId(rd.Id);
+            //    if (idOld < 0)
+            //    {
+            //        if (globaldChanges.ContainsKey(gidOld))
+            //        {
+            //            rd.Id = globaldChanges[gidOld];
+            //        }
+            //        else
+            //        {
+            //            message = String.Format("Failed to fix negative to positive IDs in update delta operations for delta with ID = {0} because negative resource ID = 0x{1:x16} does not exists in insert delta operations.", GetCompositeId(id), gidOld);
+            //            CommonTrace.WriteTrace(CommonTrace.TraceError, message);
 
-                        string exceptionMessage = String.Format("Invalid update delta operation. Negative resource ID = 0x{0:x16} does not exists in insert delta operations.", gidOld);
-                        throw new Exception(exceptionMessage);
-                    }
-                }
+            //            string exceptionMessage = String.Format("Invalid update delta operation. Negative resource ID = 0x{0:x16} does not exists in insert delta operations.", gidOld);
+            //            throw new Exception(exceptionMessage);
+            //        }
+            //    }
 
-                foreach (Property p in rd.Properties)
-                {
-                    if (p.Type == PropertyType.Reference)
-                    {
-                        long gidOldRef = p.AsReference();
-                        int idOldRef = ModelCodeHelper.ExtractEntityIdFromGlobalId(gidOldRef);
-                        if (idOldRef < 0)
-                        {
-                            if (globaldChanges.ContainsKey(gidOldRef))
-                            {
-                                p.SetValue(globaldChanges[gidOldRef]);
-                            }
-                            else
-                            {
-                                message = String.Format("Failed to fix negative to positive IDs in update delta operations for delta with ID = {0} because negative reference (property code: {1}, value: 0x{2:x16}) does not exist in insert delta operations. Resource ID = 0x{3:x16}. ", GetCompositeId(id), p.Id, gidOldRef, rd.Id);
-                                CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+            //    foreach (Property p in rd.Properties)
+            //    {
+            //        if (p.Type == PropertyType.Reference)
+            //        {
+            //            long gidOldRef = p.AsReference();
+            //            int idOldRef = ModelCodeHelper.ExtractEntityIdFromGlobalId(gidOldRef);
+            //            if (idOldRef < 0)
+            //            {
+            //                if (globaldChanges.ContainsKey(gidOldRef))
+            //                {
+            //                    p.SetValue(globaldChanges[gidOldRef]);
+            //                }
+            //                else
+            //                {
+            //                    message = String.Format("Failed to fix negative to positive IDs in update delta operations for delta with ID = {0} because negative reference (property code: {1}, value: 0x{2:x16}) does not exist in insert delta operations. Resource ID = 0x{3:x16}. ", GetCompositeId(id), p.Id, gidOldRef, rd.Id);
+            //                    CommonTrace.WriteTrace(CommonTrace.TraceError, message);
 
-                                string exceptionMessage = String.Format("Invalid update delta operation. Negative reference (property code: {0}, value: 0x{1:x16}) does not exist in insert delta operations. Resource ID = 0x{2:x16}. ", p.Id, gidOldRef, rd.Id);
-                                throw new Exception(exceptionMessage);
-                            }
-                        }
-                    }
-                    else if (p.Type == PropertyType.ReferenceVector)
-                    {
-                        bool changed = false;
+            //                    string exceptionMessage = String.Format("Invalid update delta operation. Negative reference (property code: {0}, value: 0x{1:x16}) does not exist in insert delta operations. Resource ID = 0x{2:x16}. ", p.Id, gidOldRef, rd.Id);
+            //                    throw new Exception(exceptionMessage);
+            //                }
+            //            }
+            //        }
+            //        else if (p.Type == PropertyType.ReferenceVector)
+            //        {
+            //            bool changed = false;
 
-                        List<long> gidsRef = p.AsReferences();
-                        for (int i = 0; i < gidsRef.Count; i++)
-                        {
-                            long gidOldRef = gidsRef[i];
-                            int idOldRef = ModelCodeHelper.ExtractEntityIdFromGlobalId(gidOldRef);
-                            if (idOldRef < 0)
-                            {
-                                if (globaldChanges.ContainsKey(gidOldRef))
-                                {
-                                    gidsRef[i] = globaldChanges[gidOldRef];
-                                    changed = true;
-                                }
-                                else
-                                {
-                                    message = String.Format("Failed to fix negative to positive IDs in update delta operations for delta with ID = {0} because negative reference (property code: {1}, value: 0x{2:x16}) does not exist in insert delta operations. Resource ID = 0x{3:x16}. ", GetCompositeId(id), p.Id, gidOldRef, rd.Id);
-                                    CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+            //            List<long> gidsRef = p.AsReferences();
+            //            for (int i = 0; i < gidsRef.Count; i++)
+            //            {
+            //                long gidOldRef = gidsRef[i];
+            //                int idOldRef = ModelCodeHelper.ExtractEntityIdFromGlobalId(gidOldRef);
+            //                if (idOldRef < 0)
+            //                {
+            //                    if (globaldChanges.ContainsKey(gidOldRef))
+            //                    {
+            //                        gidsRef[i] = globaldChanges[gidOldRef];
+            //                        changed = true;
+            //                    }
+            //                    else
+            //                    {
+            //                        message = String.Format("Failed to fix negative to positive IDs in update delta operations for delta with ID = {0} because negative reference (property code: {1}, value: 0x{2:x16}) does not exist in insert delta operations. Resource ID = 0x{3:x16}. ", GetCompositeId(id), p.Id, gidOldRef, rd.Id);
+            //                        CommonTrace.WriteTrace(CommonTrace.TraceError, message);
 
-                                    string exceptionMessage = String.Format("Invalid update delta operation. Negative reference (property code: {0}, value: 0x{1:x16}) does not exist in insert delta operations. Resource ID = 0x{2:x16}. ", p.Id, gidOldRef, rd.Id);
-                                    throw new Exception(exceptionMessage);
-                                }
-                            }
-                        }
+            //                        string exceptionMessage = String.Format("Invalid update delta operation. Negative reference (property code: {0}, value: 0x{1:x16}) does not exist in insert delta operations. Resource ID = 0x{2:x16}. ", p.Id, gidOldRef, rd.Id);
+            //                        throw new Exception(exceptionMessage);
+            //                    }
+            //                }
+            //            }
 
-                        if (changed)
-                        {
-                            p.SetValue(gidsRef);
-                        }
-                    }
-                }
-            }
+            //            if (changed)
+            //            {
+            //                p.SetValue(gidsRef);
+            //            }
+            //        }
+            //    }
+            //}
 
-            // change ids in delete operations
-            foreach (ResourceDescription rd in deleteOps)
-            {
-                long gidOld = rd.Id;
-                int idOld = ModelCodeHelper.ExtractEntityIdFromGlobalId(rd.Id);
-                if (idOld < 0)
-                {
-                    if (globaldChanges.ContainsKey(gidOld))
-                    {
-                        rd.Id = globaldChanges[gidOld];
-                    }
-                    else
-                    {
-                        message = String.Format("Failed to fix negative to positive IDs in delete delta operations for delta with ID = {0} because negative resource ID = 0x{1:x16} does not exists in insert delta operations.", GetCompositeId(id), gidOld);
-                        CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+            //// change ids in delete operations
+            //foreach (ResourceDescription rd in deleteOps)
+            //{
+            //    long gidOld = rd.Id;
+            //    int idOld = ModelCodeHelper.ExtractEntityIdFromGlobalId(rd.Id);
+            //    if (idOld < 0)
+            //    {
+            //        if (!globaldChanges.ContainsKey(gidOld))
+            //        {
+            //            rd.Id = globaldChanges[gidOld];
+            //        }
+            //        else
+            //        {
+            //            message = String.Format("Failed to fix negative to positive IDs in delete delta operations for delta with ID = {0} because negative resource ID = 0x{1:x16} does not exists in insert delta operations.", GetCompositeId(id), gidOld);
+            //            CommonTrace.WriteTrace(CommonTrace.TraceError, message);
 
-                        string exceptionMessage = String.Format("Invalid delete delta operation. Negative resource ID = 0x{0:x16} does not exists in insert delta operations.", gidOld);
-                        throw new Exception(message);
-                    }
-                }
-            }
+            //            string exceptionMessage = String.Format("Invalid delete delta operation. Negative resource ID = 0x{0:x16} does not exists in insert delta operations.", gidOld);
+            //            throw new Exception(message);
+            //        }
+            //    }
+            //}
 
             message = String.Format("Fixing negative to positive IDs for delta with ID = {0} completed successfully.", GetCompositeId(id));
             CommonTrace.WriteTrace(CommonTrace.TraceVerbose, message);

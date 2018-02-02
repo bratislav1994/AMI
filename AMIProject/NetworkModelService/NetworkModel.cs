@@ -1000,17 +1000,9 @@ namespace FTN.Services.NetworkModelService
                             GeographicalRegion geoRegionCopy = ((GeographicalRegion)kvp2.Value).DeepCopy();
                             retVal[kvp.Key].Entities.Add(geoRegionCopy.GlobalId, geoRegionCopy);
                             break;
-                        case DMSType.POWERTRANSEND:
-                            PowerTransformerEnd pteCopy = ((PowerTransformerEnd)kvp2.Value).DeepCopy();
-                            retVal[kvp.Key].Entities.Add(pteCopy.GlobalId, pteCopy);
-                            break;
                         case DMSType.POWERTRANSFORMER:
                             PowerTransformer ptCopy = ((PowerTransformer)kvp2.Value).DeepCopy();
                             retVal[kvp.Key].Entities.Add(ptCopy.GlobalId, ptCopy);
-                            break;
-                        case DMSType.RATIOTAPCHANGER:
-                            RatioTapChanger rtpCopy = ((RatioTapChanger)kvp2.Value).DeepCopy();
-                            retVal[kvp.Key].Entities.Add(rtpCopy.GlobalId, rtpCopy);
                             break;
                         case DMSType.SUBGEOREGION:
                             SubGeographicalRegion sgrCopy = ((SubGeographicalRegion)kvp2.Value).DeepCopy();
@@ -1019,10 +1011,6 @@ namespace FTN.Services.NetworkModelService
                         case DMSType.SUBSTATION:
                             Substation ssCopy = ((Substation)kvp2.Value).DeepCopy();
                             retVal[kvp.Key].Entities.Add(ssCopy.GlobalId, ssCopy);
-                            break;
-                        case DMSType.VOLTAGELEVEL:
-                            VoltageLevel vlCopy = ((VoltageLevel)kvp2.Value).DeepCopy();
-                            retVal[kvp.Key].Entities.Add(vlCopy.GlobalId, vlCopy);
                             break;
                     }
                 }

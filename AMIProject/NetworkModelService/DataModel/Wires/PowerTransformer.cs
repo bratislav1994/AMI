@@ -15,6 +15,7 @@ using System.IO;
 using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Wires;
 using FTN.Common;
+using System.Runtime.Serialization;
 
 namespace TC57CIM.IEC61970.Wires {
 	/// <summary>
@@ -31,7 +32,8 @@ namespace TC57CIM.IEC61970.Wires {
 	/// </summary>
 	public class PowerTransformer : ConductingEquipment {
 
-        private List<long> powerTransEnds = new List<long>();
+        private float validRangePercent;
+        private float invalidRangePercent;
 
         public PowerTransformer()
         {
@@ -42,10 +44,32 @@ namespace TC57CIM.IEC61970.Wires {
         {
         }
 
-        public List<long> PowerTransEnds
+        [DataMember]
+        public float ValidRangePercent
         {
-            get { return powerTransEnds; }
-            set { powerTransEnds = value; }
+            get
+            {
+                return validRangePercent;
+            }
+
+            set
+            {
+                validRangePercent = value;
+            }
+        }
+
+        [DataMember]
+        public float InvalidRangePercent
+        {
+            get
+            {
+                return invalidRangePercent;
+            }
+
+            set
+            {
+                invalidRangePercent = value;
+            }
         }
 
         public override int GetHashCode()
@@ -58,22 +82,22 @@ namespace TC57CIM.IEC61970.Wires {
             if (base.Equals(obj))
             {
                 PowerTransformer x = (PowerTransformer)obj;
-                return (CompareHelper.CompareLists(x.powerTransEnds, this.powerTransEnds));
+                return x.validRangePercent == this.validRangePercent && x.invalidRangePercent == this.invalidRangePercent;
             }
             else
             {
                 return false;
             }
         }
-
-
+        
         #region IAccess implementation
 
         public override bool HasProperty(ModelCode t)
         {
             switch (t)
             {
-                case ModelCode.POWERTRANSFORMER_POWTRANSENDS:
+                case ModelCode.POWERTRANSFORMER_VALIDRANGEPERCENT:
+                case ModelCode.POWERTRANSFORMER_INVALIDRANGEPERCENT:
                     return true;
 
                 default:
@@ -85,8 +109,11 @@ namespace TC57CIM.IEC61970.Wires {
         {
             switch (property.Id)
             {
-                case ModelCode.POWERTRANSFORMER_POWTRANSENDS:
-                    property.SetValue(powerTransEnds);
+                case ModelCode.POWERTRANSFORMER_VALIDRANGEPERCENT:
+                    property.SetValue(validRangePercent);
+                    break;
+                case ModelCode.POWERTRANSFORMER_INVALIDRANGEPERCENT:
+                    property.SetValue(invalidRangePercent);
                     break;
 
                 default:
@@ -106,66 +133,7 @@ namespace TC57CIM.IEC61970.Wires {
         }
 
         #endregion IAccess implementation
-
-        #region IReference implementation
-
-        public override bool IsReferenced
-        {
-            get
-            {
-                return powerTransEnds.Count != 0 || base.IsReferenced;
-            }
-        }
-
-        public override void GetReferences(Dictionary<ModelCode, List<long>> references, TypeOfReference refType)
-        {
-            if (powerTransEnds != null && powerTransEnds.Count != 0 && (refType == TypeOfReference.Target || refType == TypeOfReference.Both))
-            {
-                references[ModelCode.POWERTRANSFORMER_POWTRANSENDS] = powerTransEnds.GetRange(0, powerTransEnds.Count);
-            }
-
-            base.GetReferences(references, refType);
-        }
-
-        public override void AddReference(ModelCode referenceId, long globalId)
-        {
-            switch (referenceId)
-            {
-                case ModelCode.POWERTRANSEND_POWERTRANSF:
-                    powerTransEnds.Add(globalId);
-                    break;
-
-                default:
-                    base.AddReference(referenceId, globalId);
-                    break;
-            }
-        }
-
-        public override void RemoveReference(ModelCode referenceId, long globalId)
-        {
-            switch (referenceId)
-            {
-                case ModelCode.POWERTRANSEND_POWERTRANSF:
-
-                    if (powerTransEnds.Contains(globalId))
-                    {
-                        powerTransEnds.Remove(globalId);
-                    }
-                    else
-                    {
-                        CommonTrace.WriteTrace(CommonTrace.TraceWarning, "Entity (GID = 0x{0:x16}) doesn't contain reference 0x{1:x16}.", this.GlobalId, globalId);
-                    }
-
-                    break;
-
-                default:
-                    base.RemoveReference(referenceId, globalId);
-                    break;
-            }
-        }
-
-        #endregion IReference implementation
-
+        
         public PowerTransformer DeepCopy()
         {
             PowerTransformer powerTransCopy = new PowerTransformer();
@@ -176,7 +144,8 @@ namespace TC57CIM.IEC61970.Wires {
             powerTransCopy.BaseVoltage = this.BaseVoltage;
             powerTransCopy.EqContainer = this.EqContainer;
             powerTransCopy.Measurements = this.Measurements;
-            powerTransCopy.PowerTransEnds = this.PowerTransEnds;
+            powerTransCopy.ValidRangePercent = this.ValidRangePercent;
+            powerTransCopy.InvalidRangePercent = this.InvalidRangePercent;
 
             return powerTransCopy;
         }

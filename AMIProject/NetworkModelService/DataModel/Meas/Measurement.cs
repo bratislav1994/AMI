@@ -57,9 +57,6 @@ namespace TC57CIM.IEC61970.Meas
         /// </summary>
         private UnitSymbol unitSymbol;
         private Direction signalDirection;
-        private int minRawValue;
-        private int maxRawValue;
-        private int normalRawValue;
         private long powerSystemResource = 0;
         private int rtuAddress = 0;
         private int idDB;
@@ -116,57 +113,14 @@ namespace TC57CIM.IEC61970.Meas
                 rtuAddress = value;
             }
         }
-
-        [DataMember]
-        public int MinRawValue
-        {
-            get
-            {
-                return minRawValue;
-            }
-
-            set
-            {
-                minRawValue = value;
-            }
-        }
-
-        [DataMember]
-        public int MaxRawValue
-        {
-            get
-            {
-                return maxRawValue;
-            }
-
-            set
-            {
-                maxRawValue = value;
-            }
-        }
-
-        [DataMember]
-        public int NormalRawValue
-        {
-            get
-            {
-                return normalRawValue;
-            }
-
-            set
-            {
-                normalRawValue = value;
-            }
-        }
-
+        
         public override bool Equals(object obj)
         {
             if (base.Equals(obj))
             {
                 Measurement x = (Measurement)obj;
                 return (x.unitSymbol == this.unitSymbol && x.signalDirection == this.signalDirection &&
-                    x.powerSystemResource == this.powerSystemResource && x.rtuAddress == this.rtuAddress &&
-                    x.minRawValue == this.minRawValue && x.maxRawValue == this.maxRawValue && x.normalRawValue == this.normalRawValue);
+                    x.powerSystemResource == this.powerSystemResource && x.rtuAddress == this.rtuAddress);
             }
             else
             {
@@ -189,9 +143,6 @@ namespace TC57CIM.IEC61970.Meas
                 case ModelCode.MEASUREMENT_DIRECTION:
                 case ModelCode.MEASUREMENT_RTUADDRESS:
                 case ModelCode.MEASUREMENT_PSR:
-                case ModelCode.MEASUREMENT_MINRAWVAL:
-                case ModelCode.MEASUREMENT_MAXRAWVAL:
-                case ModelCode.MEASUREMENT_NORMALRAWVAL:
                     return true;
                 default:
                     return base.HasProperty(property);
@@ -213,15 +164,6 @@ namespace TC57CIM.IEC61970.Meas
                     break;
                 case ModelCode.MEASUREMENT_PSR:
                     property.SetValue(powerSystemResource);
-                    break;
-                case ModelCode.MEASUREMENT_MINRAWVAL:
-                    property.SetValue(minRawValue);
-                    break;
-                case ModelCode.MEASUREMENT_MAXRAWVAL:
-                    property.SetValue(maxRawValue);
-                    break;
-                case ModelCode.MEASUREMENT_NORMALRAWVAL:
-                    property.SetValue(normalRawValue);
                     break;
 
                 default:
@@ -245,15 +187,6 @@ namespace TC57CIM.IEC61970.Meas
                     break;
                 case ModelCode.MEASUREMENT_PSR:
                     powerSystemResource = property.AsReference();
-                    break;
-                case ModelCode.MEASUREMENT_MAXRAWVAL:
-                    maxRawValue = property.AsInt();
-                    break;
-                case ModelCode.MEASUREMENT_MINRAWVAL:
-                    minRawValue = property.AsInt();
-                    break;
-                case ModelCode.MEASUREMENT_NORMALRAWVAL:
-                    normalRawValue = property.AsInt();
                     break;
                 default:
                     base.SetProperty(property);

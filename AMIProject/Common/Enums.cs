@@ -17,9 +17,9 @@ namespace FTN.Common
 
     public enum Direction : int
     {
-        WRITE = 0,
+        READ = 0,
         READWRITE,
-        READ
+        WRITE
     }//end Direction
 
     public enum ConsumerType : int

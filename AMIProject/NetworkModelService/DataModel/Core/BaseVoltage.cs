@@ -19,8 +19,6 @@ namespace TC57CIM.IEC61970.Core {
 
         private float nominalVoltage;
         private List<long> conductingEquipments = new List<long>();
-        private List<long> transformerEnds = new List<long>();
-        private List<long> voltageLevels = new List<long>();
 
         public BaseVoltage()
         {
@@ -57,41 +55,13 @@ namespace TC57CIM.IEC61970.Core {
             }
         }
 
-        public List<long> TransformerEnds
-        {
-            get
-            {
-                return transformerEnds;
-            }
-
-            set
-            {
-                transformerEnds = value;
-            }
-        }
-
-        public List<long> VoltageLevels
-        {
-            get
-            {
-                return voltageLevels;
-            }
-
-            set
-            {
-                voltageLevels = value;
-            }
-        }
-
         public override bool Equals(object obj)
         {
             if (base.Equals(obj))
             {
                 BaseVoltage x = (BaseVoltage)obj;
                 return ((x.NominalVoltage == this.NominalVoltage) &&
-                        (CompareHelper.CompareLists(x.conductingEquipments, this.conductingEquipments)) &&
-                        (CompareHelper.CompareLists(x.transformerEnds, this.transformerEnds)) &&
-                        (CompareHelper.CompareLists(x.voltageLevels, this.voltageLevels)));
+                        (CompareHelper.CompareLists(x.conductingEquipments, this.conductingEquipments)));
             }
             else
             {
@@ -112,8 +82,6 @@ namespace TC57CIM.IEC61970.Core {
             {
                 case ModelCode.BASEVOLTAGE_NOMINALVOL:
                 case ModelCode.BASEVOLTAGE_CONDEQS:
-                case ModelCode.BASEVOLTAGE_TRANSENDS:
-                case ModelCode.BASEVOLTAGE_VOLTLEVELS:
                     return true;
 
                 default:
@@ -130,12 +98,6 @@ namespace TC57CIM.IEC61970.Core {
                     break;
                 case ModelCode.BASEVOLTAGE_CONDEQS:
                     prop.SetValue(conductingEquipments);
-                    break;
-                case ModelCode.BASEVOLTAGE_TRANSENDS:
-                    prop.SetValue(transformerEnds);
-                    break;
-                case ModelCode.BASEVOLTAGE_VOLTLEVELS:
-                    prop.SetValue(voltageLevels);
                     break;
 
                 default:
@@ -166,8 +128,7 @@ namespace TC57CIM.IEC61970.Core {
         {
             get
             {
-                return conductingEquipments.Count > 0 || transformerEnds.Count > 0 ||
-                       voltageLevels.Count > 0 || base.IsReferenced;
+                return conductingEquipments.Count > 0 || base.IsReferenced;
             }
         }
 
@@ -178,19 +139,7 @@ namespace TC57CIM.IEC61970.Core {
             {
                 references[ModelCode.BASEVOLTAGE_CONDEQS] = conductingEquipments.GetRange(0, conductingEquipments.Count);
             }
-
-            if (transformerEnds != null && transformerEnds.Count > 0 &&
-                (refType == TypeOfReference.Target || refType == TypeOfReference.Both))
-            {
-                references[ModelCode.BASEVOLTAGE_TRANSENDS] = transformerEnds.GetRange(0, transformerEnds.Count);
-            }
-
-            if (voltageLevels != null && voltageLevels.Count > 0 &&
-                (refType == TypeOfReference.Target || refType == TypeOfReference.Both))
-            {
-                references[ModelCode.BASEVOLTAGE_VOLTLEVELS] = voltageLevels.GetRange(0, voltageLevels.Count);
-            }
-
+            
             base.GetReferences(references, refType);
         }
 
@@ -200,12 +149,6 @@ namespace TC57CIM.IEC61970.Core {
             {
                 case ModelCode.CONDEQ_BASEVOLTAGE:
                     conductingEquipments.Add(globalId);
-                    break;
-                case ModelCode.TRANSFORMEREND_BASEVOLT:
-                    transformerEnds.Add(globalId);
-                    break;
-                case ModelCode.VOLTAGELEVEL_BASEVOLTAGE:
-                    voltageLevels.Add(globalId);
                     break;
 
                 default:
@@ -230,32 +173,7 @@ namespace TC57CIM.IEC61970.Core {
                     }
 
                     break;
-                case ModelCode.TRANSFORMEREND_BASEVOLT:
-
-                    if (transformerEnds.Contains(globalId))
-                    {
-                        transformerEnds.Remove(globalId);
-                    }
-                    else
-                    {
-                        CommonTrace.WriteTrace(CommonTrace.TraceWarning, "Entity (GID = 0x{0:x16}) doesn't contain reference 0x{1:x16}.", this.GlobalId, globalId);
-                    }
-
-                    break;
-                case ModelCode.VOLTAGELEVEL_BASEVOLTAGE:
-
-                    if (voltageLevels.Contains(globalId))
-                    {
-                        voltageLevels.Remove(globalId);
-                    }
-                    else
-                    {
-                        CommonTrace.WriteTrace(CommonTrace.TraceWarning, "Entity (GID = 0x{0:x16}) doesn't contain reference 0x{1:x16}.", this.GlobalId, globalId);
-                    }
-
-                    break;
-
-
+                
                 default:
                     base.RemoveReference(referenceId, globalId);
                     break;
@@ -272,8 +190,6 @@ namespace TC57CIM.IEC61970.Core {
             baseVoltageCopy.Mrid = this.Mrid;
             baseVoltageCopy.Name = this.Name;
             baseVoltageCopy.NominalVoltage = this.NominalVoltage;
-            baseVoltageCopy.TransformerEnds = this.TransformerEnds;
-            baseVoltageCopy.VoltageLevels = this.VoltageLevels;
             baseVoltageCopy.ConductingEquipments = this.ConductingEquipments;
 
             return baseVoltageCopy;
