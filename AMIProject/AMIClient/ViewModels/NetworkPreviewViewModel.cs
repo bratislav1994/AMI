@@ -18,7 +18,7 @@ using TC57CIM.IEC61970.Wires;
 
 namespace AMIClient.ViewModels
 {
-    public class NetworkPreviewViewModel : INotifyPropertyChanged
+    public class NetworkPreviewViewModel
     {
         private Model model;
         private ObservableCollection<RootElement> rootElements;
@@ -157,16 +157,6 @@ namespace AMIClient.ViewModels
             var doc = new List<DockWindowViewModel>();
             doc.Add(chartVM2);
             this.DockManagerViewModel.Adding(doc);
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void RaisePropertyChanged(string propName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propName));
-            }
         }
     }
 }

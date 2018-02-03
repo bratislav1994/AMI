@@ -13,16 +13,15 @@ namespace AMIClient.ViewModels
 {
     public class ActiveAlarmsViewModel : AlarmViewModel, INotifyPropertyChanged
     {
-        private static AlarmSummariesViewModel instance;
+        private static ActiveAlarmsViewModel instance;
         private Model model;
         private Dictionary<string, string> columnFilters;
         private string consumerFilter = string.Empty;
         private string statusFilter = string.Empty;
         private string typeVoltageFilter = string.Empty;
 
-        public ActiveAlarmsViewModel(Model model)
+        public ActiveAlarmsViewModel()
         {
-            this.model = model;
         }
 
         public void SetModel(Model model)
@@ -36,13 +35,13 @@ namespace AMIClient.ViewModels
             this.Model.ViewTableItemsForActiveAlarm = CollectionViewSource.GetDefaultView(this.Model.TableItemsForActiveAlarm);
         }
 
-        public static AlarmSummariesViewModel Instance
+        public static ActiveAlarmsViewModel Instance
         {
             get
             {
                 if (instance == null)
                 {
-                    instance = new AlarmSummariesViewModel();
+                    instance = new ActiveAlarmsViewModel();
                 }
 
                 return instance;

@@ -1,4 +1,5 @@
 ﻿using AMIClient;
+using AMIClient.Classes;
 using AMIClient.ViewModels;
 using NUnit.Framework;
 using System;
@@ -46,48 +47,54 @@ namespace AMIClientTest.ViewModels
             Assert.AreEqual(model, alarm.Model);
         }
 
-        //[Test]
-        //public void ConsumerFilterTest()
-        //{
-        //    string consumerFilter = "consumer";
-        //    alarm.ConsumerFilter = consumerFilter;
+        [Test]
+        public void ActiveAlarmsVMTest()
+        {
+            ActiveAlarmsViewModel activeA = new ActiveAlarmsViewModel();
+            alarm.ActiveAlarmsVM = activeA;
 
-        //    Assert.AreEqual(consumerFilter, alarm.ConsumerFilter);
-        //}
+            Assert.AreEqual(activeA, alarm.ActiveAlarmsVM);
+        }
 
-        //[Test]
-        //public void StatusFilterTest()
-        //{
-        //    alarm.ConsumerFilter = string.Empty;
-        //    string status = "ACTIVE";
-        //    alarm.StatusFilter = status;
+        [Test]
+        public void ResolvedAlarmsVMTest()
+        {
+            ResolvedAlarmsViewModel resolvedA = new ResolvedAlarmsViewModel();
+            alarm.ResolvedAlarmsVM = resolvedA;
 
-        //    Assert.AreEqual(status, alarm.StatusFilter);
-        //}
+            Assert.AreEqual(resolvedA, alarm.ResolvedAlarmsVM);
+        }
 
-        //[Test]
-        //public void TypeVoltageFilterTest()
-        //{
-        //    alarm.ConsumerFilter = string.Empty;
-        //    alarm.StatusFilter = string.Empty;
-        //    string type = "UNDERVOLTAGE";
-        //    alarm.TypeVoltageFilter = type;
+        [Test]
+        public void AlarmViewModelsTest()
+        {
+            BindingList<AlarmViewModel> alarmsVM = new BindingList<AlarmViewModel>();
+            alarm.AlarmViewModels = alarmsVM;
 
-        //    Assert.AreEqual(type, alarm.TypeVoltageFilter);
-        //}
+            Assert.AreEqual(alarmsVM, alarm.AlarmViewModels);
+        }
 
-        //[Test]
-        //public void RaisePropertyChangedTest()
-        //{
-        //    string receivedEvents = null;
-        //    this.alarm.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
-        //    {
-        //        receivedEvents = e.PropertyName;
-        //    };
+        [Test]
+        public void SelectedTabTest()
+        {
+            AlarmViewModel select = new AlarmViewModel();
+            alarm.SelectedTab = select;
 
-        //    this.alarm.StatusFilter = string.Empty;
-        //    Assert.IsNotEmpty(receivedEvents);
-        //    Assert.AreEqual("StatusFilter", receivedEvents);
-        //}
+            Assert.AreEqual(select, alarm.SelectedTab);
+        }
+
+        [Test]
+        public void RaisePropertyChangedTest()
+        {
+            string receivedEvents = null;
+            this.alarm.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                receivedEvents = e.PropertyName;
+            };
+
+            this.alarm.ActiveAlarmsVM = null;
+            Assert.IsNotNull(receivedEvents);
+            Assert.AreEqual("ActiveAlarmsVM", receivedEvents);
+        }
     }
 }

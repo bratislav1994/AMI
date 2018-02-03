@@ -21,11 +21,12 @@ namespace AMIClient.ViewModels
         private string report;
         private string xMLPath;
         private SupportedProfiles cIMProfile;
-        private Delta nmsDelta = null;
+        public Delta nmsDelta = null;
         private CIMAdapter adapter = new CIMAdapter();
         private bool isOk;
         private BindingList<SupportedProfiles> cIMProfiles;
         private static AddCimXmlViewModel instance;
+        public bool isTest = false;
 
         public AddCimXmlViewModel()
         {
@@ -183,7 +184,10 @@ namespace AMIClient.ViewModels
             catch (Exception e)
             {
                 Logger.LogMessageToFile(string.Format("AMIClient.AddCimXmlViewModel.ConvertCommandAction; line: {0}; Convert faild", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                MessageBox.Show(string.Format("An error occurred.\n\n{0}", e.Message), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (!isTest)
+                {
+                    MessageBox.Show(string.Format("An error occurred.\n\n{0}", e.Message), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
 
             XMLPath = string.Empty;
@@ -231,7 +235,10 @@ namespace AMIClient.ViewModels
             }
             else
             {
-                MessageBox.Show("No data is imported into delta object.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (!isTest)
+                {
+                    MessageBox.Show("No data is imported into delta object.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
         }
 

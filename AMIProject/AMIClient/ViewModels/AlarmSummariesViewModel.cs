@@ -27,8 +27,10 @@ namespace AMIClient.ViewModels
         public void SetModel(Model model)
         {
             this.Model = model;
-            this.ActiveAlarmsVM = new ActiveAlarmsViewModel(model) { Header = "Active alarms" };
-            this.ResolvedAlarmsVM = new ResolvedAlarmsViewModel(model) { Header = "Resolved alarms" };
+            this.ActiveAlarmsVM = new ActiveAlarmsViewModel() { Header = "Active alarms" };
+            this.ActiveAlarmsVM.SetModel(model);
+            this.ResolvedAlarmsVM = new ResolvedAlarmsViewModel() { Header = "Resolved alarms" };
+            this.ResolvedAlarmsVM.SetModel(model);
             this.AlarmViewModels = new BindingList<AlarmViewModel>();
             this.AlarmViewModels.Add(this.ActiveAlarmsVM);
             this.AlarmViewModels.Add(this.ResolvedAlarmsVM);
