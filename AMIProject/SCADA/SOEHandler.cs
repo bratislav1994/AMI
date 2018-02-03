@@ -20,6 +20,7 @@ namespace SCADA
         public Dictionary<long, DynamicMeasurement> resourcesToSend;
         private object lockObject;
         private bool hasNewMeas = false;
+        private Dictionary<long, DataForScada> data;
 
         public bool HasNewMeas
         {
@@ -34,11 +35,27 @@ namespace SCADA
             }
         }
 
-        public SOEHandler(List<MeasurementForScada> measurements, Dictionary<long, DynamicMeasurement> resourcesToSend, ref object lockObject)
+        public SOEHandler(List<MeasurementForScada> measurements, Dictionary<long, DynamicMeasurement> resourcesToSend, object lockObject, List<DataForScada> data)
         {
             this.measurements = measurements;
             this.resourcesToSend = resourcesToSend;
             this.lockObject = lockObject;
+            this.data = new Dictionary<long, DataForScada>();
+            data.ForEach(x => { if (x is EnergyConsumerForScada) { this.data.Add(((EnergyConsumerForScada)x).GlobalId, x); }
+                                else if (x is PowerTransformerForScada) { this.data.Add(((PowerTransformerForScada)x).GlobalId, x); }
+                                else if (x is BaseVoltageForScada) { this.data.Add(((BaseVoltageForScada)x).GlobalId, x); }
+                                else if (x is SubstationForScada) { this.data.Add(((SubstationForScada)x).GlobalId, x); }
+            });
+        }
+
+        public void UpdateData(List<DataForScada> data)
+        {
+            data.ForEach(x => {
+                if (x is EnergyConsumerForScada) { this.data.Add(((EnergyConsumerForScada)x).GlobalId, x); }
+                else if (x is PowerTransformerForScada) { this.data.Add(((PowerTransformerForScada)x).GlobalId, x); }
+                else if (x is BaseVoltageForScada) { this.data.Add(((BaseVoltageForScada)x).GlobalId, x); }
+                else if (x is SubstationForScada) { this.data.Add(((SubstationForScada)x).GlobalId, x); }
+            });
         }
 
         public void Process(HeaderInfo info, IEnumerable<IndexedValue<Automatak.DNP3.Interface.Analog>> values)
@@ -52,7 +69,6 @@ namespace SCADA
                     analogs.AddRange(values.ToList());
                     Dictionary<long, DynamicMeasurement> localDic = new Dictionary<long, DynamicMeasurement>(this.measurements.Count / 3);
                     DateTime timeStamp = DateTime.Now;
-
                     Console.WriteLine("Number of points: " + analogs.Count);
                     int cnt = 0;
 
@@ -83,6 +99,7 @@ namespace SCADA
                                 {
                                     localDic.Add(a.PowerSystemResourceRef, new DynamicMeasurement(a.PowerSystemResourceRef, timeStamp));
                                     cnt++;
+
                                     switch (analog.Index % 3)
                                     {
                                         case 0:
@@ -163,51 +180,55 @@ namespace SCADA
 
         private void SetAlarmStateForMeasurement(DynamicMeasurement measurement)
         {
-            //if (resourcesToSend.ContainsKey(measurement.PsrRef))
-            //{
-            //    if (resourcesToSend[measurement.PsrRef].IsAlarm)
-            //    {
-            //        TC57CIM.IEC61970.Meas.Analog analog = ((TC57CIM.IEC61970.Meas.Analog)(measurements.Where(x => x.Measurement.PowerSystemResourceRef == measurement.PsrRef && x.Measurement.UnitSymbol == UnitSymbol.V).First()).Measurement);
-            //        float normalValueWithLossNegative = analog.NormalValue - (((float)analog.ValidRange / 100) * analog.NormalValue);
-            //        float normalValueWithLossPositive = analog.NormalValue + (((float)analog.ValidRange / 100) * analog.NormalValue);
-            //        if (measurement.CurrentV >= normalValueWithLossNegative && measurement.CurrentV <= normalValueWithLossPositive)
-            //        {
-            //            measurement.IsAlarm = false;
-            //            measurement.TypeVoltage = TypeVoltage.INBOUNDS;
-            //        }
-            //        else if (measurement.CurrentV > normalValueWithLossPositive)
-            //        {
-            //            measurement.IsAlarm = true;
-            //            measurement.TypeVoltage = TypeVoltage.OVERVOLTAGE;
-            //        }
-            //        else if (measurement.CurrentV < normalValueWithLossNegative)
-            //        {
-            //            measurement.IsAlarm = true;
-            //            measurement.TypeVoltage = TypeVoltage.UNDERVOLTAGE;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        TC57CIM.IEC61970.Meas.Analog analog = ((TC57CIM.IEC61970.Meas.Analog)(measurements.Where(x => x.Measurement.PowerSystemResourceRef == measurement.PsrRef && x.Measurement.UnitSymbol == UnitSymbol.V).First()).Measurement);
-            //        float normalValueWithLossNegative = analog.NormalValue - (((float)analog.InvalidRange / 100) * analog.NormalValue);
-            //        float normalValueWithLossPositive = analog.NormalValue + (((float)analog.InvalidRange / 100) * analog.NormalValue);
-            //        if (measurement.CurrentV < normalValueWithLossNegative)
-            //        {
-            //            measurement.IsAlarm = true;
-            //            measurement.TypeVoltage = TypeVoltage.UNDERVOLTAGE;
-            //        }
-            //        else if (measurement.CurrentV > normalValueWithLossPositive)
-            //        {
-            //            measurement.IsAlarm = true;
-            //            measurement.TypeVoltage = TypeVoltage.OVERVOLTAGE;
-            //        }
-            //        else
-            //        {
-            //            measurement.IsAlarm = false;
-            //            measurement.TypeVoltage = TypeVoltage.INBOUNDS;
-            //        }
-            //    }
-            //}
+            if (resourcesToSend.ContainsKey(measurement.PsrRef))
+            {
+                if (resourcesToSend[measurement.PsrRef].IsAlarm)
+                {
+                    float nominalVoltage = ((BaseVoltageForScada)data[((EnergyConsumerForScada)data[measurement.PsrRef]).BaseVoltageId]).NominalVoltage;
+                    float validRange = ((EnergyConsumerForScada)data[measurement.PsrRef]).ValidRangePercent;
+                    float normalValueWithLossNegative = nominalVoltage - validRange * nominalVoltage;
+                    float normalValueWithLossPositive = nominalVoltage + validRange * nominalVoltage;
+
+                    if (measurement.CurrentV >= normalValueWithLossNegative && measurement.CurrentV <= normalValueWithLossPositive)
+                    {
+                        measurement.IsAlarm = false;
+                        measurement.TypeVoltage = TypeVoltage.INBOUNDS;
+                    }
+                    else if (measurement.CurrentV > normalValueWithLossPositive)
+                    {
+                        measurement.IsAlarm = true;
+                        measurement.TypeVoltage = TypeVoltage.OVERVOLTAGE;
+                    }
+                    else if (measurement.CurrentV < normalValueWithLossNegative)
+                    {
+                        measurement.IsAlarm = true;
+                        measurement.TypeVoltage = TypeVoltage.UNDERVOLTAGE;
+                    }
+                }
+                else
+                {
+                    float nominalVoltage = ((BaseVoltageForScada)data[((EnergyConsumerForScada)data[measurement.PsrRef]).BaseVoltageId]).NominalVoltage;
+                    float invalidRange = ((EnergyConsumerForScada)data[measurement.PsrRef]).InvalidRangePercent;
+                    float normalValueWithLossNegative = nominalVoltage - invalidRange * nominalVoltage;
+                    float normalValueWithLossPositive = nominalVoltage + invalidRange * nominalVoltage;
+
+                    if (measurement.CurrentV < normalValueWithLossNegative)
+                    {
+                        measurement.IsAlarm = true;
+                        measurement.TypeVoltage = TypeVoltage.UNDERVOLTAGE;
+                    }
+                    else if (measurement.CurrentV > normalValueWithLossPositive)
+                    {
+                        measurement.IsAlarm = true;
+                        measurement.TypeVoltage = TypeVoltage.OVERVOLTAGE;
+                    }
+                    else
+                    {
+                        measurement.IsAlarm = false;
+                        measurement.TypeVoltage = TypeVoltage.INBOUNDS;
+                    }
+                }
+            }
         }
 
         private Measurement GetMeasurement(int index)

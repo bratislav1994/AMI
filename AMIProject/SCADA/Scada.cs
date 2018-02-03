@@ -44,11 +44,12 @@ namespace SCADA
         private Dictionary<int, List<DataForScada>> allDataByRtu;
         private Dictionary<int, List<DataForScada>> copyAllDataByRtu;
         private Dictionary<long, DynamicMeasurement> resourcesToSend;
-        private object lockObject = new object();
+        private Dictionary<int, object> lockObjects = new Dictionary<int, object>();
         private Thread sendingThread;
         private ICalculationEngine proxyCE;
         private Dictionary<int, ISimulator> simulators;
         private object lockObjectForSimulators = new object();
+        private object lockObject = new object();
         private const int startRtuAddress = 10;
         private const int maxRtuAddress = 20;
         private FunctionDB f = new FunctionDB();
@@ -116,18 +117,19 @@ namespace SCADA
         public Scada()
         {
             addressPool = new Dictionary<int, RTUAddress>();
+            allData = new Dictionary<long, DataForScada>();
+            allDataByRtu = new Dictionary<int, List<DataForScada>>();
 
             for (int i = startRtuAddress; i <= maxRtuAddress; i++)
             {
                 addressPool.Add(i, new RTUAddress() { IsConnected = false, Cnt = 0 });
+                allDataByRtu.Add(i, new List<DataForScada>());
             }
-            
+
             handlers = new Dictionary<int, SOEHandler>();
             measurements = new Dictionary<int, List<MeasurementForScada>>();
             copyMeasurements = new Dictionary<int, List<MeasurementForScada>>();
-            allData = new Dictionary<long, DataForScada>();
             copyAllData = new Dictionary<long, DataForScada>();
-            allDataByRtu = new Dictionary<int, List<DataForScada>>();
             copyAllDataByRtu = new Dictionary<int, List<DataForScada>>();
             eqGidsForSimulator = new Dictionary<int, List<long>>();
             analogIndexesForSimulator = new Dictionary<int, List<int>>();
@@ -634,11 +636,18 @@ namespace SCADA
                 }
             }
 
-            foreach (KeyValuePair<int, List<DataForScada>> kvp in this.copyAllDataByRtu)
+            lock (lockObject)
             {
-                this.allDataByRtu.Add(kvp.Key, kvp.Value);
+                foreach (KeyValuePair<int, List<DataForScada>> kvp in this.copyAllDataByRtu)
+                {
+                    lock (lockObjects[kvp.Key])
+                    {
+                        this.allDataByRtu.Add(kvp.Key, kvp.Value);
+                        this.handlers[kvp.Key].UpdateData(kvp.Value);
+                    }
+                }
             }
-
+            
             foreach (KeyValuePair<int, List<MeasurementForScada>> kvp in this.copyMeasurements)
             {
                 this.measurements.Add(kvp.Key, kvp.Value);
@@ -649,7 +658,7 @@ namespace SCADA
             {
                 kvp.Value.Cnt = 0;
             }
-            
+
             this.copyMeasurements.Clear();
             this.copyAllData.Clear();
             this.copyAllDataByRtu.Clear();
@@ -683,16 +692,16 @@ namespace SCADA
         {
             while (true)
             {
-                lock (lockObject)
+                foreach (KeyValuePair<int, SOEHandler> handler in handlers)
                 {
-                    foreach (SOEHandler handler in handlers.Values)
+                    lock (lockObjects[handler.Key])
                     {
-                        if (handler.HasNewMeas)
+                        if (handler.Value.HasNewMeas)
                         {
                             Logger.LogMessageToFile(string.Format("SCADA.Scada.CheckIfThereIsSomethingToSned; line: {0}; Scada sends data to client if it has data to send", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                             Console.WriteLine("List changed, here will be code for sending measurements to Calculation Engine...");
-                            ProxyCE.DataFromScada(handler.resourcesToSend);
-                            handler.HasNewMeas = false;
+                            ProxyCE.DataFromScada(handler.Value.resourcesToSend);
+                            handler.Value.HasNewMeas = false;
                         }
                     }
                 }
@@ -711,9 +720,7 @@ namespace SCADA
             try
             {
                 this.measurements.Clear();
-                allDataByRtu.Clear();
                 List<WrapperDB> meass = f.ReadMeas();
-                Dictionary<int, List<MeasurementForScada>> measurements = new Dictionary<int, List<MeasurementForScada>>();
 
                 foreach (WrapperDB wDB in meass)
                 {
@@ -725,7 +732,7 @@ namespace SCADA
                 List<PowerTransformerForScada> pts = f.ReadPowerTransformers();
                 List<BaseVoltageForScada> bvs = f.ReadBaseVoltages();
                 List<SubstationForScada> sss = f.ReadSubstations();
-                conss.ForEach(x => allData.Add(x.GlobalId, x));
+                conss.ForEach(x => { allData.Add(x.GlobalId, x); });
                 pts.ForEach(x => allData.Add(x.GlobalId, x));
                 bvs.ForEach(x => allData.Add(x.GlobalId, x));
                 sss.ForEach(x => allData.Add(x.GlobalId, x));
@@ -849,7 +856,12 @@ namespace SCADA
                     measurements.Add(ret, new List<MeasurementForScada>());
                 }
 
-                var handler = new SOEHandler(measurements[ret], resourcesToSend, ref lockObject);
+                if (!this.lockObjects.ContainsKey(ret))
+                {
+                    this.lockObjects.Add(ret, new object());
+                }
+
+                var handler = new SOEHandler(measurements[ret], resourcesToSend, this.lockObjects[ret], allDataByRtu[ret]);
                 var mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
                 var channel = mgr.AddTCPClient("outstation" + ret, LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", (ushort)(20000 + ret), ChannelListener.Print());
                 var config = new MasterStackConfig();
