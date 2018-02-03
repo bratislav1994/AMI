@@ -22,18 +22,7 @@ namespace AMIClient.ViewModels
 
         public MasterViewModel()
         {
-            Logger.Path = "Client.txt";
-            Model = new Model();
-            Model.Start();
-            tvm = NetworkPreviewViewModel.Instance;
-            tvm.SetModel(Model);
-            xmlvm = AddCimXmlViewModel.Instance;
-            chartVM = new ChartViewModel();
-            this.DgVM = DataGridViewModel.Instance;
-            this.DgVM.SetModel(Model);
-            this.CurrentViewModel = Tvm;
-            alarmVM = AlarmSummariesViewModel.Instance;
-            this.AlarmVM.SetModel(Model);
+            
         }
 
         public AddCimXmlViewModel Xmlvm
@@ -99,6 +88,22 @@ namespace AMIClient.ViewModels
             {
                 model = value;
             }
+        }
+
+        public void Init()
+        {
+            Logger.Path = "Client.txt";
+            Model = new Model();
+            Model.Start();
+            tvm = NetworkPreviewViewModel.Instance;
+            tvm.SetModel(Model);
+            xmlvm = AddCimXmlViewModel.Instance;
+            chartVM = new ChartViewModel();
+            this.DgVM = DataGridViewModel.Instance;
+            this.DgVM.SetModel(Model);
+            this.CurrentViewModel = Tvm;
+            alarmVM = AlarmSummariesViewModel.Instance;
+            this.AlarmVM.SetModel(Model);
         }
 
         private object currentViewModel;

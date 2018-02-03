@@ -1,5 +1,6 @@
 ﻿using FTN.Common;
 using FTN.Services.NetworkModelService.DataModel;
+using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,6 +101,90 @@ namespace SCADA.Access
             }
         }
 
+        public bool AddBaseVoltages(BaseVoltageForScada bv)
+        {
+            lock (lockObj)
+            {
+                using (var access = new AccessDB())
+                {
+                    var cre = access.BaseVoltages.Where(x => bv.GlobalId == x.GlobalId).FirstOrDefault();
+
+                    if (cre == null)
+                    {
+                        access.BaseVoltages.Add(bv);
+                        int i = access.SaveChanges();
+
+                        if (i > 0)
+                        {
+
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
+            }
+        }
+
+        public bool AddPowerTransformers(PowerTransformerForScada pt)
+        {
+            lock (lockObj)
+            {
+                using (var access = new AccessDB())
+                {
+                    var cre = access.PowerTransformers.Where(x => pt.GlobalId == x.GlobalId).FirstOrDefault();
+
+                    if (cre == null)
+                    {
+                        access.PowerTransformers.Add(pt);
+                        int i = access.SaveChanges();
+
+                        if (i > 0)
+                        {
+
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
+            }
+        }
+
+        public bool AddSubstations(SubstationForScada ss)
+        {
+            lock (lockObj)
+            {
+                using (var access = new AccessDB())
+                {
+                    var cre = access.Substations.Where(x => ss.GlobalId == x.GlobalId).FirstOrDefault();
+
+                    if (cre == null)
+                    {
+                        access.Substations.Add(ss);
+                        int i = access.SaveChanges();
+
+                        if (i > 0)
+                        {
+
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
+            }
+        }
+
         public int GetWrapperId(int rtuAddress)
         {
             lock (lockObj)
@@ -149,6 +234,66 @@ namespace SCADA.Access
                     }
 
                     return consumers;
+                }
+            }
+        }
+
+        public List<BaseVoltageForScada> ReadBaseVoltages()
+        {
+            List<BaseVoltageForScada> baseVoltages = new List<BaseVoltageForScada>();
+
+            lock (lockObj)
+            {
+                using (var access = new AccessDB())
+                {
+                    var bvs = access.BaseVoltages.ToList();
+
+                    foreach (var bv in bvs)
+                    {
+                        baseVoltages.Add(bv);
+                    }
+
+                    return baseVoltages;
+                }
+            }
+        }
+
+        public List<PowerTransformerForScada> ReadPowerTransformers()
+        {
+            List<PowerTransformerForScada> powerTransformers = new List<PowerTransformerForScada>();
+
+            lock (lockObj)
+            {
+                using (var access = new AccessDB())
+                {
+                    var pts = access.PowerTransformers.ToList();
+
+                    foreach (var pt in pts)
+                    {
+                        powerTransformers.Add(pt);
+                    }
+
+                    return powerTransformers;
+                }
+            }
+        }
+
+        public List<SubstationForScada> ReadSubstations()
+        {
+            List<SubstationForScada> substations = new List<SubstationForScada>();
+
+            lock (lockObj)
+            {
+                using (var access = new AccessDB())
+                {
+                    var sss = access.Substations.ToList();
+
+                    foreach (var ss in sss)
+                    {
+                        substations.Add(ss);
+                    }
+
+                    return substations;
                 }
             }
         }

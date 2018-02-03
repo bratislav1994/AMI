@@ -3,6 +3,7 @@ using Automatak.DNP3.Interface;
 using FTN.Common;
 using FTN.ServiceContracts;
 using FTN.Services.NetworkModelService.DataModel;
+using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,9 @@ namespace AMISimulator
         private Dictionary<int, float> shoppingCenterConsumption;
         private Dictionary<int, float> firmConsumption;
         private Dictionary<long, EnergyConsumerForScada> consumers;
+        private Dictionary<long, BaseVoltageForScada> baseVoltages;
+        private Dictionary<long, PowerTransformerForScada> powerTransformers;
+        private Dictionary<long, SubstationForScada> substations;
         private static Random rnd = new Random();
         private Dictionary<double, double> ratiosP2V;
         private Dictionary<long, double> activePowers;
@@ -87,6 +91,9 @@ namespace AMISimulator
             this.InitFirm();
             this.ratiosP2V = new Dictionary<double, double>();
             consumers = new Dictionary<long, EnergyConsumerForScada>();
+            baseVoltages = new Dictionary<long, BaseVoltageForScada>();
+            powerTransformers = new Dictionary<long, PowerTransformerForScada>();
+            substations = new Dictionary<long, SubstationForScada>();
             measurements = new Dictionary<int, Measurement>();
             activePowers = new Dictionary<long, double>();
             this.numberOfInstalledPoints = 0;
@@ -234,7 +241,7 @@ namespace AMISimulator
             {
                 SetRatioP2VForPoint(m.Measurement);
             }
-            List<EnergyConsumerForScada> cons = ProxyScada.GetConsumersFromScada(address);
+            List<DataForScada> dataFromScada = ProxyScada.GetDataFromScada(address);
             numberOfInstalledPoints = measForScada.Count;
 
             foreach (MeasurementForScada m in measForScada)
@@ -242,9 +249,24 @@ namespace AMISimulator
                 this.measurements.Add(m.Index, m.Measurement);
             }
 
-            foreach (EnergyConsumerForScada ec in cons)
+            foreach (DataForScada d in dataFromScada)
             {
-                this.consumers.Add(ec.GlobalId, ec);
+                if (d is EnergyConsumerForScada)
+                {
+                    this.consumers.Add(((EnergyConsumerForScada)d).GlobalId, (EnergyConsumerForScada)d);
+                }
+                else if(d is BaseVoltageForScada)
+                {
+                    this.baseVoltages.Add(((BaseVoltageForScada)d).GlobalId, (BaseVoltageForScada)d);
+                }
+                else if(d is PowerTransformerForScada)
+                {
+                    this.powerTransformers.Add(((PowerTransformerForScada)d).GlobalId, (PowerTransformerForScada)d);
+                }
+                else if(d is SubstationForScada)
+                {
+                    this.substations.Add(((SubstationForScada)d).GlobalId, (SubstationForScada)d);
+                }
             }
 
             handler = new CommandHandler();
@@ -464,17 +486,57 @@ namespace AMISimulator
             }
         }
 
-        public void Rollback(int decrease, List<long> conGidsForSimulator)
+        public void Rollback(int decrease, List<long> GidsForSimulator, List<int> analogIndexesForSimulator)
         {
             lock (lockObject)
             {
                 this.numberOfInstalledPoints -= decrease;
-                conGidsForSimulator.ForEach(x => consumers.Remove(x));
+                GidsForSimulator.ForEach(x => { if (consumers.ContainsKey(x)) { consumers.Remove(x); }
+                    else if (baseVoltages.ContainsKey(x)) { baseVoltages.Remove(x); }
+                    else if (substations.ContainsKey(x)) { substations.Remove(x); }
+                    else if (powerTransformers.ContainsKey(x)) { powerTransformers.Remove(x); } });
+                analogIndexesForSimulator.ForEach(x => { if (measurements.ContainsKey(x)) { measurements.Remove(x); } });
             }
         }
 
         public bool Ping()
         {
+            return true;
+        }
+
+        public bool AddBaseVoltage(BaseVoltageForScada bv)
+        {
+            if (this.baseVoltages.ContainsKey(bv.GlobalId))
+            {
+                return false;
+            }
+
+            baseVoltages.Add(bv.GlobalId, bv);
+
+            return true;
+        }
+
+        public bool AddSubstation(SubstationForScada ss)
+        {
+            if (this.substations.ContainsKey(ss.GlobalId))
+            {
+                return false;
+            }
+
+            substations.Add(ss.GlobalId, ss);
+
+            return true;
+        }
+
+        public bool AddPowerTransformer(PowerTransformerForScada pt)
+        {
+            if (this.powerTransformers.ContainsKey(pt.GlobalId))
+            {
+                return false;
+            }
+
+            powerTransformers.Add(pt.GlobalId, pt);
+
             return true;
         }
     }

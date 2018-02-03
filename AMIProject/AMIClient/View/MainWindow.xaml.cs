@@ -24,7 +24,9 @@ namespace AMIClient
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MasterViewModel();
+            MasterViewModel m = new MasterViewModel();
+            m.Init();
+            DataContext = m;
         }
     }
 }

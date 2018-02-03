@@ -9,10 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 using TC57CIM.IEC61970.Meas;
 
-namespace FTN.Services.NetworkModelService.DataModel
+namespace FTN.Services.NetworkModelService.DataModel.Dynamic
 {
     [DataContract]
-    public class MeasurementForScada
+    public class MeasurementForScada : DataForScada
     {
         private int idDB;
         private int index;

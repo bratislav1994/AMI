@@ -5,20 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
-namespace AMIClient.PagginationCommands
+namespace AMIClient.PagginationCommands.AMIDataGrid
 {
-    class LastPageCommand : ICommand
+    class NextPageCommand : ICommand
     {
         private AmiDataGridViewModel viewModel;
 
-        public LastPageCommand(AmiDataGridViewModel viewModel)
+        public NextPageCommand(AmiDataGridViewModel viewModel)
         {
             this.viewModel = viewModel;
         }
 
         public bool CanExecute(object parameter)
         {
-            return viewModel.CurrentPage != viewModel.TotalPages;
+            return viewModel.TotalPages > viewModel.EnteredPage;
         }
 
         public event EventHandler CanExecuteChanged
@@ -29,7 +29,7 @@ namespace AMIClient.PagginationCommands
 
         public void Execute(object parameter)
         {
-            viewModel.ShowLastPage();
+            viewModel.ShowNextPage();
         }
     }
 }

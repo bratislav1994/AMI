@@ -1,5 +1,6 @@
 ﻿using FTN.Common;
 using FTN.Services.NetworkModelService.DataModel;
+using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,16 @@ namespace FTN.ServiceContracts
         bool AddConsumer(EnergyConsumerForScada ec);
 
         [OperationContract]
-        void Rollback(int decrease, List<long> conGidsForSimulator);
+        bool AddBaseVoltage(BaseVoltageForScada bv);
+
+        [OperationContract]
+        bool AddSubstation(SubstationForScada ss);
+
+        [OperationContract]
+        bool AddPowerTransformer(PowerTransformerForScada pt);
+
+        [OperationContract]
+        void Rollback(int decrease, List<long> conGidsForSimulator, List<int> analogIndexesForSimulator);
 
         [OperationContract]
         bool Ping();

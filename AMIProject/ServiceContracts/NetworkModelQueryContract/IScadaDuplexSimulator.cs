@@ -1,4 +1,5 @@
 ﻿using FTN.Services.NetworkModelService.DataModel;
+using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,6 @@ namespace FTN.ServiceContracts
         List<MeasurementForScada> GetNumberOfPoints(int rtuAddress);
 
         [OperationContract]
-        List<EnergyConsumerForScada> GetConsumersFromScada(int rtuAddress);
+        List<DataForScada> GetDataFromScada(int rtuAddress);
     }
 }

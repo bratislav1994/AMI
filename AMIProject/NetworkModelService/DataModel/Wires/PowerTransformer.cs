@@ -126,6 +126,12 @@ namespace TC57CIM.IEC61970.Wires {
         {
             switch (property.Id)
             {
+                case ModelCode.POWERTRANSFORMER_VALIDRANGEPERCENT:
+                    validRangePercent = property.AsFloat();
+                    break;
+                case ModelCode.POWERTRANSFORMER_INVALIDRANGEPERCENT:
+                    invalidRangePercent = property.AsFloat();
+                    break;
                 default:
                     base.SetProperty(property);
                     break;
@@ -133,7 +139,25 @@ namespace TC57CIM.IEC61970.Wires {
         }
 
         #endregion IAccess implementation
-        
+
+        public void RD2Class(ResourceDescription rd)
+        {
+            foreach (Property p in rd.Properties)
+            {
+                if (p.Id == ModelCode.PSR_MEASUREMENTS)
+                {
+                    foreach (long l in p.PropertyValue.LongValues)
+                    {
+                        this.AddReference(ModelCode.MEASUREMENT_PSR, l);
+                    }
+                }
+                else
+                {
+                    SetProperty(p);
+                }
+            }
+        }
+
         public PowerTransformer DeepCopy()
         {
             PowerTransformer powerTransCopy = new PowerTransformer();

@@ -182,6 +182,24 @@ namespace TC57CIM.IEC61970.Core {
 
         #endregion IReference implementation	
 
+        public void RD2Class(ResourceDescription rd)
+        {
+            foreach (Property p in rd.Properties)
+            {
+                if (p.Id == ModelCode.BASEVOLTAGE_CONDEQS)
+                {
+                    foreach (long l in p.PropertyValue.LongValues)
+                    {
+                        this.AddReference(ModelCode.CONDEQ_BASEVOLTAGE, l);
+                    }
+                }
+                else
+                {
+                    SetProperty(p);
+                }
+            }
+        }
+
         public BaseVoltage DeepCopy()
         {
             BaseVoltage baseVoltageCopy = new BaseVoltage();

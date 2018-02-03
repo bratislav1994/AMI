@@ -19,6 +19,8 @@ using FTN.Common.Logger;
 using FTN.Services.NetworkModelService.DataModel;
 using SCADA.Access;
 using TC57CIM.IEC61970.Wires;
+using FTN.Services.NetworkModelService.DataModel.Dynamic;
+using TC57CIM.IEC61970.Core;
 
 namespace SCADA
 {
@@ -28,16 +30,19 @@ namespace SCADA
         private Dictionary<int, RTUAddress> addressPool;
         private bool firstTimeCoordinator = true;
         private bool firstTimeCE = true;
-        private Dictionary<int, List<MeasurementForScada>> measurements;
         private Dictionary<int, SOEHandler> handlers;
         private ITransactionDuplexScada proxyCoordinator;
         private List<ResourceDescription> measurementsToEnlist;
         private List<ResourceDescription> consumersToEnlist;
+        private List<ResourceDescription> ptsToEnlist;
+        private List<ResourceDescription> substationsToEnlist;
+        private List<ResourceDescription> basevoltagesToEnlist;
+        private Dictionary<int, List<MeasurementForScada>> measurements;
         private Dictionary<int, List<MeasurementForScada>> copyMeasurements;
-        private Dictionary<long, EnergyConsumerForScada> enConsumers;
-        private Dictionary<long, EnergyConsumerForScada> copyEnConsumers;
-        private Dictionary<int, List<EnergyConsumerForScada>> energyConsumersByRtu;
-        private Dictionary<int, List<EnergyConsumerForScada>> copyEnergyConsumersByRtu;
+        private Dictionary<long, DataForScada> allData;
+        private Dictionary<long, DataForScada> copyAllData;
+        private Dictionary<int, List<DataForScada>> allDataByRtu;
+        private Dictionary<int, List<DataForScada>> copyAllDataByRtu;
         private Dictionary<long, DynamicMeasurement> resourcesToSend;
         private object lockObject = new object();
         private Thread sendingThread;
@@ -50,7 +55,8 @@ namespace SCADA
         private Dictionary<int, IMaster> masters;
         private Dictionary<int, IChannel> channels;
         private Dictionary<int, IDNP3Manager> managers;
-        private Dictionary<int, List<long>> conGidsForSimulator;
+        private Dictionary<int, List<long>> eqGidsForSimulator;
+        private Dictionary<int, List<int>> analogIndexesForSimulator;
 
         public ITransactionDuplexScada ProxyCoordinator
         {
@@ -115,15 +121,16 @@ namespace SCADA
             {
                 addressPool.Add(i, new RTUAddress() { IsConnected = false, Cnt = 0 });
             }
-
-            energyConsumersByRtu = new Dictionary<int, List<EnergyConsumerForScada>>();
-            copyEnergyConsumersByRtu = new Dictionary<int, List<EnergyConsumerForScada>>();
-            conGidsForSimulator = new Dictionary<int, List<long>>();
+            
             handlers = new Dictionary<int, SOEHandler>();
-            enConsumers = new Dictionary<long, EnergyConsumerForScada>();
-            copyEnConsumers = new Dictionary<long, EnergyConsumerForScada>();
             measurements = new Dictionary<int, List<MeasurementForScada>>();
             copyMeasurements = new Dictionary<int, List<MeasurementForScada>>();
+            allData = new Dictionary<long, DataForScada>();
+            copyAllData = new Dictionary<long, DataForScada>();
+            allDataByRtu = new Dictionary<int, List<DataForScada>>();
+            copyAllDataByRtu = new Dictionary<int, List<DataForScada>>();
+            eqGidsForSimulator = new Dictionary<int, List<long>>();
+            analogIndexesForSimulator = new Dictionary<int, List<int>>();
             resourcesToSend = new Dictionary<long, DynamicMeasurement>();
             simulators = new Dictionary<int, ISimulator>();
             masters = new Dictionary<int, IMaster>();
@@ -131,6 +138,9 @@ namespace SCADA
             managers = new Dictionary<int, IDNP3Manager>();
             measurementsToEnlist = new List<ResourceDescription>();
             consumersToEnlist = new List<ResourceDescription>();
+            ptsToEnlist = new List<ResourceDescription>();
+            substationsToEnlist = new List<ResourceDescription>();
+            basevoltagesToEnlist = new List<ResourceDescription>();
 
             while (true)
             {
@@ -160,6 +170,9 @@ namespace SCADA
 
             measurementsToEnlist.Clear();
             consumersToEnlist.Clear();
+            basevoltagesToEnlist.Clear();
+            substationsToEnlist.Clear();
+            ptsToEnlist.Clear();
 
             foreach (ResourceDescription rd in data)
             {
@@ -173,6 +186,15 @@ namespace SCADA
                     case DMSType.ENERGYCONS:
                         consumersToEnlist.Add(rd);
                         break;
+                    case DMSType.BASEVOLTAGE:
+                        basevoltagesToEnlist.Add(rd);
+                        break;
+                    case DMSType.SUBSTATION:
+                        substationsToEnlist.Add(rd);
+                        break;
+                    case DMSType.POWERTRANSFORMER:
+                        ptsToEnlist.Add(rd);
+                        break;
                 }
             }
 
@@ -181,9 +203,9 @@ namespace SCADA
                 this.copyMeasurements.Add(kvp.Key, kvp.Value);
             }
 
-            foreach (KeyValuePair<long, EnergyConsumerForScada> kvp in this.enConsumers)
+            foreach (KeyValuePair<long, DataForScada> kvp in this.allData)
             {
-                this.copyEnConsumers.Add(kvp.Key, kvp.Value);
+                this.copyAllData.Add(kvp.Key, kvp.Value);
             }
 
             Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Finish the EnlistMeas function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -195,7 +217,12 @@ namespace SCADA
             List<Measurement> Ps = new List<Measurement>();
             List<Measurement> Qs = new List<Measurement>();
             List<Measurement> Vs = new List<Measurement>();
+            List<Measurement> powerTransformerSignal = new List<Measurement>();
             Dictionary<long, EnergyConsumerForScada> ConsToSimulator = new Dictionary<long, EnergyConsumerForScada>();
+            Dictionary<long, PowerTransformerForScada> PtsToSimulator = new Dictionary<long, PowerTransformerForScada>();
+            Dictionary<long, SubstationForScada> SssToSimulator = new Dictionary<long, SubstationForScada>();
+            Dictionary<long, BaseVoltageForScada> BvsToSimulator = new Dictionary<long, BaseVoltageForScada>();
+            List<long> addedEq = new List<long>();
 
             lock (lockObjectForSimulators)
             {
@@ -214,6 +241,33 @@ namespace SCADA
                 ConsToSimulator.Add(ecDb.GlobalId, ecDb);
             }
 
+            foreach (ResourceDescription rd in ptsToEnlist)
+            {
+                PowerTransformer pt = new PowerTransformer();
+                pt.RD2Class(rd);
+                pt.GlobalId = rd.Id;
+                PowerTransformerForScada ptDb = new PowerTransformerForScada(pt);
+                PtsToSimulator.Add(ptDb.GlobalId, ptDb);
+            }
+
+            foreach (ResourceDescription rd in substationsToEnlist)
+            {
+                Substation ss = new Substation();
+                ss.RD2Class(rd);
+                ss.GlobalId = rd.Id;
+                SubstationForScada ssDb = new SubstationForScada(ss);
+                SssToSimulator.Add(ssDb.GlobalId, ssDb);
+            }
+
+            foreach (ResourceDescription rd in basevoltagesToEnlist)
+            {
+                BaseVoltage bv = new BaseVoltage();
+                bv.RD2Class(rd);
+                bv.GlobalId = rd.Id;
+                BaseVoltageForScada bvDb = new BaseVoltageForScada(bv);
+                BvsToSimulator.Add(bvDb.GlobalId, bvDb);
+            }
+
             foreach (ResourceDescription rd in measurementsToEnlist)
             {
                 TC57CIM.IEC61970.Meas.Analog m = new TC57CIM.IEC61970.Meas.Analog();
@@ -229,7 +283,14 @@ namespace SCADA
                         Qs.Add(m);
                         break;
                     case UnitSymbol.V:
-                        Vs.Add(m);
+                        if (m.SignalDirection == Direction.READ)
+                        {
+                            Vs.Add(m);
+                        }
+                        else if (m.SignalDirection == Direction.READWRITE)
+                        {
+                            powerTransformerSignal.Add(m);
+                        }
                         break;
                     default:
                         return false;
@@ -257,19 +318,73 @@ namespace SCADA
                         }
                         else
                         {
-                            if (!conGidsForSimulator.ContainsKey(Ps[i].RtuAddress))
+                            if (!addedEq.Contains(ConsToSimulator[Ps[i].PowerSystemResourceRef].BaseVoltageId) && 
+                                simulators[Ps[i].RtuAddress].AddBaseVoltage(BvsToSimulator[ConsToSimulator[Ps[i].PowerSystemResourceRef].BaseVoltageId]))
                             {
-                                conGidsForSimulator.Add(Ps[i].RtuAddress, new List<long>());
+                                addedEq.Add(ConsToSimulator[Ps[i].PowerSystemResourceRef].BaseVoltageId);
+                                
+                                if (!eqGidsForSimulator.ContainsKey(Ps[i].RtuAddress))
+                                {
+                                    eqGidsForSimulator.Add(Ps[i].RtuAddress, new List<long>());
+                                }
+
+                                if (!copyAllDataByRtu.ContainsKey(Ps[i].RtuAddress))
+                                {
+                                    copyAllDataByRtu.Add(Ps[i].RtuAddress, new List<DataForScada>());
+                                }
+
+                                eqGidsForSimulator[Ps[i].RtuAddress].Add(ConsToSimulator[Ps[i].PowerSystemResourceRef].BaseVoltageId);
+                                copyAllData.Add(ConsToSimulator[Ps[i].PowerSystemResourceRef].BaseVoltageId, BvsToSimulator[ConsToSimulator[Ps[i].PowerSystemResourceRef].BaseVoltageId]);
+                                copyAllDataByRtu[Ps[i].RtuAddress].Add(BvsToSimulator[ConsToSimulator[Ps[i].PowerSystemResourceRef].BaseVoltageId]);
+                            }
+                            else
+                            {
+                                if (!addedEq.Contains(ConsToSimulator[Ps[i].PowerSystemResourceRef].BaseVoltageId))
+                                {
+                                    return false;
+                                }
                             }
 
-                            if (!copyEnergyConsumersByRtu.ContainsKey(Ps[i].RtuAddress))
+                            if (!addedEq.Contains(ConsToSimulator[Ps[i].PowerSystemResourceRef].EqContainerID) &&
+                                simulators[Ps[i].RtuAddress].AddSubstation(SssToSimulator[ConsToSimulator[Ps[i].PowerSystemResourceRef].EqContainerID]))
                             {
-                                copyEnergyConsumersByRtu.Add(Ps[i].RtuAddress, new List<EnergyConsumerForScada>());
+                                addedEq.Add(ConsToSimulator[Ps[i].PowerSystemResourceRef].EqContainerID);
+                                
+                                if (!eqGidsForSimulator.ContainsKey(Ps[i].RtuAddress))
+                                {
+                                    eqGidsForSimulator.Add(Ps[i].RtuAddress, new List<long>());
+                                }
+
+                                if (!copyAllDataByRtu.ContainsKey(Ps[i].RtuAddress))
+                                {
+                                    copyAllDataByRtu.Add(Ps[i].RtuAddress, new List<DataForScada>());
+                                }
+
+                                eqGidsForSimulator[Ps[i].RtuAddress].Add(ConsToSimulator[Ps[i].PowerSystemResourceRef].EqContainerID);
+                                copyAllData.Add(ConsToSimulator[Ps[i].PowerSystemResourceRef].EqContainerID, SssToSimulator[ConsToSimulator[Ps[i].PowerSystemResourceRef].EqContainerID]);
+                                copyAllDataByRtu[Ps[i].RtuAddress].Add(SssToSimulator[ConsToSimulator[Ps[i].PowerSystemResourceRef].EqContainerID]);
+                            }
+                            else
+                            {
+                                if (!addedEq.Contains(ConsToSimulator[Ps[i].PowerSystemResourceRef].EqContainerID))
+                                {
+                                    return false;
+                                }
                             }
 
-                            conGidsForSimulator[Ps[i].RtuAddress].Add(ConsToSimulator[Ps[i].PowerSystemResourceRef].GlobalId);
-                            copyEnConsumers.Add(ConsToSimulator[Ps[i].PowerSystemResourceRef].GlobalId, ConsToSimulator[Ps[i].PowerSystemResourceRef]);
-                            copyEnergyConsumersByRtu[Ps[i].RtuAddress].Add(ConsToSimulator[Ps[i].PowerSystemResourceRef]);
+                            if (!eqGidsForSimulator.ContainsKey(Ps[i].RtuAddress))
+                            {
+                                eqGidsForSimulator.Add(Ps[i].RtuAddress, new List<long>());
+                            }
+
+                            if (!copyAllDataByRtu.ContainsKey(Ps[i].RtuAddress))
+                            {
+                                copyAllDataByRtu.Add(Ps[i].RtuAddress, new List<DataForScada>());
+                            }
+
+                            eqGidsForSimulator[Ps[i].RtuAddress].Add(ConsToSimulator[Ps[i].PowerSystemResourceRef].GlobalId);
+                            copyAllData.Add(ConsToSimulator[Ps[i].PowerSystemResourceRef].GlobalId, ConsToSimulator[Ps[i].PowerSystemResourceRef]);
+                            copyAllDataByRtu[Ps[i].RtuAddress].Add(ConsToSimulator[Ps[i].PowerSystemResourceRef]);
                         }
                     }
                 }
@@ -288,6 +403,12 @@ namespace SCADA
                         this.copyMeasurements.Add(Ps[i].RtuAddress, new List<MeasurementForScada>());
                     }
 
+                    if (!analogIndexesForSimulator.ContainsKey(Ps[i].RtuAddress))
+                    {
+                        analogIndexesForSimulator.Add(Ps[i].RtuAddress, new List<int>());
+                    }
+
+                    analogIndexesForSimulator[Ps[i].RtuAddress].Add(index);
                     this.copyMeasurements[Ps[i].RtuAddress].Add(new MeasurementForScada(a) { Index = index, Measurement = Ps[i] });
                     ++addressPool[Ps[i].RtuAddress].Cnt;
                 }
@@ -318,6 +439,12 @@ namespace SCADA
                         this.copyMeasurements.Add(Qs[i].RtuAddress, new List<MeasurementForScada>());
                     }
 
+                    if (!analogIndexesForSimulator.ContainsKey(Qs[i].RtuAddress))
+                    {
+                        analogIndexesForSimulator.Add(Qs[i].RtuAddress, new List<int>());
+                    }
+
+                    analogIndexesForSimulator[Qs[i].RtuAddress].Add(index);
                     this.copyMeasurements[Qs[i].RtuAddress].Add(new MeasurementForScada(a) { Index = index, Measurement = Qs[i] });
                     ++addressPool[Qs[i].RtuAddress].Cnt;
                 }
@@ -348,8 +475,127 @@ namespace SCADA
                         this.copyMeasurements.Add(Vs[i].RtuAddress, new List<MeasurementForScada>());
                     }
 
+                    if (!analogIndexesForSimulator.ContainsKey(Vs[i].RtuAddress))
+                    {
+                        analogIndexesForSimulator.Add(Vs[i].RtuAddress, new List<int>());
+                    }
+
+                    analogIndexesForSimulator[Vs[i].RtuAddress].Add(index);
                     this.copyMeasurements[Vs[i].RtuAddress].Add(new MeasurementForScada(a) { Index = index, Measurement = Vs[i] });
                     ++addressPool[Vs[i].RtuAddress].Cnt;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            for (int i = 0; i < powerTransformerSignal.Count; i++)
+            {
+                int index = -1;
+
+                try
+                {
+                    index = simulators[powerTransformerSignal[i].RtuAddress].AddMeasurement(powerTransformerSignal[i]);
+
+                    if (!simulators[Ps[i].RtuAddress].AddPowerTransformer(PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef]))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        if (!addedEq.Contains(PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef].BaseVoltageId) &&
+                        simulators[powerTransformerSignal[i].RtuAddress].AddBaseVoltage(BvsToSimulator[PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef].BaseVoltageId]))
+                        {
+                            addedEq.Add(PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef].BaseVoltageId);
+
+                            if (!eqGidsForSimulator.ContainsKey(powerTransformerSignal[i].RtuAddress))
+                            {
+                                eqGidsForSimulator.Add(powerTransformerSignal[i].RtuAddress, new List<long>());
+                            }
+
+                            if (!copyAllDataByRtu.ContainsKey(powerTransformerSignal[i].RtuAddress))
+                            {
+                                copyAllDataByRtu.Add(powerTransformerSignal[i].RtuAddress, new List<DataForScada>());
+                            }
+
+                            eqGidsForSimulator[powerTransformerSignal[i].RtuAddress].Add(PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef].BaseVoltageId);
+                            copyAllData.Add(PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef].BaseVoltageId, BvsToSimulator[PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef].BaseVoltageId]);
+                            copyAllDataByRtu[powerTransformerSignal[i].RtuAddress].Add(BvsToSimulator[PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef].BaseVoltageId]);
+                        }
+                        else
+                        {
+                            if (!addedEq.Contains(PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef].BaseVoltageId))
+                            {
+                                return false;
+                            }
+                        }
+
+                        if (!addedEq.Contains(PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef].SubstationId) &&
+                            simulators[powerTransformerSignal[i].RtuAddress].AddSubstation(SssToSimulator[PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef].SubstationId]))
+                        {
+                            addedEq.Add(PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef].SubstationId);
+
+                            if (!eqGidsForSimulator.ContainsKey(powerTransformerSignal[i].RtuAddress))
+                            {
+                                eqGidsForSimulator.Add(powerTransformerSignal[i].RtuAddress, new List<long>());
+                            }
+
+                            if (!copyAllDataByRtu.ContainsKey(powerTransformerSignal[i].RtuAddress))
+                            {
+                                copyAllDataByRtu.Add(powerTransformerSignal[i].RtuAddress, new List<DataForScada>());
+                            }
+
+                            eqGidsForSimulator[powerTransformerSignal[i].RtuAddress].Add(PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef].SubstationId);
+                            copyAllData.Add(PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef].SubstationId, SssToSimulator[PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef].SubstationId]);
+                            copyAllDataByRtu[powerTransformerSignal[i].RtuAddress].Add(SssToSimulator[PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef].SubstationId]);
+                        }
+                        else
+                        {
+                            if (!addedEq.Contains(PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef].SubstationId))
+                            {
+                                return false;
+                            }
+                        }
+
+                        if (!eqGidsForSimulator.ContainsKey(powerTransformerSignal[i].RtuAddress))
+                        {
+                            eqGidsForSimulator.Add(powerTransformerSignal[i].RtuAddress, new List<long>());
+                        }
+
+                        if (!copyAllDataByRtu.ContainsKey(powerTransformerSignal[i].RtuAddress))
+                        {
+                            copyAllDataByRtu.Add(powerTransformerSignal[i].RtuAddress, new List<DataForScada>());
+                        }
+
+                        eqGidsForSimulator[powerTransformerSignal[i].RtuAddress].Add(PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef].GlobalId);
+                        copyAllData.Add(PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef].GlobalId, PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef]);
+                        copyAllDataByRtu[powerTransformerSignal[i].RtuAddress].Add(PtsToSimulator[powerTransformerSignal[i].PowerSystemResourceRef]);
+                    }
+                }
+                catch
+                {
+                    addressPool[powerTransformerSignal[i].RtuAddress].IsConnected = false;
+                    return false;
+                }
+
+                int a = f.GetWrapperId(powerTransformerSignal[i].RtuAddress);
+
+                if (index != -1 && a != -1)
+                {
+                    if (!this.copyMeasurements.ContainsKey(powerTransformerSignal[i].RtuAddress))
+                    {
+                        this.copyMeasurements.Add(powerTransformerSignal[i].RtuAddress, new List<MeasurementForScada>());
+                    }
+
+                    if (!analogIndexesForSimulator.ContainsKey(powerTransformerSignal[i].RtuAddress))
+                    {
+                        analogIndexesForSimulator.Add(powerTransformerSignal[i].RtuAddress, new List<int>());
+                    }
+
+                    analogIndexesForSimulator[powerTransformerSignal[i].RtuAddress].Add(index);
+                    this.copyMeasurements[powerTransformerSignal[i].RtuAddress].Add(new MeasurementForScada(a) { Index = index, Measurement = powerTransformerSignal[i] });
+                    ++addressPool[powerTransformerSignal[i].RtuAddress].Cnt;
                 }
                 else
                 {
@@ -365,18 +611,32 @@ namespace SCADA
         {
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Commit; line: {0}; Start the Commit function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             this.measurements.Clear();
-            this.enConsumers.Clear();
-            this.energyConsumersByRtu.Clear();
+            this.allDataByRtu.Clear();
+            this.allData.Clear();
 
-            foreach (KeyValuePair<long, EnergyConsumerForScada> kvp in this.copyEnConsumers)
+            foreach (KeyValuePair<long, DataForScada> kvp in this.copyAllData)
             {
-                this.enConsumers.Add(kvp.Key, kvp.Value);
-                f.AddConsumers(kvp.Value);
+                if (kvp.Value is EnergyConsumerForScada)
+                {
+                    f.AddConsumers((EnergyConsumerForScada)kvp.Value);
+                }
+                else if (kvp.Value is BaseVoltageForScada)
+                {
+                    f.AddBaseVoltages((BaseVoltageForScada)kvp.Value);
+                }
+                else if (kvp.Value is PowerTransformerForScada)
+                {
+                    f.AddPowerTransformers((PowerTransformerForScada)kvp.Value);
+                }
+                else if (kvp.Value is SubstationForScada)
+                {
+                    f.AddSubstations((SubstationForScada)kvp.Value);
+                }
             }
 
-            foreach (KeyValuePair<int, List<EnergyConsumerForScada>> kvp in this.copyEnergyConsumersByRtu)
+            foreach (KeyValuePair<int, List<DataForScada>> kvp in this.copyAllDataByRtu)
             {
-                this.energyConsumersByRtu.Add(kvp.Key, kvp.Value);
+                this.allDataByRtu.Add(kvp.Key, kvp.Value);
             }
 
             foreach (KeyValuePair<int, List<MeasurementForScada>> kvp in this.copyMeasurements)
@@ -389,10 +649,10 @@ namespace SCADA
             {
                 kvp.Value.Cnt = 0;
             }
-
-            this.copyEnergyConsumersByRtu.Clear();
+            
             this.copyMeasurements.Clear();
-            this.copyEnConsumers.Clear();
+            this.copyAllData.Clear();
+            this.copyAllDataByRtu.Clear();
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Commit; line: {0}; Finish the Commit function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
@@ -406,16 +666,16 @@ namespace SCADA
                 {
                     if (this.simulators.ContainsKey(kvp.Key) && addressPool[kvp.Key].Cnt > 0)
                     {
-                        this.simulators[kvp.Key].Rollback(addressPool[kvp.Key].Cnt, conGidsForSimulator[kvp.Key]);
-                        conGidsForSimulator.Remove(kvp.Key);
+                        this.simulators[kvp.Key].Rollback(addressPool[kvp.Key].Cnt, eqGidsForSimulator[kvp.Key], analogIndexesForSimulator[kvp.Key]);
+                        eqGidsForSimulator.Remove(kvp.Key);
                         addressPool[kvp.Key].Cnt = 0;
                     }
                 }
             }
-
-            this.copyEnergyConsumersByRtu.Clear();
+            
             this.copyMeasurements.Clear();
-            this.copyEnConsumers.Clear();
+            this.copyAllData.Clear();
+            this.copyAllDataByRtu.Clear();
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Rollback; line: {0}; Finish the Rollback function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
@@ -450,32 +710,71 @@ namespace SCADA
         {
             try
             {
-                measurements.Clear();
+                this.measurements.Clear();
+                allDataByRtu.Clear();
                 List<WrapperDB> meass = f.ReadMeas();
+                Dictionary<int, List<MeasurementForScada>> measurements = new Dictionary<int, List<MeasurementForScada>>();
 
                 foreach (WrapperDB wDB in meass)
                 {
                     measurements.Add(wDB.RtuAddress, wDB.ListOfMeasurements);
                 }
-
-                enConsumers.Clear();
+                
+                allData.Clear();
                 List<EnergyConsumerForScada> conss = f.ReadConsumers();
-                conss.ForEach(x => enConsumers.Add(x.GlobalId, x));
-                List<long> writtenConsumers = new List<long>();
+                List<PowerTransformerForScada> pts = f.ReadPowerTransformers();
+                List<BaseVoltageForScada> bvs = f.ReadBaseVoltages();
+                List<SubstationForScada> sss = f.ReadSubstations();
+                conss.ForEach(x => allData.Add(x.GlobalId, x));
+                pts.ForEach(x => allData.Add(x.GlobalId, x));
+                bvs.ForEach(x => allData.Add(x.GlobalId, x));
+                sss.ForEach(x => allData.Add(x.GlobalId, x));
+                List<long> writtenEquipments = new List<long>();
 
                 foreach (KeyValuePair<int, List<MeasurementForScada>> kvp in measurements)
                 {
                     foreach (MeasurementForScada m in kvp.Value)
                     {
-                        if (!energyConsumersByRtu.ContainsKey(kvp.Key))
+                        if (!allDataByRtu.ContainsKey(kvp.Key))
                         {
-                            energyConsumersByRtu.Add(kvp.Key, new List<EnergyConsumerForScada>());
+                            allDataByRtu.Add(kvp.Key, new List<DataForScada>());
                         }
 
-                        if (!writtenConsumers.Contains(enConsumers[m.Measurement.PowerSystemResourceRef].GlobalId))
+                        if (allData[m.Measurement.PowerSystemResourceRef] is EnergyConsumerForScada)
                         {
-                            energyConsumersByRtu[kvp.Key].Add(enConsumers[m.Measurement.PowerSystemResourceRef]);
-                            writtenConsumers.Add(enConsumers[m.Measurement.PowerSystemResourceRef].GlobalId);
+                            if (!writtenEquipments.Contains(((EnergyConsumerForScada)allData[m.Measurement.PowerSystemResourceRef]).GlobalId))
+                            {
+                                allDataByRtu[kvp.Key].Add(allData[m.Measurement.PowerSystemResourceRef]);
+                                writtenEquipments.Add(((EnergyConsumerForScada)allData[m.Measurement.PowerSystemResourceRef]).GlobalId);
+                                if (!writtenEquipments.Contains(((EnergyConsumerForScada)allData[m.Measurement.PowerSystemResourceRef]).BaseVoltageId))
+                                {
+                                    allDataByRtu[kvp.Key].Add(allData[((EnergyConsumerForScada)allData[m.Measurement.PowerSystemResourceRef]).BaseVoltageId]);
+                                    writtenEquipments.Add(((EnergyConsumerForScada)allData[m.Measurement.PowerSystemResourceRef]).BaseVoltageId);
+                                }
+                                if (!writtenEquipments.Contains(((EnergyConsumerForScada)allData[m.Measurement.PowerSystemResourceRef]).EqContainerID))
+                                {
+                                    allDataByRtu[kvp.Key].Add(allData[((EnergyConsumerForScada)allData[m.Measurement.PowerSystemResourceRef]).EqContainerID]);
+                                    writtenEquipments.Add(((EnergyConsumerForScada)allData[m.Measurement.PowerSystemResourceRef]).EqContainerID);
+                                }
+                            }
+                        }
+                        else if (allData[m.Measurement.PowerSystemResourceRef] is PowerTransformerForScada)
+                        {
+                            if (!writtenEquipments.Contains(((PowerTransformerForScada)allData[m.Measurement.PowerSystemResourceRef]).GlobalId))
+                            {
+                                allDataByRtu[kvp.Key].Add(allData[m.Measurement.PowerSystemResourceRef]);
+                                writtenEquipments.Add(((PowerTransformerForScada)allData[m.Measurement.PowerSystemResourceRef]).GlobalId);
+                                if (!writtenEquipments.Contains(((PowerTransformerForScada)allData[m.Measurement.PowerSystemResourceRef]).BaseVoltageId))
+                                {
+                                    allDataByRtu[kvp.Key].Add(allData[((PowerTransformerForScada)allData[m.Measurement.PowerSystemResourceRef]).BaseVoltageId]);
+                                    writtenEquipments.Add(((PowerTransformerForScada)allData[m.Measurement.PowerSystemResourceRef]).BaseVoltageId);
+                                }
+                                if (!writtenEquipments.Contains(((PowerTransformerForScada)allData[m.Measurement.PowerSystemResourceRef]).SubstationId))
+                                {
+                                    allDataByRtu[kvp.Key].Add(allData[((PowerTransformerForScada)allData[m.Measurement.PowerSystemResourceRef]).SubstationId]);
+                                    writtenEquipments.Add(((PowerTransformerForScada)allData[m.Measurement.PowerSystemResourceRef]).SubstationId);
+                                }
+                            }
                         }
                     }
                 }
@@ -581,29 +880,25 @@ namespace SCADA
 
             foreach (MeasurementForScada m in measurements[rtuAddress])
             {
-                retVal.Add(m);
+                if (m is MeasurementForScada)
+                {
+                    retVal.Add((MeasurementForScada)m);
+                }
             }
 
             return retVal;
         }
 
-        public List<EnergyConsumerForScada> GetConsumersFromScada(int rtuAddress)
+        public List<DataForScada> GetDataFromScada(int rtuAddress)
         {
-            List<EnergyConsumerForScada> retVal = new List<EnergyConsumerForScada>();
-
-            try
+            if(allDataByRtu.ContainsKey(rtuAddress))
             {
-                foreach (EnergyConsumerForScada m in energyConsumersByRtu[rtuAddress])
-                {
-                    retVal.Add(m);
-                }
+                return allDataByRtu[rtuAddress];
             }
-            catch (KeyNotFoundException)
+            else
             {
-
+                return new List<DataForScada>();
             }
-
-            return retVal;
         }
 
         #region command
@@ -620,20 +915,23 @@ namespace SCADA
             Dictionary<int, TypeVoltage> rtuAddresses = new Dictionary<int, TypeVoltage>();
             string retVal = "Result for command: ";
 
-            foreach (KeyValuePair<int, List<EnergyConsumerForScada>> kvp in energyConsumersByRtu)
+            foreach (KeyValuePair<int, List<DataForScada>> kvp in allDataByRtu)
             {
-                foreach (EnergyConsumerForScada ecfs in kvp.Value)
+                foreach (DataForScada ecfs in kvp.Value)
                 {
-                    if (measurementsInAlarm.ContainsKey(ecfs.GlobalId))
+                    if (ecfs is EnergyConsumerForScada)
                     {
-                        if (rtuAddresses.ContainsKey(kvp.Key) && measurementsInAlarm[ecfs.GlobalId].TypeVoltage != rtuAddresses[kvp.Key])
+                        if (measurementsInAlarm.ContainsKey(((EnergyConsumerForScada)ecfs).GlobalId))
                         {
-                            retVal += "Command FAILED! Under and over voltage on the same RTU.";
-                            return retVal;
-                        }
-                        else if (!rtuAddresses.ContainsKey(kvp.Key))
-                        {
-                            rtuAddresses.Add(kvp.Key, measurementsInAlarm[ecfs.GlobalId].TypeVoltage);
+                            if (rtuAddresses.ContainsKey(kvp.Key) && measurementsInAlarm[((EnergyConsumerForScada)ecfs).GlobalId].TypeVoltage != rtuAddresses[kvp.Key])
+                            {
+                                retVal += "Command FAILED! Under and over voltage on the same RTU.";
+                                return retVal;
+                            }
+                            else if (!rtuAddresses.ContainsKey(kvp.Key))
+                            {
+                                rtuAddresses.Add(kvp.Key, measurementsInAlarm[((EnergyConsumerForScada)ecfs).GlobalId].TypeVoltage);
+                            }
                         }
                     }
                 }
@@ -660,7 +958,7 @@ namespace SCADA
 
             return retVal;
         }
-
+        
         #endregion
     }
 }
