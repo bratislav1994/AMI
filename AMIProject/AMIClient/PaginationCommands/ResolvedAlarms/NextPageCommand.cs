@@ -1,24 +1,24 @@
-﻿using System;
+﻿using AMIClient.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
-using AMIClient.ViewModels;
 
-namespace AMIClient.PagginationCommands
+namespace AMIClient.PagginationCommands.ResolvedAlarms
 {
-    class FirstPageCommand : ICommand
+    class NextPageCommand : ICommand
     {
-        private AmiDataGridViewModel viewModel;
+        private ResolvedAlarmsViewModel viewModel;
 
-        public FirstPageCommand(AmiDataGridViewModel viewModel)
+        public NextPageCommand(ResolvedAlarmsViewModel viewModel)
         {
             this.viewModel = viewModel;
         }
 
         public bool CanExecute(object parameter)
         {
-            return viewModel.CurrentPageIndex != 0;
+            return viewModel.TotalPages > viewModel.EnteredPage && viewModel.EnteredPage > 1;
         }
 
         public event EventHandler CanExecuteChanged
@@ -29,7 +29,7 @@ namespace AMIClient.PagginationCommands
 
         public void Execute(object parameter)
         {
-            viewModel.ShowFirstPage();
+            viewModel.ShowNextPage();
         }
     }
 }

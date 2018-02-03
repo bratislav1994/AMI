@@ -1,6 +1,8 @@
 ﻿using AMIClient.Classes;
 using AMIClient.HelperClasses;
+using AMIClient.PagginationCommands;
 using FTN.Common.ClassesForAlarmDB;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Input;
+using AMIClient.PagginationCommands.ResolvedAlarms;
+using System.Collections.ObjectModel;
 
 namespace AMIClient.ViewModels
 {
@@ -19,10 +24,20 @@ namespace AMIClient.ViewModels
         private string consumerFilter = string.Empty;
         private string statusFilter = string.Empty;
         private string typeVoltageFilter = string.Empty;
+        private int itemPerPage = 4;
+        private int enteredPage = 0;
+        public ICommand PreviousCommand { get; private set; }
+        public ICommand NextCommand { get; private set; }
+        public ICommand FirstCommand { get; private set; }
+        public ICommand LastCommand { get; private set; }
 
         public ResolvedAlarmsViewModel(Model model)
         {
             this.model = model;
+            NextCommand = new NextPageCommand(this);
+            PreviousCommand = new PreviousPageCommand(this);
+            FirstCommand = new FirstPageCommand(this);
+            LastCommand = new LastPageCommand(this);
         }
 
         public void SetModel(Model model)
@@ -107,6 +122,100 @@ namespace AMIClient.ViewModels
                 this.RaisePropertyChanged("TypeVoltageFilter");
                 columnFilters[DataGridAlarmHeader.TypeVoltage.ToString()] = this.typeVoltageFilter;
                 this.OnFilterApply();
+            }
+        }
+
+        public int EnteredPage
+        {
+            get
+            {
+                return this.enteredPage;
+            }
+
+            set
+            {
+                this.enteredPage = value;
+                this.RaisePropertyChanged("EnteredPage");
+            }
+        }
+
+        private int _totalPages;
+        public int TotalPages
+        {
+            get { return _totalPages; }
+            private set
+            {
+                _totalPages = value;
+                this.RaisePropertyChanged("TotalPage");
+            }
+        }
+
+        #region Pagination Methods
+        public void ShowNextPage()
+        {
+            this.EnteredPage++;
+            this.Model.TableItemsForResolvedAlarm = new ObservableCollection<ResolvedAlarm>(); // this.Model.CEProxy.GetResolvedAlarms();
+        }
+
+        public void ShowPreviousPage()
+        {
+            this.EnteredPage--;
+            this.Model.TableItemsForResolvedAlarm = new ObservableCollection<ResolvedAlarm>(); // this.Model.CEProxy.GetResolvedAlarms();
+        }
+
+        public void ShowFirstPage()
+        {
+            this.EnteredPage = 1;
+            this.Model.TableItemsForResolvedAlarm = new ObservableCollection<ResolvedAlarm>(); // this.Model.CEProxy.GetResolvedAlarms();
+        }
+
+        public void ShowLastPage()
+        {
+            this.EnteredPage = TotalPages;
+            this.Model.TableItemsForResolvedAlarm = new ObservableCollection<ResolvedAlarm>(); // this.Model.CEProxy.GetResolvedAlarms();
+        }
+
+        #endregion
+
+        private ICommand enterCommand;
+
+        public ICommand EnterCommand
+        {
+            get
+            {
+                return this.enterCommand ?? (this.enterCommand = new DelegateCommand(this.EnterAction));
+            }
+        }
+
+        private void EnterAction()
+        {
+            if (this.TotalPages >= this.EnteredPage)
+            {
+                this.Model.TableItemsForResolvedAlarm = new ObservableCollection<ResolvedAlarm>(); // this.Model.CEProxy.GetResolvedAlarms();
+            }
+        }
+
+        private ICommand refreshCommand;
+
+        public ICommand RefreshCommand
+        {
+            get
+            {
+                return this.refreshCommand ?? (this.refreshCommand = new DelegateCommand(this.RefreshHistory));
+            }
+        }
+
+        private void RefreshHistory()
+        {
+            this.TotalPages = 0; // this.Model.CEProxy.GetTotalPageCount();
+
+            if (this.TotalPages != 0)
+            {
+                if (this.EnteredPage == 0)
+                {
+                    this.EnteredPage = 1;
+                    this.Model.TableItemsForResolvedAlarm = new ObservableCollection<ResolvedAlarm>(); // this.Model.CEProxy.GetResolvedAlarms();
+                }
             }
         }
 

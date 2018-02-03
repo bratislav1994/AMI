@@ -5,20 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
-namespace AMIClient.PagginationCommands
+namespace AMIClient.PagginationCommands.ResolvedAlarms
 {
-    class NextPageCommand : ICommand
+    class PreviousPageCommand : ICommand
     {
-        private AmiDataGridViewModel viewModel;
+        private ResolvedAlarmsViewModel viewModel;
 
-        public NextPageCommand(AmiDataGridViewModel viewModel)
+        public PreviousPageCommand(ResolvedAlarmsViewModel viewModel)
         {
             this.viewModel = viewModel;
         }
 
         public bool CanExecute(object parameter)
         {
-            return viewModel.TotalPages - 1 > viewModel.CurrentPageIndex;
+            return viewModel.EnteredPage > 1 && viewModel.EnteredPage <= viewModel.TotalPages;
         }
 
         public event EventHandler CanExecuteChanged
@@ -29,7 +29,7 @@ namespace AMIClient.PagginationCommands
 
         public void Execute(object parameter)
         {
-            viewModel.ShowNextPage();
+            viewModel.ShowPreviousPage();
         }
     }
 }

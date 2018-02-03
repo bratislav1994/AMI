@@ -13,7 +13,16 @@
     </UserControl.Resources>
 
     <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
-        <DataGrid SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.ViewTableItemsForAlarm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Button Content="Refresh" Width="50" Command="{Binding RefreshCommand}" HorizontalAlignment="Left"/>
+        
+        <DataGrid Grid.Row="1" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.ViewTableItemsForAlarm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
 
             <DataGrid.Columns>
                 <DataGridTextColumn MinWidth="100" Width="100" Header="Id" Binding="{Binding Id}"/>
@@ -135,5 +144,23 @@
             </DataGrid.Columns>
 
         </DataGrid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="First" Width="50" Command="{Binding FirstCommand}"/>
+            <Label Width="5" Background="Transparent" />
+            <Button Content="Previous" Width="50" Command="{Binding PreviousCommand}"/>
+            <Label Width="5" Background="Transparent" />
+            <TextBox Background="Transparent" BorderBrush="Transparent" MinWidth="30" Width="auto" Text="{Binding EnteredPage, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding EnterCommand}" Gesture="Enter" Key="Return" />
+                </TextBox.InputBindings>
+            </TextBox>
+            <TextBox Background="Transparent" BorderThickness="0" IsReadOnly="True" BorderBrush="Transparent" Text="of"/>
+            <TextBox Background="Transparent" BorderThickness="0" IsReadOnly="True" BorderBrush="Transparent" MinWidth="30" Width="auto" Text="{Binding TotalPages}"/>
+            <Button Content="Next" Width="50" Command="{Binding NextCommand}"/>
+            <Label Width="5" Background="Transparent" />
+            <Button Content="Last" Width="50" Command="{Binding LastCommand}"/>
+        </StackPanel>
+
     </Grid>
 </UserControl>

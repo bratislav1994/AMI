@@ -1,5 +1,5 @@
 ﻿using AMIClient.HelperClasses;
-using AMIClient.PagginationCommands;
+using AMIClient.PagginationCommands.AMIDataGrid;
 using FTN.Common;
 using FTN.Services.NetworkModelService.DataModel;
 using Prism.Commands;
@@ -36,7 +36,7 @@ namespace AMIClient.ViewModels
         private Thread checkIfThereAreNewUpdates;
         private int itemPerPage = 4;
         private int itemcount;
-        private int _currentPageIndex;
+        private int enteredPage = 1;
         public ICommand PreviousCommand { get; private set; }
         public ICommand NextCommand { get; private set; }
         public ICommand FirstCommand { get; private set; }
@@ -50,7 +50,6 @@ namespace AMIClient.ViewModels
             this.checkIfThereAreNewUpdates = new Thread(() => CheckForUpdates());
             this.checkIfThereAreNewUpdates.Start();
             this.ViewAmiTableItems.Filter += this.view_Filter;
-            CurrentPageIndex = 0;
             itemcount = this.AmiTableItems.Count;
             CalculateTotalPages();
             NextCommand = new NextPageCommand(this);
@@ -59,20 +58,20 @@ namespace AMIClient.ViewModels
             LastCommand = new LastPageCommand(this);
         }
 
-        public int CurrentPageIndex
+        public int EnteredPage
         {
-            get { return _currentPageIndex; }
+            get
+            {
+                return this.enteredPage;
+            }
+
             set
             {
-                _currentPageIndex = value;
-                this.RaisePropertyChanged("CurrentPage");
+                this.enteredPage = value;
+                this.RaisePropertyChanged("EnteredPage");
             }
         }
-        public int CurrentPage
-        {
-            get { return _currentPageIndex + 1; }
-        }
-
+        
         private int _totalPages;
         public int TotalPages
         {
@@ -87,25 +86,25 @@ namespace AMIClient.ViewModels
         #region Pagination Methods
         public void ShowNextPage()
         {
-            CurrentPageIndex++;
+            this.EnteredPage++;
             ViewAmiTableItems.Refresh();
         }
 
         public void ShowPreviousPage()
         {
-            CurrentPageIndex--;
+            this.EnteredPage--;
             ViewAmiTableItems.Refresh();
         }
 
         public void ShowFirstPage()
         {
-            CurrentPageIndex = 0;
+            this.EnteredPage = 1;
             ViewAmiTableItems.Refresh();
         }
 
         public void ShowLastPage()
         {
-            CurrentPageIndex = TotalPages - 1;
+            this.EnteredPage = TotalPages;
             ViewAmiTableItems.Refresh();
         }
 
@@ -131,7 +130,7 @@ namespace AMIClient.ViewModels
                 return false;
             }
 
-            if (index >= itemPerPage * CurrentPageIndex && index < itemPerPage * (CurrentPageIndex + 1))
+            if (index >= itemPerPage * (this.EnteredPage - 1) && index < itemPerPage * (this.EnteredPage))
             {
                 return true;
             }
@@ -352,6 +351,24 @@ namespace AMIClient.ViewModels
         }
 
         #endregion
+
+        private ICommand enterCommand;
+
+        public ICommand EnterCommand
+        {
+            get
+            {
+                return this.enterCommand ?? (this.enterCommand = new DelegateCommand(this.EnterAction));
+            }
+        }
+
+        private void EnterAction()
+        {
+            if (this.TotalPages >= this.EnteredPage)
+            {
+                this.ViewAmiTableItems.Refresh();
+            }
+        }
 
         private ICommand individualAmiChartCommand;
 
