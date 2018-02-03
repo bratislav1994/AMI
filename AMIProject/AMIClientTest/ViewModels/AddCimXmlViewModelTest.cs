@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace AMIClientTest.ViewModels
 {
@@ -76,13 +77,11 @@ namespace AMIClientTest.ViewModels
         [Test]
         public void ConvertCommandActionTest()
         {
-            addCimXml.XMLPath = string.Empty;
-            Assert.DoesNotThrow(() => addCimXml.ConvertCommand.Execute());
-
             addCimXml.XMLPath = "path";
+            addCimXml.isTest = true;
             Assert.DoesNotThrow(() => addCimXml.ConvertCommand.Execute());
 
-            addCimXml.XMLPath = "CommonFiles/AMICIMVojvodina.xml";
+            addCimXml.XMLPath = "AMIProject/CommonFiles/AMICIMVojvodina.xml";
             Assert.DoesNotThrow(() => addCimXml.ConvertCommand.Execute());
         }
 
@@ -99,6 +98,10 @@ namespace AMIClientTest.ViewModels
         [Test]
         public void ApplyDeltaCommandActionTest()
         {
+            addCimXml.isTest = true;
+            Assert.DoesNotThrow(() => addCimXml.ApplyDeltaCommand.Execute());
+
+            addCimXml.nmsDelta = new Delta();            
             Assert.DoesNotThrow(() => addCimXml.ApplyDeltaCommand.Execute());
         }
 

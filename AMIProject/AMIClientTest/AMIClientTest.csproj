@@ -74,6 +74,7 @@
     <Compile Include="ClassesTest\TreeClassesTest.cs" />
     <Compile Include="Model\ModelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\ActiveAlarmsViewModelTest.cs" />
     <Compile Include="ViewModels\AddCimXmlViewModelTest.cs" />
     <Compile Include="ViewModels\AlarmSummariesViewModelTest.cs" />
     <Compile Include="ViewModels\AmiDataGridViewModelTest.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="ViewModels\DataGridViewModelTest.cs" />
     <Compile Include="ViewModels\MasterViewModelTest.cs" />
     <Compile Include="ViewModels\NetworkPreviewViewModelTest.cs" />
+    <Compile Include="ViewModels\ResolvedAlarmsViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AMIClient\AMIClient.csproj">

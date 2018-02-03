@@ -4,14 +4,19 @@
 	xmlns:ftn="http://www.ftnydro.com/CIM15/2010/extension#">
 	
 	<cim:BaseVoltage rdf:ID="BV_2_1">
-		<cim:BaseVoltage.nominalVoltage>12500</cim:BaseVoltage.nominalVoltage>
+		<cim:BaseVoltage.nominalVoltage>220</cim:BaseVoltage.nominalVoltage>
 		<cim:IdentifiedObject.mRID>BV_2_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>BV_2_1</cim:IdentifiedObject.name>
 	</cim:BaseVoltage>
 	<cim:BaseVoltage rdf:ID="BV_2_2">
-		<cim:BaseVoltage.nominalVoltage>15000</cim:BaseVoltage.nominalVoltage>
+		<cim:BaseVoltage.nominalVoltage>10000</cim:BaseVoltage.nominalVoltage>
 		<cim:IdentifiedObject.mRID>BV_2_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>BV_2_2</cim:IdentifiedObject.name>
+	</cim:BaseVoltage>
+	<cim:BaseVoltage rdf:ID="BV_2_3">
+		<cim:BaseVoltage.nominalVoltage>20000</cim:BaseVoltage.nominalVoltage>
+		<cim:IdentifiedObject.mRID>BV_2_3</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>BV_2_3</cim:IdentifiedObject.name>
 	</cim:BaseVoltage>
 	
 	
@@ -49,117 +54,52 @@
 		<cim:IdentifiedObject.name>TrafPodunavlje_2_1</cim:IdentifiedObject.name>
 	</cim:Substation>
 	
-	
-	<cim:VoltageLevel rdf:ID="VOLT_2_1">
-		<cim:VoltageLevel.BaseVoltage rdf:resource="#BV_2_1"/>
-		<cim:VoltageLevel.Substation rdf:resource="#SUB_2_1"/>
-		<cim:IdentifiedObject.mRID>VOLT_2_1</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>VoltLevel_2_1</cim:IdentifiedObject.name>
-	</cim:VoltageLevel>
-	<cim:VoltageLevel rdf:ID="VOLT_2_2">
-		<cim:VoltageLevel.BaseVoltage rdf:resource="#BV_2_1"/>
-		<cim:VoltageLevel.Substation rdf:resource="#SUB_2_2"/>
-		<cim:IdentifiedObject.mRID>VOLT_2_2</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>VoltLevel_2_2</cim:IdentifiedObject.name>
-	</cim:VoltageLevel>
-	<cim:VoltageLevel rdf:ID="VOLT_2_3">
-		<cim:VoltageLevel.BaseVoltage rdf:resource="#BV_2_2"/>
-		<cim:VoltageLevel.Substation rdf:resource="#SUB_2_3"/>
-		<cim:IdentifiedObject.mRID>VOLT_2_3</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>VoltLevel_2_3</cim:IdentifiedObject.name>
-	</cim:VoltageLevel>
-	
-	
 	<cim:PowerTransformer rdf:ID="PT_2_1">
+		<cim:PowerTransformer.invalidRangePercent>0.06</cim:PowerTransformer.invalidRangePercent>
+		<cim:PowerTransformer.validRangePercent>0.05</cim:PowerTransformer.validRangePercent>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
 		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_1"/>
 		<cim:IdentifiedObject.mRID>PT_2_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>PTransformer_2_1</cim:IdentifiedObject.name>
 	</cim:PowerTransformer>
 	<cim:PowerTransformer rdf:ID="PT_2_2">
-		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:PowerTransformer.invalidRangePercent>0.06</cim:PowerTransformer.invalidRangePercent>
+		<cim:PowerTransformer.validRangePercent>0.05</cim:PowerTransformer.validRangePercent>
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_2"/>
 		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_2"/>
 		<cim:IdentifiedObject.mRID>PT_2_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>PTransformer_2_2</cim:IdentifiedObject.name>
 	</cim:PowerTransformer>
 	<cim:PowerTransformer rdf:ID="PT_2_3">
-		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_2"/>
+		<cim:PowerTransformer.invalidRangePercent>0.06</cim:PowerTransformer.invalidRangePercent>
+		<cim:PowerTransformer.validRangePercent>0.05</cim:PowerTransformer.validRangePercent>
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_3"/>
 		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_3"/>
 		<cim:IdentifiedObject.mRID>PT_2_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>PTransformer_2_3</cim:IdentifiedObject.name>
 	</cim:PowerTransformer>
-	
-	
-	<cim:PowerTransformerEnd rdf:ID="PTE_21_1">
-		<cim:PowerTransformerEnd.PowerTransformer rdf:resource="#PT_2_1"/>
-		<cim:TransformerEnd.BaseVoltage rdf:resource="#BV_2_2"/>
-		<cim:IdentifiedObject.mRID>PTE_21_1</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>PTransEnd_21_1</cim:IdentifiedObject.name>
-	</cim:PowerTransformerEnd>
-	<cim:PowerTransformerEnd rdf:ID="PTE_21_2">
-		<cim:PowerTransformerEnd.PowerTransformer rdf:resource="#PT_2_1"/>
-		<cim:TransformerEnd.BaseVoltage rdf:resource="#BV_2_1"/>
-		<cim:IdentifiedObject.mRID>PTE_21_2</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>PTransEnd_21_2</cim:IdentifiedObject.name>
-	</cim:PowerTransformerEnd>
-	<cim:PowerTransformerEnd rdf:ID="PTE_22_1">
-		<cim:PowerTransformerEnd.PowerTransformer rdf:resource="#PT_2_2"/>
-		<cim:TransformerEnd.BaseVoltage rdf:resource="#BV_2_2"/>
-		<cim:IdentifiedObject.mRID>PTE_22_1</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>PTransEnd_22_1</cim:IdentifiedObject.name>
-	</cim:PowerTransformerEnd>
-	<cim:PowerTransformerEnd rdf:ID="PTE_22_2">
-		<cim:PowerTransformerEnd.PowerTransformer rdf:resource="#PT_2_2"/>
-		<cim:TransformerEnd.BaseVoltage rdf:resource="#BV_2_1"/>
-		<cim:IdentifiedObject.mRID>PTE_22_2</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>PTransEnd_22_2</cim:IdentifiedObject.name>
-	</cim:PowerTransformerEnd>
-	<cim:PowerTransformerEnd rdf:ID="PTE_23_1">
-		<cim:PowerTransformerEnd.PowerTransformer rdf:resource="#PT_2_3"/>
-		<cim:TransformerEnd.BaseVoltage rdf:resource="#BV_2_2"/>
-		<cim:IdentifiedObject.mRID>PTE_23_1</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>PTransEnd_23_1</cim:IdentifiedObject.name>
-	</cim:PowerTransformerEnd>
-	<cim:PowerTransformerEnd rdf:ID="PTE_23_2">
-		<cim:PowerTransformerEnd.PowerTransformer rdf:resource="#PT_2_3"/>
-		<cim:TransformerEnd.BaseVoltage rdf:resource="#BV_2_1"/>
-		<cim:IdentifiedObject.mRID>PTE_23_2</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>PTransEnd_23_2</cim:IdentifiedObject.name>
-	</cim:PowerTransformerEnd>
-	
-	
-	<cim:RatioTapChanger rdf:ID="RTC_2_1">
-		<cim:RatioTapChanger.TransformerEnd rdf:resource="#PTE_21_2"/>
-		<cim:TapChanger.highStep>15</cim:TapChanger.highStep>
-		<cim:TapChanger.lowStep>-15</cim:TapChanger.lowStep>
-		<cim:TapChanger.neutralStep>0</cim:TapChanger.neutralStep>
-		<cim:TapChanger.normalStep>0</cim:TapChanger.normalStep>
-		<cim:IdentifiedObject.mRID>RTC_2_1</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>RatioTapChanger_2_1</cim:IdentifiedObject.name>
-	</cim:RatioTapChanger>
-	<cim:RatioTapChanger rdf:ID="RTC_2_2">
-		<cim:RatioTapChanger.TransformerEnd rdf:resource="#PTE_22_2"/>
-		<cim:TapChanger.highStep>15</cim:TapChanger.highStep>
-		<cim:TapChanger.lowStep>-15</cim:TapChanger.lowStep>
-		<cim:TapChanger.neutralStep>0</cim:TapChanger.neutralStep>
-		<cim:TapChanger.normalStep>0</cim:TapChanger.normalStep>
-		<cim:IdentifiedObject.mRID>RTC_2_2</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>RatioTapChanger_2_2</cim:IdentifiedObject.name>
-	</cim:RatioTapChanger>
-	<cim:RatioTapChanger rdf:ID="RTC_2_3">
-		<cim:RatioTapChanger.TransformerEnd rdf:resource="#PTE_23_2"/>
-		<cim:TapChanger.highStep>15</cim:TapChanger.highStep>
-		<cim:TapChanger.lowStep>-15</cim:TapChanger.lowStep>
-		<cim:TapChanger.neutralStep>0</cim:TapChanger.neutralStep>
-		<cim:TapChanger.normalStep>0</cim:TapChanger.normalStep>
-		<cim:IdentifiedObject.mRID>RTC_2_3</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>RatioTapChanger_2_3</cim:IdentifiedObject.name>
-	</cim:RatioTapChanger>
-	
+	<cim:PowerTransformer rdf:ID="PT_2_4">
+		<cim:PowerTransformer.invalidRangePercent>0.06</cim:PowerTransformer.invalidRangePercent>
+		<cim:PowerTransformer.validRangePercent>0.05</cim:PowerTransformer.validRangePercent>
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_3"/>
+		<cim:IdentifiedObject.mRID>PT_2_4</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>PTransformer_2_4</cim:IdentifiedObject.name>
+	</cim:PowerTransformer>
+	<cim:PowerTransformer rdf:ID="PT_2_5">
+		<cim:PowerTransformer.invalidRangePercent>0.06</cim:PowerTransformer.invalidRangePercent>
+		<cim:PowerTransformer.validRangePercent>0.05</cim:PowerTransformer.validRangePercent>
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_2"/>
+		<cim:IdentifiedObject.mRID>PT_2_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>PTransformer_2_2</cim:IdentifiedObject.name>
+	</cim:PowerTransformer>
 	
 	<cim:EnergyConsumer rdf:ID="EC_2_1">
+		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
 		<cim:EnergyConsumer.pfixed>48</cim:EnergyConsumer.pfixed>
 		<cim:EnergyConsumer.qfixed>4</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
 		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
 		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_1"/>
@@ -167,251 +107,178 @@
 		<cim:IdentifiedObject.name>EConsumer_2_1</cim:IdentifiedObject.name>
 	</cim:EnergyConsumer>
 	<cim:EnergyConsumer rdf:ID="EC_2_2">
+		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
 		<cim:EnergyConsumer.pfixed>65</cim:EnergyConsumer.pfixed>
 		<cim:EnergyConsumer.qfixed>5</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
 		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
-		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_1"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_2"/>
 		<cim:IdentifiedObject.mRID>EC_2_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>EConsumer_2_2</cim:IdentifiedObject.name>
 	</cim:EnergyConsumer>
+	<cim:EnergyConsumer rdf:ID="EC_2_10">
+		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
+		<cim:EnergyConsumer.pfixed>1500</cim:EnergyConsumer.pfixed>
+		<cim:EnergyConsumer.qfixed>150</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
+		<cim:EnergyConsumer.consumerType>SHOPPING_CENTER</cim:EnergyConsumer.consumerType>
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_2"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_2"/>
+		<cim:IdentifiedObject.mRID>EC_2_10</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>EConsumer_2_10</cim:IdentifiedObject.name>
+	</cim:EnergyConsumer>
 	<cim:EnergyConsumer rdf:ID="EC_2_3">
+		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
 		<cim:EnergyConsumer.pfixed>39</cim:EnergyConsumer.pfixed>
 		<cim:EnergyConsumer.qfixed>4</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
 		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
-		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_1"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_3"/>
 		<cim:IdentifiedObject.mRID>EC_2_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>EConsumer_2_3</cim:IdentifiedObject.name>
 	</cim:EnergyConsumer>
 	<cim:EnergyConsumer rdf:ID="EC_2_4">
+		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
 		<cim:EnergyConsumer.pfixed>35</cim:EnergyConsumer.pfixed>
 		<cim:EnergyConsumer.qfixed>4</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
 		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
-		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_2"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_1"/>
 		<cim:IdentifiedObject.mRID>EC_2_4</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>EConsumer_2_4</cim:IdentifiedObject.name>
 	</cim:EnergyConsumer>
 	<cim:EnergyConsumer rdf:ID="EC_2_5">
+		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
 		<cim:EnergyConsumer.pfixed>44</cim:EnergyConsumer.pfixed>
 		<cim:EnergyConsumer.qfixed>5</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
 		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
-		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_2"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_1"/>
 		<cim:IdentifiedObject.mRID>EC_2_5</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>EConsumer_2_5</cim:IdentifiedObject.name>
 	</cim:EnergyConsumer>
 	<cim:EnergyConsumer rdf:ID="EC_2_6">
+		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
 		<cim:EnergyConsumer.pfixed>57</cim:EnergyConsumer.pfixed>
 		<cim:EnergyConsumer.qfixed>6</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
 		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
-		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_2"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_1"/>
 		<cim:IdentifiedObject.mRID>EC_2_6</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>EConsumer_2_6</cim:IdentifiedObject.name>
 	</cim:EnergyConsumer>
 	<cim:EnergyConsumer rdf:ID="EC_2_7">
+		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
 		<cim:EnergyConsumer.pfixed>35</cim:EnergyConsumer.pfixed>
 		<cim:EnergyConsumer.qfixed>5</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
 		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
-		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_3"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_1"/>
 		<cim:IdentifiedObject.mRID>EC_2_7</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>EConsumer_2_7</cim:IdentifiedObject.name>
 	</cim:EnergyConsumer>
+	<cim:EnergyConsumer rdf:ID="EC_2_9">
+		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
+		<cim:EnergyConsumer.pfixed>2500</cim:EnergyConsumer.pfixed>
+		<cim:EnergyConsumer.qfixed>200</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
+		<cim:EnergyConsumer.consumerType>FIRM</cim:EnergyConsumer.consumerType>
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_3"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_3"/>
+		<cim:IdentifiedObject.mRID>EC_2_9</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>EConsumer_2_9</cim:IdentifiedObject.name>
+	</cim:EnergyConsumer>
 	<cim:EnergyConsumer rdf:ID="EC_2_8">
+		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
 		<cim:EnergyConsumer.pfixed>66</cim:EnergyConsumer.pfixed>
 		<cim:EnergyConsumer.qfixed>5</cim:EnergyConsumer.qfixed>
+		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
 		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
 		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_3"/>
 		<cim:IdentifiedObject.mRID>EC_2_8</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>EConsumer_2_8</cim:IdentifiedObject.name>
 	</cim:EnergyConsumer>
-	<cim:EnergyConsumer rdf:ID="EC_2_9">
-		<cim:EnergyConsumer.pfixed>2500</cim:EnergyConsumer.pfixed>
-		<cim:EnergyConsumer.qfixed>200</cim:EnergyConsumer.qfixed>
-		<cim:EnergyConsumer.consumerType>FIRM</cim:EnergyConsumer.consumerType>
-		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
-		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_3"/>
-		<cim:IdentifiedObject.mRID>EC_2_9</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>EConsumer_2_9</cim:IdentifiedObject.name>
-	</cim:EnergyConsumer>
-	<cim:EnergyConsumer rdf:ID="EC_2_10">
-		<cim:EnergyConsumer.pfixed>1500</cim:EnergyConsumer.pfixed>
-		<cim:EnergyConsumer.qfixed>150</cim:EnergyConsumer.qfixed>
-		<cim:EnergyConsumer.consumerType>SHOPPING_CENTER</cim:EnergyConsumer.consumerType>
-		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_2_1"/>
-		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_2_3"/>
-		<cim:IdentifiedObject.mRID>EC_2_10</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>EConsumer_2_10</cim:IdentifiedObject.name>
-	</cim:EnergyConsumer>
-	
 	
 	<cim:Analog rdf:ID="ANALOG_2_1_1">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_1"/>
-		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>		
 		<cim:IdentifiedObject.mRID>ANALOG_2_1_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_1_1</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_2_1">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_2"/>
-		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_2_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_2_1</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_3_1">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_3"/>
-		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_3_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_3_1</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_4_1">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_4"/>
-		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_4_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_4_1</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_5_1">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_5"/>
-		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_5_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_5_1</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_6_1">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_6"/>
-		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_6_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_6_1</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_7_1">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_7"/>
-		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_7_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_7_1</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_8_1">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_8"/>
-		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_8_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_8_1</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_9_1">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_9"/>
-		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_9_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_9_1</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_10_1">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_10"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
@@ -421,356 +288,206 @@
 	</cim:Analog>
 	
 	<cim:Analog rdf:ID="ANALOG_2_1_2">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_1"/>
-		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_1_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_1_2</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_2_2">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_2"/>
-		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_2_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_2_2</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_3_2">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_3"/>
-		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_3_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_3_2</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_4_2">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_4"/>
-		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_4_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_4_2</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_5_2">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_5"/>
-		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_5_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_5_2</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_6_2">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_6"/>
-		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_6_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_6_2</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_7_2">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_7"/>
-		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_7_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_7_2</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_8_2">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_8"/>
-		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_8_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_8_2</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_9_2">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_9"/>
-		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_9_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_9_2</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_10_2">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_10"/>
-		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_10_2</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_10_2</cim:IdentifiedObject.name>
 	</cim:Analog>
 	
 	<cim:Analog rdf:ID="ANALOG_2_1_3">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_1"/>
-		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_1_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_1_3</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_2_3">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_2"/>
-		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_2_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_2_3</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_3_3">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_3"/>
-		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_3_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_3_3</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_4_3">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_4"/>
-		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_4_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_4_3</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_5_3">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_5"/>
-		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_5_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_5_3</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_6_3">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_6"/>
-		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_6_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_6_3</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_7_3">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_7"/>
-		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_7_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_7_3</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_8_3">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_8"/>
-		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_8_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_8_3</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_9_3">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_9"/>
-		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_9_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_9_3</cim:IdentifiedObject.name>
 	</cim:Analog>
 	<cim:Analog rdf:ID="ANALOG_2_10_3">
-		<cim:Analog.maxValue>100</cim:Analog.maxValue>
-		<cim:Analog.minValue>7</cim:Analog.minValue>
-		<cim:Analog.normalValue>0</cim:Analog.normalValue>
-		<cim:Analog.alarmHigh>95</cim:Analog.alarmHigh>
-		<cim:Analog.alarmLow>10</cim:Analog.alarmLow>
-		<cim:Analog.isAlarm>false</cim:Analog.isAlarm>
-		<cim:Measurement.maxRawValue>100</cim:Measurement.maxRawValue>
-		<cim:Measurement.minRawValue>7</cim:Measurement.minRawValue>
-		<cim:Measurement.normalRawValue>0</cim:Measurement.normalRawValue>
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_10"/>
-		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_2_10_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_10_3</cim:IdentifiedObject.name>
 	</cim:Analog>
 	
-	<!--cim:Discrete rdf:ID=" ">
-		<cim:Discrete.maxValue> </cim:Discrete.maxValue>
-		<cim:Discrete.minValue> </cim:Discrete.minValue>
-		<cim:Discrete.normalValue> </cim:Discrete.normalValue>
-		<cim:Measurement.PowerSystemResource rdf:resource="#"/>
-		<cim:Measurement.unitSymbol> P Q V </cim:Measurement.unitSymbol>
-		<cim:Measurement.direction> WRITE READWRITE READ </cim:Measurement.direction>
-		<cim:IdentifiedObject.mRID> </cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name> </cim:IdentifiedObject.name>
-	</cim:Discrete-->
+	<cim:Analog rdf:ID="ANALOGT_2_1_1">
+		<cim:Measurement.PowerSystemResource rdf:resource="#PT_2_1"/>
+		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READWRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
+		<cim:IdentifiedObject.mRID>ANALOGT_2_1_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOGT_2_1_1</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOGT_2_2_1">
+		<cim:Measurement.PowerSystemResource rdf:resource="#PT_2_2"/>
+		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READWRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
+		<cim:IdentifiedObject.mRID>ANALOGT_2_2_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOGT_2_2_1</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOGT_2_2_2">
+		<cim:Measurement.PowerSystemResource rdf:resource="#PT_2_3"/>
+		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READWRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
+		<cim:IdentifiedObject.mRID>ANALOGT_2_2_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOGT_2_2_2</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOGT_2_3_1">
+		<cim:Measurement.PowerSystemResource rdf:resource="#PT_2_4"/>
+		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READWRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
+		<cim:IdentifiedObject.mRID>ANALOGT_2_3_1</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOGT_2_3_1</cim:IdentifiedObject.name>
+	</cim:Analog>
+	<cim:Analog rdf:ID="ANALOGT_2_3_2">
+		<cim:Measurement.PowerSystemResource rdf:resource="#PT_2_5"/>
+		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
+		<cim:Measurement.signalDirection>READWRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
+		<cim:IdentifiedObject.mRID>ANALOGT_2_3_2</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>ANALOGT_2_3_2</cim:IdentifiedObject.name>
+	</cim:Analog>
 
 	</rdf:RDF>

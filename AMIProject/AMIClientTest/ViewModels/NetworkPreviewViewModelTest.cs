@@ -43,6 +43,28 @@ namespace AMIClientTest.ViewModels
         [Test]
         public void RootElementsTest()
         {
+            //MESSAGEBOX
+
+            //int countForResourcesLeft1 = 0;
+            //int countForRelatedValues = 0;
+
+            //INetworkModelGDAContractDuplexClient mock2 = Substitute.For<INetworkModelGDAContractDuplexClient>();
+            //ResourceDescription georegion = new ResourceDescription();
+            //georegion.AddProperty(new Property(ModelCode.IDOBJ_GID, 4322));
+            //List<ResourceDescription> ret = new List<ResourceDescription>();
+            //List<ModelCode> properties = new List<ModelCode>();
+            //mock2.GetExtentValues(ModelCode.GEOREGION, properties).ReturnsForAnyArgs(x => (++countForRelatedValues));
+            //mock2.IteratorResourcesLeft(1).Returns(x => (countForResourcesLeft1++ < 1) ? 1 : 0);
+
+            //mock2.IteratorNext(5, 1).Returns(ret);
+
+            //mock2.IteratorClose(1);
+
+            //Model m = new Model();
+            //networkPreview.Model = m;
+            //networkPreview.Model.FirstContact = false;
+            //networkPreview.Model.GdaQueryProxy = mock2;
+
             ObservableCollection<RootElement> root = new ObservableCollection<RootElement>();
             root.Add(new RootElement(model));
             networkPreview.RootElements = root;
@@ -61,22 +83,10 @@ namespace AMIClientTest.ViewModels
         [Test]
         public void SetModelTest()
         {
+            //MESSAGEBOX
+            
             Assert.DoesNotThrow(() => networkPreview.SetModel(model));
         }
-
-        //[Test]
-        //public void RaisePropertyChangedTest()
-        //{
-        //    string receivedEvents = null;
-        //    this.networkPreview.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
-        //    {
-        //        receivedEvents = e.PropertyName;
-        //    };
-
-        //    this.networkPreview.CurrentViewModel = null;
-        //    Assert.IsNotNull(receivedEvents);
-        //    Assert.AreEqual("CurrentViewModel", receivedEvents);
-        //}
 
         [Test]
         public void SelectedAMIActionTest()
