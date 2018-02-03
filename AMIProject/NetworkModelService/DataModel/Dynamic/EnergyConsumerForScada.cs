@@ -9,10 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 using TC57CIM.IEC61970.Wires;
 
-namespace FTN.Services.NetworkModelService.DataModel
+namespace FTN.Services.NetworkModelService.DataModel.Dynamic
 {
     [DataContract]
-    public class EnergyConsumerForScada
+    public class EnergyConsumerForScada : DataForScada
     {
         private long globalId;
         private string mRID;
@@ -21,8 +21,10 @@ namespace FTN.Services.NetworkModelService.DataModel
         private float qMax;
         private float validRangePercent;
         private float invalidRangePercent;
-        private long baseVoltage;
+        private long baseVoltageId;
+        private BaseVoltageForScada baseVoltage;
         private long eqContainerId;
+        private SubstationForScada eqContainer;
         private ConsumerType type;
 
         public EnergyConsumerForScada()
@@ -38,7 +40,7 @@ namespace FTN.Services.NetworkModelService.DataModel
             this.qMax = consumer.QMax;
             this.ValidRangePercent = consumer.ValidRangePercent;
             this.InvalidRangePercent = consumer.InvalidRangePercent;
-            this.baseVoltage = consumer.BaseVoltage;
+            this.BaseVoltageId = consumer.BaseVoltage;
             this.eqContainerId = consumer.EqContainer;
             this.type = consumer.Type;
         }
@@ -144,7 +146,22 @@ namespace FTN.Services.NetworkModelService.DataModel
         }
 
         [DataMember]
-        public long BaseVoltage
+        [ForeignKey("BaseVoltage")]
+        public long BaseVoltageId
+        {
+            get
+            {
+                return baseVoltageId;
+            }
+
+            set
+            {
+                baseVoltageId = value;
+            }
+        }
+
+        [IgnoreDataMember]
+        public BaseVoltageForScada BaseVoltage
         {
             get
             {
@@ -158,6 +175,7 @@ namespace FTN.Services.NetworkModelService.DataModel
         }
 
         [DataMember]
+        [ForeignKey("EqContainer")]
         public long EqContainerID
         {
             get
@@ -168,6 +186,20 @@ namespace FTN.Services.NetworkModelService.DataModel
             set
             {
                 eqContainerId = value;
+            }
+        }
+
+        [IgnoreDataMember]
+        public SubstationForScada EqContainer
+        {
+            get
+            {
+                return eqContainer;
+            }
+
+            set
+            {
+                eqContainer = value;
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using FTN.Common;
 using FTN.Services.NetworkModelService.DataModel;
+using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -18,5 +19,8 @@ namespace SCADA.Access
         public DbSet<MeasurementForScada> MeasurementForScada { get; set; }
         public DbSet<Measurement> Measurement { get; set; }
         public DbSet<EnergyConsumerForScada> Consumers { get; set; }
+        public DbSet<BaseVoltageForScada> BaseVoltages { get; set; }
+        public DbSet<PowerTransformerForScada> PowerTransformers { get; set; }
+        public DbSet<SubstationForScada> Substations { get; set; }
     }
 }
