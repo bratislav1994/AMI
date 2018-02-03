@@ -222,7 +222,7 @@
     </Style>
 
     <Style TargetType="{x:Type DataGrid}">
-        <Setter Property="Background" Value="{StaticResource ControlContentBrush}"/>
+        <Setter Property="Background" Value="#4c4c4c"/>
         <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
         <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
@@ -287,12 +287,12 @@
                 <Setter Property="Foreground" Value="White"/>
             </Trigger>-->
             <Trigger Property="AlternationIndex" Value="0">
-                <Setter Property="Background" Value="#4c4c4c"></Setter>
+                <Setter Property="Background" Value="#777777"></Setter>
                 <Setter Property="Foreground" Value="White"></Setter>
                 <!-- par nepar -->
             </Trigger>
             <Trigger Property="AlternationIndex" Value="1">
-                <Setter Property="Background" Value="#777777"></Setter>
+                <Setter Property="Background" Value="#4c4c4c"></Setter>
                 <Setter Property="Foreground" Value="White"></Setter>
             </Trigger>
         </Style.Triggers>
