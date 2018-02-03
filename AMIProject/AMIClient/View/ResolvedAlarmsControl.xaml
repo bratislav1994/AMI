@@ -21,8 +21,8 @@
         </Grid.RowDefinitions>
 
         <Button Content="Refresh" Width="50" Command="{Binding RefreshCommand}" HorizontalAlignment="Left"/>
-        
-        <DataGrid Grid.Row="1" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.ViewTableItemsForAlarm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
+
+        <DataGrid Grid.Row="1" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.ViewTableItemsForResolvedAlarm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
 
             <DataGrid.Columns>
                 <DataGridTextColumn MinWidth="100" Width="100" Header="Id" Binding="{Binding Id}"/>

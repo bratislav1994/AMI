@@ -277,20 +277,15 @@ namespace CalculationEngine.Access
             }
         }
 
-        public Dictionary<long, ResolvedAlarm> ReadResolvedAlarm()
+        public List<ResolvedAlarm> ReadResolvedAlarm()
         {
-            Dictionary<long, ResolvedAlarm> retVal = new Dictionary<long, ResolvedAlarm>();
+            List<ResolvedAlarm> retVal = new List<ResolvedAlarm>();
 
             lock (lockObjAlarm)
             {
                 using (var access = new AccessDB())
                 {
-                    var alarm = access.ResolvedAlarm.ToList();
-
-                    foreach (ResolvedAlarm a in alarm)
-                    {
-                        retVal.Add(a.Id, a);
-                    }
+                    retVal = access.ResolvedAlarm.ToList();
                 }
 
                 return retVal;

@@ -39,6 +39,8 @@ namespace CalculationEngine
         private Dictionary<long, EnergyConsumerDb> amisTemp;
         private Dictionary<long, ActiveAlarm> alarmActiveDB;
         private IScadaForCECommand proxyScada;
+        private List<ResolvedAlarm> listAfterRefresh;
+
 
         public CalculationEngine()
         {
@@ -71,6 +73,7 @@ namespace CalculationEngine
             amisTemp = new Dictionary<long, EnergyConsumerDb>();
             meas = new List<ResourceDescription>();
             alarmActiveDB = new Dictionary<long, ActiveAlarm>();
+            listAfterRefresh = new List<ResolvedAlarm>();
             alarmActiveDB = dataBaseAdapter.ReadActiveAlarm();
 
             while (true)
@@ -486,6 +489,26 @@ namespace CalculationEngine
         public void DoUndoneFill()
         {
             timeSeriesDataBaseAdapter.DoUndoneFill();
+        }
+
+        public int GetTotalPageCount()
+        {
+            listAfterRefresh.Clear();
+            listAfterRefresh = dataBaseAdapter.ReadResolvedAlarm();
+
+            return listAfterRefresh.Count();
+        }
+
+        public List<ResolvedAlarm> GetResolvedAlarms(int startIndex, int range)
+        {
+            if (startIndex + range > listAfterRefresh.Count - 1)
+            {
+                return listAfterRefresh.GetRange(startIndex, listAfterRefresh.Count - startIndex);
+            }
+            else
+            {
+                return listAfterRefresh.GetRange(startIndex, range);
+            }
         }
     }
 }

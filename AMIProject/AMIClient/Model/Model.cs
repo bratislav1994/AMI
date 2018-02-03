@@ -814,8 +814,8 @@ namespace AMIClient
                         Voltage = alarm.Voltage,
                         TypeVoltage = alarm.TypeVoltage
                     });
+                    positionsAlarm.Add(alarm.Id, TableItemsForActiveAlarm.Count - 1);
                 });
-                positionsAlarm.Add(alarm.Id, TableItemsForActiveAlarm.Count - 1);
             }
 
             foreach (long psrRef in delta.DeleteOperations)
@@ -824,7 +824,23 @@ namespace AMIClient
                 {
                     App.Current.Dispatcher.Invoke((Action)delegate
                     {
-                        TableItemsForActiveAlarm.RemoveAt(positionsAlarm[psrRef]);
+                        int emptyPosition = positionsAlarm[psrRef];
+                        List<long> temp = new List<long>();
+                        TableItemsForActiveAlarm.RemoveAt(emptyPosition);
+                        positionsAlarm.Remove(psrRef);
+
+                        foreach (long key in positionsAlarm.Keys)
+                        {
+                            if (positionsAlarm[key] > emptyPosition)
+                            {
+                                temp.Add(key);
+                            }
+                        }
+
+                        foreach (long key in temp)
+                        {
+                            positionsAlarm[key] -= 1;
+                        }
                     });
                 }
             }

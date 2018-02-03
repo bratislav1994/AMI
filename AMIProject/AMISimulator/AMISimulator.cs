@@ -316,7 +316,7 @@ namespace AMISimulator
                                     valueToSend = 0;
                                 }
 
-                                activePowers.Add(measurements[i].PowerSystemResourceRef, householdConsumption[now.Minute % 24] * 100);
+                                activePowers.Add(measurements[i].PowerSystemResourceRef, valueToSend);
                                 changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                                 outstation.Load(changeset);
                             }
@@ -330,7 +330,7 @@ namespace AMISimulator
                                     valueToSend = 0;
                                 }
 
-                                activePowers.Add(measurements[i].PowerSystemResourceRef, shoppingCenterConsumption[now.Minute % 24] * 100);
+                                activePowers.Add(measurements[i].PowerSystemResourceRef, valueToSend);
                                 changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                                 outstation.Load(changeset);
                             }
@@ -344,7 +344,7 @@ namespace AMISimulator
                                     valueToSend = 0;
                                 }
 
-                                activePowers.Add(measurements[i].PowerSystemResourceRef, firmConsumption[now.Minute % 24] * 100);
+                                activePowers.Add(measurements[i].PowerSystemResourceRef, valueToSend);
                                 changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                                 outstation.Load(changeset);
                             }
@@ -400,13 +400,13 @@ namespace AMISimulator
                                 ChangeSet changeset = new ChangeSet();
                                 double valueToSend = -1;
 
-                                if (householdConsumption[now.Minute % 24] < 0.1)
+                                if ((activePowers[measurements[i].PowerSystemResourceRef] / consumers[measurements[i].PowerSystemResourceRef].PMax) < 0.1)
                                 {
-                                    valueToSend = baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage + baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage * voltageLoss;
+                                    valueToSend = baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage + baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage * voltageLoss * 100;
                                 }
                                 else
                                 {
-                                    valueToSend = baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage - baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage * voltageLoss * activePowers[measurements[i].PowerSystemResourceRef];
+                                    valueToSend = baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage - baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage * voltageLoss * ((activePowers[measurements[i].PowerSystemResourceRef] / consumers[measurements[i].PowerSystemResourceRef].PMax) * 100);
                                 }
 
                                 changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
@@ -417,13 +417,13 @@ namespace AMISimulator
                                 ChangeSet changeset = new ChangeSet();
                                 double valueToSend = -1;
 
-                                if (shoppingCenterConsumption[now.Minute % 24] < 0.1)
+                                if ((activePowers[measurements[i].PowerSystemResourceRef] / consumers[measurements[i].PowerSystemResourceRef].PMax) < 0.1)
                                 {
-                                    valueToSend = baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage + baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage * voltageLoss;
+                                    valueToSend = baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage + baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage * voltageLoss * 100;
                                 }
                                 else
                                 {
-                                    valueToSend = baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage - baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage * voltageLoss * activePowers[measurements[i].PowerSystemResourceRef];
+                                    valueToSend = baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage - baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage * voltageLoss * ((activePowers[measurements[i].PowerSystemResourceRef] / consumers[measurements[i].PowerSystemResourceRef].PMax) * 100);
                                 }
 
                                 changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
@@ -434,13 +434,13 @@ namespace AMISimulator
                                 ChangeSet changeset = new ChangeSet();
                                 double valueToSend = -1;
 
-                                if (firmConsumption[now.Minute % 24] < 0.1)
+                                if ((activePowers[measurements[i].PowerSystemResourceRef] / consumers[measurements[i].PowerSystemResourceRef].PMax) < 0.1)
                                 {
-                                    valueToSend = baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage + baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage * voltageLoss;
+                                    valueToSend = baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage + baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage * voltageLoss * 100;
                                 }
                                 else
                                 {
-                                    valueToSend = baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage - baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage * voltageLoss * activePowers[measurements[i].PowerSystemResourceRef];
+                                    valueToSend = baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage - baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage * voltageLoss * ((activePowers[measurements[i].PowerSystemResourceRef] / consumers[measurements[i].PowerSystemResourceRef].PMax) * 100);
                                 }
 
                                 changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));

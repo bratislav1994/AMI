@@ -18,7 +18,7 @@ namespace AMIClient.PagginationCommands.ResolvedAlarms
 
         public bool CanExecute(object parameter)
         {
-            return viewModel.TotalPages > viewModel.EnteredPage && viewModel.EnteredPage > 1;
+            return viewModel.TotalPages > viewModel.EnteredPage && viewModel.EnteredPage >= 1;
         }
 
         public event EventHandler CanExecuteChanged

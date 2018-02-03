@@ -18,7 +18,7 @@ namespace AMIClient.ViewModels
 {
     public class ResolvedAlarmsViewModel : AlarmViewModel, INotifyPropertyChanged
     {
-        private static AlarmSummariesViewModel instance;
+        private static ResolvedAlarmsViewModel instance;
         private Model model;
         private Dictionary<string, string> columnFilters;
         private string consumerFilter = string.Empty;
@@ -31,9 +31,8 @@ namespace AMIClient.ViewModels
         public ICommand FirstCommand { get; private set; }
         public ICommand LastCommand { get; private set; }
 
-        public ResolvedAlarmsViewModel(Model model)
+        public ResolvedAlarmsViewModel()
         {
-            this.model = model;
             NextCommand = new NextPageCommand(this);
             PreviousCommand = new PreviousPageCommand(this);
             FirstCommand = new FirstPageCommand(this);
@@ -51,13 +50,13 @@ namespace AMIClient.ViewModels
             this.Model.ViewTableItemsForResolvedAlarm = CollectionViewSource.GetDefaultView(this.Model.TableItemsForResolvedAlarm);
         }
 
-        public static AlarmSummariesViewModel Instance
+        public static ResolvedAlarmsViewModel Instance
         {
             get
             {
                 if (instance == null)
                 {
-                    instance = new AlarmSummariesViewModel();
+                    instance = new ResolvedAlarmsViewModel();
                 }
 
                 return instance;
@@ -146,33 +145,41 @@ namespace AMIClient.ViewModels
             private set
             {
                 _totalPages = value;
-                this.RaisePropertyChanged("TotalPage");
+                this.RaisePropertyChanged("TotalPages");
             }
         }
 
         #region Pagination Methods
         public void ShowNextPage()
         {
+            this.Model.TableItemsForResolvedAlarm.Clear();
             this.EnteredPage++;
-            this.Model.TableItemsForResolvedAlarm = new ObservableCollection<ResolvedAlarm>(); // this.Model.CEProxy.GetResolvedAlarms();
+            List<ResolvedAlarm> ret = this.Model.CEQueryProxy.GetResolvedAlarms((this.EnteredPage - 1) * this.itemPerPage, this.itemPerPage);
+            ret.ForEach(x => this.Model.TableItemsForResolvedAlarm.Add(x));
         }
 
         public void ShowPreviousPage()
         {
+            this.Model.TableItemsForResolvedAlarm.Clear();
             this.EnteredPage--;
-            this.Model.TableItemsForResolvedAlarm = new ObservableCollection<ResolvedAlarm>(); // this.Model.CEProxy.GetResolvedAlarms();
+            List<ResolvedAlarm> ret = this.Model.CEQueryProxy.GetResolvedAlarms((this.EnteredPage - 1) * this.itemPerPage, this.itemPerPage);
+            ret.ForEach(x => this.Model.TableItemsForResolvedAlarm.Add(x));
         }
 
         public void ShowFirstPage()
         {
+            this.Model.TableItemsForResolvedAlarm.Clear();
             this.EnteredPage = 1;
-            this.Model.TableItemsForResolvedAlarm = new ObservableCollection<ResolvedAlarm>(); // this.Model.CEProxy.GetResolvedAlarms();
+            List<ResolvedAlarm> ret = this.Model.CEQueryProxy.GetResolvedAlarms((this.EnteredPage - 1) * this.itemPerPage, this.itemPerPage);
+            ret.ForEach(x => this.Model.TableItemsForResolvedAlarm.Add(x));
         }
 
         public void ShowLastPage()
         {
+            this.Model.TableItemsForResolvedAlarm.Clear();
             this.EnteredPage = TotalPages;
-            this.Model.TableItemsForResolvedAlarm = new ObservableCollection<ResolvedAlarm>(); // this.Model.CEProxy.GetResolvedAlarms();
+            List<ResolvedAlarm> ret = this.Model.CEQueryProxy.GetResolvedAlarms((this.EnteredPage - 1) * this.itemPerPage, this.itemPerPage);
+            ret.ForEach(x => this.Model.TableItemsForResolvedAlarm.Add(x));
         }
 
         #endregion
@@ -191,7 +198,8 @@ namespace AMIClient.ViewModels
         {
             if (this.TotalPages >= this.EnteredPage)
             {
-                this.Model.TableItemsForResolvedAlarm = new ObservableCollection<ResolvedAlarm>(); // this.Model.CEProxy.GetResolvedAlarms();
+                List<ResolvedAlarm> ret = this.Model.CEQueryProxy.GetResolvedAlarms((this.EnteredPage - 1) * this.itemPerPage, this.itemPerPage);
+                ret.ForEach(x => this.Model.TableItemsForResolvedAlarm.Add(x));
             }
         }
 
@@ -207,14 +215,24 @@ namespace AMIClient.ViewModels
 
         private void RefreshHistory()
         {
-            this.TotalPages = 0; // this.Model.CEProxy.GetTotalPageCount();
-
+            this.Model.TableItemsForResolvedAlarm.Clear();
+            int totalNumberOfAlarms = this.Model.CEQueryProxy.GetTotalPageCount();
+            if (totalNumberOfAlarms % this.itemPerPage == 0)
+            {
+                this.TotalPages = totalNumberOfAlarms / this.itemPerPage;
+            }
+            else
+            {
+                this.TotalPages = totalNumberOfAlarms / this.itemPerPage + 1;
+            }
+           
             if (this.TotalPages != 0)
             {
                 if (this.EnteredPage == 0)
                 {
                     this.EnteredPage = 1;
-                    this.Model.TableItemsForResolvedAlarm = new ObservableCollection<ResolvedAlarm>(); // this.Model.CEProxy.GetResolvedAlarms();
+                    List<ResolvedAlarm> ret = this.Model.CEQueryProxy.GetResolvedAlarms((this.EnteredPage - 1) * this.itemPerPage, this.itemPerPage);
+                    ret.ForEach(x => this.Model.TableItemsForResolvedAlarm.Add(x));
                 }
             }
         }
