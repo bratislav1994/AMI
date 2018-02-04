@@ -20,6 +20,7 @@ namespace SmartCacheCE
         private Dictionary<long, DynamicMeasurement> measurements = new Dictionary<long, DynamicMeasurement>();
         private ICalculationEngineDuplexSmartCache proxyCE;
         private bool firstTimeCE = true;
+        private object lockObjectForClient = new object();
 
         public SmartCache()
         {
@@ -71,12 +72,6 @@ namespace SmartCacheCE
 
         public void SendMeasurements(Dictionary<long, DynamicMeasurement> measurements)
         {
-            Thread t = new Thread(() => WorkerThreadForSendingMeasurement(measurements));
-            t.Start();
-        }
-
-        private void WorkerThreadForSendingMeasurement(Dictionary<long, DynamicMeasurement> measurements)
-        {
             this.measurements.Clear();
 
             foreach (KeyValuePair<long, DynamicMeasurement> kvp in measurements)
@@ -90,7 +85,10 @@ namespace SmartCacheCE
             {
                 try
                 {
-                    client.SendMeasurements(this.measurements.Values.ToList());
+                    lock (lockObjectForClient)
+                    {
+                        client.SendMeasurements(this.measurements.Values.ToList());
+                    }
                 }
                 catch
                 {
@@ -106,12 +104,18 @@ namespace SmartCacheCE
 
         public void Subscribe()
         {
-            this.clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
+            lock (lockObjectForClient)
+            {
+                this.clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
+            }
         }
 
         public List<DynamicMeasurement> GetLastMeas()
         {
-            return this.measurements.Values.ToList();
+            lock (lockObjectForClient)
+            {
+                return this.measurements.Values.ToList();
+            }
         }
 
         public void SendAlarm(DeltaForAlarm delta)
@@ -122,7 +126,10 @@ namespace SmartCacheCE
             {
                 try
                 {
-                    client.SendAlarm(delta);
+                    lock (lockObjectForClient)
+                    {
+                        client.SendAlarm(delta);
+                    }
                 }
                 catch
                 {
