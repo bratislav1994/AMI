@@ -25,11 +25,12 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter
         {
             get
             {
-                if(firstContact)
+                if (firstContact)
                 {
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.MaxReceivedMessageSize = Int32.MaxValue;
                     binding.MaxBufferSize = Int32.MaxValue;
+                    binding.SendTimeout = TimeSpan.FromHours(1);
                     ChannelFactory<ITransactionCoordinator> factory = new ChannelFactory<ITransactionCoordinator>(
                         binding,
                         new EndpointAddress("net.tcp://localhost:10001/TransactionCoordinator/Adapter"));

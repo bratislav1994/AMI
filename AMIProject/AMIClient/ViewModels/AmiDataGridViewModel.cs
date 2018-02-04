@@ -34,7 +34,7 @@ namespace AMIClient.ViewModels
         private ObservableCollection<TableItem> amiTableItems = new ObservableCollection<TableItem>();
         private DateTime timeOfLastUpdate;
         private Thread checkIfThereAreNewUpdates;
-        private int itemPerPage = 4;
+        private int itemPerPage = 10;
         private int itemcount;
         private int enteredPage = 1;
         public ICommand PreviousCommand { get; private set; }

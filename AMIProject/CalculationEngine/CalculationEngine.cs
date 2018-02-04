@@ -144,7 +144,7 @@ namespace CalculationEngine
                 {
                     Logger.LogMessageToFile(string.Format("CE.CalculationEngine.ProxyScada; line: {0}; Create channel between CE and Scada", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
-                    binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    binding.SendTimeout = TimeSpan.FromHours(1);
                     binding.MaxReceivedMessageSize = Int32.MaxValue;
                     binding.MaxBufferSize = Int32.MaxValue;
                     ChannelFactory<IScadaForCECommand> factory = new ChannelFactory<IScadaForCECommand>(
@@ -309,8 +309,6 @@ namespace CalculationEngine
         public void DataFromScada(Dictionary<long, DynamicMeasurement> measurements)
         {
             Logger.LogMessageToFile(string.Format("CE.CalculationEngine.DataFromScada; line: {0}; CE receive data from scada and send this data to client", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            Console.WriteLine("Send data to client");
-            Console.WriteLine("Data from scada: " + measurements.Count);
             int cntForVoltage = 0;
             Dictionary<long, DynamicMeasurement> addSubstations = new Dictionary<long, DynamicMeasurement>();
 
@@ -459,7 +457,7 @@ namespace CalculationEngine
                         a.Status = Status.ACTIVE;
                         a.Id = dm.PsrRef;
                         a.Voltage = dm.CurrentV;
-                        a.TypeVoltage = TypeVoltage.OVERVOLTAGE;
+                        a.TypeVoltage = dm.TypeVoltage;
 
                         alarmActiveDB[dm.PsrRef] = a;
                         dataBaseAdapter.AddActiveAlarm(a);
@@ -468,7 +466,7 @@ namespace CalculationEngine
                 }
             }
 
-            if (delta.InsertOperations.Count > 0)
+            if (gidsInAlarm.Count > 0)
             {
                 Console.WriteLine(ProxyScada.Command(gidsInAlarm));
             }

@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AMIClient.HelperClasses
+namespace FTN.Common
 {
     public static class EnumDescription
     {

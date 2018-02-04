@@ -44,6 +44,8 @@ namespace AMISimulator
         private static Random rnd = new Random();
         private Dictionary<long, double> activePowers;
         private CommandHandler handler;
+        private Dictionary<int, double> voltagesForPowerTransformers;
+        private Dictionary<long, int> indexForPowerTransformers;
 
         public IScadaDuplexSimulator ProxyScada
         {
@@ -88,6 +90,8 @@ namespace AMISimulator
             this.InitHousehold();
             this.InitShoppingCenter();
             this.InitFirm();
+            voltagesForPowerTransformers = new Dictionary<int, double>();
+            indexForPowerTransformers = new Dictionary<long, int>();
             consumers = new Dictionary<long, EnergyConsumerForScada>();
             baseVoltages = new Dictionary<long, BaseVoltageForScada>();
             powerTransformers = new Dictionary<long, PowerTransformerForScada>();
@@ -237,12 +241,7 @@ namespace AMISimulator
             List<MeasurementForScada> measForScada = ProxyScada.GetNumberOfPoints(address);
             List<DataForScada> dataFromScada = ProxyScada.GetDataFromScada(address);
             numberOfInstalledPoints = measForScada.Count;
-
-            foreach (MeasurementForScada m in measForScada)
-            {
-                this.measurements.Add(m.Index, m.Measurement);
-            }
-
+            
             foreach (DataForScada d in dataFromScada)
             {
                 if (d is EnergyConsumerForScada)
@@ -263,7 +262,28 @@ namespace AMISimulator
                 }
             }
 
-            handler = new CommandHandler();
+            foreach (MeasurementForScada m in measForScada)
+            {
+                if (m.Measurement.SignalDirection == Direction.READWRITE)
+                {
+                    PowerTransformerForScada pt = powerTransformers[m.Measurement.PowerSystemResourceRef];
+                    double nominalVol = baseVoltages[pt.BaseVoltageId].NominalVoltage;
+
+                    if (!voltagesForPowerTransformers.ContainsKey(m.Index))
+                    {
+                        voltagesForPowerTransformers.Add(m.Index, nominalVol);
+                    }
+
+                    if (!indexForPowerTransformers.ContainsKey(pt.GlobalId))
+                    {
+                        indexForPowerTransformers.Add(pt.GlobalId, m.Index);
+                    }
+                }
+
+                this.measurements.Add(m.Index, m.Measurement);
+            }
+
+            handler = new CommandHandler(this);
 
             channel = mgr.AddTCPServer("master" + address, LogLevels.NORMAL, ChannelRetry.Default, ipAddress, (ushort)(basePort + address), ChannelListener.Print());
             config.outstation.config.allowUnsolicited = true;
@@ -295,162 +315,169 @@ namespace AMISimulator
 
             while (true)
             {
-                activePowers.Clear();
+                this.activePowers.Clear();
+                this.Simulation(config, outstation);
 
-                for (int i = 0; i < numberOfInstalledPoints; i++)
+                Thread.Sleep(timeToSleep);
+            }
+        }
+
+        private void Simulation(OutstationStackConfig config, IOutstation outstation)
+        {
+            for (int i = 0; i < numberOfInstalledPoints; i++)
+            {
+                if (measurements[i].SignalDirection == Direction.READ)
                 {
-                    if (measurements[i].SignalDirection == Direction.READ)
+                    ConsumerType type = consumers[measurements[i].PowerSystemResourceRef].Type;
+                    DateTime now = DateTime.Now;
+
+                    if (measurements[i].UnitSymbol == UnitSymbol.P)
                     {
-                        ConsumerType type = consumers[measurements[i].PowerSystemResourceRef].Type;
-                        DateTime now = DateTime.Now;
-
-                        if (measurements[i].UnitSymbol == UnitSymbol.P)
+                        if (type == ConsumerType.HOUSEHOLD)
                         {
-                            if (type == ConsumerType.HOUSEHOLD)
+                            ChangeSet changeset = new ChangeSet();
+                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].PMax * householdConsumption[now.Minute % 24] + rnd.Next(-5, 5);
+
+                            if (valueToSend < 0)
                             {
-                                ChangeSet changeset = new ChangeSet();
-                                double valueToSend = consumers[measurements[i].PowerSystemResourceRef].PMax * householdConsumption[now.Minute % 24] + rnd.Next(-5, 5);
-
-                                if (valueToSend < 0)
-                                {
-                                    valueToSend = 0;
-                                }
-
-                                activePowers.Add(measurements[i].PowerSystemResourceRef, valueToSend);
-                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
-                                outstation.Load(changeset);
+                                valueToSend = 0;
                             }
-                            else if (type == ConsumerType.SHOPPING_CENTER)
-                            {
-                                ChangeSet changeset = new ChangeSet();
-                                double valueToSend = consumers[measurements[i].PowerSystemResourceRef].PMax * shoppingCenterConsumption[now.Minute % 24] + rnd.Next(-5, 5);
 
-                                if (valueToSend < 0)
-                                {
-                                    valueToSend = 0;
-                                }
-
-                                activePowers.Add(measurements[i].PowerSystemResourceRef, valueToSend);
-                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
-                                outstation.Load(changeset);
-                            }
-                            else if (type == ConsumerType.FIRM)
-                            {
-                                ChangeSet changeset = new ChangeSet();
-                                double valueToSend = consumers[measurements[i].PowerSystemResourceRef].PMax * firmConsumption[now.Minute % 24] + rnd.Next(-5, 5);
-
-                                if (valueToSend < 0)
-                                {
-                                    valueToSend = 0;
-                                }
-
-                                activePowers.Add(measurements[i].PowerSystemResourceRef, valueToSend);
-                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
-                                outstation.Load(changeset);
-                            }
+                            activePowers.Add(measurements[i].PowerSystemResourceRef, valueToSend);
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            outstation.Load(changeset);
                         }
-                        else if (measurements[i].UnitSymbol == UnitSymbol.Q)
+                        else if (type == ConsumerType.SHOPPING_CENTER)
                         {
-                            if (type == ConsumerType.HOUSEHOLD)
+                            ChangeSet changeset = new ChangeSet();
+                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].PMax * shoppingCenterConsumption[now.Minute % 24] + rnd.Next(-5, 5);
+
+                            if (valueToSend < 0)
                             {
-                                ChangeSet changeset = new ChangeSet();
-                                double valueToSend = consumers[measurements[i].PowerSystemResourceRef].QMax * householdConsumption[now.Minute % 24] + rnd.Next(-5, 5);
-
-                                if (valueToSend < 0)
-                                {
-                                    valueToSend = 0;
-                                }
-
-                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
-                                outstation.Load(changeset);
+                                valueToSend = 0;
                             }
-                            else if (type == ConsumerType.SHOPPING_CENTER)
-                            {
-                                ChangeSet changeset = new ChangeSet();
-                                double valueToSend = consumers[measurements[i].PowerSystemResourceRef].QMax * shoppingCenterConsumption[now.Minute % 24] + rnd.Next(-5, 5);
 
-                                if (valueToSend < 0)
-                                {
-                                    valueToSend = 0;
-                                }
-
-                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
-                                outstation.Load(changeset);
-                            }
-                            else if (type == ConsumerType.FIRM)
-                            {
-                                ChangeSet changeset = new ChangeSet();
-                                double valueToSend = consumers[measurements[i].PowerSystemResourceRef].QMax * firmConsumption[now.Minute % 24] + rnd.Next(-5, 5);
-
-                                if (valueToSend < 0)
-                                {
-                                    valueToSend = 0;
-                                }
-
-                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
-                                outstation.Load(changeset);
-                            }
+                            activePowers.Add(measurements[i].PowerSystemResourceRef, valueToSend);
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            outstation.Load(changeset);
                         }
-                        else if (measurements[i].UnitSymbol == UnitSymbol.V)
+                        else if (type == ConsumerType.FIRM)
                         {
-                            double voltageLoss = 0.0007;
+                            ChangeSet changeset = new ChangeSet();
+                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].PMax * firmConsumption[now.Minute % 24] + rnd.Next(-5, 5);
 
-                            if (type == ConsumerType.HOUSEHOLD)
+                            if (valueToSend < 0)
                             {
-                                ChangeSet changeset = new ChangeSet();
-                                double valueToSend = -1;
-
-                                if ((activePowers[measurements[i].PowerSystemResourceRef] / consumers[measurements[i].PowerSystemResourceRef].PMax) < 0.1)
-                                {
-                                    valueToSend = baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage + baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage * voltageLoss * 100;
-                                }
-                                else
-                                {
-                                    valueToSend = baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage - baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage * voltageLoss * ((activePowers[measurements[i].PowerSystemResourceRef] / consumers[measurements[i].PowerSystemResourceRef].PMax) * 100);
-                                }
-
-                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
-                                outstation.Load(changeset);
+                                valueToSend = 0;
                             }
-                            else if (type == ConsumerType.SHOPPING_CENTER)
+
+                            activePowers.Add(measurements[i].PowerSystemResourceRef, valueToSend);
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            outstation.Load(changeset);
+                        }
+                    }
+                    else if (measurements[i].UnitSymbol == UnitSymbol.Q)
+                    {
+                        if (type == ConsumerType.HOUSEHOLD)
+                        {
+                            ChangeSet changeset = new ChangeSet();
+                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].QMax * householdConsumption[now.Minute % 24] + rnd.Next(-5, 5);
+
+                            if (valueToSend < 0)
                             {
-                                ChangeSet changeset = new ChangeSet();
-                                double valueToSend = -1;
-
-                                if ((activePowers[measurements[i].PowerSystemResourceRef] / consumers[measurements[i].PowerSystemResourceRef].PMax) < 0.1)
-                                {
-                                    valueToSend = baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage + baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage * voltageLoss * 100;
-                                }
-                                else
-                                {
-                                    valueToSend = baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage - baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage * voltageLoss * ((activePowers[measurements[i].PowerSystemResourceRef] / consumers[measurements[i].PowerSystemResourceRef].PMax) * 100);
-                                }
-
-                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
-                                outstation.Load(changeset);
+                                valueToSend = 0;
                             }
-                            else if (type == ConsumerType.FIRM)
+
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            outstation.Load(changeset);
+                        }
+                        else if (type == ConsumerType.SHOPPING_CENTER)
+                        {
+                            ChangeSet changeset = new ChangeSet();
+                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].QMax * shoppingCenterConsumption[now.Minute % 24] + rnd.Next(-5, 5);
+
+                            if (valueToSend < 0)
                             {
-                                ChangeSet changeset = new ChangeSet();
-                                double valueToSend = -1;
-
-                                if ((activePowers[measurements[i].PowerSystemResourceRef] / consumers[measurements[i].PowerSystemResourceRef].PMax) < 0.1)
-                                {
-                                    valueToSend = baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage + baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage * voltageLoss * 100;
-                                }
-                                else
-                                {
-                                    valueToSend = baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage - baseVoltages[consumers[measurements[i].PowerSystemResourceRef].BaseVoltageId].NominalVoltage * voltageLoss * ((activePowers[measurements[i].PowerSystemResourceRef] / consumers[measurements[i].PowerSystemResourceRef].PMax) * 100);
-                                }
-
-                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
-                                outstation.Load(changeset);
+                                valueToSend = 0;
                             }
+
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            outstation.Load(changeset);
+                        }
+                        else if (type == ConsumerType.FIRM)
+                        {
+                            ChangeSet changeset = new ChangeSet();
+                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].QMax * firmConsumption[now.Minute % 24] + rnd.Next(-5, 5);
+
+                            if (valueToSend < 0)
+                            {
+                                valueToSend = 0;
+                            }
+
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            outstation.Load(changeset);
+                        }
+                    }
+                    else if (measurements[i].UnitSymbol == UnitSymbol.V)
+                    {
+                        double voltageLoss = 0.0007;
+                        EnergyConsumerForScada consumer = consumers[measurements[i].PowerSystemResourceRef];
+                        long powerTransId = this.GetPowerTransformerForEnConsumer(consumer.EqContainerID, consumer.BaseVoltageId);
+                        double currentVoltage = this.GetNominalVoltageForPowerTransformer(powerTransId);
+
+                        if (type == ConsumerType.HOUSEHOLD)
+                        {
+                            ChangeSet changeset = new ChangeSet();
+                            double valueToSend = -1;
+
+                            if ((activePowers[measurements[i].PowerSystemResourceRef] / consumer.PMax) < 0.1)
+                            {
+                                valueToSend = currentVoltage + currentVoltage * voltageLoss * 100;
+                            }
+                            else
+                            {
+                                valueToSend = currentVoltage - currentVoltage * voltageLoss * ((activePowers[measurements[i].PowerSystemResourceRef] / consumer.PMax) * 100);
+                            }
+
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            outstation.Load(changeset);
+                        }
+                        else if (type == ConsumerType.SHOPPING_CENTER)
+                        {
+                            ChangeSet changeset = new ChangeSet();
+                            double valueToSend = -1;
+
+                            if ((activePowers[measurements[i].PowerSystemResourceRef] / consumer.PMax) < 0.1)
+                            {
+                                valueToSend = currentVoltage + currentVoltage * voltageLoss * 100;
+                            }
+                            else
+                            {
+                                valueToSend = currentVoltage - currentVoltage * voltageLoss * ((activePowers[measurements[i].PowerSystemResourceRef] / consumer.PMax) * 100);
+                            }
+
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            outstation.Load(changeset);
+                        }
+                        else if (type == ConsumerType.FIRM)
+                        {
+                            ChangeSet changeset = new ChangeSet();
+                            double valueToSend = -1;
+
+                            if ((activePowers[measurements[i].PowerSystemResourceRef] / consumer.PMax) < 0.1)
+                            {
+                                valueToSend = currentVoltage + currentVoltage * voltageLoss * 100;
+                            }
+                            else
+                            {
+                                valueToSend = currentVoltage - currentVoltage * voltageLoss * ((activePowers[measurements[i].PowerSystemResourceRef] / consumer.PMax) * 100);
+                            }
+
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            outstation.Load(changeset);
                         }
                     }
                 }
-
-                Thread.Sleep(timeToSleep);
             }
         }
 
@@ -467,6 +494,22 @@ namespace AMISimulator
                 }
 
                 measurements.Add(numberOfInstalledPoints - 1, m);
+
+                if (m.SignalDirection == Direction.READWRITE)
+                {
+                    PowerTransformerForScada pt = powerTransformers[m.PowerSystemResourceRef];
+                    double nominalVol = baseVoltages[pt.BaseVoltageId].NominalVoltage;
+
+                    if (!voltagesForPowerTransformers.ContainsKey(numberOfInstalledPoints - 1))
+                    {
+                        voltagesForPowerTransformers.Add(numberOfInstalledPoints - 1, nominalVol);
+                    }
+
+                    if (!indexForPowerTransformers.ContainsKey(pt.GlobalId))
+                    {
+                        indexForPowerTransformers.Add(pt.GlobalId, numberOfInstalledPoints - 1);
+                    }
+                }
 
                 return this.numberOfInstalledPoints - 1;
             }
@@ -492,8 +535,10 @@ namespace AMISimulator
                 GidsForSimulator.ForEach(x => { if (consumers.ContainsKey(x)) { consumers.Remove(x); }
                                                 else if (baseVoltages.ContainsKey(x)) { baseVoltages.Remove(x); }
                                                 else if (substations.ContainsKey(x)) { substations.Remove(x); }
-                                                else if (powerTransformers.ContainsKey(x)) { powerTransformers.Remove(x); } });
-                analogIndexesForSimulator.ForEach(x => { if (measurements.ContainsKey(x)) { measurements.Remove(x); } });
+                                                else if (powerTransformers.ContainsKey(x)) { powerTransformers.Remove(x); }
+                                                if (indexForPowerTransformers.ContainsKey(x)) { indexForPowerTransformers.Remove(x); } });
+                analogIndexesForSimulator.ForEach(x => { if (measurements.ContainsKey(x)) { measurements.Remove(x);
+                                                         if (voltagesForPowerTransformers.ContainsKey(x)) { voltagesForPowerTransformers.Remove(x); } } });
             }
         }
 
@@ -537,5 +582,60 @@ namespace AMISimulator
 
             return true;
         }
+
+        private double GetNominalVoltageForPowerTransformer(long powerTransId)
+        {
+            return voltagesForPowerTransformers[indexForPowerTransformers[powerTransId]];
+        }
+
+        private long GetPowerTransformerForEnConsumer(long subId, long baseVolId)
+        {
+            foreach (PowerTransformerForScada pt in powerTransformers.Values)
+            {
+                if (pt.BaseVoltageId == baseVolId && pt.SubstationId == subId)
+                {
+                    return pt.GlobalId;
+                }
+            }
+
+            return -1;
+        }
+
+        #region commands
+
+        public bool SetNewSetPointForPowerTransformer(double delta, ushort index)
+        {
+            double newValue = voltagesForPowerTransformers[index] + delta;
+            long ptId = -1;
+
+            foreach (KeyValuePair<long, int> kvp in indexForPowerTransformers)
+            {
+                if (kvp.Value == index)
+                {
+                    ptId = kvp.Key;
+                }
+            }
+
+            if (ptId == -1 || !powerTransformers.ContainsKey(ptId))
+            {
+                return false;
+            }
+
+            PowerTransformerForScada pt = powerTransformers[ptId];
+            float voltage = baseVoltages[pt.BaseVoltageId].NominalVoltage;
+            float maxVoltage = voltage + voltage * pt.InvalidRangePercent;
+            float minVoltage = voltage - voltage * pt.InvalidRangePercent;
+
+            if (newValue < minVoltage || newValue > maxVoltage)
+            {
+                return false;
+            }
+
+            voltagesForPowerTransformers[index] = newValue;
+
+            return true;
+        }
+
+        #endregion
     }
 }

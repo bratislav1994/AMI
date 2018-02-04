@@ -10,6 +10,12 @@ namespace AMISimulator
     public class CommandHandler : ICommandHandler
     {
         private bool canExecute = false;
+        private AMISimulator simulator;
+
+        public CommandHandler(AMISimulator simulator)
+        {
+            this.simulator = simulator;
+        }
         
         public CommandStatus Operate(AnalogOutputFloat32 command, ushort index, OperateType opType)
         {
@@ -18,13 +24,12 @@ namespace AMISimulator
 
         public CommandStatus Operate(AnalogOutputDouble64 command, ushort index, OperateType opType)
         {
-            throw new NotImplementedException();
+            return this.simulator.SetNewSetPointForPowerTransformer(command.value, index) ? CommandStatus.SUCCESS : CommandStatus.CANCELLED;
         }
 
         public CommandStatus Operate(AnalogOutputInt16 command, ushort index, OperateType opType)
         {
-            Console.WriteLine("22");
-            return CommandStatus.SUCCESS;
+            throw new NotImplementedException();
         }
 
         public CommandStatus Operate(AnalogOutputInt32 command, ushort index, OperateType opType)

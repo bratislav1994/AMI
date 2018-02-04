@@ -1,5 +1,6 @@
 ﻿using AMIClient.Classes;
 using AMIClient.HelperClasses;
+using FTN.Common;
 using FTN.Common.ClassesForAlarmDB;
 using System;
 using System.Collections.Generic;

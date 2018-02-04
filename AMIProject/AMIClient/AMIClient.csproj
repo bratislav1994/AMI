@@ -218,8 +218,6 @@
     <Compile Include="Dock\DockManagerViewModel.cs" />
     <Compile Include="Dock\DockWindowViewModel.cs" />
     <Compile Include="HelperClasses\ClientEnums.cs" />
-    <Compile Include="HelperClasses\EnumDescription.cs" />
-    <Compile Include="HelperClasses\EnumDescriptionTypeConverter.cs" />
     <Compile Include="Model\IModel.cs" />
     <Compile Include="PaginationCommands\AMIDataGrid\FirstPageCommand.cs" />
     <Compile Include="PaginationCommands\AMIDataGrid\LastPageCommand.cs" />

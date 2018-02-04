@@ -51,6 +51,7 @@ namespace AMIClient
         private Dictionary<long, DynamicMeasurement> changesForAmis = new Dictionary<long, DynamicMeasurement>();
         private DateTime timeOfLastUpdate = DateTime.Now;
         private bool isTest = false;
+        private object lockForSmartCache = new object();
 
         public INetworkModelGDAContractDuplexClient GdaQueryProxy
         {
@@ -700,8 +701,11 @@ namespace AMIClient
 
         public void SendMeasurements(List<DynamicMeasurement> measurements)
         {
-            UpdateTables(measurements);
-            this.timeOfLastUpdate = DateTime.Now;
+            lock (lockForSmartCache)
+            {
+                UpdateTables(measurements);
+                this.timeOfLastUpdate = DateTime.Now;
+            }
         }
 
         private void UpdateTables(List<DynamicMeasurement> measurements)
@@ -722,7 +726,7 @@ namespace AMIClient
                         TableItems[positions[dm.PsrRef]].CurrentP = dm.CurrentP != -1 ? dm.CurrentP : TableItems[positions[dm.PsrRef]].CurrentP;
                         TableItems[positions[dm.PsrRef]].CurrentQ = dm.CurrentQ != -1 ? dm.CurrentQ : TableItems[positions[dm.PsrRef]].CurrentQ;
                         TableItems[positions[dm.PsrRef]].CurrentV = dm.CurrentV != -1 ? dm.CurrentV : TableItems[positions[dm.PsrRef]].CurrentV;
-                        App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
+                        App.Current.Dispatcher.Invoke((Action)delegate
                         {
                             TableItems[positions[dm.PsrRef]].Status = dm.IsAlarm ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Green);
                         });
@@ -738,7 +742,10 @@ namespace AMIClient
 
         public void GetLastMeasurements()
         {
-            this.UpdateTables(this.ScProxy.GetLastMeas());
+            lock (lockForSmartCache)
+            {
+                this.UpdateTables(this.ScProxy.GetLastMeas());
+            }
         }
 
         public bool NewChangesAvailable(DateTime lastUpdate)
@@ -789,17 +796,7 @@ namespace AMIClient
         {
             return this.CEQueryProxy.GetMeasurementsForChartView(gids, from, resolution);
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void RaisePropertyChanged(string propName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propName));
-            }
-        }
-
+        
         public void SendAlarm(DeltaForAlarm delta)
         {
             foreach (ActiveAlarm alarm in delta.InsertOperations)
@@ -843,6 +840,16 @@ namespace AMIClient
                         }
                     });
                 }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void RaisePropertyChanged(string propName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propName));
             }
         }
     }

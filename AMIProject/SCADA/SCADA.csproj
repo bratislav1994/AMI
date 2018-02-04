@@ -112,6 +112,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AMIClient\AMIClient.csproj">
+      <Project>{E12A17FC-BCD4-4C3D-ACFA-0E36C624043E}</Project>
+      <Name>AMIClient</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AMISimulator\AMISimulator.csproj">
       <Project>{64221F5E-FB8A-4630-8B94-24A1504EBFF5}</Project>
       <Name>AMISimulator</Name>
@@ -141,7 +145,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="DB\MeasDb.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

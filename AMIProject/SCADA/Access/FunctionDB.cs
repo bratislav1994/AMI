@@ -278,6 +278,17 @@ namespace SCADA.Access
             }
         }
 
+        public PowerTransformerForScada GetPowerTransformerForCommanding(long baseVol, long substation)
+        {
+            lock (lockObj)
+            {
+                using (var access = new AccessDB())
+                {
+                    return access.PowerTransformers.Where(x => x.BaseVoltageId == baseVol && x.SubstationId == substation).FirstOrDefault();
+                }
+            }
+        }
+
         public List<SubstationForScada> ReadSubstations()
         {
             List<SubstationForScada> substations = new List<SubstationForScada>();

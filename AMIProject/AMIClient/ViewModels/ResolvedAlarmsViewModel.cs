@@ -13,6 +13,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using AMIClient.PagginationCommands.ResolvedAlarms;
 using System.Collections.ObjectModel;
+using FTN.Common;
 
 namespace AMIClient.ViewModels
 {
@@ -24,7 +25,7 @@ namespace AMIClient.ViewModels
         private string consumerFilter = string.Empty;
         private string statusFilter = string.Empty;
         private string typeVoltageFilter = string.Empty;
-        private int itemPerPage = 4;
+        private int itemPerPage = 10;
         private int enteredPage = 0;
         public ICommand PreviousCommand { get; private set; }
         public ICommand NextCommand { get; private set; }
@@ -217,6 +218,7 @@ namespace AMIClient.ViewModels
         {
             this.Model.TableItemsForResolvedAlarm.Clear();
             int totalNumberOfAlarms = this.Model.CEQueryProxy.GetTotalPageCount();
+
             if (totalNumberOfAlarms % this.itemPerPage == 0)
             {
                 this.TotalPages = totalNumberOfAlarms / this.itemPerPage;
@@ -228,12 +230,13 @@ namespace AMIClient.ViewModels
            
             if (this.TotalPages != 0)
             {
-                if (this.EnteredPage == 0)
+                if (this.EnteredPage == 0 || this.EnteredPage > this.TotalPages || this.EnteredPage < 0)
                 {
                     this.EnteredPage = 1;
-                    List<ResolvedAlarm> ret = this.Model.CEQueryProxy.GetResolvedAlarms((this.EnteredPage - 1) * this.itemPerPage, this.itemPerPage);
-                    ret.ForEach(x => this.Model.TableItemsForResolvedAlarm.Add(x));
                 }
+
+                List<ResolvedAlarm> ret = this.Model.CEQueryProxy.GetResolvedAlarms((this.EnteredPage - 1) * this.itemPerPage, this.itemPerPage);
+                ret.ForEach(x => this.Model.TableItemsForResolvedAlarm.Add(x));
             }
         }
 
