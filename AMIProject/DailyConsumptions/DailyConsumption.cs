@@ -20,6 +20,19 @@ namespace DailyConsumptions
         private static Dictionary<int, float> householdConsumptionWeekendWinter;
         private static Dictionary<int, float> shoppingCenterConsumptionWeekendWinter;
         private static Dictionary<int, float> firmConsumptionWeekendWinter;
+        private static Dictionary<int, float> householdConsumptionHolidaySummer;
+        private static Dictionary<int, float> shoppingCenterConsumptionHolidaySummer;
+        private static Dictionary<int, float> firmConsumptionHolidaySummer;
+        private static Dictionary<int, float> householdConsumptionHolidayWinter;
+        private static Dictionary<int, float> shoppingCenterConsumptionHolidayWinter;
+        private static Dictionary<int, float> firmConsumptionHolidayWinter;
+        private static Dictionary<int, float> householdConsumptionAtypicalDay;
+        private static Dictionary<int, float> shoppingCenterConsumptionAtypicalDay;
+        private static Dictionary<int, float> firmConsumptionAtypicalDay;
+        private static DateTime christmas = new DateTime(1900, 1, 7);
+        private static DateTime workersDay = new DateTime(1900, 5, 1);
+
+        #region properties
 
         public static Dictionary<int, float> HouseholdConsumptionWorkDaySummer
         {
@@ -117,7 +130,97 @@ namespace DailyConsumptions
             }
         }
 
-        #region summer
+        public static Dictionary<int, float> HouseholdConsumptionHolidaySummer
+        {
+            get
+            {
+                return householdConsumptionHolidaySummer == null ? InitHouseholdHolidaySummer() : householdConsumptionHolidaySummer;
+            }
+        }
+
+        public static Dictionary<int, float> ShoppingCenterConsumptionHolidaySummer
+        {
+            get
+            {
+                return shoppingCenterConsumptionHolidaySummer == null ? InitShoppingCenterHolidaySummer() : shoppingCenterConsumptionHolidaySummer;
+            }
+        }
+
+        public static Dictionary<int, float> FirmConsumptionHolidaySummer
+        {
+            get
+            {
+                return firmConsumptionHolidaySummer == null ? InitFirmHolidaySummer() : firmConsumptionHolidaySummer;
+            }
+        }
+
+        public static Dictionary<int, float> HouseholdConsumptionHolidayWinter
+        {
+            get
+            {
+                return householdConsumptionHolidayWinter == null ? InitFirmHolidayWinter() : householdConsumptionHolidayWinter;
+            }
+        }
+
+        public static Dictionary<int, float> ShoppingCenterConsumptionHolidayWinter
+        {
+            get
+            {
+                return shoppingCenterConsumptionHolidayWinter == null ? InitShoppingCenterHolidayWinter() : shoppingCenterConsumptionHolidayWinter;
+            }
+        }
+
+        public static Dictionary<int, float> FirmConsumptionHolidayWinter
+        {
+            get
+            {
+                return firmConsumptionHolidayWinter == null ? InitFirmHolidayWinter() : firmConsumptionHolidayWinter;
+            }
+        }
+        
+        public static Dictionary<int, float> HouseholdConsumptionAtypicalDay
+        {
+            get
+            {
+                return householdConsumptionAtypicalDay == null ? InitHouseholdAtypicalDay() : householdConsumptionAtypicalDay;
+            }
+        }
+
+        public static Dictionary<int, float> ShoppingCenterConsumptionAtypicalDay
+        {
+            get
+            {
+                return shoppingCenterConsumptionAtypicalDay == null ? InitShoppingCenterAtypicalDay() : shoppingCenterConsumptionAtypicalDay;
+            }
+        }
+
+        public static Dictionary<int, float> FirmConsumptionAtypicalDay
+        {
+            get
+            {
+                return firmConsumptionAtypicalDay == null ? InitFirmAtypicalDay() : firmConsumptionAtypicalDay;
+            }
+        }
+
+        public static DateTime Christmas
+        {
+            get
+            {
+                return christmas;
+            }
+        }
+
+        public static DateTime WorkersDay
+        {
+            get
+            {
+                return workersDay;
+            }
+        }
+
+        #endregion
+
+        #region workday and weekend - summer
 
         private static Dictionary<int, float> InitHouseholdWorkDaySummer()
         {
@@ -343,7 +446,7 @@ namespace DailyConsumptions
 
         #endregion
 
-        #region winter
+        #region workday and weekend - winter
 
         private static Dictionary<int, float> InitHouseholdWorkDayWinter()
         {
@@ -565,6 +668,347 @@ namespace DailyConsumptions
             shoppingCenterConsumptionWeekendWinter[23] = (float)10 / 100;
 
             return shoppingCenterConsumptionWeekendWinter;
+        }
+
+        #endregion
+
+        #region holiday - summer and winter
+
+        private static Dictionary<int, float> InitHouseholdHolidaySummer()
+        {
+            householdConsumptionHolidaySummer = new Dictionary<int, float>();
+
+            for (int i = 0; i < 24; i++)
+            {
+                householdConsumptionHolidaySummer.Add(i, 0);
+            }
+
+            householdConsumptionHolidaySummer[0] = (float)4 / 100;
+            householdConsumptionHolidaySummer[1] = (float)4 / 100;
+            householdConsumptionHolidaySummer[2] = (float)4 / 100;
+            householdConsumptionHolidaySummer[3] = (float)4 / 100;
+            householdConsumptionHolidaySummer[4] = (float)4 / 100;
+            householdConsumptionHolidaySummer[5] = (float)4 / 100;
+            householdConsumptionHolidaySummer[6] = (float)4 / 100;
+            householdConsumptionHolidaySummer[7] = (float)5 / 100;
+            householdConsumptionHolidaySummer[8] = (float)7 / 100;
+            householdConsumptionHolidaySummer[9] = (float)12 / 100;
+            householdConsumptionHolidaySummer[10] = (float)15 / 100;
+            householdConsumptionHolidaySummer[11] = (float)15 / 100;
+            householdConsumptionHolidaySummer[12] = (float)15 / 100;
+            householdConsumptionHolidaySummer[13] = (float)15 / 100;
+            householdConsumptionHolidaySummer[14] = (float)13 / 100;
+            householdConsumptionHolidaySummer[15] = (float)12 / 100;
+            householdConsumptionHolidaySummer[16] = (float)15 / 100;
+            householdConsumptionHolidaySummer[17] = (float)15 / 100;
+            householdConsumptionHolidaySummer[18] = (float)21 / 100;
+            householdConsumptionHolidaySummer[19] = (float)25 / 100;
+            householdConsumptionHolidaySummer[20] = (float)29 / 100;
+            householdConsumptionHolidaySummer[21] = (float)25 / 100;
+            householdConsumptionHolidaySummer[22] = (float)20 / 100;
+            householdConsumptionHolidaySummer[23] = (float)10 / 100;
+
+            return householdConsumptionHolidaySummer;
+        }
+
+        private static Dictionary<int, float> InitFirmHolidaySummer()
+        {
+            firmConsumptionHolidaySummer = new Dictionary<int, float>();
+
+            for (int i = 0; i < 24; i++)
+            {
+                firmConsumptionHolidaySummer.Add(i, 0);
+            }
+
+            firmConsumptionHolidaySummer[0] = (float)11 / 100;
+            firmConsumptionHolidaySummer[1] = (float)11 / 100;
+            firmConsumptionHolidaySummer[2] = (float)11 / 100;
+            firmConsumptionHolidaySummer[3] = (float)11 / 100;
+            firmConsumptionHolidaySummer[4] = (float)11 / 100;
+            firmConsumptionHolidaySummer[5] = (float)11 / 100;
+            firmConsumptionHolidaySummer[6] = (float)11 / 100;
+            firmConsumptionHolidaySummer[7] = (float)11 / 100;
+            firmConsumptionHolidaySummer[8] = (float)11 / 100;
+            firmConsumptionHolidaySummer[9] = (float)11 / 100;
+            firmConsumptionHolidaySummer[10] = (float)11 / 100;
+            firmConsumptionHolidaySummer[11] = (float)11 / 100;
+            firmConsumptionHolidaySummer[12] = (float)11 / 100;
+            firmConsumptionHolidaySummer[13] = (float)11 / 100;
+            firmConsumptionHolidaySummer[14] = (float)11 / 100;
+            firmConsumptionHolidaySummer[15] = (float)11 / 100;
+            firmConsumptionHolidaySummer[16] = (float)11 / 100;
+            firmConsumptionHolidaySummer[17] = (float)11 / 100;
+            firmConsumptionHolidaySummer[18] = (float)11 / 100;
+            firmConsumptionHolidaySummer[19] = (float)11 / 100;
+            firmConsumptionHolidaySummer[20] = (float)11 / 100;
+            firmConsumptionHolidaySummer[21] = (float)11 / 100;
+            firmConsumptionHolidaySummer[22] = (float)11 / 100;
+            firmConsumptionHolidaySummer[23] = (float)11 / 100;
+
+            return firmConsumptionHolidaySummer;
+        }
+
+        private static Dictionary<int, float> InitShoppingCenterHolidaySummer()
+        {
+            shoppingCenterConsumptionHolidaySummer = new Dictionary<int, float>();
+
+            for (int i = 0; i < 24; i++)
+            {
+                shoppingCenterConsumptionHolidaySummer.Add(i, 0);
+            }
+
+            shoppingCenterConsumptionHolidaySummer[0] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[1] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[2] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[3] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[4] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[5] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[6] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[7] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[8] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[9] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[10] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[11] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[12] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[13] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[14] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[15] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[16] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[17] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[18] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[19] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[20] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[21] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[22] = (float)5 / 100;
+            shoppingCenterConsumptionHolidaySummer[23] = (float)5 / 100;
+
+            return shoppingCenterConsumptionWorkDaySummer;
+        }
+
+        private static Dictionary<int, float> InitHouseholdHolidayWinter()
+        {
+            householdConsumptionHolidayWinter = new Dictionary<int, float>();
+
+            for (int i = 0; i < 24; i++)
+            {
+                householdConsumptionHolidayWinter.Add(i, 0);
+            }
+
+            householdConsumptionHolidayWinter[0] = (float)15 / 100;
+            householdConsumptionHolidayWinter[1] = (float)9 / 100;
+            householdConsumptionHolidayWinter[2] = (float)9 / 100;
+            householdConsumptionHolidayWinter[3] = (float)9 / 100;
+            householdConsumptionHolidayWinter[4] = (float)9 / 100;
+            householdConsumptionHolidayWinter[5] = (float)9 / 100;
+            householdConsumptionHolidayWinter[6] = (float)11 / 100;
+            householdConsumptionHolidayWinter[7] = (float)15 / 100;
+            householdConsumptionHolidayWinter[8] = (float)19 / 100;
+            householdConsumptionHolidayWinter[9] = (float)40 / 100;
+            householdConsumptionHolidayWinter[10] = (float)50 / 100;
+            householdConsumptionHolidayWinter[11] = (float)65 / 100;
+            householdConsumptionHolidayWinter[12] = (float)100 / 100;
+            householdConsumptionHolidayWinter[13] = (float)70 / 100;
+            householdConsumptionHolidayWinter[14] = (float)70 / 100;
+            householdConsumptionHolidayWinter[15] = (float)67 / 100;
+            householdConsumptionHolidayWinter[16] = (float)50 / 100;
+            householdConsumptionHolidayWinter[17] = (float)42 / 100;
+            householdConsumptionHolidayWinter[18] = (float)38 / 100;
+            householdConsumptionHolidayWinter[19] = (float)45 / 100;
+            householdConsumptionHolidayWinter[20] = (float)50 / 100;
+            householdConsumptionHolidayWinter[21] = (float)47 / 100;
+            householdConsumptionHolidayWinter[22] = (float)33 / 100;
+            householdConsumptionHolidayWinter[23] = (float)20 / 100;
+
+            return householdConsumptionHolidayWinter;
+        }
+
+        private static Dictionary<int, float> InitFirmHolidayWinter()
+        {
+            firmConsumptionHolidayWinter = new Dictionary<int, float>();
+
+            for (int i = 0; i < 24; i++)
+            {
+                firmConsumptionHolidayWinter.Add(i, 0);
+            }
+
+            firmConsumptionHolidayWinter[0] = (float)11 / 100;
+            firmConsumptionHolidayWinter[1] = (float)11 / 100;
+            firmConsumptionHolidayWinter[2] = (float)11 / 100;
+            firmConsumptionHolidayWinter[3] = (float)11 / 100;
+            firmConsumptionHolidayWinter[4] = (float)11 / 100;
+            firmConsumptionHolidayWinter[5] = (float)11 / 100;
+            firmConsumptionHolidayWinter[6] = (float)11 / 100;
+            firmConsumptionHolidayWinter[7] = (float)11 / 100;
+            firmConsumptionHolidayWinter[8] = (float)11 / 100;
+            firmConsumptionHolidayWinter[9] = (float)11 / 100;
+            firmConsumptionHolidayWinter[10] = (float)11 / 100;
+            firmConsumptionHolidayWinter[11] = (float)11 / 100;
+            firmConsumptionHolidayWinter[12] = (float)11 / 100;
+            firmConsumptionHolidayWinter[13] = (float)11 / 100;
+            firmConsumptionHolidayWinter[14] = (float)11 / 100;
+            firmConsumptionHolidayWinter[15] = (float)11 / 100;
+            firmConsumptionHolidayWinter[16] = (float)11 / 100;
+            firmConsumptionHolidayWinter[17] = (float)11 / 100;
+            firmConsumptionHolidayWinter[18] = (float)11 / 100;
+            firmConsumptionHolidayWinter[19] = (float)11 / 100;
+            firmConsumptionHolidayWinter[20] = (float)11 / 100;
+            firmConsumptionHolidayWinter[21] = (float)11 / 100;
+            firmConsumptionHolidayWinter[22] = (float)11 / 100;
+            firmConsumptionHolidayWinter[23] = (float)11 / 100;
+
+            return firmConsumptionHolidayWinter;
+        }
+
+        private static Dictionary<int, float> InitShoppingCenterHolidayWinter()
+        {
+            shoppingCenterConsumptionHolidayWinter = new Dictionary<int, float>();
+
+            for (int i = 0; i < 24; i++)
+            {
+                shoppingCenterConsumptionHolidayWinter.Add(i, 0);
+            }
+
+            shoppingCenterConsumptionHolidayWinter[0] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[1] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[2] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[3] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[4] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[5] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[6] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[7] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[8] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[9] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[10] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[11] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[12] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[13] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[14] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[15] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[16] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[17] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[18] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[19] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[20] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[21] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[22] = (float)11 / 100;
+            shoppingCenterConsumptionHolidayWinter[23] = (float)11 / 100;
+
+            return shoppingCenterConsumptionHolidayWinter;
+        }
+
+        #endregion
+
+        #region atypical day
+
+        private static Dictionary<int, float> InitHouseholdAtypicalDay()
+        {
+            householdConsumptionAtypicalDay = new Dictionary<int, float>();
+
+            for (int i = 0; i < 24; i++)
+            {
+                householdConsumptionAtypicalDay.Add(i, 0);
+            }
+
+            householdConsumptionAtypicalDay[0] = (float)5 / 100;
+            householdConsumptionAtypicalDay[1] = (float)5 / 100;
+            householdConsumptionAtypicalDay[2] = (float)5 / 100;
+            householdConsumptionAtypicalDay[3] = (float)5 / 100;
+            householdConsumptionAtypicalDay[4] = (float)5 / 100;
+            householdConsumptionAtypicalDay[5] = (float)7 / 100;
+            householdConsumptionAtypicalDay[6] = (float)14 / 100;
+            householdConsumptionAtypicalDay[7] = (float)20 / 100;
+            householdConsumptionAtypicalDay[8] = (float)30 / 100;
+            householdConsumptionAtypicalDay[9] = (float)38 / 100;
+            householdConsumptionAtypicalDay[10] = (float)20 / 100;
+            householdConsumptionAtypicalDay[11] = (float)30 / 100;
+            householdConsumptionAtypicalDay[12] = (float)40 / 100;
+            householdConsumptionAtypicalDay[13] = (float)37 / 100;
+            householdConsumptionAtypicalDay[14] = (float)37 / 100;
+            householdConsumptionAtypicalDay[15] = (float)38 / 100;
+            householdConsumptionAtypicalDay[16] = (float)40 / 100;
+            householdConsumptionAtypicalDay[17] = (float)80 / 100;
+            householdConsumptionAtypicalDay[18] = (float)100 / 100;
+            householdConsumptionAtypicalDay[19] = (float)70 / 100;
+            householdConsumptionAtypicalDay[20] = (float)50 / 100;
+            householdConsumptionAtypicalDay[21] = (float)52 / 100;
+            householdConsumptionAtypicalDay[22] = (float)33 / 100;
+            householdConsumptionAtypicalDay[23] = (float)10 / 100;
+
+            return householdConsumptionAtypicalDay;
+        }
+
+        private static Dictionary<int, float> InitFirmAtypicalDay()
+        {
+            firmConsumptionAtypicalDay = new Dictionary<int, float>();
+
+            for (int i = 0; i < 24; i++)
+            {
+                firmConsumptionAtypicalDay.Add(i, 0);
+            }
+
+            firmConsumptionAtypicalDay[0] = (float)11 / 100;
+            firmConsumptionAtypicalDay[1] = (float)11 / 100;
+            firmConsumptionAtypicalDay[2] = (float)11 / 100;
+            firmConsumptionAtypicalDay[3] = (float)11 / 100;
+            firmConsumptionAtypicalDay[4] = (float)11 / 100;
+            firmConsumptionAtypicalDay[5] = (float)11 / 100;
+            firmConsumptionAtypicalDay[6] = (float)15 / 100;
+            firmConsumptionAtypicalDay[7] = (float)30 / 100;
+            firmConsumptionAtypicalDay[8] = (float)75 / 100;
+            firmConsumptionAtypicalDay[9] = (float)100 / 100;
+            firmConsumptionAtypicalDay[10] = (float)80 / 100;
+            firmConsumptionAtypicalDay[11] = (float)85 / 100;
+            firmConsumptionAtypicalDay[12] = (float)90 / 100;
+            firmConsumptionAtypicalDay[13] = (float)90 / 100;
+            firmConsumptionAtypicalDay[14] = (float)90 / 100;
+            firmConsumptionAtypicalDay[15] = (float)90 / 100;
+            firmConsumptionAtypicalDay[16] = (float)85 / 100;
+            firmConsumptionAtypicalDay[17] = (float)65 / 100;
+            firmConsumptionAtypicalDay[18] = (float)55 / 100;
+            firmConsumptionAtypicalDay[19] = (float)40 / 100;
+            firmConsumptionAtypicalDay[20] = (float)11 / 100;
+            firmConsumptionAtypicalDay[21] = (float)11 / 100;
+            firmConsumptionAtypicalDay[22] = (float)11 / 100;
+            firmConsumptionAtypicalDay[23] = (float)11 / 100;
+
+            return firmConsumptionAtypicalDay;
+        }
+
+        private static Dictionary<int, float> InitShoppingCenterAtypicalDay()
+        {
+            shoppingCenterConsumptionAtypicalDay = new Dictionary<int, float>();
+
+            for (int i = 0; i < 24; i++)
+            {
+                shoppingCenterConsumptionAtypicalDay.Add(i, 0);
+            }
+
+            shoppingCenterConsumptionAtypicalDay[0] = (float)11 / 100;
+            shoppingCenterConsumptionAtypicalDay[1] = (float)11 / 100;
+            shoppingCenterConsumptionAtypicalDay[2] = (float)11 / 100;
+            shoppingCenterConsumptionAtypicalDay[3] = (float)11 / 100;
+            shoppingCenterConsumptionAtypicalDay[4] = (float)11 / 100;
+            shoppingCenterConsumptionAtypicalDay[5] = (float)11 / 100;
+            shoppingCenterConsumptionAtypicalDay[6] = (float)11 / 100;
+            shoppingCenterConsumptionAtypicalDay[7] = (float)45 / 100;
+            shoppingCenterConsumptionAtypicalDay[8] = (float)75 / 100;
+            shoppingCenterConsumptionAtypicalDay[9] = (float)100 / 100;
+            shoppingCenterConsumptionAtypicalDay[10] = (float)80 / 100;
+            shoppingCenterConsumptionAtypicalDay[11] = (float)80 / 100;
+            shoppingCenterConsumptionAtypicalDay[12] = (float)90 / 100;
+            shoppingCenterConsumptionAtypicalDay[13] = (float)90 / 100;
+            shoppingCenterConsumptionAtypicalDay[14] = (float)90 / 100;
+            shoppingCenterConsumptionAtypicalDay[15] = (float)90 / 100;
+            shoppingCenterConsumptionAtypicalDay[16] = (float)90 / 100;
+            shoppingCenterConsumptionAtypicalDay[17] = (float)85 / 100;
+            shoppingCenterConsumptionAtypicalDay[18] = (float)85 / 100;
+            shoppingCenterConsumptionAtypicalDay[19] = (float)80 / 100;
+            shoppingCenterConsumptionAtypicalDay[20] = (float)80 / 100;
+            shoppingCenterConsumptionAtypicalDay[21] = (float)80 / 100;
+            shoppingCenterConsumptionAtypicalDay[22] = (float)55 / 100;
+            shoppingCenterConsumptionAtypicalDay[23] = (float)10 / 100;
+
+            return shoppingCenterConsumptionAtypicalDay;
         }
 
         #endregion
