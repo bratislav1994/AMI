@@ -21,6 +21,8 @@ namespace FTN.Services.NetworkModelService.DataModel
         private DateTime timeStamp;
         private bool isAlarm;
         private TypeVoltage typeVoltage;
+        private ConsumerType type;
+        private Season season;
 
         public DynamicMeasurement()
         {
@@ -157,6 +159,34 @@ namespace FTN.Services.NetworkModelService.DataModel
             set
             {
                 typeVoltage = value;
+            }
+        }
+
+        [DataMember]
+        public ConsumerType Type
+        {
+            get
+            {
+                return type;
+            }
+
+            set
+            {
+                type = value;
+            }
+        }
+
+        [DataMember]
+        public Season Season
+        {
+            get
+            {
+                return season;
+            }
+
+            set
+            {
+                season = value;
             }
         }
     }

@@ -53,11 +53,11 @@ namespace CalculationEngine
             //timeSeriesDataBaseAdapter.DoUndone();
             //timeSeriesDataBaseAdapter.StartThreads();
             //
-            Filler f = new Filler();
-            f.DbAdapter = dataBaseAdapter;
-            f.TimeSeriesDbAdapter = timeSeriesDataBaseAdapter;
-            f.Fill();
-            this.DoUndoneFill();
+            //Filler f = new Filler();
+            //f.DbAdapter = dataBaseAdapter;
+            //f.TimeSeriesDbAdapter = timeSeriesDataBaseAdapter;
+            //f.Fill();
+            //this.DoUndoneFill();
             //
             geoRegions = new Dictionary<long, GeographicalRegionDb>();
             subGeoRegions = new Dictionary<long, SubGeographicalRegionDb>();

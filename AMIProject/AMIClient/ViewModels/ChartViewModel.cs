@@ -237,7 +237,8 @@ namespace AMIClient.ViewModels
 
         private void ShowCommandAction()
         {
-            DateTime from = DateTime.Parse(FromPeriod);
+            var inputCulture = CultureInfo.CreateSpecificCulture("us-en");
+            DateTime from = DateTime.Parse(FromPeriod, inputCulture);
 
             switch (this.Resolution)
             {

@@ -45,4 +45,10 @@ namespace FTN.Common
         OVERVOLTAGE,
         INBOUNDS
     }
+
+    public enum Season : int
+    {
+        SUMMER = 0,
+        WINTER
+    }
 }
