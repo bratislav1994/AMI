@@ -53,11 +53,11 @@ namespace CalculationEngine
             //timeSeriesDataBaseAdapter.DoUndone();
             //timeSeriesDataBaseAdapter.StartThreads();
             //
-            //Filler f = new Filler();
-            //f.DbAdapter = dataBaseAdapter;
-            //f.TimeSeriesDbAdapter = timeSeriesDataBaseAdapter;
-            //f.Fill();
-            //this.DoUndoneFill();
+            Filler f = new Filler();
+            f.DbAdapter = dataBaseAdapter;
+            f.TimeSeriesDbAdapter = timeSeriesDataBaseAdapter;
+            f.Fill();
+            this.DoUndoneFill();
             //
             geoRegions = new Dictionary<long, GeographicalRegionDb>();
             subGeoRegions = new Dictionary<long, SubGeographicalRegionDb>();
@@ -152,9 +152,9 @@ namespace CalculationEngine
                         new EndpointAddress("net.tcp://localhost:10012/Scada/CE"));
                     proxyScada = factory.CreateChannel();
                     firstTimeScada = false;
+                    Logger.LogMessageToFile(string.Format("CE.CalculationEngine.ProxyScada; line: {0}; Channel CE-Scada is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 }
 
-                Logger.LogMessageToFile(string.Format("CE.CalculationEngine.ProxyScada; line: {0}; Channel CE-Scada is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return proxyScada;
             }
 

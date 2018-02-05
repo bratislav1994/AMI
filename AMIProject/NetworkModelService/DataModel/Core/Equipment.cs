@@ -36,6 +36,7 @@ namespace TC57CIM.IEC61970.Core {
         {
         }
 
+        [DataMember]
         public long EqContainer
         {
             get { return eqContainer; }

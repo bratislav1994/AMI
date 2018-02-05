@@ -114,6 +114,10 @@
       <Project>{892cbe15-9ed7-4540-81fa-0eaaba592138}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DailyConsumptions\DailyConsumptions.csproj">
+      <Project>{edfc69fa-0da4-43b5-9b00-4392396872de}</Project>
+      <Name>DailyConsumptions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetworkModelService\DataModel\DataModel.csproj">
       <Project>{ADE96497-7C11-40B6-AE82-57F956C9F104}</Project>
       <Name>DataModel</Name>

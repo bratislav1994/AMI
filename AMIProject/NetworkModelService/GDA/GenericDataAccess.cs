@@ -361,9 +361,14 @@ namespace FTN.Services.NetworkModelService
             resourceItMap.Clear();
         }
 
-        public Tuple<Dictionary<long, IdentifiedObject>, List<IdentifiedObject>> GetConsumers()
+        public List<IdentifiedObject> GetConsumers()
         {
             return nm.GetConsumers();
+        }
+
+        public Dictionary<long, IdentifiedObject> GetVoltages()
+        {
+            return nm.GetVoltages();
         }
     }
 }

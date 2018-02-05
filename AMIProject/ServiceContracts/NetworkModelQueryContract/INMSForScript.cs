@@ -14,6 +14,9 @@ namespace FTN.ServiceContracts
     public interface INMSForScript
     {
         [OperationContract]
-        Tuple<Dictionary<long, IdentifiedObject>, List<IdentifiedObject>> GetConsumers();
+        List<IdentifiedObject> GetConsumers();
+
+        [OperationContract]
+        Dictionary<long, IdentifiedObject> GetVoltages();
     }
 }

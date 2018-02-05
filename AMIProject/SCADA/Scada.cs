@@ -929,6 +929,7 @@ namespace SCADA
         {
             Dictionary<int, Dictionary<long, TypeVoltage>> rtuAddresses = new Dictionary<int, Dictionary<long, TypeVoltage>>();
             string retVal = "Result for commands:\n";
+            Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; Scada receive command from CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
 
             foreach (KeyValuePair<int, List<DataForScada>> kvp in allDataByRtu)
             {
@@ -975,6 +976,8 @@ namespace SCADA
                 }
             }
 
+            Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; First big foreach passed", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+
             foreach (KeyValuePair<int, Dictionary<long, TypeVoltage>> kvp in rtuAddresses)
             {
                 foreach (KeyValuePair<long, TypeVoltage> kvp2 in kvp.Value)
@@ -1017,6 +1020,8 @@ namespace SCADA
                     }
                 }
             }
+
+            Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; Second big foreach passed", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
 
             return retVal;
         }

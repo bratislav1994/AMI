@@ -925,14 +925,20 @@ namespace FTN.Services.NetworkModelService
             UpdateThreadClient.Abort();
         }
 
-        public Tuple<Dictionary<long, IdentifiedObject>, List<IdentifiedObject>> GetConsumers()
+        public List<IdentifiedObject> GetConsumers()
         {
-            Dictionary<long, IdentifiedObject> retValEC = new Dictionary<long, IdentifiedObject>();
-            retValEC = networkDataModel[DMSType.ENERGYCONS].Entities;
-            List<IdentifiedObject> retValM = new List<IdentifiedObject>();
-            retValM = networkDataModel[DMSType.ANALOG].Entities.Values.ToList();
+            List<IdentifiedObject> retValEC = new List<IdentifiedObject>();
+            retValEC = networkDataModel[DMSType.ENERGYCONS].Entities.Values.ToList();
 
-            return new Tuple<Dictionary<long, IdentifiedObject>, List<IdentifiedObject>>(retValEC, retValM);
+            return retValEC;
+        }
+
+        public Dictionary<long, IdentifiedObject> GetVoltages()
+        {
+            Dictionary<long, IdentifiedObject> retValBV = new Dictionary<long, IdentifiedObject>();
+            retValBV = networkDataModel[DMSType.BASEVOLTAGE].Entities;
+
+            return retValBV;
         }
 
         #region test methods

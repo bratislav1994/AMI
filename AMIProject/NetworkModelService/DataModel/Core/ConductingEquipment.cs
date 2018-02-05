@@ -37,6 +37,7 @@ namespace TC57CIM.IEC61970.Core {
         {
         }
 
+        [DataMember]
         public long BaseVoltage
         {
             get { return baseVoltage; }

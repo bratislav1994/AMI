@@ -31,6 +31,7 @@ namespace TC57CIM.IEC61970.Core
     [Serializable]
     [KnownType(typeof(Measurement))]
     [KnownType(typeof(PowerSystemResource))]
+    [KnownType(typeof(BaseVoltage))]
     public class IdentifiedObject
     {
 

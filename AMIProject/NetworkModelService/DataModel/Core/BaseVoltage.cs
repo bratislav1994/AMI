@@ -10,11 +10,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using FTN.Common;
+using System.Runtime.Serialization;
 
 namespace TC57CIM.IEC61970.Core {
     /// <summary>
     /// Defines a system base voltage which is referenced.
     /// </summary>
+    [DataContract]
     public class BaseVoltage : IdentifiedObject {
 
         private float nominalVoltage;
@@ -29,6 +31,7 @@ namespace TC57CIM.IEC61970.Core {
         {
         }
 
+        [DataMember]
         public float NominalVoltage
         {
             get
