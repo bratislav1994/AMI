@@ -214,7 +214,7 @@ namespace AMISimulator
 
         private void Simulation(OutstationStackConfig config, IOutstation outstation)
         {
-            for (int i = 0; i < numberOfInstalledPoints; i++)
+            /*for (int i = 0; i < numberOfInstalledPoints; i++)
             {
                 if (measurements[i].SignalDirection == Direction.READ)
                 {
@@ -368,7 +368,7 @@ namespace AMISimulator
                         }
                     }
                 }
-            }
+            }*/
         }
 
         public int AddMeasurement(Measurement m)

@@ -31,6 +31,10 @@ namespace DailyConsumptions
         private static Dictionary<int, float> firmConsumptionAtypicalDay;
         private static DateTime christmas = new DateTime(1900, 1, 7);
         private static DateTime workersDay = new DateTime(1900, 5, 1);
+        private static DateTime summerBeggining = new DateTime(1900, 3, 21);
+        private static DateTime summerEnding = new DateTime(1900, 9, 21);
+        private static DateTime winterBeggining = new DateTime(1900, 9, 22);
+        private static DateTime winterEnding = new DateTime(1900, 3, 20);
 
         #region properties
 
@@ -215,6 +219,58 @@ namespace DailyConsumptions
             get
             {
                 return workersDay;
+            }
+        }
+
+        public static DateTime SummerBeggining
+        {
+            get
+            {
+                return summerBeggining;
+            }
+
+            set
+            {
+                summerBeggining = value;
+            }
+        }
+
+        public static DateTime SummerEnding
+        {
+            get
+            {
+                return summerEnding;
+            }
+
+            set
+            {
+                summerEnding = value;
+            }
+        }
+
+        public static DateTime WinterBeggining
+        {
+            get
+            {
+                return winterBeggining;
+            }
+
+            set
+            {
+                winterBeggining = value;
+            }
+        }
+
+        public static DateTime WinterEnding
+        {
+            get
+            {
+                return winterEnding;
+            }
+
+            set
+            {
+                winterEnding = value;
             }
         }
 
