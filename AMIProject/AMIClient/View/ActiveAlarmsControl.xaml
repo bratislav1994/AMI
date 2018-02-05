@@ -54,44 +54,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.HeaderTemplate>
                 </DataGridTemplateColumn>
-                <!--<DataGridTextColumn MinWidth="100" Width="100" Header="Consumer" Binding="{Binding Consumer}"/>-->
-                <DataGridTemplateColumn Header="Status" CanUserSort="True" 
-        SortMemberPath="Status" MinWidth="100" Width="100">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Status}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <!--NAME COLUMN-->
-                    <DataGridTemplateColumn.HeaderTemplate>
-                        <DataTemplate>
-                            <Grid IsHitTestVisible="True">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition MinWidth="70" Width="70"/>
-                                    <ColumnDefinition MinWidth="30" Width="30"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="{TemplateBinding Content}"/>
-                                <!--FILTER EXPANDER-->
-                                <Expander Grid.Column="1" IsHitTestVisible="True" 
-                VerticalAlignment="Top" ToolTip="Filter">
-                                    <Border IsHitTestVisible="True" BorderThickness="1" 
-                  Margin="-80 0 0 0" >
-                                        <StackPanel Margin="0 4 0 0">
-                                            <TextBox Width="90"
-                                                
-                        Text="{Binding DataContext.StatusFilter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay,
-                        RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                        
-                        ToolTip="Enter filter term" Height="18" FontSize="9" 
-                        BorderThickness="1" />
-                                        </StackPanel>
-                                    </Border>
-                                </Expander>
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.HeaderTemplate>
-                </DataGridTemplateColumn>
-                <!--<DataGridTextColumn MinWidth="100" Width="100" Header="Status" Binding="{Binding Status}"/>-->
+                
                 <DataGridTextColumn MinWidth="100" Width="100" Header="Voltage" Binding="{Binding Voltage}"/>
                 <DataGridTextColumn MinWidth="100" Width="100" Header="From" Binding="{Binding FromPeriod}"/>
 
@@ -131,7 +94,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.HeaderTemplate>
                 </DataGridTemplateColumn>
-                <!--<DataGridTextColumn MinWidth="100" Width="*" Header="Type" Binding="{Binding TypeVoltage}"/>-->
+                
             </DataGrid.Columns>
 
         </DataGrid>

@@ -23,7 +23,6 @@ namespace AMIClient.ViewModels
         private Model model;
         private Dictionary<string, string> columnFilters;
         private string consumerFilter = string.Empty;
-        private string statusFilter = string.Empty;
         private string typeVoltageFilter = string.Empty;
         private int itemPerPage = 10;
         private int enteredPage = 0;
@@ -45,7 +44,6 @@ namespace AMIClient.ViewModels
             this.Model = model;
             columnFilters = new Dictionary<string, string>();
             columnFilters[DataGridAlarmHeader.Consumer.ToString()] = string.Empty;
-            columnFilters[DataGridAlarmHeader.Status.ToString()] = string.Empty;
             columnFilters[DataGridAlarmHeader.TypeVoltage.ToString()] = string.Empty;
             this.Model.ViewTableItemsForResolvedAlarm = new CollectionViewSource { Source = this.Model.TableItemsForResolvedAlarm }.View;
             this.Model.ViewTableItemsForResolvedAlarm = CollectionViewSource.GetDefaultView(this.Model.TableItemsForResolvedAlarm);
@@ -89,22 +87,6 @@ namespace AMIClient.ViewModels
                 consumerFilter = value;
                 this.RaisePropertyChanged("ConsumerFilter");
                 columnFilters[DataGridAlarmHeader.Consumer.ToString()] = this.consumerFilter;
-                this.OnFilterApply();
-            }
-        }
-
-        public string StatusFilter
-        {
-            get
-            {
-                return statusFilter;
-            }
-
-            set
-            {
-                statusFilter = value;
-                this.RaisePropertyChanged("StatusFilter");
-                columnFilters[DataGridAlarmHeader.Status.ToString()] = this.statusFilter;
                 this.OnFilterApply();
             }
         }
@@ -258,12 +240,7 @@ namespace AMIClient.ViewModels
 
                         if (filter.Key.Equals(DataGridAlarmHeader.Consumer.ToString()))
                         {
-                            containsFilter = ((ResolvedAlarm)item).Id.ToString().IndexOf(ConsumerFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
-                        }
-                        else if (filter.Key.Equals(DataGridAlarmHeader.Status.ToString()))
-                        {
-                            FTN.Common.Status status = ((ResolvedAlarm)item).Status;
-                            containsFilter = EnumDescription.GetEnumDescription(status).IndexOf(StatusFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
+                            containsFilter = ((ResolvedAlarm)item).Consumer.IndexOf(ConsumerFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
                         }
                         else if (filter.Key.Equals(DataGridAlarmHeader.TypeVoltage.ToString()))
                         {

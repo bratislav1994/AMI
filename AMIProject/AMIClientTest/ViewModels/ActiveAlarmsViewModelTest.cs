@@ -50,20 +50,9 @@ namespace AMIClientTest.ViewModels
         }
 
         [Test]
-        public void StatusFilterTest()
-        {
-            activeAlarm.ConsumerFilter = string.Empty;
-            string status = "ACTIVE";
-            activeAlarm.StatusFilter = status;
-
-            Assert.AreEqual(status, activeAlarm.StatusFilter);
-        }
-
-        [Test]
         public void TypeVoltageFilterTest()
         {
             activeAlarm.ConsumerFilter = string.Empty;
-            activeAlarm.StatusFilter = string.Empty;
             string type = "UNDERVOLTAGE";
             activeAlarm.TypeVoltageFilter = type;
 

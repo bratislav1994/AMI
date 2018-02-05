@@ -158,7 +158,7 @@
                     </TextBox.InputBindings>
                 </TextBox>
                 <TextBox Background="Transparent" BorderThickness="0" IsReadOnly="True" BorderBrush="Transparent" Text="of"/>
-                <TextBox Background="Transparent" BorderThickness="0" IsReadOnly="True" BorderBrush="Transparent" MinWidth="30" Width="auto" Text="{Binding TotalPages}"/>
+                <TextBox Background="Transparent" BorderThickness="0" IsReadOnly="True" BorderBrush="Transparent" MinWidth="30" Width="auto" Text="{Binding TotalPages, Mode=OneWay}"/>
                 <Button Content="Next" Width="50" Command="{Binding NextCommand}"/>
                 <Label Width="5" Background="Transparent" />
                 <Button Content="Last" Width="50" Command="{Binding LastCommand}"/>
