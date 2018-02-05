@@ -14,7 +14,7 @@ namespace FTN.Common.ClassesForAlarmDB
     {
         private int idDB;
         private long id;
-        private Status status;
+        private string consumer;
         private DateTime fromPeriod;
         private DateTime toPeriod;
         private TypeVoltage typeVoltage;
@@ -50,20 +50,6 @@ namespace FTN.Common.ClassesForAlarmDB
             set
             {
                 id = value;
-            }
-        }
-
-        [DataMember]
-        public Status Status
-        {
-            get
-            {
-                return status;
-            }
-
-            set
-            {
-                status = value;
             }
         }
 
@@ -106,6 +92,20 @@ namespace FTN.Common.ClassesForAlarmDB
             set
             {
                 typeVoltage = value;
+            }
+        }
+
+        [DataMember]
+        public string Consumer
+        {
+            get
+            {
+                return consumer;
+            }
+
+            set
+            {
+                consumer = value;
             }
         }
     }

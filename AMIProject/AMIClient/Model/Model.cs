@@ -806,8 +806,8 @@ namespace AMIClient
                     TableItemsForActiveAlarm.Add(new ActiveAlarm()
                     {
                         Id = alarm.Id,
+                        Consumer = alarm.Consumer,
                         FromPeriod = alarm.FromPeriod,
-                        Status = alarm.Status,
                         Voltage = alarm.Voltage,
                         TypeVoltage = alarm.TypeVoltage
                     });

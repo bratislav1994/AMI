@@ -437,9 +437,10 @@ namespace CalculationEngine
                         ResolvedAlarm alarmR = new ResolvedAlarm();
                         alarmR.FromPeriod = alarmA.FromPeriod;
                         alarmR.Id = alarmA.Id;
-                        alarmR.Status = Status.RESOLVED;
+                        alarmR.Consumer = alarmA.Consumer;
                         alarmR.ToPeriod = dm.TimeStamp;
                         alarmR.TypeVoltage = alarmA.TypeVoltage;
+
                         dataBaseAdapter.AddResolvedAlarm(alarmR);
                         dataBaseAdapter.DeleteActiveAlarm(alarmA);
                         alarmActiveDB.Remove(dm.PsrRef);
@@ -454,10 +455,13 @@ namespace CalculationEngine
                     {
                         ActiveAlarm a = new ActiveAlarm();
                         a.FromPeriod = dm.TimeStamp;
-                        a.Status = Status.ACTIVE;
                         a.Id = dm.PsrRef;
                         a.Voltage = dm.CurrentV;
                         a.TypeVoltage = dm.TypeVoltage;
+                        if (amis.ContainsKey(dm.PsrRef))
+                        {
+                            a.Consumer = amis[dm.PsrRef].Name;
+                        }
 
                         alarmActiveDB[dm.PsrRef] = a;
                         dataBaseAdapter.AddActiveAlarm(a);

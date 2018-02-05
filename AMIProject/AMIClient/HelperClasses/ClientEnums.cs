@@ -33,10 +33,4 @@ namespace AMIClient.HelperClasses
         Status,
         TypeVoltage
     }
-
-    //public enum Status : int
-    //{
-    //    ACTIVE = 0,
-    //    RESOLVED
-    //}
 }
