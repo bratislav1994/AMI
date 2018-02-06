@@ -44,7 +44,7 @@ namespace SCADA
         private Dictionary<long, DataForScada> copyAllData;
         private Dictionary<int, List<DataForScada>> allDataByRtu;
         private Dictionary<int, List<DataForScada>> copyAllDataByRtu;
-        private Dictionary<long, DynamicMeasurement> resourcesToSend;
+        private Dictionary<int, Dictionary<long, DynamicMeasurement>> resourcesToSend;
         private Dictionary<int, object> lockObjects = new Dictionary<int, object>();
         private Thread sendingThread;
         private ICalculationEngine proxyCE;
@@ -134,7 +134,7 @@ namespace SCADA
             copyAllDataByRtu = new Dictionary<int, List<DataForScada>>();
             eqGidsForSimulator = new Dictionary<int, List<long>>();
             analogIndexesForSimulator = new Dictionary<int, List<int>>();
-            resourcesToSend = new Dictionary<long, DynamicMeasurement>();
+            resourcesToSend = new Dictionary<int, Dictionary<long, DynamicMeasurement>>();
             simulators = new Dictionary<int, ISimulator>();
             masters = new Dictionary<int, IMaster>();
             channels = new Dictionary<int, IChannel>();
@@ -650,14 +650,17 @@ namespace SCADA
                         this.handlers[kvp.Key].UpdateData(kvp.Value);
                     }
                 }
-            }
-            
-            foreach (KeyValuePair<int, List<MeasurementForScada>> kvp in this.copyMeasurements)
-            {
-                this.measurements.Add(kvp.Key, kvp.Value);
-                f.AddMeasurement(kvp.Value);
-            }
 
+                foreach (KeyValuePair<int, List<MeasurementForScada>> kvp in this.copyMeasurements)
+                {
+                    lock (lockObjects[kvp.Key])
+                    {
+                        this.measurements.Add(kvp.Key, kvp.Value);
+                        this.handlers[kvp.Key].UpdateMeasurements(kvp.Value);
+                    }
+                    f.AddMeasurement(kvp.Value);
+                }
+            }
             foreach (KeyValuePair<int, RTUAddress> kvp in addressPool)
             {
                 kvp.Value.Cnt = 0;
@@ -864,7 +867,12 @@ namespace SCADA
                     this.lockObjects.Add(ret, new object());
                 }
 
-                var handler = new SOEHandler(measurements[ret], resourcesToSend, this.lockObjects[ret], allDataByRtu[ret]);
+                if(!resourcesToSend.ContainsKey(ret))
+                {
+                    resourcesToSend.Add(ret, new Dictionary<long, DynamicMeasurement>());
+                }
+
+                var handler = new SOEHandler(measurements[ret], resourcesToSend[ret], this.lockObjects[ret], allDataByRtu[ret]);
                 var mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
                 var channel = mgr.AddTCPClient("outstation" + ret, LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", (ushort)(20000 + ret), ChannelListener.Print());
                 var config = new MasterStackConfig();
@@ -1010,6 +1018,9 @@ namespace SCADA
                             delta = -0.01 * delta;
                         }
 
+                        Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; before command", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+
+
                         var task = masters[kvp.Key].DirectOperate(this.GetCommandHeader(delta, index), TaskConfig.Default);
                         
                         task.ContinueWith((result) =>
@@ -1018,6 +1029,9 @@ namespace SCADA
 
                         retVal += task.Result.TaskSummary;
                     }
+
+                    Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; Index = {1}", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber(), index));
+
                 }
             }
 

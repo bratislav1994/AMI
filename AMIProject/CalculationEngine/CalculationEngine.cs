@@ -317,12 +317,14 @@ namespace CalculationEngine
 
             foreach (KeyValuePair<long, SubstationDb> ss in substations)
             {
+                bool toBeAdded = false;
                 DynamicMeasurement m = new DynamicMeasurement(ss.Key);
 
                 foreach (KeyValuePair<long, DynamicMeasurement> meas in measurements)
                 {
                     if (amis[meas.Key].EqContainerID == m.PsrRef)
                     {
+                        toBeAdded = true;
                         m.CurrentP += meas.Value.CurrentP;
                         m.CurrentQ += meas.Value.CurrentQ;
                         m.CurrentV += meas.Value.CurrentV;
@@ -335,9 +337,16 @@ namespace CalculationEngine
                     }
                 }
 
-                m.CurrentV /= cntForVoltage;
+                if (m.CurrentV > 0)
+                {
+                    m.CurrentV /= cntForVoltage;
+                }
                 cntForVoltage = 0;
-                addSubstations.Add(m.PsrRef, m);
+
+                if (toBeAdded)
+                {
+                    addSubstations.Add(m.PsrRef, m);
+                }
             }
 
             foreach (KeyValuePair<long, DynamicMeasurement> kvp in addSubstations)
@@ -349,12 +358,14 @@ namespace CalculationEngine
 
             foreach (KeyValuePair<long, SubGeographicalRegionDb> sgr in subGeoRegions)
             {
+                bool toBeAdded = false;
                 DynamicMeasurement m = new DynamicMeasurement(sgr.Key);
 
                 foreach (KeyValuePair<long, DynamicMeasurement> meas in addSubstations)
                 {
                     if (substations[meas.Key].SubGeoRegionID == m.PsrRef)
                     {
+                        toBeAdded = true;
                         m.CurrentP += meas.Value.CurrentP;
                         m.CurrentQ += meas.Value.CurrentQ;
                         m.CurrentV += meas.Value.CurrentV;
@@ -367,20 +378,28 @@ namespace CalculationEngine
                     }
                 }
 
-                m.CurrentV /= cntForVoltage;
+                if (m.CurrentV > 0)
+                {
+                    m.CurrentV /= cntForVoltage;
+                }
                 cntForVoltage = 0;
-                addSubGeoRegions.Add(m.PsrRef, m);
-                measurements.Add(m.PsrRef, m);
+                if (toBeAdded)
+                {
+                    addSubGeoRegions.Add(m.PsrRef, m);
+                    measurements.Add(m.PsrRef, m);
+                }
             }
 
             foreach (KeyValuePair<long, GeographicalRegionDb> gr in geoRegions)
             {
+                bool toBeAdded = false;
                 DynamicMeasurement m = new DynamicMeasurement(gr.Key);
 
                 foreach (KeyValuePair<long, DynamicMeasurement> meas in addSubGeoRegions)
                 {
                     if (subGeoRegions[meas.Key].GeoRegionID == m.PsrRef)
                     {
+                        toBeAdded = true;
                         m.CurrentP += meas.Value.CurrentP;
                         m.CurrentQ += meas.Value.CurrentQ;
                         m.CurrentV += meas.Value.CurrentV;
@@ -393,9 +412,17 @@ namespace CalculationEngine
                     }
                 }
 
-                m.CurrentV /= cntForVoltage;
+                if (m.CurrentV > 0)
+                {
+                    m.CurrentV /= cntForVoltage;
+                }
+
                 cntForVoltage = 0;
-                measurements.Add(m.PsrRef, m);
+
+                if (toBeAdded)
+                {
+                    measurements.Add(m.PsrRef, m);
+                }
             }
 
             smartCachesForDeleting.Clear();

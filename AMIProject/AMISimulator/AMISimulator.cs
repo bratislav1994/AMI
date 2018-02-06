@@ -44,6 +44,7 @@ namespace AMISimulator
         private CommandHandler handler;
         private Dictionary<int, double> voltagesForPowerTransformers;
         private Dictionary<long, int> indexForPowerTransformers;
+        private object lockObjectForCommand = new object();
 
         public IScadaDuplexSimulator ProxyScada
         {
@@ -206,7 +207,10 @@ namespace AMISimulator
             while (true)
             {
                 this.activePowers.Clear();
-                this.Simulation(config, outstation);
+                lock (lockObjectForCommand)
+                {
+                    this.Simulation(config, outstation);
+                }
 
                 Thread.Sleep(timeToSleep);
             }
@@ -214,7 +218,7 @@ namespace AMISimulator
 
         private void Simulation(OutstationStackConfig config, IOutstation outstation)
         {
-            /*for (int i = 0; i < numberOfInstalledPoints; i++)
+            for (int i = 0; i < numberOfInstalledPoints; i++)
             {
                 if (measurements[i].SignalDirection == Direction.READ)
                 {
@@ -226,7 +230,8 @@ namespace AMISimulator
                         if (type == ConsumerType.HOUSEHOLD)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].PMax * DailyConsumption.HouseholdConsumptionWorkDay[now.Minute % 24] + rnd.Next(-5, 5);
+
+                            double valueToSend = DailyConsumption.GetPQHouseHold(now, rnd, consumers[measurements[i].PowerSystemResourceRef].PMax);
 
                             if (valueToSend < 0)
                             {
@@ -240,7 +245,7 @@ namespace AMISimulator
                         else if (type == ConsumerType.SHOPPING_CENTER)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].PMax * DailyConsumption.ShoppingCenterConsumptionWorkDay[now.Minute % 24] + rnd.Next(-5, 5);
+                            double valueToSend = DailyConsumption.GetPQShoppingCenter(now, rnd, consumers[measurements[i].PowerSystemResourceRef].PMax);
 
                             if (valueToSend < 0)
                             {
@@ -254,7 +259,7 @@ namespace AMISimulator
                         else if (type == ConsumerType.FIRM)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].PMax * DailyConsumption.FirmConsumptionWorkDay[now.Minute % 24] + rnd.Next(-5, 5);
+                            double valueToSend = DailyConsumption.GetPQFirm(now, rnd, consumers[measurements[i].PowerSystemResourceRef].PMax);
 
                             if (valueToSend < 0)
                             {
@@ -271,7 +276,7 @@ namespace AMISimulator
                         if (type == ConsumerType.HOUSEHOLD)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].QMax * DailyConsumption.HouseholdConsumptionWorkDay[now.Minute % 24] + rnd.Next(-5, 5);
+                            double valueToSend = DailyConsumption.GetPQHouseHold(now, rnd, consumers[measurements[i].PowerSystemResourceRef].QMax);
 
                             if (valueToSend < 0)
                             {
@@ -284,7 +289,7 @@ namespace AMISimulator
                         else if (type == ConsumerType.SHOPPING_CENTER)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].QMax * DailyConsumption.ShoppingCenterConsumptionWorkDay[now.Minute % 24] + rnd.Next(-5, 5);
+                            double valueToSend = DailyConsumption.GetPQShoppingCenter(now, rnd, consumers[measurements[i].PowerSystemResourceRef].QMax);
 
                             if (valueToSend < 0)
                             {
@@ -297,7 +302,7 @@ namespace AMISimulator
                         else if (type == ConsumerType.FIRM)
                         {
                             ChangeSet changeset = new ChangeSet();
-                            double valueToSend = consumers[measurements[i].PowerSystemResourceRef].QMax * DailyConsumption.FirmConsumptionWorkDay[now.Minute % 24] + rnd.Next(-5, 5);
+                            double valueToSend = DailyConsumption.GetPQFirm(now, rnd, consumers[measurements[i].PowerSystemResourceRef].QMax);
 
                             if (valueToSend < 0)
                             {
@@ -368,7 +373,7 @@ namespace AMISimulator
                         }
                     }
                 }
-            }*/
+            }
         }
 
         public int AddMeasurement(Measurement m)
@@ -521,7 +526,10 @@ namespace AMISimulator
                 return false;
             }
 
-            voltagesForPowerTransformers[index] = newValue;
+            lock (lockObjectForCommand)
+            {
+                voltagesForPowerTransformers[index] = newValue;
+            }
 
             return true;
         }
