@@ -400,6 +400,22 @@ namespace AMIClient.ViewModels
             }
         }
 
+        private ICommand consumptionCommand;
+
+        public ICommand ConsumptionCommand
+        {
+            get
+            {
+                return this.consumptionCommand ?? (this.consumptionCommand = new DelegateCommand<object>(this.SelectedAMIConsumptionStatistic, param => true));
+            }
+        }
+
+        private void SelectedAMIConsumptionStatistic(object selected)
+        {
+            IdentifiedObject io = ((IdentifiedObject)selected);
+            NetworkPreviewViewModel.Instance.ConsumptionStatisticForAMI(io, ResolutionType.DAY);
+        }
+
         public ICollectionView ViewAmiTableItems
         {
             get

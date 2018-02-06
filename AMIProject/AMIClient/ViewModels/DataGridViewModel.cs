@@ -231,6 +231,34 @@ namespace AMIClient.ViewModels
             return (DMSType)(gid >> 32);
         }
 
+        private ICommand consumptionCommand;
+
+        public ICommand ConsumptionCommand
+        {
+            get
+            {
+                return this.consumptionCommand ?? (this.consumptionCommand = new DelegateCommand<object>(this.SelectedAMIConsumptionStatistic, param => true));
+            }
+        }
+
+        private void SelectedAMIConsumptionStatistic(object selected)
+        {
+            IdentifiedObject io = ((IdentifiedObject)selected);
+
+            switch (GetDmsTypeFromGid(io.GlobalId))
+            {
+                case DMSType.GEOREGION:
+                    NetworkPreviewViewModel.Instance.ConsumptionStatisticForGeoRegion(ResolutionType.DAY, io.GlobalId, io.Name);
+                    break;
+                case DMSType.SUBGEOREGION:
+                    NetworkPreviewViewModel.Instance.ConsumptionStatisticForSubGeoRegion(ResolutionType.DAY, io.GlobalId, io.Name);
+                    break;
+                case DMSType.SUBSTATION:
+                    NetworkPreviewViewModel.Instance.ConsumptionStatisticForSubstation(ResolutionType.DAY, io.GlobalId, io.Name);
+                    break;
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void RaisePropertyChanged(string propName)

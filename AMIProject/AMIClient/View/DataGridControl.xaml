@@ -39,6 +39,10 @@
                             Header="Day chart"
                             Command="{Binding DataContext.IndividualAmiDayChartCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
                             CommandParameter="{Binding DataContext.Io, RelativeSource={RelativeSource Mode=Self}}"/>
+                            <MenuItem
+                            Header="Consumption statistic"
+                            Command="{Binding DataContext.ConsumptionCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                            CommandParameter="{Binding DataContext.Io, RelativeSource={RelativeSource Mode=Self}}"/>
                         </ContextMenu.Items>
                     </ContextMenu>
                 </DataGrid.Resources>

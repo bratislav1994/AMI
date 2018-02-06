@@ -28,6 +28,10 @@
             <local2:AmiDataGridControl />
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type local3:ConsumptionStatisticViewModel}">
+            <local2:ConsumptionStatisticControl />
+        </DataTemplate>
+
     </UserControl.Resources>
 
     <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
@@ -116,6 +120,10 @@
 
                     <DataTemplate DataType="{x:Type local3:AmiDataGridViewModel}">
                         <local2:AmiDataGridControl />
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type local3:ConsumptionStatisticViewModel}">
+                        <local2:ConsumptionStatisticControl />
                     </DataTemplate>
 
                     <!--<DataTemplate>

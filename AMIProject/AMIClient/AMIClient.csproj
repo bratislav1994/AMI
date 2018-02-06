@@ -233,6 +233,7 @@
     <Compile Include="ViewModels\AlarmSummariesViewModel.cs" />
     <Compile Include="ViewModels\AmiDataGridViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModel.cs" />
+    <Compile Include="ViewModels\ConsumptionStatisticViewModel.cs" />
     <Compile Include="ViewModels\DataGridViewModel.cs" />
     <Compile Include="ViewModels\ResolvedAlarmsViewModel.cs" />
     <Compile Include="View\ActiveAlarmsControl.xaml.cs">
@@ -249,6 +250,9 @@
     </Compile>
     <Compile Include="View\ChartControl.xaml.cs">
       <DependentUpon>ChartControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ConsumptionStatisticControl.xaml.cs">
+      <DependentUpon>ConsumptionStatisticControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DataGridControl.xaml.cs">
       <DependentUpon>DataGridControl.xaml</DependentUpon>
@@ -277,6 +281,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ChartControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ConsumptionStatisticControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

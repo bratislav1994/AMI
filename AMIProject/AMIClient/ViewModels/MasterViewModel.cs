@@ -18,6 +18,7 @@ namespace AMIClient.ViewModels
         private ChartViewModel chartVM;
         private DataGridViewModel dgVM;
         private AlarmSummariesViewModel alarmVM;
+        private ConsumptionStatisticViewModel consumptionVM;
         private Model model;
 
         public MasterViewModel()
@@ -104,6 +105,7 @@ namespace AMIClient.ViewModels
             this.CurrentViewModel = Tvm;
             alarmVM = AlarmSummariesViewModel.Instance;
             this.AlarmVM.SetModel(Model);
+            consumptionVM = new ConsumptionStatisticViewModel();
         }
 
         private object currentViewModel;
@@ -175,6 +177,25 @@ namespace AMIClient.ViewModels
             this.CurrentViewModel = ChartVM;
         }
 
+        private DelegateCommand consumptionStatisticCommand;
+        public DelegateCommand ConsumptionStatisticCommand
+        {
+            get
+            {
+                if (consumptionStatisticCommand == null)
+                {
+                    consumptionStatisticCommand = new DelegateCommand(ConsumptionStatisticAction);
+                }
+
+                return chartCommand;
+            }
+        }
+
+        private void ConsumptionStatisticAction()
+        {
+            this.CurrentViewModel = ConsumptionVM;
+        }
+
         private DelegateCommand alarmSummariesCommand;
         public DelegateCommand AlarmSummariesCommand
         {
@@ -204,6 +225,19 @@ namespace AMIClient.ViewModels
             set
             {
                 dgVM = value;
+            }
+        }
+
+        public ConsumptionStatisticViewModel ConsumptionVM
+        {
+            get
+            {
+                return consumptionVM;
+            }
+
+            set
+            {
+                consumptionVM = value;
             }
         }
 

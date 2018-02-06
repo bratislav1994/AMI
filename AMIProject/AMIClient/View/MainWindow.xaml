@@ -26,6 +26,10 @@
             <local2:AlarmSummariesControl />
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type local3:ConsumptionStatisticViewModel}">
+            <local2:ConsumptionStatisticControl />
+        </DataTemplate>
+
     </Window.Resources>
 
     <Grid Background="#4c4c4c">
