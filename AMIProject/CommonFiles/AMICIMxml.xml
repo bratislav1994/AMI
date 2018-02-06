@@ -216,6 +216,30 @@
 		<cim:IdentifiedObject.name>EConsumer_1_10</cim:IdentifiedObject.name>
 	</cim:EnergyConsumer>
 	
+	<cim:EnergyConsumer rdf:ID="EC_1_11">
+		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
+		<cim:EnergyConsumer.pMax>40</cim:EnergyConsumer.pMax>
+		<cim:EnergyConsumer.qMax>4</cim:EnergyConsumer.qMax>
+		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
+		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_1"/>
+		<cim:IdentifiedObject.mRID>EC_1_11</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>EConsumer_1_11</cim:IdentifiedObject.name>
+	</cim:EnergyConsumer>
+	
+	<cim:EnergyConsumer rdf:ID="EC_1_12">
+		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
+		<cim:EnergyConsumer.pMax>40</cim:EnergyConsumer.pMax>
+		<cim:EnergyConsumer.qMax>4</cim:EnergyConsumer.qMax>
+		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
+		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
+		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
+		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_1"/>
+		<cim:IdentifiedObject.mRID>EC_1_12</cim:IdentifiedObject.mRID>
+		<cim:IdentifiedObject.name>EConsumer_1_12</cim:IdentifiedObject.name>
+	</cim:EnergyConsumer>
+	
 	<cim:Analog rdf:ID="ANALOG_1_1_1">
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_1"/>
 		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
