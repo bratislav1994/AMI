@@ -1,4 +1,5 @@
 ﻿using Automatak.DNP3.Interface;
+using DailyConsumptions;
 using FTN.Common;
 using FTN.Common.Logger;
 using FTN.Services.NetworkModelService.DataModel;
@@ -21,6 +22,7 @@ namespace SCADA
         private object lockObject;
         private bool hasNewMeas = false;
         private Dictionary<long, DataForScada> data;
+        private int numberOfConsumers;
 
         public bool HasNewMeas
         {
@@ -37,11 +39,12 @@ namespace SCADA
 
         public SOEHandler(List<MeasurementForScada> measurements, Dictionary<long, DynamicMeasurement> resourcesToSend, object lockObject, List<DataForScada> data)
         {
+            this.numberOfConsumers = 0;
             this.measurements = measurements;
             this.resourcesToSend = resourcesToSend;
             this.lockObject = lockObject;
             this.data = new Dictionary<long, DataForScada>();
-            data.ForEach(x => { if (x is EnergyConsumerForScada) { this.data.Add(((EnergyConsumerForScada)x).GlobalId, x); }
+            data.ForEach(x => { if (x is EnergyConsumerForScada) { this.data.Add(((EnergyConsumerForScada)x).GlobalId, x); this.numberOfConsumers++; }
                                 else if (x is PowerTransformerForScada) { this.data.Add(((PowerTransformerForScada)x).GlobalId, x); }
                                 else if (x is BaseVoltageForScada) { this.data.Add(((BaseVoltageForScada)x).GlobalId, x); }
                                 else if (x is SubstationForScada) { this.data.Add(((SubstationForScada)x).GlobalId, x); }
@@ -50,12 +53,20 @@ namespace SCADA
 
         public void UpdateData(List<DataForScada> data)
         {
+            this.data.Clear();
+            this.numberOfConsumers = 0;
             data.ForEach(x => {
-                if (x is EnergyConsumerForScada) { this.data.Add(((EnergyConsumerForScada)x).GlobalId, x); }
+                if (x is EnergyConsumerForScada) { this.data.Add(((EnergyConsumerForScada)x).GlobalId, x); this.numberOfConsumers++; }
                 else if (x is PowerTransformerForScada) { this.data.Add(((PowerTransformerForScada)x).GlobalId, x); }
                 else if (x is BaseVoltageForScada) { this.data.Add(((BaseVoltageForScada)x).GlobalId, x); }
                 else if (x is SubstationForScada) { this.data.Add(((SubstationForScada)x).GlobalId, x); }
             });
+        }
+
+        public void UpdateMeasurements(List<MeasurementForScada> measurements)
+        {
+            this.measurements.Clear();
+            measurements.ForEach(x => this.measurements.Add(x));
         }
 
         public void Process(HeaderInfo info, IEnumerable<IndexedValue<Automatak.DNP3.Interface.Analog>> values)
@@ -67,14 +78,14 @@ namespace SCADA
                     Logger.LogMessageToFile(string.Format("SCADA.SOEHandler.Process; line: {0}; Start the Process function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     List<IndexedValue<Automatak.DNP3.Interface.Analog>> analogs = new List<IndexedValue<Automatak.DNP3.Interface.Analog>>();
                     analogs.AddRange(values.ToList());
-                    Dictionary<long, DynamicMeasurement> localDic = new Dictionary<long, DynamicMeasurement>(this.measurements.Count / 3);
+                    Dictionary<long, DynamicMeasurement> localDic = new Dictionary<long, DynamicMeasurement>(numberOfConsumers);
                     DateTime timeStamp = DateTime.Now;
                     Console.WriteLine("Number of points: " + analogs.Count);
                     int cnt = 0;
 
-                    foreach (IndexedValue<Automatak.DNP3.Interface.Analog> analog in analogs)
+                    if (analogs.Count <= this.measurements.Count)
                     {
-                        if (analog.Value.Value != 0)
+                        foreach (IndexedValue<Automatak.DNP3.Interface.Analog> analog in analogs)
                         {
                             TC57CIM.IEC61970.Meas.Analog a = (TC57CIM.IEC61970.Meas.Analog)GetMeasurement(analog.Index);
 
@@ -98,6 +109,8 @@ namespace SCADA
                                 else
                                 {
                                     localDic.Add(a.PowerSystemResourceRef, new DynamicMeasurement(a.PowerSystemResourceRef, timeStamp));
+                                    localDic[a.PowerSystemResourceRef].Type = ((EnergyConsumerForScada)data[a.PowerSystemResourceRef]).Type;
+                                    localDic[a.PowerSystemResourceRef].Season = DailyConsumption.GetSeason(timeStamp);
                                     cnt++;
 
                                     switch (analog.Index % 3)
@@ -130,22 +143,49 @@ namespace SCADA
                     {
                         if (resourcesToSend.ContainsKey(kvp.Key))
                         {
-                            if (localDic[kvp.Key].CurrentP != -1)
+                            if (kvp.Value.CurrentP != -1)
                             {
                                 resourcesToSend[kvp.Key].CurrentP = localDic[kvp.Key].CurrentP;
                             }
-                            if (localDic[kvp.Key].CurrentQ != -1)
+                            if (kvp.Value.CurrentQ != -1)
                             {
                                 resourcesToSend[kvp.Key].CurrentQ = localDic[kvp.Key].CurrentQ;
                             }
-                            if (localDic[kvp.Key].CurrentV != -1)
+                            if (kvp.Value.CurrentV != -1)
                             {
                                 resourcesToSend[kvp.Key].CurrentV = localDic[kvp.Key].CurrentV;
                             }
                         }
                         else
                         {
-                            resourcesToSend.Add(kvp.Key, kvp.Value);
+                            resourcesToSend.Add(kvp.Key, new DynamicMeasurement(kvp.Value.PsrRef, kvp.Value.TimeStamp));
+                            resourcesToSend[kvp.Key].Type = kvp.Value.Type;
+                            resourcesToSend[kvp.Key].Season = kvp.Value.Season;
+
+                            if (kvp.Value.CurrentP == -1)
+                            {
+                                resourcesToSend[kvp.Key].CurrentP = 0;
+                            }
+                            else
+                            {
+                                resourcesToSend[kvp.Key].CurrentP = kvp.Value.CurrentP;
+                            }
+                            if (kvp.Value.CurrentQ == -1)
+                            {
+                                resourcesToSend[kvp.Key].CurrentQ = 0;
+                            }
+                            else
+                            {
+                                resourcesToSend[kvp.Key].CurrentQ = kvp.Value.CurrentQ;
+                            }
+                            if (kvp.Value.CurrentV == -1)
+                            {
+                                resourcesToSend[kvp.Key].CurrentV = 0;
+                            }
+                            else
+                            {
+                                resourcesToSend[kvp.Key].CurrentV = kvp.Value.CurrentV;
+                            }
                         }
                     }
 
