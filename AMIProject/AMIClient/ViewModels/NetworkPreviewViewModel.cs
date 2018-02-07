@@ -159,17 +159,17 @@ namespace AMIClient.ViewModels
             this.DockManagerViewModel.Adding(doc);
         }
 
-        public void ConsumptionStatisticForAMI(object ami, ResolutionType resolution)
+        public void ConsumptionStatisticForAMI(object ami)
         {
             IdentifiedObject ec = (IdentifiedObject)ami;
-            ConsumptionStatisticViewModel consumptiontVM = new ConsumptionStatisticViewModel() { Model = this.Model, Resolution = resolution, Title = ec.Name };
+            ConsumptionStatisticViewModel consumptiontVM = new ConsumptionStatisticViewModel() { Model = this.Model, Title = ec.Name };
             consumptiontVM.SetGids(new List<long>() { ec.GlobalId });
             var doc = new List<DockWindowViewModel>();
             doc.Add(consumptiontVM);
             this.DockManagerViewModel.Adding(doc);
         }
 
-        public void ConsumptionStatisticForSubstation(ResolutionType resolution, long gid, string header)
+        public void ConsumptionStatisticForSubstation(long gid, string header)
         {
             List<IdentifiedObject> amisC4 = this.Model.GetSomeAmis(gid);
             List<long> ecsC4 = new List<long>();
@@ -179,14 +179,14 @@ namespace AMIClient.ViewModels
                 ecsC4.Add(ec.GlobalId);
             }
 
-            ConsumptionStatisticViewModel consumptiontVM4 = new ConsumptionStatisticViewModel() { Model = this.Model, Resolution = resolution, Title = header };
+            ConsumptionStatisticViewModel consumptiontVM4 = new ConsumptionStatisticViewModel() { Model = this.Model, Title = header };
             consumptiontVM4.SetGids(ecsC4);
             var doc = new List<DockWindowViewModel>();
             doc.Add(consumptiontVM4);
             this.DockManagerViewModel.Adding(doc);
         }
 
-        public void ConsumptionStatisticForSubGeoRegion(ResolutionType resolution, long gid, string header)
+        public void ConsumptionStatisticForSubGeoRegion(long gid, string header)
         {
             List<IdentifiedObject> substationsC3 = this.Model.GetSomeSubstations(gid);
             List<IdentifiedObject> amisC3 = new List<IdentifiedObject>();
@@ -202,14 +202,14 @@ namespace AMIClient.ViewModels
                 ecsC3.Add(ec.GlobalId);
             }
 
-            ConsumptionStatisticViewModel consumptiontVM3 = new ConsumptionStatisticViewModel() { Model = this.Model, Resolution = resolution, Title = header };
+            ConsumptionStatisticViewModel consumptiontVM3 = new ConsumptionStatisticViewModel() { Model = this.Model, Title = header };
             consumptiontVM3.SetGids(ecsC3);
             var doc = new List<DockWindowViewModel>();
             doc.Add(consumptiontVM3);
             this.DockManagerViewModel.Adding(doc);
         }
 
-        public void ConsumptionStatisticForGeoRegion(ResolutionType resolution, long gid, string header)
+        public void ConsumptionStatisticForGeoRegion(long gid, string header)
         {
             List<IdentifiedObject> subRegionsC2 = this.Model.GetSomeSubregions(gid);
             List<IdentifiedObject> substationsC2 = new List<IdentifiedObject>();
@@ -231,7 +231,7 @@ namespace AMIClient.ViewModels
                 ecsC2.Add(ec.GlobalId);
             }
 
-            ConsumptionStatisticViewModel consumptiontVM2 = new ConsumptionStatisticViewModel() { Model = this.Model, Resolution = resolution, Title = header };
+            ConsumptionStatisticViewModel consumptiontVM2 = new ConsumptionStatisticViewModel() { Model = this.Model, Title = header };
             consumptiontVM2.SetGids(ecsC2);
             var doc = new List<DockWindowViewModel>();
             doc.Add(consumptiontVM2);

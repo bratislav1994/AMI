@@ -248,13 +248,13 @@ namespace AMIClient.ViewModels
             switch (GetDmsTypeFromGid(io.GlobalId))
             {
                 case DMSType.GEOREGION:
-                    NetworkPreviewViewModel.Instance.ConsumptionStatisticForGeoRegion(ResolutionType.DAY, io.GlobalId, io.Name);
+                    NetworkPreviewViewModel.Instance.ConsumptionStatisticForGeoRegion(io.GlobalId, io.Name);
                     break;
                 case DMSType.SUBGEOREGION:
-                    NetworkPreviewViewModel.Instance.ConsumptionStatisticForSubGeoRegion(ResolutionType.DAY, io.GlobalId, io.Name);
+                    NetworkPreviewViewModel.Instance.ConsumptionStatisticForSubGeoRegion(io.GlobalId, io.Name);
                     break;
                 case DMSType.SUBSTATION:
-                    NetworkPreviewViewModel.Instance.ConsumptionStatisticForSubstation(ResolutionType.DAY, io.GlobalId, io.Name);
+                    NetworkPreviewViewModel.Instance.ConsumptionStatisticForSubstation(io.GlobalId, io.Name);
                     break;
             }
         }

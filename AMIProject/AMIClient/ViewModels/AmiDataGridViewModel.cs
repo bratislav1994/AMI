@@ -413,7 +413,7 @@ namespace AMIClient.ViewModels
         private void SelectedAMIConsumptionStatistic(object selected)
         {
             IdentifiedObject io = ((IdentifiedObject)selected);
-            NetworkPreviewViewModel.Instance.ConsumptionStatisticForAMI(io, ResolutionType.DAY);
+            NetworkPreviewViewModel.Instance.ConsumptionStatisticForAMI(io);
         }
 
         public ICollectionView ViewAmiTableItems

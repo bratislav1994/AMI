@@ -11,14 +11,19 @@
              xmlns:Primitives="clr-namespace:System.Windows.Controls.DataVisualization.Charting.Primitives;assembly=System.Windows.Controls.DataVisualization.Toolkit" 
              xmlns:DV="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
              xmlns:DVC="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
-             xmlns:wpfToolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
-             >
+             xmlns:wpfToolkit="http://schemas.xceed.com/wpf/xaml/toolkit">
+    <UserControl.Resources>
+        <Style TargetType="Expander">
+
+        </Style>
+    </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid Margin="0,0,0,0" Background="#E3E3E3" VerticalAlignment="Stretch" Height="auto">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition Height="30"></RowDefinition>
                 <RowDefinition Height="200"></RowDefinition>
                 <RowDefinition Height="200"></RowDefinition>
@@ -54,9 +59,18 @@
                 </DatePicker.Resources>
             </DatePicker>
 
-            <Button Grid.Row="1" Grid.Column="0" Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
+            <Expander Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1"
+				  HorizontalAlignment="Stretch">
+                <DockPanel>
+                    <CheckBox Content="Season" Width="90" HorizontalAlignment="Left" IsChecked="{Binding Season, UpdateSourceTrigger=PropertyChanged}"/>
+                    <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding ItemCB, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SeasonCB, UpdateSourceTrigger=PropertyChanged}" Text="{Binding TextCB, UpdateSourceTrigger=PropertyChanged}">
+                    </ComboBox>
+                </DockPanel>
+            </Expander>
 
-            <DVC:Chart Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Background="#E3E3E3">
+            <Button Grid.Row="2" Grid.Column="0" Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
+
+            <DVC:Chart Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Background="#E3E3E3">
 
                 <DVC:Chart.LegendStyle>
                     <Style TargetType="Control">
@@ -76,7 +90,7 @@
 
             </DVC:Chart>
 
-            <StackPanel Grid.Row="2" Grid.Column="3">
+            <StackPanel Grid.Row="3" Grid.Column="3">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Pmax: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
                     <Label Content="{Binding Statistics.MaxP}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
@@ -102,7 +116,7 @@
                 </StackPanel>
             </StackPanel>
 
-            <DVC:Chart Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"  Background="#E3E3E3">
+            <DVC:Chart Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"  Background="#E3E3E3">
 
                 <DVC:Chart.LegendStyle>
                     <Style TargetType="Control">
@@ -121,7 +135,7 @@
                 </DVC:Chart.Series>
             </DVC:Chart>
 
-            <StackPanel Grid.Row="3" Grid.Column="3">
+            <StackPanel Grid.Row="4" Grid.Column="3">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Qmax: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
                     <Label Content="{Binding Statistics.MaxQ}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
@@ -147,7 +161,7 @@
                 </StackPanel>
             </StackPanel>
 
-            <DVC:Chart Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Background="#E3E3E3">
+            <DVC:Chart Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Background="#E3E3E3">
 
                 <DVC:Chart.LegendStyle>
                     <Style TargetType="Control">
@@ -165,7 +179,7 @@
                 </DVC:Chart.Series>
             </DVC:Chart>
 
-            <StackPanel Grid.Row="4" Grid.Column="3">
+            <StackPanel Grid.Row="5" Grid.Column="3">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Vmax: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
                     <Label Content="{Binding Statistics.MaxV}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>

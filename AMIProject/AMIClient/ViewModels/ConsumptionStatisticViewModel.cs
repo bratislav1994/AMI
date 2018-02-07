@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 
 namespace AMIClient.ViewModels
 {
@@ -23,12 +24,17 @@ namespace AMIClient.ViewModels
         private Model model;
         private List<long> amiGids;
         private Statistics statistics;
-        private Visibility datePick = Visibility.Hidden;
+        private Visibility datePick = Visibility.Visible;
         private Visibility dateTimePick = Visibility.Hidden;
-        private ResolutionType resolution;
+        private ResolutionType resolution = ResolutionType.DAY;
+        private bool season;
+        private bool seasonCB = false;
+        private string textCB;
+        private List<Season> itemCB;
 
         public ConsumptionStatisticViewModel()
         {
+            ItemCB = new List<FTN.Common.Season>() { FTN.Common.Season.SUMMER, FTN.Common.Season.WINTER };
             dataHistoryP = new List<KeyValuePair<DateTime, float>>();
             dataHistoryQ = new List<KeyValuePair<DateTime, float>>();
             dataHistoryV = new List<KeyValuePair<DateTime, float>>();
@@ -187,6 +193,71 @@ namespace AMIClient.ViewModels
             {
                 statistics = value;
                 RaisePropertyChanged("Statistics");
+            }
+        }
+
+        public bool Season
+        {
+            get
+            {
+                return season;
+            }
+
+            set
+            {
+                season = value;
+                if(season)
+                {
+                    SeasonCB = true;
+                }
+                else
+                {
+                    SeasonCB = false;
+                    TextCB = string.Empty;
+                }
+                RaisePropertyChanged("Season");
+            }
+        }
+
+        public bool SeasonCB
+        {
+            get
+            {
+                return seasonCB;
+            }
+
+            set
+            {
+                seasonCB = value;
+                RaisePropertyChanged("SeasonCB");
+            }
+        }
+
+        public string TextCB
+        {
+            get
+            {
+                return textCB;
+            }
+
+            set
+            {
+                textCB = value;
+                RaisePropertyChanged("TextCB");
+            }
+        }
+
+        public List<Season> ItemCB
+        {
+            get
+            {
+                return itemCB;
+            }
+
+            set
+            {
+                itemCB = value;
+                RaisePropertyChanged("ItemCB");
             }
         }
 
