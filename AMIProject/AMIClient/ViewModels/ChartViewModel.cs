@@ -12,6 +12,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using LiveCharts;
+using LiveCharts.Wpf;
 
 namespace AMIClient.ViewModels
 {
@@ -29,6 +31,7 @@ namespace AMIClient.ViewModels
         private Visibility datePick = Visibility.Hidden;
         private Visibility dateTimePick = Visibility.Hidden;
         private ResolutionType resolution;
+        public SeriesCollection SeriesCollection { get; set; }
 
         public ChartViewModel()
         {
@@ -36,6 +39,20 @@ namespace AMIClient.ViewModels
             dataHistoryQ = new List<KeyValuePair<DateTime, float>>();
             dataHistoryV = new List<KeyValuePair<DateTime, float>>();
             this.ShowDataCommand.RaiseCanExecuteChanged();
+            SeriesCollection = new SeriesCollection
+            {
+                //new LineSeries
+                //{
+                //    Values = new ChartValues<double> { 4, 6, 5, 2 ,7 }
+                //}
+            };
+
+            SeriesCollection.Add(new LineSeries
+            {
+                Values = new ChartValues<double> { 67, 12, 56, 99, -10 },
+                LineSmoothness = 0, //straight lines, 1 really smooth lines
+                
+            });
         }
 
         public static ChartViewModel Instance

@@ -12,6 +12,7 @@
              xmlns:DV="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
              xmlns:DVC="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
              xmlns:wpfToolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              >
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
@@ -54,9 +55,40 @@
                 </DatePicker.Resources>
             </DatePicker>
 
-            <Button Grid.Row="1" Grid.Column="0" Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
+            <Button Grid.Row="2" Grid.Column="0" Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
 
-            <DVC:Chart Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Background="#E3E3E3">
+            <lvc:CartesianChart Width="auto" Height="auto" Background="#7EBE8E" Series="{Binding SeriesCollection}" DataContext="{Binding}" Name="Chart" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="15">
+                <!--<lvc:CartesianChart.Series>
+                    <lvc:LineSeries Values="{Binding DataHistoryP}" DataContext="{Binding}" LineSmoothness="1" StrokeThickness="10" 
+                                DataLabels="True" FontSize="20" Foreground="#6B303030"
+                                Stroke="White" Fill="Transparent" PointGeometrySize="0"/>
+                </lvc:CartesianChart.Series>-->
+                <lvc:CartesianChart.AxisX>
+                    <lvc:Axis Foreground="White" FontSize="14">
+                        <lvc:Axis.Separator>
+                            <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
+                        </lvc:Axis.Separator>
+                    </lvc:Axis>
+                </lvc:CartesianChart.AxisX>
+                <lvc:CartesianChart.AxisY>
+                    <lvc:Axis Foreground="White" FontSize="14">
+                        <lvc:Axis.Separator>
+                            <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" Step="100" />
+                        </lvc:Axis.Separator>
+                    </lvc:Axis>
+                </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart>
+
+            <StackPanel Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" Grid.ColumnSpan="2" Background="#4CFFFFFF" VerticalAlignment="Top" HorizontalAlignment="Right">
+                <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,20,0,0">Peak Time Today</TextBlock>
+                <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">7:08 am</TextBlock>
+                <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,20,0,0">Peak Value Today</TextBlock>
+                <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">525 kWh</TextBlock>
+                <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,20,0,0">Day Average</TextBlock>
+                <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">354 kWh</TextBlock>
+            </StackPanel>
+
+            <!--<DVC:Chart Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Background="#E3E3E3">
 
                 <DVC:Chart.LegendStyle>
                     <Style TargetType="Control">
@@ -74,7 +106,7 @@
                 </DVC:Chart.Series>
                 
                 
-            </DVC:Chart>
+            </DVC:Chart>-->
 
             <StackPanel Grid.Row="2" Grid.Column="3">
                 <StackPanel Orientation="Horizontal">
