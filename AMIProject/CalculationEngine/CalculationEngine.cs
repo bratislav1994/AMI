@@ -1,6 +1,7 @@
 ﻿using CalculationEngine.Access;
 using FTN.Common;
 using FTN.Common.ClassesForAlarmDB;
+using FTN.Common.Filter;
 using FTN.Common.Logger;
 using FTN.ServiceContracts;
 using FTN.Services.NetworkModelService.DataModel;
@@ -190,7 +191,13 @@ namespace CalculationEngine
             {
                 return null;
             }
+            Statistics statistics = FillStatistic(result);
+            
+            return new Tuple<List<Statistics>, Statistics>(result, statistics);
+        }
 
+        private static Statistics FillStatistic(List<Statistics> result)
+        {
             Statistics statistics = new Statistics();
             statistics.MaxP = result.Max(x => x.AvgP);
             statistics.MaxQ = result.Max(x => x.AvgQ);
@@ -210,7 +217,7 @@ namespace CalculationEngine
                 statistics.IntegralQ += result[i].IntegralQ;
             }
 
-            return new Tuple<List<Statistics>, Statistics>(result, statistics);
+            return statistics;
         }
 
         public void EnlistMeas(List<ResourceDescription> measurements)
@@ -538,6 +545,13 @@ namespace CalculationEngine
             {
                 return listAfterRefresh.GetRange(startIndex, range);
             }
+        }
+
+        public Tuple<List<Statistics>, Statistics> GetMeasurementsForChartViewByFilter(List<long> gids, Filter filter)
+        {
+            List<Statistics> result = this.timeSeriesDataBaseAdapter.ReadHourAggregationTableByFilter(gids, filter);
+
+            return null;
         }
     }
 }

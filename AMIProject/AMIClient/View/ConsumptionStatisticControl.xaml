@@ -24,7 +24,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"></RowDefinition>
                 <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition Height="30"></RowDefinition>
                 <RowDefinition Height="200"></RowDefinition>
                 <RowDefinition Height="200"></RowDefinition>
                 <RowDefinition Height="200"></RowDefinition>
@@ -61,16 +60,27 @@
 
             <Expander Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1"
 				  HorizontalAlignment="Stretch">
-                <DockPanel>
-                    <CheckBox Content="Season" Width="90" HorizontalAlignment="Left" IsChecked="{Binding Season, UpdateSourceTrigger=PropertyChanged}"/>
-                    <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding ItemCB, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SeasonCB, UpdateSourceTrigger=PropertyChanged}" Text="{Binding TextCB, UpdateSourceTrigger=PropertyChanged}">
-                    </ComboBox>
-                </DockPanel>
+                <StackPanel>
+                    <DockPanel>
+                        <CheckBox Content="Season:" Width="110" HorizontalAlignment="Left" IsChecked="{Binding SeasonChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsSeasonCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
+                        <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding SeasonCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SeasonChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SeasonSelected, UpdateSourceTrigger=PropertyChanged}"/>
+                    </DockPanel>
+
+                    <DockPanel>
+                        <CheckBox Content="Type of day:" Width="110" HorizontalAlignment="Left" IsChecked="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsTypeOfDayCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
+                        <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding TypeOfDayCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding TypeOfDaySelected, UpdateSourceTrigger=PropertyChanged}"/>
+                    </DockPanel>
+
+                    <DockPanel>
+                        <CheckBox Content="Consumer type:" Width="110" HorizontalAlignment="Left" IsChecked="{Binding ConsumerTypeChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsConsumerTypeCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
+                        <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding ConsumerTypeCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ConsumerTypeChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding ConsumerTypeSelected, UpdateSourceTrigger=PropertyChanged}"/>
+                    </DockPanel>
+                    
+                    <Button Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
+                </StackPanel>
             </Expander>
 
-            <Button Grid.Row="2" Grid.Column="0" Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
-
-            <DVC:Chart Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Background="#E3E3E3">
+            <DVC:Chart Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Background="#E3E3E3">
 
                 <DVC:Chart.LegendStyle>
                     <Style TargetType="Control">
@@ -90,7 +100,7 @@
 
             </DVC:Chart>
 
-            <StackPanel Grid.Row="3" Grid.Column="3">
+            <StackPanel Grid.Row="2" Grid.Column="3">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Pmax: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
                     <Label Content="{Binding Statistics.MaxP}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
@@ -116,7 +126,7 @@
                 </StackPanel>
             </StackPanel>
 
-            <DVC:Chart Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"  Background="#E3E3E3">
+            <DVC:Chart Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"  Background="#E3E3E3">
 
                 <DVC:Chart.LegendStyle>
                     <Style TargetType="Control">
@@ -135,7 +145,7 @@
                 </DVC:Chart.Series>
             </DVC:Chart>
 
-            <StackPanel Grid.Row="4" Grid.Column="3">
+            <StackPanel Grid.Row="3" Grid.Column="3">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Qmax: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
                     <Label Content="{Binding Statistics.MaxQ}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
@@ -161,7 +171,7 @@
                 </StackPanel>
             </StackPanel>
 
-            <DVC:Chart Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Background="#E3E3E3">
+            <DVC:Chart Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Background="#E3E3E3">
 
                 <DVC:Chart.LegendStyle>
                     <Style TargetType="Control">
@@ -179,7 +189,7 @@
                 </DVC:Chart.Series>
             </DVC:Chart>
 
-            <StackPanel Grid.Row="5" Grid.Column="3">
+            <StackPanel Grid.Row="4" Grid.Column="3">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Vmax: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
                     <Label Content="{Binding Statistics.MaxV}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>

@@ -20,6 +20,7 @@ using FTN.Services.NetworkModelService.DataModel;
 using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System.Windows.Media;
 using FTN.Common.ClassesForAlarmDB;
+using FTN.Common.Filter;
 
 namespace AMIClient
 {
@@ -796,7 +797,12 @@ namespace AMIClient
         {
             return this.CEQueryProxy.GetMeasurementsForChartView(gids, from, resolution);
         }
-        
+
+        public Tuple<List<Statistics>, Statistics> GetMeasurementsForChartViewByFilter(List<long> gids, Filter filter)
+        {
+            return this.CEQueryProxy.GetMeasurementsForChartViewByFilter(gids, filter);
+        }
+
         public void SendAlarm(DeltaForAlarm delta)
         {
             foreach (ActiveAlarm alarm in delta.InsertOperations)

@@ -1,5 +1,6 @@
 ﻿using FTN.Common;
 using FTN.Common.ClassesForAlarmDB;
+using FTN.Common.Filter;
 using FTN.Services.NetworkModelService.DataModel;
 using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System;
@@ -25,5 +26,8 @@ namespace FTN.ServiceContracts
 
         [OperationContract]
         List<ResolvedAlarm> GetResolvedAlarms(int startIndes, int range);
+
+        [OperationContract]
+        Tuple<List<Statistics>, Statistics> GetMeasurementsForChartViewByFilter(List<long> gids, Filter filter);
     }
 }

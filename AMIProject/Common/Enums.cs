@@ -51,4 +51,10 @@ namespace FTN.Common
         SUMMER = 0,
         WINTER
     }
+
+    public enum TypeOfDay : int
+    {
+        WORKDAY = 0,
+        WEEKEND
+    }
 }

@@ -162,7 +162,15 @@ namespace AMIClient.ViewModels
         public void ConsumptionStatisticForAMI(object ami)
         {
             IdentifiedObject ec = (IdentifiedObject)ami;
-            ConsumptionStatisticViewModel consumptiontVM = new ConsumptionStatisticViewModel() { Model = this.Model, Title = ec.Name };
+
+            ConsumptionStatisticViewModel consumptiontVM = new ConsumptionStatisticViewModel()
+            {
+                Model = this.Model,
+                Title = ec.Name,
+                IsConsumerTypeCheckBoxEnabled = false,
+                ConsumerTypeCb = new List<ConsumerType>() { ((EnergyConsumer)ec).Type }
+            };
+
             consumptiontVM.SetGids(new List<long>() { ec.GlobalId });
             var doc = new List<DockWindowViewModel>();
             doc.Add(consumptiontVM);
@@ -173,13 +181,26 @@ namespace AMIClient.ViewModels
         {
             List<IdentifiedObject> amisC4 = this.Model.GetSomeAmis(gid);
             List<long> ecsC4 = new List<long>();
+            List<ConsumerType> consumerTypes = new List<ConsumerType>();
 
             foreach (EnergyConsumer ec in amisC4)
             {
                 ecsC4.Add(ec.GlobalId);
+
+                if (!consumerTypes.Contains(ec.Type))
+                {
+                    consumerTypes.Add(ec.Type);
+                }
             }
 
-            ConsumptionStatisticViewModel consumptiontVM4 = new ConsumptionStatisticViewModel() { Model = this.Model, Title = header };
+            ConsumptionStatisticViewModel consumptiontVM4 = new ConsumptionStatisticViewModel()
+            {
+                Model = this.Model,
+                Title = header,
+                IsConsumerTypeCheckBoxEnabled = true,
+                ConsumerTypeCb = consumerTypes
+            };
+
             consumptiontVM4.SetGids(ecsC4);
             var doc = new List<DockWindowViewModel>();
             doc.Add(consumptiontVM4);
@@ -197,12 +218,26 @@ namespace AMIClient.ViewModels
                 amisC3.AddRange(this.Model.GetSomeAmis(ss.GlobalId));
             }
 
+            List<ConsumerType> consumerTypes = new List<ConsumerType>();
+
             foreach (EnergyConsumer ec in amisC3)
             {
                 ecsC3.Add(ec.GlobalId);
+
+                if (!consumerTypes.Contains(ec.Type))
+                {
+                    consumerTypes.Add(ec.Type);
+                }
             }
 
-            ConsumptionStatisticViewModel consumptiontVM3 = new ConsumptionStatisticViewModel() { Model = this.Model, Title = header };
+            ConsumptionStatisticViewModel consumptiontVM3 = new ConsumptionStatisticViewModel()
+            {
+                Model = this.Model,
+                Title = header,
+                IsConsumerTypeCheckBoxEnabled = true,
+                ConsumerTypeCb = consumerTypes
+            };
+
             consumptiontVM3.SetGids(ecsC3);
             var doc = new List<DockWindowViewModel>();
             doc.Add(consumptiontVM3);
@@ -226,12 +261,26 @@ namespace AMIClient.ViewModels
                 amisC2.AddRange(this.Model.GetSomeAmis(ss.GlobalId));
             }
 
+            List<ConsumerType> consumerTypes = new List<ConsumerType>();
+
             foreach (EnergyConsumer ec in amisC2)
             {
                 ecsC2.Add(ec.GlobalId);
-            }
 
-            ConsumptionStatisticViewModel consumptiontVM2 = new ConsumptionStatisticViewModel() { Model = this.Model, Title = header };
+                if (!consumerTypes.Contains(ec.Type))
+                {
+                    consumerTypes.Add(ec.Type);
+                }
+            }
+            
+            ConsumptionStatisticViewModel consumptiontVM2 = new ConsumptionStatisticViewModel()
+            {
+                Model = this.Model,
+                Title = header,
+                IsConsumerTypeCheckBoxEnabled = true,
+                ConsumerTypeCb = consumerTypes
+            };
+
             consumptiontVM2.SetGids(ecsC2);
             var doc = new List<DockWindowViewModel>();
             doc.Add(consumptiontVM2);

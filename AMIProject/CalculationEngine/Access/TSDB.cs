@@ -1,5 +1,6 @@
 ﻿using FTN.Common;
 using FTN.Common.ClassesForAlarmDB;
+using FTN.Common.Filter;
 using FTN.Services.NetworkModelService.DataModel;
 using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System;
@@ -1222,6 +1223,47 @@ namespace CalculationEngine.Access
                     return measurements.Values.ToList();
                 }
             }
+        }
+
+        public List<Statistics> ReadHourAggregationTableByFilter(List<long> gids, Filter filter)
+        {
+            //Dictionary<DateTime, Statistics> measurements = new Dictionary<DateTime, Statistics>();
+            //DateTime to = from.AddHours(1);
+
+            //lock (lockObj)
+            //{
+            //    using (var access = new AccessTSDB())
+            //    {
+            //        var rawMeas = access.AggregationForMinutes.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList();
+            //        Dictionary<DateTime, int> cntForVoltage = new Dictionary<DateTime, int>();
+
+            //        foreach (var meas in rawMeas)
+            //        {
+            //            if (!measurements.ContainsKey(meas.TimeStamp))
+            //            {
+            //                measurements.Add(meas.TimeStamp, meas);
+            //                cntForVoltage.Add(meas.TimeStamp, 1);
+            //            }
+            //            else
+            //            {
+            //                measurements[meas.TimeStamp].AvgP += meas.AvgP;
+            //                measurements[meas.TimeStamp].AvgQ += meas.AvgQ;
+            //                measurements[meas.TimeStamp].AvgV += meas.AvgV;
+            //                ++cntForVoltage[meas.TimeStamp];
+            //                measurements[meas.TimeStamp].IntegralP += meas.IntegralP;
+            //                measurements[meas.TimeStamp].IntegralQ += meas.IntegralQ;
+            //            }
+            //        }
+
+            //        foreach (KeyValuePair<DateTime, int> kvp in cntForVoltage)
+            //        {
+            //            measurements[kvp.Key].AvgV /= kvp.Value;
+            //        }
+
+            //        return measurements.Values.ToList();
+            //    }
+            //}
+            return null;
         }
 
         DateTime RoundUp(DateTime dt, TimeSpan d)

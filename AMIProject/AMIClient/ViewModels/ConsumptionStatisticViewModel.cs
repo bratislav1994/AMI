@@ -1,4 +1,5 @@
 ﻿using FTN.Common;
+using FTN.Common.Filter;
 using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using Prism.Commands;
 using System;
@@ -27,14 +28,26 @@ namespace AMIClient.ViewModels
         private Visibility datePick = Visibility.Visible;
         private Visibility dateTimePick = Visibility.Hidden;
         private ResolutionType resolution = ResolutionType.DAY;
-        private bool season;
-        private bool seasonCB = false;
-        private string textCB;
-        private List<Season> itemCB;
+        private bool seasonChecked = false;
+        private List<Season> seasonCb;
+        private Season seasonSelected;
+        private bool isSeasonCheckBoxEnabled;
+        private bool typeOfDayChecked = false;
+        private List<TypeOfDay> typeOfDayCb;
+        private TypeOfDay typeOfDaySelected;
+        private bool isTypeOfDayCheckBoxEnabled;
+        private bool consumerTypeChecked = false;
+        private List<ConsumerType> consumerTypeCb;
+        private ConsumerType consumerTypeSelected;
+        private bool isConsumerTypeCheckBoxEnabled;
 
         public ConsumptionStatisticViewModel()
         {
-            ItemCB = new List<FTN.Common.Season>() { FTN.Common.Season.SUMMER, FTN.Common.Season.WINTER };
+            SeasonCb = new List<Season>() { Season.SUMMER, Season.WINTER };
+            TypeOfDayCb = new List<TypeOfDay>() { TypeOfDay.WORKDAY, TypeOfDay.WEEKEND };
+            ConsumerTypeCb = new List<ConsumerType>() { ConsumerType.HOUSEHOLD, ConsumerType.FIRM, ConsumerType.SHOPPING_CENTER };
+            IsSeasonCheckBoxEnabled = true;
+            IsTypeOfDayCheckBoxEnabled = true;
             dataHistoryP = new List<KeyValuePair<DateTime, float>>();
             dataHistoryQ = new List<KeyValuePair<DateTime, float>>();
             dataHistoryV = new List<KeyValuePair<DateTime, float>>();
@@ -196,68 +209,171 @@ namespace AMIClient.ViewModels
             }
         }
 
-        public bool Season
+        public bool SeasonChecked
         {
             get
             {
-                return season;
+                return seasonChecked;
             }
 
             set
             {
-                season = value;
-                if(season)
-                {
-                    SeasonCB = true;
-                }
-                else
-                {
-                    SeasonCB = false;
-                    TextCB = string.Empty;
-                }
-                RaisePropertyChanged("Season");
+                this.seasonChecked = value;
+                RaisePropertyChanged("SeasonChecked");
+            }
+        }
+        
+        public List<Season> SeasonCb
+        {
+            get
+            {
+                return seasonCb;
+            }
+
+            set
+            {
+                seasonCb = value;
+                RaisePropertyChanged("SeasonCb");
             }
         }
 
-        public bool SeasonCB
+        public Season SeasonSelected
         {
             get
             {
-                return seasonCB;
+                return seasonSelected;
             }
 
             set
             {
-                seasonCB = value;
-                RaisePropertyChanged("SeasonCB");
+                seasonSelected = value;
+                RaisePropertyChanged("SeasonSelected");
             }
         }
 
-        public string TextCB
+        public bool IsSeasonCheckBoxEnabled
         {
             get
             {
-                return textCB;
+                return isSeasonCheckBoxEnabled;
             }
 
             set
             {
-                textCB = value;
-                RaisePropertyChanged("TextCB");
+                isSeasonCheckBoxEnabled = value;
+                RaisePropertyChanged("IsSeasonCheckBoxEnabled");
+            }
+        }
+        
+        public bool TypeOfDayChecked
+        {
+            get
+            {
+                return typeOfDayChecked;
+            }
+
+            set
+            {
+                this.typeOfDayChecked = value;
+                RaisePropertyChanged("TypeOfDayChecked");
             }
         }
 
-        public List<Season> ItemCB
+        public List<TypeOfDay> TypeOfDayCb
         {
             get
             {
-                return itemCB;
+                return typeOfDayCb;
             }
 
             set
             {
-                itemCB = value;
-                RaisePropertyChanged("ItemCB");
+                typeOfDayCb = value;
+                RaisePropertyChanged("TypeOfDayCb");
+            }
+        }
+
+        public TypeOfDay TypeOfDaySelected
+        {
+            get
+            {
+                return typeOfDaySelected;
+            }
+
+            set
+            {
+                typeOfDaySelected = value;
+                RaisePropertyChanged("TypeOfDaySelected");
+            }
+        }
+
+        public bool IsTypeOfDayCheckBoxEnabled
+        {
+            get
+            {
+                return isTypeOfDayCheckBoxEnabled;
+            }
+
+            set
+            {
+                isTypeOfDayCheckBoxEnabled = value;
+                RaisePropertyChanged("IsTypeOfDayCheckBoxEnabled");
+            }
+        }
+
+        public bool ConsumerTypeChecked
+        {
+            get
+            {
+                return consumerTypeChecked;
+            }
+
+            set
+            {
+                consumerTypeChecked = value;
+                RaisePropertyChanged("ConsumerTypeChecked");
+            }
+        }
+
+        public List<ConsumerType> ConsumerTypeCb
+        {
+            get
+            {
+                return consumerTypeCb;
+            }
+
+            set
+            {
+                consumerTypeCb = value;
+                RaisePropertyChanged("ConsumerTypeCb");
+            }
+        }
+
+        public ConsumerType ConsumerTypeSelected
+        {
+            get
+            {
+                return consumerTypeSelected;
+            }
+
+            set
+            {
+                consumerTypeSelected = value;
+                RaisePropertyChanged("ConsumerTypeSelected");
+            }
+        }
+
+        public bool IsConsumerTypeCheckBoxEnabled
+        {
+            get
+            {
+                return isConsumerTypeCheckBoxEnabled;
+            }
+
+            set
+            {
+                isConsumerTypeCheckBoxEnabled = value;
+                RaisePropertyChanged("ConsumerTypeCheckBoxEnabled");
             }
         }
 
@@ -273,10 +389,10 @@ namespace AMIClient.ViewModels
                 return this.showDataCommand;
             }
         }
-
+        
         private bool CanShowDataExecute()
         {
-            return DateTimeValidation(FromPeriod);
+            return true;
         }
 
         private bool DateTimeValidation(string dt)
@@ -305,24 +421,17 @@ namespace AMIClient.ViewModels
 
         private void ShowCommandAction()
         {
-            var inputCulture = CultureInfo.CreateSpecificCulture("us-en");
-            DateTime from = DateTime.Parse(FromPeriod, inputCulture);
-
-            switch (this.Resolution)
+            Filter filter = new Filter()
             {
-                case ResolutionType.MINUTE:
-                    from = RoundDown(DateTime.Parse(FromPeriod), TimeSpan.FromHours(1));
-                    break;
-                case ResolutionType.HOUR:
-                    from = RoundDown(DateTime.Parse(FromPeriod), TimeSpan.FromDays(1));
-                    break;
-                case ResolutionType.DAY:
-                    DateTime dt = new DateTime(from.Year, 1, 1);
-                    from = dt;
-                    break;
-            }
+                ConsumerHasValue = this.ConsumerTypeChecked ? true : false,
+                TypeOfDayHasValue = this.TypeOfDayChecked ? true : false,
+                SeasonHasValue = this.SeasonChecked ? true : false,
+                ConsumerType = this.ConsumerTypeSelected,
+                TypeOfDay = this.TypeOfDaySelected,
+                Season = this.SeasonSelected
+            };
 
-            Tuple<List<Statistics>, Statistics> measForChart = this.Model.GetMeasForChart(AmiGids, from, this.Resolution);
+            Tuple<List<Statistics>, Statistics> measForChart = this.Model.GetMeasurementsForChartViewByFilter(AmiGids, filter);
 
             if (measForChart == null)
             {
