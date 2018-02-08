@@ -149,6 +149,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="DB\MeasDb.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

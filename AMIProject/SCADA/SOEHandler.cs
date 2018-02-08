@@ -209,7 +209,6 @@ namespace SCADA
                     {
                         HasNewMeas = true;
                     }
-                    IsReceiving = false;
 
                     Logger.LogMessageToFile(string.Format("SCADA.SOEHandler.Process; line: {0}; Finish the Process function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 }

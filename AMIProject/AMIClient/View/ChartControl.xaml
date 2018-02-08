@@ -57,21 +57,21 @@
 
             <Button Grid.Row="1" Grid.Column="0" Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
 
-            <lvc:CartesianChart Width="auto" Height="auto" Background="#7EBE8E" Series="{Binding SeriesCollection}" DataContext="{Binding}" Name="Chart" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
+            <lvc:CartesianChart Width="auto" Height="auto" Background="#7EBE8E" Series="{Binding DataHistoryPX}" DataContext="{Binding}" Name="Chart" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
                 <!--<lvc:CartesianChart.Series>
                     <lvc:LineSeries Values="{Binding DataHistoryP}" DataContext="{Binding}" LineSmoothness="1" StrokeThickness="10" 
                                 DataLabels="True" FontSize="20" Foreground="#6B303030"
                                 Stroke="White" Fill="Transparent" PointGeometrySize="0"/>
                 </lvc:CartesianChart.Series>-->
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Foreground="White" FontSize="14">
+                    <lvc:Axis Labels="{Binding DataHistoryPY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
                         </lvc:Axis.Separator>
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Labels="{Binding Labels}" Foreground="White" FontSize="14">
+                    <lvc:Axis Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" Step="100" />
                         </lvc:Axis.Separator>
@@ -88,28 +88,28 @@
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Maximum</TextBlock>
                     
                     <DockPanel>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.MaxP}"></TextBlock>
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.MaxP, StringFormat=F2}"></TextBlock>
                         <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kW</TextBlock>
                     </DockPanel>
                     
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Minimum</TextBlock>
 
                     <DockPanel>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.MinP}" />
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.MinP, StringFormat=F2}" />
                         <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kW</TextBlock>
                     </DockPanel>
                     
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Average</TextBlock>
 
                     <DockPanel>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.AvgP}"></TextBlock>
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.AvgP, StringFormat=F2}"></TextBlock>
                         <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kW</TextBlock>
                     </DockPanel>
                     
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Consumption</TextBlock>
 
                     <DockPanel>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.IntegralP}"></TextBlock>
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.IntegralP, StringFormat=F2}"></TextBlock>
                         <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kWh</TextBlock>
                     </DockPanel>
                 </StackPanel>

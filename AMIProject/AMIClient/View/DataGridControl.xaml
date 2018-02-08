@@ -144,9 +144,9 @@
 
                     </DataGridTemplateColumn>
 
-                    <DataGridTextColumn MinWidth="100" Width="100" Header="P [kW]" Binding="{Binding CurrentP}"/>
-                    <DataGridTextColumn MinWidth="100" Width="100" Header="Q [kVAr]" Binding="{Binding CurrentQ}"/>
-                    <DataGridTextColumn MinWidth="100" Width="*" Header="V [V]" Binding="{Binding CurrentV}"/>
+                    <DataGridTextColumn MinWidth="100" Width="100" Header="P [kW]" Binding="{Binding CurrentP, StringFormat=F2}"/>
+                    <DataGridTextColumn MinWidth="100" Width="100" Header="Q [kVAr]" Binding="{Binding CurrentQ, StringFormat=F2}"/>
+                    <DataGridTextColumn MinWidth="100" Width="*" Header="V [V]" Binding="{Binding CurrentV, StringFormat=F2}"/>
 
                 </DataGrid.Columns>
             </DataGrid>

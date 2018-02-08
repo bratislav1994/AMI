@@ -412,8 +412,11 @@ namespace AMIClient.ViewModels
 
         private void SelectedAMIConsumptionStatistic(object selected)
         {
-            IdentifiedObject io = ((IdentifiedObject)selected);
-            NetworkPreviewViewModel.Instance.ConsumptionStatisticForAMI(io);
+            if (selected != null)
+            {
+                IdentifiedObject io = ((IdentifiedObject)selected);
+                NetworkPreviewViewModel.Instance.ConsumptionStatisticForAMI(io);
+            }
         }
 
         public ICollectionView ViewAmiTableItems
@@ -461,8 +464,11 @@ namespace AMIClient.ViewModels
 
         private void SendValues(ResolutionType resolution, object selected)
         {
-            IdentifiedObject io = ((IdentifiedObject)selected);
-            NetworkPreviewViewModel.Instance.SelectedAMIAction(io, resolution);
+            if (selected != null)
+            {
+                IdentifiedObject io = ((IdentifiedObject)selected);
+                NetworkPreviewViewModel.Instance.SelectedAMIAction(io, resolution);
+            }
         }
 
         private void CheckForUpdates()

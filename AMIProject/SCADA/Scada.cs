@@ -730,6 +730,7 @@ namespace SCADA
                                 Logger.LogMessageToFile(string.Format("SCADA.Scada.CheckIfThereIsSomethingToSend; line: {0}; Scada sends data to client if it has data to send", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                                 ProxyCE.DataFromScada(handler.Value.resourcesToSend);
                                 handler.Value.HasNewMeas = false;
+                                handler.Value.IsReceiving = false;
                             }
                         }
                     }
@@ -1047,18 +1048,20 @@ namespace SCADA
                         }
 
                         Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; before command to RTU[{1}], PT[{4}], delta[{2}], index[{3}]", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber(), kvp.Key, delta, index, kvp2.Key));
-                        if (handlers.ContainsKey(kvp.Key))
+                        lock (lockObject)
                         {
-                            if (!handlers[kvp.Key].IsReceiving)
+                            lock (lockObjects[kvp.Key])
                             {
-
-                                var task = masters[kvp.Key].DirectOperate(this.GetCommandHeader(delta, index), TaskConfig.Default);
-                                task.Wait(5000);
-                                retVal += task.Result.TaskSummary;
-                            }
-                            else
-                            {
-                                break;
+                                if (!handlers[kvp.Key].IsReceiving)
+                                {
+                                    var task = masters[kvp.Key].DirectOperate(this.GetCommandHeader(delta, index), TaskConfig.Default);
+                                    task.Wait(5000);
+                                    retVal += task.Result.TaskSummary;
+                                }
+                                else
+                                {
+                                    break;
+                                }
                             }
                         }
                     }
