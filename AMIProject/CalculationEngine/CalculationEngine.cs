@@ -483,7 +483,10 @@ namespace CalculationEngine
                 }
                 else
                 {
-                    gidsInAlarm.Add(dm.PsrRef, dm);
+                    if (dm.CurrentV != 0)
+                    {
+                        gidsInAlarm.Add(dm.PsrRef, dm);
+                    }
 
                     if (!alarmActiveDB.ContainsKey(dm.PsrRef))
                     {
@@ -506,7 +509,9 @@ namespace CalculationEngine
 
             if (gidsInAlarm.Count > 0)
             {
+                Logger.LogMessageToFile(string.Format("CE.CalculationEngine.CheckAlarms; line: {0}; Before sending command", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 Console.WriteLine(ProxyScada.Command(gidsInAlarm));
+                Logger.LogMessageToFile(string.Format("CE.CalculationEngine.CheckAlarms; line: {0}; Command sent", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             }
 
             return delta;

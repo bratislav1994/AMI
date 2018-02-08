@@ -9,9 +9,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using TC57CIM.IEC61970.Core;
 
 namespace AMIClient.ViewModels
@@ -24,10 +26,15 @@ namespace AMIClient.ViewModels
         private Dictionary<string, PropertyInfo> propertyCache;
         private string nameFilter = string.Empty;
         private string typeFilter = string.Empty;
+        private ObservableCollection<TableItem> tableItems;
+        private Thread checkIfThereAreNewUpdates;
+        private DateTime timeOfLastUpdateMeas = DateTime.Now;
 
         public DataGridViewModel()
         {
-
+            this.tableItems = new ObservableCollection<TableItem>();
+            this.checkIfThereAreNewUpdates = new Thread(() => CheckForUpdates());
+            this.checkIfThereAreNewUpdates.Start();
         }
 
         public string NameFilter
@@ -59,6 +66,20 @@ namespace AMIClient.ViewModels
                 this.RaisePropertyChanged("TypeFilter");
                 columnFilters[DataGridHeader.Type.ToString()] = this.typeFilter;
                 this.OnFilterApply();
+            }
+        }
+
+        public ObservableCollection<TableItem> TableItems
+        {
+            get
+            {
+                return tableItems;
+            }
+
+            set
+            {
+                tableItems = value;
+                RaisePropertyChanged("TableItems");
             }
         }
 
@@ -95,8 +116,8 @@ namespace AMIClient.ViewModels
             columnFilters = new Dictionary<string, string>();
             columnFilters[DataGridHeader.Name.ToString()] = string.Empty;
             columnFilters[DataGridHeader.Type.ToString()] = string.Empty;
-            this.Model.ViewTableItems = new CollectionViewSource { Source = this.Model.TableItems }.View;
-            this.Model.ViewTableItems = CollectionViewSource.GetDefaultView(this.Model.TableItems);
+            this.Model.ViewTableItems = new CollectionViewSource { Source = this.TableItems }.View;
+            this.Model.ViewTableItems = CollectionViewSource.GetDefaultView(this.TableItems);
         }
 
         #region filter
@@ -138,6 +159,34 @@ namespace AMIClient.ViewModels
         }
 
         #endregion
+
+        private void CheckForUpdates()
+        {
+            while (true)
+            {
+                if (this.Model != null)
+                {
+                    if (this.Model.NewChangesAvailableMeas(this.timeOfLastUpdateMeas))
+                    {
+                        this.timeOfLastUpdateMeas = this.Model.GetTimeOfTheLastUpdateMeas();
+                        List<TableItem> changes = this.Model.GetChangesMeas();
+
+                        App.Current.Dispatcher.Invoke((Action)delegate
+                        {
+                            this.TableItems.Clear();
+
+                            foreach (TableItem ti in changes)
+                            {
+                                ti.Status = ti.IsAlarm ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Green);
+                                this.TableItems.Add(ti);
+                            }
+                        });
+                    }
+                }
+
+                Thread.Sleep(1000);
+            }
+        }
 
         private ICommand showAmisCommand;
 

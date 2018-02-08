@@ -278,7 +278,7 @@
 	<cim:Analog rdf:ID="ANALOG_2_10_1">
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_2_10"/>
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
-		<cim:Measurement.signalDirection>WRITE</cim:Measurement.signalDirection>
+		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
 		<cim:Measurement.rtuAddress>12</cim:Measurement.rtuAddress>
 		<cim:IdentifiedObject.mRID>ANALOG_2_10_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_2_10_1</cim:IdentifiedObject.name>

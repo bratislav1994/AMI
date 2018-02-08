@@ -15,6 +15,6 @@ namespace FTN.ServiceContracts
         void Subscribe();
 
         [OperationContract]
-        List<DynamicMeasurement> GetLastMeas();
+        List<DynamicMeasurement> GetLastMeas(List<long> gidsInTable);
     }
 }

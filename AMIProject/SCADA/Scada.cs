@@ -59,6 +59,7 @@ namespace SCADA
         private Dictionary<int, IDNP3Manager> managers;
         private Dictionary<int, List<long>> eqGidsForSimulator;
         private Dictionary<int, List<int>> analogIndexesForSimulator;
+        List<int> RTUsThatNeedsToBeStopped = new List<int>();
 
         public ITransactionDuplexScada ProxyCoordinator
         {
@@ -124,7 +125,6 @@ namespace SCADA
             for (int i = startRtuAddress; i <= maxRtuAddress; i++)
             {
                 addressPool.Add(i, new RTUAddress() { IsConnected = false, Cnt = 0 });
-                allDataByRtu.Add(i, new List<DataForScada>());
             }
 
             handlers = new Dictionary<int, SOEHandler>();
@@ -163,7 +163,7 @@ namespace SCADA
             }
 
             this.ReadDataFromDB();
-            sendingThread = new Thread(() => CheckIfThereIsSomethingToSned());
+            sendingThread = new Thread(() => CheckIfThereIsSomethingToSend());
             sendingThread.Start();
         }
 
@@ -209,6 +209,11 @@ namespace SCADA
             foreach (KeyValuePair<long, DataForScada> kvp in this.allData)
             {
                 this.copyAllData.Add(kvp.Key, kvp.Value);
+            }
+
+            foreach (KeyValuePair<int, List<DataForScada>> kvp in this.allDataByRtu)
+            {
+                this.copyAllDataByRtu.Add(kvp.Key, kvp.Value);
             }
 
             Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Finish the EnlistMeas function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -303,6 +308,15 @@ namespace SCADA
             if (Ps.Count != Qs.Count || Ps.Count != Vs.Count || Qs.Count != Vs.Count)
             {
                 return false;
+            }
+
+            foreach (Measurement m in Ps)
+            {
+                if (!RTUsThatNeedsToBeStopped.Contains(m.RtuAddress))
+                {
+                    RTUsThatNeedsToBeStopped.Add(m.RtuAddress);
+                    simulators[m.RtuAddress].AddingStarted();
+                }
             }
 
             for (int i = 0; i < Ps.Count; i++)
@@ -656,8 +670,8 @@ namespace SCADA
                     lock (lockObjects[kvp.Key])
                     {
                         this.measurements.Add(kvp.Key, kvp.Value);
-                        this.handlers[kvp.Key].UpdateMeasurements(kvp.Value);
                     }
+
                     f.AddMeasurement(kvp.Value);
                 }
             }
@@ -666,6 +680,12 @@ namespace SCADA
                 kvp.Value.Cnt = 0;
             }
 
+            foreach (int address in RTUsThatNeedsToBeStopped)
+            {
+                simulators[address].AddingDone();
+            }
+
+            RTUsThatNeedsToBeStopped.Clear();
             this.copyMeasurements.Clear();
             this.copyAllData.Clear();
             this.copyAllDataByRtu.Clear();
@@ -695,19 +715,22 @@ namespace SCADA
             Logger.LogMessageToFile(string.Format("SCADA.Scada.Rollback; line: {0}; Finish the Rollback function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
-        private void CheckIfThereIsSomethingToSned()
+        private void CheckIfThereIsSomethingToSend()
         {
             while (true)
             {
-                foreach (KeyValuePair<int, SOEHandler> handler in handlers)
+                lock (lockObject)
                 {
-                    lock (lockObjects[handler.Key])
+                    foreach (KeyValuePair<int, SOEHandler> handler in handlers)
                     {
-                        if (handler.Value.HasNewMeas)
+                        lock (lockObjects[handler.Key])
                         {
-                            Logger.LogMessageToFile(string.Format("SCADA.Scada.CheckIfThereIsSomethingToSned; line: {0}; Scada sends data to client if it has data to send", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                            ProxyCE.DataFromScada(handler.Value.resourcesToSend);
-                            handler.Value.HasNewMeas = false;
+                            if (handler.Value.HasNewMeas)
+                            {
+                                Logger.LogMessageToFile(string.Format("SCADA.Scada.CheckIfThereIsSomethingToSend; line: {0}; Scada sends data to client if it has data to send", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                                ProxyCE.DataFromScada(handler.Value.resourcesToSend);
+                                handler.Value.HasNewMeas = false;
+                            }
                         }
                     }
                 }
@@ -867,9 +890,14 @@ namespace SCADA
                     this.lockObjects.Add(ret, new object());
                 }
 
-                if(!resourcesToSend.ContainsKey(ret))
+                if (!resourcesToSend.ContainsKey(ret))
                 {
                     resourcesToSend.Add(ret, new Dictionary<long, DynamicMeasurement>());
+                }
+
+                if (!allDataByRtu.ContainsKey(ret))
+                {
+                    allDataByRtu.Add(ret, new List<DataForScada>());
                 }
 
                 var handler = new SOEHandler(measurements[ret], resourcesToSend[ret], this.lockObjects[ret], allDataByRtu[ret]);
@@ -1018,16 +1046,21 @@ namespace SCADA
                             delta = -0.01 * delta;
                         }
 
-                        Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; before command", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-
-
-                        var task = masters[kvp.Key].DirectOperate(this.GetCommandHeader(delta, index), TaskConfig.Default);
-                        
-                        task.ContinueWith((result) =>
+                        Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; before command to RTU[{1}], PT[{4}], delta[{2}], index[{3}]", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber(), kvp.Key, delta, index, kvp2.Key));
+                        if (handlers.ContainsKey(kvp.Key))
                         {
-                        });
+                            if (!handlers[kvp.Key].IsReceiving)
+                            {
 
-                        retVal += task.Result.TaskSummary;
+                                var task = masters[kvp.Key].DirectOperate(this.GetCommandHeader(delta, index), TaskConfig.Default);
+                                task.Wait(5000);
+                                retVal += task.Result.TaskSummary;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
                     }
 
                     Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; Index = {1}", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber(), index));

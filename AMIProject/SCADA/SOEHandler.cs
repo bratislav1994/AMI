@@ -23,6 +23,7 @@ namespace SCADA
         private bool hasNewMeas = false;
         private Dictionary<long, DataForScada> data;
         private int numberOfConsumers;
+        private bool isReceiving = false;
 
         public bool HasNewMeas
         {
@@ -34,6 +35,19 @@ namespace SCADA
             set
             {
                 hasNewMeas = value;
+            }
+        }
+
+        public bool IsReceiving
+        {
+            get
+            {
+                return isReceiving;
+            }
+
+            set
+            {
+                isReceiving = value;
             }
         }
 
@@ -63,18 +77,13 @@ namespace SCADA
             });
         }
 
-        public void UpdateMeasurements(List<MeasurementForScada> measurements)
-        {
-            this.measurements.Clear();
-            measurements.ForEach(x => this.measurements.Add(x));
-        }
-
         public void Process(HeaderInfo info, IEnumerable<IndexedValue<Automatak.DNP3.Interface.Analog>> values)
         {
             if (canExecute)
             {
                 lock (lockObject)
                 {
+                    IsReceiving = true;
                     Logger.LogMessageToFile(string.Format("SCADA.SOEHandler.Process; line: {0}; Start the Process function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     List<IndexedValue<Automatak.DNP3.Interface.Analog>> analogs = new List<IndexedValue<Automatak.DNP3.Interface.Analog>>();
                     analogs.AddRange(values.ToList());
@@ -200,6 +209,7 @@ namespace SCADA
                     {
                         HasNewMeas = true;
                     }
+                    IsReceiving = false;
 
                     Logger.LogMessageToFile(string.Format("SCADA.SOEHandler.Process; line: {0}; Finish the Process function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 }

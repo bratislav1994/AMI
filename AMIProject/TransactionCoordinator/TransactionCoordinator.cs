@@ -141,24 +141,6 @@ namespace TransactionCoordinator
 
                 if (list.All(x => x == true) && CalculationEnginePrepareSuccess)
                 {
-                    foreach (IScada scada in scadas)
-                    {
-                        try
-                        {
-                            scada.Commit();
-                        }
-                        catch
-                        {
-                            scadasForDeleting.Add(scada);
-                        }
-                    }
-
-                    if (scadasForDeleting.Count > 0)
-                    {
-                        scadasForDeleting.ForEach(s => scadas.Remove(s));
-                        return false;
-                    }
-
                     try
                     {
                         proxyNMS.Commit();
@@ -178,7 +160,25 @@ namespace TransactionCoordinator
                         proxyCE = null;
                         return false;
                     }
-                    
+
+                    foreach (IScada scada in scadas)
+                    {
+                        try
+                        {
+                            scada.Commit();
+                        }
+                        catch
+                        {
+                            scadasForDeleting.Add(scada);
+                        }
+                    }
+
+                    if (scadasForDeleting.Count > 0)
+                    {
+                        scadasForDeleting.ForEach(s => scadas.Remove(s));
+                        return false;
+                    }
+
                     Logger.LogMessageToFile(string.Format("TranscactionCoordinator.TranscactionCoordinator.ApplyDelta; line: {0}; Data is successfully sent", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     return true;
                 }

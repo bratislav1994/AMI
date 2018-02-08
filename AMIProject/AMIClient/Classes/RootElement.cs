@@ -83,7 +83,7 @@ namespace AMIClient
                     {
                         base.Model.ClearPositions();
                         Model.GetAllTableItems();
-                        this.Model.GetLastMeasurements();
+                        //this.Model.GetLastMeasurements();
                         this.OnPropertyChanged("IsSelected");
                     }
                 }

@@ -34,5 +34,11 @@ namespace FTN.ServiceContracts
 
         [OperationContract]
         bool Ping();
+
+        [OperationContract]
+        void AddingStarted();
+
+        [OperationContract]
+        void AddingDone();
     }
 }

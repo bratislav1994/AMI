@@ -23,6 +23,7 @@ namespace AMIClient
         private float currentV;
         private Brush status;
         private DataGridType type;
+        private bool isAlarm;
 
         public TableItem(IdentifiedObject io)
         {
@@ -31,6 +32,7 @@ namespace AMIClient
             this.currentQ = 0;
             this.CurrentV = 0;
             this.Status = new SolidColorBrush(Colors.Green);
+            this.IsAlarm = false;
         }
 
         public IdentifiedObject Io
@@ -113,6 +115,19 @@ namespace AMIClient
             {
                 type = value;
                 RaisePropertyChanged("Type");
+            }
+        }
+
+        public bool IsAlarm
+        {
+            get
+            {
+                return isAlarm;
+            }
+
+            set
+            {
+                isAlarm = value;
             }
         }
 
