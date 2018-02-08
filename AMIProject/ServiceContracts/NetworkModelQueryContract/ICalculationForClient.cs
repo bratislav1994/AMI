@@ -28,6 +28,6 @@ namespace FTN.ServiceContracts
         List<ResolvedAlarm> GetResolvedAlarms(int startIndes, int range);
 
         [OperationContract]
-        Tuple<List<Statistics>, Statistics> GetMeasurementsForChartViewByFilter(List<long> gids, Filter filter);
+        Tuple<List<HourAggregation>, Statistics> GetMeasurementsForChartViewByFilter(List<long> gids, Filter filter);
     }
 }

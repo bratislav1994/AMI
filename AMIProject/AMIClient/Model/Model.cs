@@ -863,7 +863,7 @@ namespace AMIClient
             return this.CEQueryProxy.GetMeasurementsForChartView(gids, from, resolution);
         }
 
-        public Tuple<List<Statistics>, Statistics> GetMeasurementsForChartViewByFilter(List<long> gids, Filter filter)
+        public Tuple<List<HourAggregation>, Statistics> GetMeasurementsForChartViewByFilter(List<long> gids, Filter filter)
         {
             return this.CEQueryProxy.GetMeasurementsForChartViewByFilter(gids, filter);
         }
