@@ -32,6 +32,7 @@ namespace AMIClient.ViewModels
         private Visibility dateTimePick = Visibility.Hidden;
         private ResolutionType resolution;
         public SeriesCollection SeriesCollection { get; set; }
+        public string[] Labels = new string[] { };
 
         public ChartViewModel()
         {
@@ -281,9 +282,14 @@ namespace AMIClient.ViewModels
             List<KeyValuePair<DateTime, float>> tempP = new List<KeyValuePair<DateTime, float>>();
             List<KeyValuePair<DateTime, float>> tempQ = new List<KeyValuePair<DateTime, float>>();
             List<KeyValuePair<DateTime, float>> tempV = new List<KeyValuePair<DateTime, float>>();
+            SeriesCollection[0].Values.Clear();
+            Labels = new string[] { };
+            int cnt = -1;
 
             foreach (Statistics dm in measForChart.Item1)
             {
+                SeriesCollection[0].Values.Add(dm.AvgP);
+                Labels[++cnt] = dm.TimeStamp.ToString();
                 tempP.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.AvgP));
                 tempQ.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.AvgQ));
                 tempV.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.AvgV));

@@ -21,15 +21,15 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"></RowDefinition>
                 <RowDefinition Height="30"></RowDefinition>
-                <RowDefinition Height="200"></RowDefinition>
-                <RowDefinition Height="200"></RowDefinition>
-                <RowDefinition Height="200"></RowDefinition>
+                <RowDefinition Height="220"></RowDefinition>
+                <RowDefinition Height="220"></RowDefinition>
+                <RowDefinition Height="220"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="90"></ColumnDefinition>
                 <ColumnDefinition Width="170"></ColumnDefinition>
-                <ColumnDefinition Width="7*"></ColumnDefinition>
-                <ColumnDefinition Width="150"></ColumnDefinition>
+                <ColumnDefinition Width="7.0*"></ColumnDefinition>
+                <ColumnDefinition Width="120"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" Content="From: " HorizontalAlignment="Left" VerticalAlignment="Center" Height="29" Width="95"/>
@@ -55,9 +55,9 @@
                 </DatePicker.Resources>
             </DatePicker>
 
-            <Button Grid.Row="2" Grid.Column="0" Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
+            <Button Grid.Row="1" Grid.Column="0" Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
 
-            <lvc:CartesianChart Width="auto" Height="auto" Background="#7EBE8E" Series="{Binding SeriesCollection}" DataContext="{Binding}" Name="Chart" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="15">
+            <lvc:CartesianChart Width="auto" Height="auto" Background="#7EBE8E" Series="{Binding SeriesCollection}" DataContext="{Binding}" Name="Chart" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
                 <!--<lvc:CartesianChart.Series>
                     <lvc:LineSeries Values="{Binding DataHistoryP}" DataContext="{Binding}" LineSmoothness="1" StrokeThickness="10" 
                                 DataLabels="True" FontSize="20" Foreground="#6B303030"
@@ -71,7 +71,7 @@
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Foreground="White" FontSize="14">
+                    <lvc:Axis Labels="{Binding Labels}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" Step="100" />
                         </lvc:Axis.Separator>
@@ -79,14 +79,42 @@
                 </lvc:CartesianChart.AxisY>
             </lvc:CartesianChart>
 
-            <StackPanel Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" Grid.ColumnSpan="2" Background="#4CFFFFFF" VerticalAlignment="Top" HorizontalAlignment="Right">
-                <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,20,0,0">Peak Time Today</TextBlock>
-                <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">7:08 am</TextBlock>
-                <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,20,0,0">Peak Value Today</TextBlock>
-                <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">525 kWh</TextBlock>
-                <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,20,0,0">Day Average</TextBlock>
-                <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">354 kWh</TextBlock>
+            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="40, 0, 0, 0">
+                <TextBlock FontSize="22" Foreground="White">Active power</TextBlock>
             </StackPanel>
+
+            <StackPanel Width="120" Grid.Row="2" Grid.Column="3" Background="#7EBE8E" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0, 4, 0, 0">
+                <StackPanel Background="#4CFFFFFF">
+                    <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Maximum</TextBlock>
+                    
+                    <DockPanel>
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.MaxP}"></TextBlock>
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kW</TextBlock>
+                    </DockPanel>
+                    
+                    <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Minimum</TextBlock>
+
+                    <DockPanel>
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.MinP}" />
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kW</TextBlock>
+                    </DockPanel>
+                    
+                    <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Average</TextBlock>
+
+                    <DockPanel>
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.AvgP}"></TextBlock>
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kW</TextBlock>
+                    </DockPanel>
+                    
+                    <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Consumption</TextBlock>
+
+                    <DockPanel>
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.IntegralP}"></TextBlock>
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kWh</TextBlock>
+                    </DockPanel>
+                </StackPanel>
+            </StackPanel>
+            
 
             <!--<DVC:Chart Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Background="#E3E3E3">
 
@@ -108,7 +136,7 @@
                 
             </DVC:Chart>-->
 
-            <StackPanel Grid.Row="2" Grid.Column="3">
+            <!--<StackPanel Grid.Row="2" Grid.Column="3">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Pmax: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
                     <Label Content="{Binding Statistics.MaxP}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
@@ -132,7 +160,7 @@
                     <Label Content="{Binding Statistics.IntegralP}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
                     <Label Content="kWh" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
                 </StackPanel>
-            </StackPanel>
+            </StackPanel>-->
 
             <DVC:Chart Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"  Background="#E3E3E3">
 
