@@ -431,7 +431,7 @@ namespace AMIClient.ViewModels
                 Season = this.SeasonSelected
             };
 
-            Tuple<List<Statistics>, Statistics> measForChart = this.Model.GetMeasurementsForChartViewByFilter(AmiGids, filter);
+            Tuple<List<HourAggregation>, Statistics> measForChart = this.Model.GetMeasurementsForChartViewByFilter(AmiGids, filter);
 
             if (measForChart == null)
             {

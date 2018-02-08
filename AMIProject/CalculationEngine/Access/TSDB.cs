@@ -1233,8 +1233,80 @@ namespace CalculationEngine.Access
             }
         }
 
-        public List<Statistics> ReadHourAggregationTableByFilter(List<long> gids, Filter filter)
+        public List<HourAggregation> ReadHourAggregationTableByFilter(List<long> gids, Filter filter)
         {
+            List<HourAggregation> ret = new List<HourAggregation>();
+
+            if (!filter.ConsumerHasValue && !filter.SeasonHasValue && !filter.TypeOfDayHasValue)
+            {
+                return ret;
+            }
+
+            if (filter.SeasonHasValue)
+            {
+                using (var access = new AccessTSDB())
+                {
+                    ret = access.AggregationForHours.Where(x => x.Season == filter.Season).ToList();
+                }
+            }
+
+            if (filter.TypeOfDayHasValue && ret.Count > 0)
+            {
+                foreach (HourAggregation hAgg in ret.Reverse<HourAggregation>())
+                {
+                    if (filter.TypeOfDay == TypeOfDay.WEEKEND)
+                    {
+                        if (hAgg.TimeStamp.DayOfWeek != DayOfWeek.Saturday && hAgg.TimeStamp.DayOfWeek != DayOfWeek.Sunday)
+                        {
+                            ret.Remove(hAgg);
+                        }
+                    }
+                    else
+                    {
+                        if (hAgg.TimeStamp.DayOfWeek != DayOfWeek.Monday && hAgg.TimeStamp.DayOfWeek != DayOfWeek.Tuesday &&
+                            hAgg.TimeStamp.DayOfWeek != DayOfWeek.Wednesday && hAgg.TimeStamp.DayOfWeek != DayOfWeek.Thursday &&
+                            hAgg.TimeStamp.DayOfWeek != DayOfWeek.Friday)
+                        {
+                            ret.Remove(hAgg);
+                        }
+                    }
+                }
+            }
+            else if (filter.TypeOfDayHasValue)
+            {
+                using (var access = new AccessTSDB())
+                {
+                    if (filter.TypeOfDay == TypeOfDay.WEEKEND)
+                    {
+                        ret = access.AggregationForHours.Where(x => x.TimeStamp.DayOfWeek == DayOfWeek.Saturday || x.TimeStamp.DayOfWeek == DayOfWeek.Sunday).ToList();
+                    }
+                    else
+                    {
+                        ret = access.AggregationForHours.Where(x => x.TimeStamp.DayOfWeek == DayOfWeek.Monday || x.TimeStamp.DayOfWeek == DayOfWeek.Tuesday ||
+                                                                    x.TimeStamp.DayOfWeek == DayOfWeek.Wednesday || x.TimeStamp.DayOfWeek == DayOfWeek.Thursday ||
+                                                                    x.TimeStamp.DayOfWeek == DayOfWeek.Friday).ToList();
+                    }
+                }
+            }
+
+            if (filter.ConsumerHasValue && ret.Count > 0)
+            {
+                foreach (HourAggregation hAgg in ret.Reverse<HourAggregation>())
+                {
+                    if (hAgg.Type != filter.ConsumerType)
+                    {
+                        ret.Remove(hAgg);
+                    }
+                }
+            }
+            else if (filter.TypeOfDayHasValue)
+            {
+                using (var access = new AccessTSDB())
+                {
+                    ret = access.AggregationForHours.Where(x => x.Type == filter.ConsumerType).ToList();
+                }
+            }
+
             //Dictionary<DateTime, Statistics> measurements = new Dictionary<DateTime, Statistics>();
             //DateTime to = from.AddHours(1);
 

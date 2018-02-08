@@ -57,7 +57,7 @@ namespace CalculationEngine
         {
             DateTime beginning = new DateTime(2017, 7, 7);
             beginning = beginning.AddSeconds(1);
-            DateTime end = new DateTime(2017, 7, 9);
+            DateTime end = new DateTime(2017, 7, 15);
 
             NetTcpBinding binding = new NetTcpBinding();
             binding.SendTimeout = TimeSpan.FromDays(1);

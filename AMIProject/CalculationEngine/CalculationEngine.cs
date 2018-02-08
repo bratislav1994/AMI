@@ -58,7 +58,7 @@ namespace CalculationEngine
             //f.DbAdapter = dataBaseAdapter;
             //f.TimeSeriesDbAdapter = timeSeriesDataBaseAdapter;
             //f.Fill();
-            //this.DoUndoneFill();
+            this.DoUndoneFill();
             //
             geoRegions = new Dictionary<long, GeographicalRegionDb>();
             subGeoRegions = new Dictionary<long, SubGeographicalRegionDb>();
@@ -197,6 +197,30 @@ namespace CalculationEngine
         }
 
         private static Statistics FillStatistic(List<Statistics> result)
+        {
+            Statistics statistics = new Statistics();
+            statistics.MaxP = result.Max(x => x.AvgP);
+            statistics.MaxQ = result.Max(x => x.AvgQ);
+            statistics.MaxV = result.Max(x => x.MaxV);
+            statistics.MinP = result.Min(x => x.AvgP);
+            statistics.MinQ = result.Min(x => x.AvgQ);
+            statistics.MinV = result.Min(x => x.MinV);
+            statistics.AvgP = result.Average(x => x.AvgP);
+            statistics.AvgQ = result.Average(x => x.AvgQ);
+            statistics.AvgV = result.Average(x => x.AvgV);
+            statistics.IntegralP = 0;
+            statistics.IntegralQ = 0;
+
+            for (int i = 0; i < result.Count - 1; i++)
+            {
+                statistics.IntegralP += result[i].IntegralP;
+                statistics.IntegralQ += result[i].IntegralQ;
+            }
+
+            return statistics;
+        }
+
+        private static Statistics FillHourAgg(List<HourAggregation> result)
         {
             Statistics statistics = new Statistics();
             statistics.MaxP = result.Max(x => x.AvgP);
@@ -558,11 +582,61 @@ namespace CalculationEngine
             }
         }
 
-        public Tuple<List<Statistics>, Statistics> GetMeasurementsForChartViewByFilter(List<long> gids, Filter filter)
+        public Tuple<List<HourAggregation>, Statistics> GetMeasurementsForChartViewByFilter(List<long> gids, Filter filter)
         {
-            List<Statistics> result = this.timeSeriesDataBaseAdapter.ReadHourAggregationTableByFilter(gids, filter);
+            List<HourAggregation> result = this.timeSeriesDataBaseAdapter.ReadHourAggregationTableByFilter(gids, filter);
 
-            return null;
+            if (result.Count == 0)
+            {
+                return null;
+            }
+
+            Dictionary<int, List<HourAggregation>> hourAggByResolution = new Dictionary<int, List<HourAggregation>>(24);
+
+            foreach (HourAggregation hourAgg in result)
+            {
+                if (!hourAggByResolution.ContainsKey(hourAgg.TimeStamp.Hour))
+                {
+                    hourAggByResolution.Add(hourAgg.TimeStamp.Hour, new List<HourAggregation>());
+                }
+
+                hourAggByResolution[hourAgg.TimeStamp.Hour].Add(hourAgg);
+            }
+
+            List<HourAggregation> retVal = new List<HourAggregation>();
+
+            foreach (KeyValuePair<int, List<HourAggregation>> kvp in hourAggByResolution)
+            {
+                HourAggregation hourAggregation = new HourAggregation();
+
+                foreach (HourAggregation hourAgg in kvp.Value)
+                {
+                    hourAggregation.AvgP += hourAgg.AvgP;
+                    hourAggregation.AvgQ += hourAgg.AvgQ;
+                    hourAggregation.AvgV += hourAgg.AvgV;
+                    hourAggregation.IntegralP += hourAgg.IntegralP;
+                    hourAggregation.IntegralQ += hourAgg.IntegralQ;
+                }
+
+                hourAggregation.MaxP = kvp.Value.Max(x => x.MaxP);
+                hourAggregation.MaxQ = kvp.Value.Max(x => x.MaxQ);
+                hourAggregation.MinP = kvp.Value.Max(x => x.MinP);
+                hourAggregation.MinQ = kvp.Value.Max(x => x.MinQ);
+                hourAggregation.MinV = kvp.Value.Max(x => x.MinV);
+                hourAggregation.MinV = kvp.Value.Max(x => x.MinV);
+
+                hourAggregation.AvgP /= kvp.Value.Count;
+                hourAggregation.AvgQ /= kvp.Value.Count;
+                hourAggregation.AvgV /= kvp.Value.Count;
+                hourAggregation.IntegralP /= kvp.Value.Count;
+                hourAggregation.IntegralQ /= kvp.Value.Count;
+
+                retVal.Add(hourAggregation);
+            }
+
+            Statistics s = FillHourAgg(retVal);
+
+            return new Tuple<List<HourAggregation>, Statistics>(retVal, s);
         }
     }
 }
