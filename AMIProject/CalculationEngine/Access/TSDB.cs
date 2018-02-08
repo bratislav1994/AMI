@@ -238,6 +238,8 @@ namespace CalculationEngine.Access
                 ma.AvgQ = kvp.Value.Average(x => x.AvgQ);
                 ma.AvgV = kvp.Value.Average(x => x.AvgV);
                 ma.TimeStamp = temp;
+                ma.Season = kvp.Value[(int)kvp.Key].Season;
+                ma.Type = kvp.Value[(int)kvp.Key].Type;
 
                 for (int i = 1; i < kvp.Value.Count; i++)
                 {
@@ -564,6 +566,8 @@ namespace CalculationEngine.Access
                 ma.AvgQ = kvp.Value.Average(x => x.AvgQ);
                 ma.AvgV = kvp.Value.Average(x => x.AvgV);
                 ma.TimeStamp = temp;
+                ma.Season = kvp.Value[(int)kvp.Key].Season;
+                ma.Type = kvp.Value[(int)kvp.Key].Type;
 
                 for (int i = 1; i < kvp.Value.Count; i++)
                 {
@@ -1116,6 +1120,8 @@ namespace CalculationEngine.Access
                 ma.AvgQ = kvp.Value.Average(x => x.CurrentQ);
                 ma.AvgV = kvp.Value.Average(x => x.CurrentV);
                 ma.TimeStamp = temp;
+                ma.Season = kvp.Value[(int)kvp.Key].Season;
+                ma.Type = kvp.Value[(int)kvp.Key].Type;
 
                 if (toBeWrittenDic.Count != 0)
                 {
@@ -1153,6 +1159,8 @@ namespace CalculationEngine.Access
                 ma.AvgQ = kvp.Value.Average(x => x.CurrentQ);
                 ma.AvgV = kvp.Value.Average(x => x.CurrentV);
                 ma.TimeStamp = RoundDown(kvp.Value[0].TimeStamp, TimeSpan.FromMinutes(1));
+                ma.Season = kvp.Value[(int)kvp.Key].Season;
+                ma.Type = kvp.Value[(int)kvp.Key].Type;
 
                 for (int i = 1; i < kvp.Value.Count; i++)
                 {

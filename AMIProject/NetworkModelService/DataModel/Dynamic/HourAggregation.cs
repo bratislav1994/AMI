@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FTN.Common;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
@@ -9,6 +10,8 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
     {
         private int idDbH;
         private long psrRef;
+        private Season season;
+        private ConsumerType type;
 
         public HourAggregation()
         {
@@ -50,6 +53,32 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             set
             {
                 psrRef = value;
+            }
+        }
+
+        public Season Season
+        {
+            get
+            {
+                return season;
+            }
+
+            set
+            {
+                season = value;
+            }
+        }
+
+        public ConsumerType Type
+        {
+            get
+            {
+                return type;
+            }
+
+            set
+            {
+                type = value;
             }
         }
     }

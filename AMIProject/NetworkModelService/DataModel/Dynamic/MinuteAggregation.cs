@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FTN.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,6 +14,8 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
     {
         private int idDbM;
         private long psrRef;
+        private Season season;
+        private ConsumerType type;
 
         public MinuteAggregation()
         {
@@ -54,6 +57,32 @@ namespace FTN.Services.NetworkModelService.DataModel.Dynamic
             set
             {
                 psrRef = value;
+            }
+        }
+
+        public Season Season
+        {
+            get
+            {
+                return season;
+            }
+
+            set
+            {
+                season = value;
+            }
+        }
+
+        public ConsumerType Type
+        {
+            get
+            {
+                return type;
+            }
+
+            set
+            {
+                type = value;
             }
         }
     }
