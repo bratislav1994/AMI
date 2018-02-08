@@ -99,7 +99,7 @@ namespace AMIClient.ViewModels
             tvm = NetworkPreviewViewModel.Instance;
             tvm.SetModel(Model);
             xmlvm = AddCimXmlViewModel.Instance;
-            chartVM = new ChartViewModel();
+            //chartVM = new ChartViewModel();
             this.DgVM = DataGridViewModel.Instance;
             this.DgVM.SetModel(Model);
             this.CurrentViewModel = Tvm;

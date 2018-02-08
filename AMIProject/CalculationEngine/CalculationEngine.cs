@@ -390,6 +390,7 @@ namespace CalculationEngine
                     m.CurrentV /= cntForVoltage;
                 }
                 cntForVoltage = 0;
+
                 if (toBeAdded)
                 {
                     addSubGeoRegions.Add(m.PsrRef, m);
@@ -507,14 +508,19 @@ namespace CalculationEngine
                 }
             }
 
+            new Thread(() => SendCommand(gidsInAlarm)).Start();
+
+            return delta;
+        }
+
+        private void SendCommand(Dictionary<long, DynamicMeasurement> gidsInAlarm)
+        {
             if (gidsInAlarm.Count > 0)
             {
                 Logger.LogMessageToFile(string.Format("CE.CalculationEngine.CheckAlarms; line: {0}; Before sending command", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 Console.WriteLine(ProxyScada.Command(gidsInAlarm));
                 Logger.LogMessageToFile(string.Format("CE.CalculationEngine.CheckAlarms; line: {0}; Command sent", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             }
-
-            return delta;
         }
 
         public void Subscribe()

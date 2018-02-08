@@ -31,8 +31,8 @@ namespace AMIClient.ViewModels
         private Visibility datePick = Visibility.Hidden;
         private Visibility dateTimePick = Visibility.Hidden;
         private ResolutionType resolution;
-        public SeriesCollection SeriesCollection { get; set; }
-        public string[] Labels = new string[] { };
+        private SeriesCollection dataHistoryPX;
+        private string[] dataHistoryPY = new string[3];
 
         public ChartViewModel()
         {
@@ -40,20 +40,40 @@ namespace AMIClient.ViewModels
             dataHistoryQ = new List<KeyValuePair<DateTime, float>>();
             dataHistoryV = new List<KeyValuePair<DateTime, float>>();
             this.ShowDataCommand.RaiseCanExecuteChanged();
-            SeriesCollection = new SeriesCollection
-            {
-                //new LineSeries
-                //{
-                //    Values = new ChartValues<double> { 4, 6, 5, 2 ,7 }
-                //}
-            };
+            DataHistoryPX = new SeriesCollection();
 
-            SeriesCollection.Add(new LineSeries
+            DataHistoryPX.Add(new LineSeries
             {
-                Values = new ChartValues<double> { 67, 12, 56, 99, -10 },
+                //Values = new ChartValues<double> { 67, 12, 56, 99, -10 },
                 LineSmoothness = 0, //straight lines, 1 really smooth lines
                 
             });
+
+            List<KeyValuePair<DateTime, float>> tempP = new List<KeyValuePair<DateTime, float>>();
+            Statistics s1 = new Statistics();
+            Statistics s2 = new Statistics();
+            Statistics s3 = new Statistics();
+            s1.TimeStamp = new DateTime(2018, 2, 8);
+            s2.TimeStamp = new DateTime(2018, 2, 8);
+            s3.TimeStamp = new DateTime(2018, 2, 8);
+            s1.TimeStamp = s1.TimeStamp.AddHours(14);
+            s2.TimeStamp = s2.TimeStamp.AddHours(15);
+            s3.TimeStamp = s3.TimeStamp.AddHours(16);
+            s1.TimeStamp.AddMinutes(15);
+            s2.TimeStamp.AddMinutes(30);
+            s3.TimeStamp.AddMinutes(45);
+            s1.AvgP = 90;
+            s2.AvgP = 20;
+            s3.AvgP = 80;
+
+            DataHistoryPX[0].Values = new ChartValues<float>();
+            DataHistoryPX[0].Values.Add(s1.AvgP);
+            DataHistoryPX[0].Values.Add(s2.AvgP);
+            DataHistoryPX[0].Values.Add(s3.AvgP);
+            int cnt = -1;
+            DataHistoryPY[0] = s1.TimeStamp.Hour.ToString();
+            DataHistoryPY[1] = s2.TimeStamp.Hour.ToString();
+            DataHistoryPY[2] = s3.TimeStamp.Hour.ToString();
         }
 
         public static ChartViewModel Instance
@@ -80,6 +100,34 @@ namespace AMIClient.ViewModels
             {
                 this.dataHistoryP = value;
                 RaisePropertyChanged("DataHistoryP");
+            }
+        }
+
+        public SeriesCollection DataHistoryPX
+        {
+            get
+            {
+                return dataHistoryPX;
+            }
+
+            set
+            {
+                dataHistoryPX = value;
+                RaisePropertyChanged("DataHistoryPX");
+            }
+        }
+
+        public string[] DataHistoryPY
+        {
+            get
+            {
+                return dataHistoryPY;
+            }
+
+            set
+            {
+                dataHistoryPY = value;
+                RaisePropertyChanged("DataHistoryPY");
             }
         }
 
@@ -223,7 +271,7 @@ namespace AMIClient.ViewModels
                 return this.showDataCommand;
             }
         }
-
+        
         private bool CanShowDataExecute()
         {
             return DateTimeValidation(FromPeriod);
@@ -282,14 +330,14 @@ namespace AMIClient.ViewModels
             List<KeyValuePair<DateTime, float>> tempP = new List<KeyValuePair<DateTime, float>>();
             List<KeyValuePair<DateTime, float>> tempQ = new List<KeyValuePair<DateTime, float>>();
             List<KeyValuePair<DateTime, float>> tempV = new List<KeyValuePair<DateTime, float>>();
-            SeriesCollection[0].Values.Clear();
-            Labels = new string[] { };
+            DataHistoryPX[0].Values.Clear();
+            DataHistoryPY = new string[measForChart.Item1.Count];
             int cnt = -1;
 
             foreach (Statistics dm in measForChart.Item1)
             {
-                SeriesCollection[0].Values.Add(dm.AvgP);
-                Labels[++cnt] = dm.TimeStamp.ToString();
+                DataHistoryPX[0].Values.Add(dm.AvgP);
+                DataHistoryPY[++cnt] = dm.TimeStamp.ToString();
                 tempP.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.AvgP));
                 tempQ.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.AvgQ));
                 tempV.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.AvgV));
