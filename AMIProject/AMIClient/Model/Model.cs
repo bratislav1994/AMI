@@ -31,8 +31,8 @@ namespace AMIClient
         private Dictionary<long, int> positions = new Dictionary<long, int>();
         private Dictionary<long, int> positionsAmi = new Dictionary<long, int>();
         private Dictionary<long, int> positionsAlarm = new Dictionary<long, int>();
-        private ObservableCollection<TableItem> tableItems = new ObservableCollection<TableItem>();
-        private ObservableCollection<ActiveAlarm> tableItemsForActiveAlarm = new ObservableCollection<ActiveAlarm>();
+        private List<TableItem> tableItems = new List<TableItem>();
+        private List<ActiveAlarm> tableItemsForActiveAlarm = new List<ActiveAlarm>();
         private ObservableCollection<ResolvedAlarm> tableItemsForResolvedAlarm = new ObservableCollection<ResolvedAlarm>();
         private RootElement root;
         private bool firstContact = true;
@@ -51,8 +51,11 @@ namespace AMIClient
         private ICollectionView viewTableItemsForResolvedAlarm;
         private Dictionary<long, DynamicMeasurement> changesForAmis = new Dictionary<long, DynamicMeasurement>();
         private DateTime timeOfLastUpdate = DateTime.Now;
+        private DateTime timeOfLastUpdateAlarm = DateTime.Now;
+        private DateTime timeOfLastMeas = DateTime.Now;
         private bool isTest = false;
         private object lockForSmartCache = new object();
+        private object lockForNMS = new object();
 
         public INetworkModelGDAContractDuplexClient GdaQueryProxy
         {
@@ -71,9 +74,9 @@ namespace AMIClient
                         new EndpointAddress("net.tcp://localhost:10000/NetworkModelService/GDADuplexClient"));
                     gdaQueryProxy = factory.CreateChannel();
                     FirstContact = false;
+                    Logger.LogMessageToFile(string.Format("AMIClient.Model.GdaQueryProxy; line: {0}; Channel Client-NMS is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 }
 
-                Logger.LogMessageToFile(string.Format("AMIClient.Model.GdaQueryProxy; line: {0}; Channel Client-NMS is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return gdaQueryProxy;
             }
 
@@ -99,9 +102,9 @@ namespace AMIClient
                         new EndpointAddress("net.tcp://localhost:10006/CalculationEngine/Client"));
                     ceQueryProxy = factoryCE.CreateChannel();
                     FirstContactCE = false;
+                    Logger.LogMessageToFile(string.Format("AMIClient.Model.CEQueryProxy; line: {0}; Channel Client-CE is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 }
 
-                Logger.LogMessageToFile(string.Format("AMIClient.Model.CEQueryProxy; line: {0}; Channel Client-CE is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 return ceQueryProxy;
             }
 
@@ -128,9 +131,8 @@ namespace AMIClient
                         new EndpointAddress("net.tcp://localhost:10008/SmartCache/Client"));
                     scProxy = factorySC.CreateChannel();
                     FirstContactSC = false;
+                    Logger.LogMessageToFile(string.Format("AMIClient.Model.SCProxy; line: {0}; Channel Client-SC is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 }
-
-                Logger.LogMessageToFile(string.Format("AMIClient.Model.SCProxy; line: {0}; Channel Client-SC is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
 
                 return scProxy;
             }
@@ -141,7 +143,7 @@ namespace AMIClient
             }
         }
 
-        public ObservableCollection<TableItem> TableItems
+        public List<TableItem> TableItems
         {
             get
             {
@@ -169,7 +171,7 @@ namespace AMIClient
             }
         }
 
-        public ObservableCollection<ActiveAlarm> TableItemsForActiveAlarm
+        public List<ActiveAlarm> TableItemsForActiveAlarm
         {
             get
             {
@@ -309,7 +311,7 @@ namespace AMIClient
                     ScProxy.Subscribe();
                     if (!isTest)
                     {
-                        ((IContextChannel)ScProxy).OperationTimeout = TimeSpan.FromMinutes(5);
+                        ((IContextChannel)ScProxy).OperationTimeout = TimeSpan.FromHours(1);
                     }
 
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToSC; line: {0}; Client is connected to the SC", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -335,7 +337,7 @@ namespace AMIClient
                     //factoryCE.Endpoint.Binding.SendTimeout = TimeSpan.FromMinutes(1);
                     if (!isTest)
                     {
-                        ((IContextChannel)CEQueryProxy).OperationTimeout = TimeSpan.FromMinutes(5);
+                        ((IContextChannel)CEQueryProxy).OperationTimeout = TimeSpan.FromHours(1);
                     }
 
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client is connected to the CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -384,7 +386,10 @@ namespace AMIClient
             {
                 try
                 {
-                    GdaQueryProxy.Ping();
+                    lock (lockForNMS)
+                    {
+                        GdaQueryProxy.Ping();
+                    }
                 }
                 catch
                 {
@@ -413,52 +418,70 @@ namespace AMIClient
         public List<GeographicalRegion> GetAllRegions()
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllRegions; line: {0}; Start the GetAllRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            List<IdentifiedObject> results = GetExtentValues(ModelCode.GEOREGION);
             List<GeographicalRegion> retVal = new List<GeographicalRegion>();
 
-            foreach (GeographicalRegion gr in results)
+            lock (lockForNMS)
             {
-                retVal.Add(gr);
+                List<IdentifiedObject> results = GetExtentValues(ModelCode.GEOREGION);
+                
+                foreach (GeographicalRegion gr in results)
+                {
+                    retVal.Add(gr);
+                }
             }
 
-            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllRegions; line: {0}; Start the GetAllRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllRegions; line: {0}; Finish the GetAllRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             return retVal;
         }
 
         public List<IdentifiedObject> GetAllAmis()
         {
-            return GetExtentValues(ModelCode.ENERGYCONS);
+            lock (lockForNMS)
+            {
+                return GetExtentValues(ModelCode.ENERGYCONS);
+            }
         }
 
         public void GetAllTableItems()
         {
-            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllAmis; line: {0}; Start the GetAllAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            List<IdentifiedObject> geoRegions = GetExtentValues(ModelCode.GEOREGION);
+            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllAmis; line: {0}; Start the GetAllTableItems function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            List<long> gidsInTable = new List<long>();
+            List<IdentifiedObject> geoRegions = new List<IdentifiedObject>();
+
+
+            lock (lockForNMS)
+            {
+                geoRegions = GetExtentValues(ModelCode.GEOREGION);
+            }
 
             ClearTableItems();
             ClearPositions();
 
             foreach (IdentifiedObject io in geoRegions)
             {
+                gidsInTable.Add(io.GlobalId);
                 TableItems.Add(new TableItem(io) { Type = HelperClasses.DataGridType.GEOGRAPHICALREGION });
                 positions.Add(io.GlobalId, TableItems.Count - 1);
                 List<IdentifiedObject> subGeoRegions = GetSomeSubregions(io.GlobalId);
 
                 foreach (IdentifiedObject io1 in subGeoRegions)
                 {
+                    gidsInTable.Add(io1.GlobalId);
                     TableItems.Add(new TableItem(io1) { Type = HelperClasses.DataGridType.SUBGEOGRAPHICALREGION });
                     positions.Add(io1.GlobalId, TableItems.Count - 1);
                     List<IdentifiedObject> substations = GetSomeSubstations(io1.GlobalId);
 
                     foreach (IdentifiedObject io2 in substations)
                     {
+                        gidsInTable.Add(io2.GlobalId);
                         TableItems.Add(new TableItem(io2) { Type = HelperClasses.DataGridType.SUBSTATION });
                         positions.Add(io2.GlobalId, TableItems.Count - 1);
                     }
                 }
             }
-
-            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllAmis; line: {0}; Start the GetAllAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            
+            GetLastMeasurements(gidsInTable);
+            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllAmis; line: {0}; Finish the GetAllTableItems function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
         private List<IdentifiedObject> GetExtentValues(ModelCode modelCode)
@@ -536,7 +559,13 @@ namespace AMIClient
             Association associtaion = new Association();
             associtaion.PropertyId = ModelCode.GEOREGION_SUBGEOREGIONS;
             associtaion.Type = ModelCode.SUBGEOREGION;
-            List<IdentifiedObject> results = GetRelatedValues(regionId, properties, associtaion, ModelCode.SUBGEOREGION);
+            List<IdentifiedObject> results = new List<IdentifiedObject>();
+
+            lock (lockForNMS)
+            {
+                results = GetRelatedValues(regionId, properties, associtaion, ModelCode.SUBGEOREGION);
+            }
+
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubregions; line: {0}; Finish the GetSomeSubregions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
 
             return results;
@@ -549,8 +578,13 @@ namespace AMIClient
             Association associtaion = new Association();
             associtaion.PropertyId = ModelCode.SUBGEOREGION_SUBS;
             associtaion.Type = ModelCode.SUBSTATION;
-            List<IdentifiedObject> results = GetRelatedValues(subRegionId, properties, associtaion, ModelCode.SUBSTATION);
-            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubstation; line: {0}; Start the GetSomeSubstation function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            List<IdentifiedObject> results = new List<IdentifiedObject>();
+
+            lock (lockForNMS)
+            {
+                results = GetRelatedValues(subRegionId, properties, associtaion, ModelCode.SUBSTATION);
+            }
+            Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubstation; line: {0}; Finish the GetSomeSubstation function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
 
             return results;
         }
@@ -561,28 +595,15 @@ namespace AMIClient
             Association associtaion = new Association();
             associtaion.PropertyId = ModelCode.EQCONTAINER_EQUIPMENTS;
             associtaion.Type = ModelCode.ENERGYCONS;
-            List<IdentifiedObject> results = GetRelatedValues(substationId, properties, associtaion, ModelCode.ENERGYCONS);
+            List<IdentifiedObject> results = new List<IdentifiedObject>();
+
+            lock (lockForNMS)
+            {
+                results = GetRelatedValues(substationId, properties, associtaion, ModelCode.ENERGYCONS);
+            }
 
             return results;
         }
-
-        //public void GetSomeTableItems(long substationId, bool returnValue)
-        //{
-        //    Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeAmis; line: {0}; Start the GetSomeAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-        //    List<ModelCode> properties = modelResourcesDesc.GetAllPropertyIds(ModelCode.ENERGYCONS);
-        //    Association associtaion = new Association();
-        //    associtaion.PropertyId = ModelCode.EQCONTAINER_EQUIPMENTS;
-        //    associtaion.Type = ModelCode.ENERGYCONS;
-        //    List<IdentifiedObject> results = GetRelatedValues(substationId, properties, associtaion, ModelCode.ENERGYCONS);
-
-        //    foreach (EnergyConsumer ec in results)
-        //    {
-        //        AmiTableItems.Add(new TableItem(ec) { Type = HelperClasses.DataGridType.ENERGY_CONSUMER });
-        //        positionsAmi.Add(ec.GlobalId, TableItems.Count - 1);
-        //    }
-
-        //    Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeAmis; line: {0}; Finish the GetSomeAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-        //}
 
         private List<IdentifiedObject> GetRelatedValues(long source, List<ModelCode> propIds, Association association, ModelCode modelCode)
         {
@@ -655,34 +676,43 @@ namespace AMIClient
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllAmis; line: {0}; Start the GetAllAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             ClearTableItems();
             ClearPositions();
+            List<long> gidsInTable = new List<long>();
             List<IdentifiedObject> subGeoRegions = GetSomeSubregions(globalId);
 
             foreach (IdentifiedObject io1 in subGeoRegions)
             {
+                gidsInTable.Add(io1.GlobalId);
                 TableItems.Add(new TableItem(io1) { Type = HelperClasses.DataGridType.SUBGEOGRAPHICALREGION });
                 positions.Add(io1.GlobalId, TableItems.Count - 1);
                 List<IdentifiedObject> substations = GetSomeSubstations(io1.GlobalId);
 
                 foreach (IdentifiedObject io2 in substations)
                 {
+                    gidsInTable.Add(io2.GlobalId);
                     TableItems.Add(new TableItem(io2) { Type = HelperClasses.DataGridType.SUBSTATION });
                     positions.Add(io2.GlobalId, TableItems.Count - 1);
                 }
             }
+
+            GetLastMeasurements(gidsInTable);
         }
 
         public void GetSomeTableItemsForSubGeoRegion(long globalId)
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllAmis; line: {0}; Start the GetAllAmis function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             ClearTableItems();
+            List<long> gidsInTable = new List<long>();
             ClearPositions();
             List<IdentifiedObject> substations = GetSomeSubstations(globalId);
 
             foreach (IdentifiedObject io2 in substations)
             {
+                gidsInTable.Add(io2.GlobalId);
                 TableItems.Add(new TableItem(io2) { Type = HelperClasses.DataGridType.SUBSTATION });
                 positions.Add(io2.GlobalId, TableItems.Count - 1);
             }
+
+            GetLastMeasurements(gidsInTable);
         }
 
         #endregion GDAQueryService
@@ -694,9 +724,12 @@ namespace AMIClient
 
         public void NewDeltaApplied()
         {
-            lock (this.root.LockObject)
+            lock (lockForNMS)
             {
-                this.root.NeedsUpdate = true;
+                lock (this.root.LockObject)
+                {
+                    this.root.NeedsUpdate = true;
+                }
             }
         }
 
@@ -713,6 +746,8 @@ namespace AMIClient
         {
             lock (lockObj)
             {
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.Updatetables; line: {0}; Update started", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+
                 if (TableItems.Count == 0)
                 {
                     positions.Clear();
@@ -727,10 +762,7 @@ namespace AMIClient
                         TableItems[positions[dm.PsrRef]].CurrentP = dm.CurrentP != -1 ? dm.CurrentP : TableItems[positions[dm.PsrRef]].CurrentP;
                         TableItems[positions[dm.PsrRef]].CurrentQ = dm.CurrentQ != -1 ? dm.CurrentQ : TableItems[positions[dm.PsrRef]].CurrentQ;
                         TableItems[positions[dm.PsrRef]].CurrentV = dm.CurrentV != -1 ? dm.CurrentV : TableItems[positions[dm.PsrRef]].CurrentV;
-                        App.Current.Dispatcher.Invoke((Action)delegate
-                        {
-                            TableItems[positions[dm.PsrRef]].Status = dm.IsAlarm ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Green);
-                        });
+                        TableItems[positions[dm.PsrRef]].IsAlarm = dm.IsAlarm;
                     }
 
                     if ((DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(dm.PsrRef) == DMSType.ENERGYCONS)
@@ -738,20 +770,33 @@ namespace AMIClient
                         changesForAmis.Add(dm.PsrRef, dm);
                     }
                 }
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.Updatetables; line: {0}; Update finished", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+
+                this.timeOfLastMeas = DateTime.Now;
             }
         }
 
-        public void GetLastMeasurements()
+        public void GetLastMeasurements(List<long> gidsInTable)
         {
             lock (lockForSmartCache)
             {
-                this.UpdateTables(this.ScProxy.GetLastMeas());
+                this.UpdateTables(this.ScProxy.GetLastMeas(gidsInTable));
             }
         }
 
         public bool NewChangesAvailable(DateTime lastUpdate)
         {
             return DateTime.Compare(lastUpdate, this.timeOfLastUpdate) < 0;
+        }
+
+        public bool NewChangesAvailableAlarm(DateTime lastUpdate)
+        {
+            return DateTime.Compare(lastUpdate, this.timeOfLastUpdateAlarm) < 0;
+        }
+
+        public bool NewChangesAvailableMeas(DateTime lastUpdate)
+        {
+            return DateTime.Compare(lastUpdate, this.timeOfLastMeas) < 0;
         }
 
         public Dictionary<long, DynamicMeasurement> GetChanges(List<long> gids)
@@ -772,9 +817,29 @@ namespace AMIClient
             return retVal;
         }
 
+        public List<ActiveAlarm> GetChangesAlarm()
+        {
+            return this.TableItemsForActiveAlarm;
+        }
+
+        public List<TableItem> GetChangesMeas()
+        {
+            return this.TableItems;
+        }
+
         public DateTime GetTimeOfTheLastUpdate()
         {
             return this.timeOfLastUpdate;
+        }
+
+        public DateTime GetTimeOfTheLastUpdateAlarm()
+        {
+            return this.timeOfLastUpdateAlarm;
+        }
+
+        public DateTime GetTimeOfTheLastUpdateMeas()
+        {
+            return this.timeOfLastMeas;
         }
 
         public void ClearTableItems()
@@ -805,48 +870,46 @@ namespace AMIClient
 
         public void SendAlarm(DeltaForAlarm delta)
         {
+            Logger.LogMessageToFile(string.Format("AMIClient.Model.UpdateAlarms; line: {0}; Update alarms started", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+
             foreach (ActiveAlarm alarm in delta.InsertOperations)
             {
-                App.Current.Dispatcher.Invoke((Action)delegate
+                TableItemsForActiveAlarm.Add(new ActiveAlarm()
                 {
-                    TableItemsForActiveAlarm.Add(new ActiveAlarm()
-                    {
-                        Id = alarm.Id,
-                        Consumer = alarm.Consumer,
-                        FromPeriod = alarm.FromPeriod,
-                        Voltage = alarm.Voltage,
-                        TypeVoltage = alarm.TypeVoltage
-                    });
-                    positionsAlarm.Add(alarm.Id, TableItemsForActiveAlarm.Count - 1);
+                    Id = alarm.Id,
+                    Consumer = alarm.Consumer,
+                    FromPeriod = alarm.FromPeriod,
+                    Voltage = alarm.Voltage,
+                    TypeVoltage = alarm.TypeVoltage
                 });
+                positionsAlarm.Add(alarm.Id, TableItemsForActiveAlarm.Count - 1);
             }
 
             foreach (long psrRef in delta.DeleteOperations)
             {
                 if (positionsAlarm.ContainsKey(psrRef))
                 {
-                    App.Current.Dispatcher.Invoke((Action)delegate
+                    int emptyPosition = positionsAlarm[psrRef];
+                    List<long> temp = new List<long>();
+                    TableItemsForActiveAlarm.RemoveAt(emptyPosition);
+                    positionsAlarm.Remove(psrRef);
+
+                    foreach (long key in positionsAlarm.Keys)
                     {
-                        int emptyPosition = positionsAlarm[psrRef];
-                        List<long> temp = new List<long>();
-                        TableItemsForActiveAlarm.RemoveAt(emptyPosition);
-                        positionsAlarm.Remove(psrRef);
-
-                        foreach (long key in positionsAlarm.Keys)
+                        if (positionsAlarm[key] > emptyPosition)
                         {
-                            if (positionsAlarm[key] > emptyPosition)
-                            {
-                                temp.Add(key);
-                            }
+                            temp.Add(key);
                         }
+                    }
 
-                        foreach (long key in temp)
-                        {
-                            positionsAlarm[key] -= 1;
-                        }
-                    });
+                    foreach (long key in temp)
+                    {
+                        positionsAlarm[key] -= 1;
+                    }
                 }
             }
+            Logger.LogMessageToFile(string.Format("AMIClient.Model.UpdateAlarms; line: {0}; Update alarms finished", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            this.timeOfLastUpdateAlarm = DateTime.Now;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

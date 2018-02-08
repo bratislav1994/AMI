@@ -77,7 +77,7 @@ namespace AMIClient
                         base.Model.ClearPositions();
                         base.Model.ClearTableItems();
                         base.Model.GetSomeTableItemsForGeoRegion(this.GeoRegion.GlobalId);
-                        this.Model.GetLastMeasurements();
+                        //this.Model.GetLastMeasurements();
                         this.OnPropertyChanged("IsSelected");
                         Logger.LogMessageToFile(string.Format("AMIClient.GeoRegionForTree.IsSelected; line: {0}; Finish - get all ami for the selected region", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     }

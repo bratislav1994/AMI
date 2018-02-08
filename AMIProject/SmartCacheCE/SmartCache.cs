@@ -72,11 +72,19 @@ namespace SmartCacheCE
 
         public void SendMeasurements(Dictionary<long, DynamicMeasurement> measurements)
         {
-            this.measurements.Clear();
+            Logger.LogMessageToFile(string.Format("SC.SmartCache.SendMeasurements; line: {0}; Measurements received", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            //this.measurements.Clear();
 
             foreach (KeyValuePair<long, DynamicMeasurement> kvp in measurements)
             {
-                this.measurements.Add(kvp.Key, kvp.Value);
+                if (this.measurements.ContainsKey(kvp.Key))
+                {
+                    this.measurements[kvp.Key] = kvp.Value;
+                }
+                else
+                {
+                    this.measurements.Add(kvp.Key, kvp.Value);
+                }
             }
 
             clientsForDeleting.Clear();
@@ -100,6 +108,7 @@ namespace SmartCacheCE
             {
                 clients.Remove(client);
             }
+            Logger.LogMessageToFile(string.Format("SC.SmartCache.SendMeasurements; line: {0}; Measurements sent", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
         public void Subscribe()
@@ -110,16 +119,26 @@ namespace SmartCacheCE
             }
         }
 
-        public List<DynamicMeasurement> GetLastMeas()
+        public List<DynamicMeasurement> GetLastMeas(List<long> gidsInTable)
         {
             lock (lockObjectForClient)
             {
-                return this.measurements.Values.ToList();
+                List<DynamicMeasurement> retVal = new List<DynamicMeasurement>();
+                foreach (long gid in gidsInTable)
+                {
+                    if (measurements.ContainsKey(gid))
+                    {
+                        retVal.Add(measurements[gid]);
+                    }
+                }
+
+                return retVal;
             }
         }
 
         public void SendAlarm(DeltaForAlarm delta)
         {
+            Logger.LogMessageToFile(string.Format("SC.SmartCache.SendAlarm; line: {0}; Alarms sent", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             clientsForDeleting.Clear();
 
             foreach (IModelForDuplex client in clients)
@@ -141,6 +160,7 @@ namespace SmartCacheCE
             {
                 clients.Remove(client);
             }
+            Logger.LogMessageToFile(string.Format("SC.SmartCache.SendAlarm; line: {0}; Alarms sent", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
     }
 }

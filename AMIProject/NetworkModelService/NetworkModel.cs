@@ -338,32 +338,35 @@ namespace FTN.Services.NetworkModelService
         /// <returns>Resource iterator for the requested entities</returns>
         public ResourceIterator GetExtentValues(ModelCode entityType, List<ModelCode> properties)
         {
-            CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Getting extent values for entity type = {0} .", entityType);
-
-            try
+            lock (LockObjectClient)
             {
-                List<long> globalIds = new List<long>();
-                Dictionary<DMSType, List<ModelCode>> class2PropertyIDs = new Dictionary<DMSType, List<ModelCode>>();
+                CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Getting extent values for entity type = {0} .", entityType);
 
-                DMSType entityDmsType = ModelCodeHelper.GetTypeFromModelCode(entityType);
-
-                if (ContainerExists(entityDmsType))
+                try
                 {
-                    Container container = GetContainer(entityDmsType);
-                    globalIds = container.GetEntitiesGlobalIds();
-                    class2PropertyIDs.Add(entityDmsType, properties);
+                    List<long> globalIds = new List<long>();
+                    Dictionary<DMSType, List<ModelCode>> class2PropertyIDs = new Dictionary<DMSType, List<ModelCode>>();
+
+                    DMSType entityDmsType = ModelCodeHelper.GetTypeFromModelCode(entityType);
+
+                    if (ContainerExists(entityDmsType))
+                    {
+                        Container container = GetContainer(entityDmsType);
+                        globalIds = container.GetEntitiesGlobalIds();
+                        class2PropertyIDs.Add(entityDmsType, properties);
+                    }
+
+                    ResourceIterator ri = new ResourceIterator(globalIds, class2PropertyIDs);
+
+                    CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Getting extent values for entity type = {0} succedded.", entityType);
+
+                    return ri;
                 }
-
-                ResourceIterator ri = new ResourceIterator(globalIds, class2PropertyIDs);
-
-                CommonTrace.WriteTrace(CommonTrace.TraceVerbose, "Getting extent values for entity type = {0} succedded.", entityType);
-
-                return ri;
-            }
-            catch (Exception ex)
-            {
-                string message = string.Format("Failed to get extent values for entity type = {0}. {1}", entityType, ex.Message);
-                throw new Exception(message);
+                catch (Exception ex)
+                {
+                    string message = string.Format("Failed to get extent values for entity type = {0}. {1}", entityType, ex.Message);
+                    throw new Exception(message);
+                }
             }
         }
 
@@ -378,36 +381,39 @@ namespace FTN.Services.NetworkModelService
         /// <returns>Resource iterator for the requested entities</returns>
         public ResourceIterator GetRelatedValues(long source, List<ModelCode> properties, Association association)
         {
-            CommonTrace.WriteTrace(CommonTrace.TraceVerbose, String.Format("Getting related values for source = 0x{0:x16}.", source));
-
-            try
+            lock (LockObjectClient)
             {
-                List<long> relatedGids = ApplyAssocioationOnSource(source, association);
+                CommonTrace.WriteTrace(CommonTrace.TraceVerbose, String.Format("Getting related values for source = 0x{0:x16}.", source));
 
-
-                Dictionary<DMSType, List<ModelCode>> class2PropertyIDs = new Dictionary<DMSType, List<ModelCode>>();
-
-                foreach (long relatedGid in relatedGids)
+                try
                 {
-                    DMSType entityDmsType = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(relatedGid);
+                    List<long> relatedGids = ApplyAssocioationOnSource(source, association);
 
-                    if (!class2PropertyIDs.ContainsKey(entityDmsType))
+
+                    Dictionary<DMSType, List<ModelCode>> class2PropertyIDs = new Dictionary<DMSType, List<ModelCode>>();
+
+                    foreach (long relatedGid in relatedGids)
                     {
-                        class2PropertyIDs.Add(entityDmsType, properties);
+                        DMSType entityDmsType = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(relatedGid);
+
+                        if (!class2PropertyIDs.ContainsKey(entityDmsType))
+                        {
+                            class2PropertyIDs.Add(entityDmsType, properties);
+                        }
                     }
+
+                    ResourceIterator ri = new ResourceIterator(relatedGids, class2PropertyIDs);
+
+                    CommonTrace.WriteTrace(CommonTrace.TraceVerbose, String.Format("Getting related values for source = 0x{0:x16} succeeded.", source));
+
+                    return ri;
                 }
-
-                ResourceIterator ri = new ResourceIterator(relatedGids, class2PropertyIDs);
-
-                CommonTrace.WriteTrace(CommonTrace.TraceVerbose, String.Format("Getting related values for source = 0x{0:x16} succeeded.", source));
-
-                return ri;
-            }
-            catch (Exception ex)
-            {
-                string message = String.Format("Failed to get related values for source GID = 0x{0:x16}. {1}.", source, ex.Message);
-                CommonTrace.WriteTrace(CommonTrace.TraceError, message);
-                throw new Exception(message);
+                catch (Exception ex)
+                {
+                    string message = String.Format("Failed to get related values for source GID = 0x{0:x16}. {1}.", source, ex.Message);
+                    CommonTrace.WriteTrace(CommonTrace.TraceError, message);
+                    throw new Exception(message);
+                }
             }
         }
 

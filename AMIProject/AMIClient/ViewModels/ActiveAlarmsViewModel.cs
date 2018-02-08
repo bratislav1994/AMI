@@ -4,9 +4,11 @@ using FTN.Common;
 using FTN.Common.ClassesForAlarmDB;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
@@ -19,9 +21,14 @@ namespace AMIClient.ViewModels
         private Dictionary<string, string> columnFilters;
         private string consumerFilter = string.Empty;
         private string typeVoltageFilter = string.Empty;
+        private ObservableCollection<ActiveAlarm> tableItemsForActiveAlarm = new ObservableCollection<ActiveAlarm>();
+        private DateTime timeOfLastUpdateAlarm = DateTime.Now;
+        private Thread checkIfThereAreNewUpdates;
 
         public ActiveAlarmsViewModel()
         {
+            this.checkIfThereAreNewUpdates = new Thread(() => CheckForUpdates());
+            this.checkIfThereAreNewUpdates.Start();
         }
 
         public void SetModel(Model model)
@@ -30,8 +37,17 @@ namespace AMIClient.ViewModels
             columnFilters = new Dictionary<string, string>();
             columnFilters[DataGridAlarmHeader.Consumer.ToString()] = string.Empty;
             columnFilters[DataGridAlarmHeader.TypeVoltage.ToString()] = string.Empty;
-            this.Model.ViewTableItemsForActiveAlarm = new CollectionViewSource { Source = this.Model.TableItemsForActiveAlarm }.View;
-            this.Model.ViewTableItemsForActiveAlarm = CollectionViewSource.GetDefaultView(this.Model.TableItemsForActiveAlarm);
+            this.Model.ViewTableItemsForActiveAlarm = new CollectionViewSource { Source = this.TableItemsForActiveAlarm }.View;
+            this.Model.ViewTableItemsForActiveAlarm = CollectionViewSource.GetDefaultView(this.TableItemsForActiveAlarm);
+            List<ActiveAlarm> changes = this.Model.GetChangesAlarm();
+
+            foreach (ActiveAlarm alarm in changes)
+            {
+                App.Current.Dispatcher.Invoke((Action)delegate
+                {
+                    this.TableItemsForActiveAlarm.Add(alarm);
+                });
+            }
         }
 
         public static ActiveAlarmsViewModel Instance
@@ -92,6 +108,20 @@ namespace AMIClient.ViewModels
             }
         }
 
+        public ObservableCollection<ActiveAlarm> TableItemsForActiveAlarm
+        {
+            get
+            {
+                return tableItemsForActiveAlarm;
+            }
+
+            set
+            {
+                tableItemsForActiveAlarm = value;
+                RaisePropertyChanged("TableItemsForActiveAlarm");
+            }
+        }
+
         #region filter
 
         public void OnFilterApply()
@@ -131,6 +161,33 @@ namespace AMIClient.ViewModels
         }
 
         #endregion
+
+        private void CheckForUpdates()
+        {
+            while (true)
+            {
+                if (this.Model != null)
+                {
+                    if (this.Model.NewChangesAvailableAlarm(this.timeOfLastUpdateAlarm))
+                    {
+                        this.timeOfLastUpdateAlarm = this.Model.GetTimeOfTheLastUpdateAlarm();
+                        List<ActiveAlarm> changes = this.Model.GetChangesAlarm();
+
+                        App.Current.Dispatcher.Invoke((Action)delegate
+                        {
+                            this.TableItemsForActiveAlarm.Clear();
+
+                            foreach (ActiveAlarm alarm in changes)
+                            {
+                                this.TableItemsForActiveAlarm.Add(alarm);
+                            }
+                        });
+                    }
+                }
+
+                Thread.Sleep(1000);
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
