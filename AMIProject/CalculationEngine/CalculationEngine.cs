@@ -58,7 +58,7 @@ namespace CalculationEngine
             //f.DbAdapter = dataBaseAdapter;
             //f.TimeSeriesDbAdapter = timeSeriesDataBaseAdapter;
             //f.Fill();
-            this.DoUndoneFill();
+            //this.DoUndoneFill();
             //
             geoRegions = new Dictionary<long, GeographicalRegionDb>();
             subGeoRegions = new Dictionary<long, SubGeographicalRegionDb>();
