@@ -1,6 +1,8 @@
 ﻿using FTN.Common;
 using FTN.Common.Filter;
 using FTN.Services.NetworkModelService.DataModel.Dynamic;
+using LiveCharts;
+using LiveCharts.Wpf;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -40,6 +42,12 @@ namespace AMIClient.ViewModels
         private List<ConsumerType> consumerTypeCb;
         private ConsumerType consumerTypeSelected;
         private bool isConsumerTypeCheckBoxEnabled;
+        private SeriesCollection dataHistoryPX;
+        private string[] dataHistoryPY = new string[3];
+        private SeriesCollection dataHistoryQX;
+        private string[] dataHistoryQY = new string[3];
+        private SeriesCollection dataHistoryVX;
+        private string[] dataHistoryVY = new string[3];
 
         public ConsumptionStatisticViewModel()
         {
@@ -52,6 +60,70 @@ namespace AMIClient.ViewModels
             dataHistoryQ = new List<KeyValuePair<DateTime, float>>();
             dataHistoryV = new List<KeyValuePair<DateTime, float>>();
             this.ShowDataCommand.RaiseCanExecuteChanged();
+            DataHistoryPX = new SeriesCollection();
+            DataHistoryQX = new SeriesCollection();
+            DataHistoryVX = new SeriesCollection();
+
+            DataHistoryPX.Add(new LineSeries
+            {
+                //Values = new ChartValues<double> { 67, 12, 56, 99, -10 },
+                LineSmoothness = 0, //straight lines, 1 really smooth lines
+
+            });
+            DataHistoryQX.Add(new LineSeries
+            {
+                //Values = new ChartValues<double> { 67, 12, 56, 99, -10 },
+                LineSmoothness = 0, //straight lines, 1 really smooth lines
+
+            });
+            DataHistoryVX.Add(new LineSeries
+            {
+                //Values = new ChartValues<double> { 67, 12, 56, 99, -10 },
+                LineSmoothness = 0, //straight lines, 1 really smooth lines
+
+            });
+
+            List<KeyValuePair<DateTime, float>> tempP = new List<KeyValuePair<DateTime, float>>();
+            Statistics s1 = new Statistics();
+            Statistics s2 = new Statistics();
+            Statistics s3 = new Statistics();
+            s1.TimeStamp = new DateTime(2018, 2, 8);
+            s2.TimeStamp = new DateTime(2018, 2, 8);
+            s3.TimeStamp = new DateTime(2018, 2, 8);
+            s1.TimeStamp = s1.TimeStamp.AddHours(14);
+            s2.TimeStamp = s2.TimeStamp.AddHours(15);
+            s3.TimeStamp = s3.TimeStamp.AddHours(16);
+            s1.TimeStamp.AddMinutes(15);
+            s2.TimeStamp.AddMinutes(30);
+            s3.TimeStamp.AddMinutes(45);
+            s1.AvgP = 90;
+            s2.AvgP = 20;
+            s3.AvgP = 80;
+
+            DataHistoryPX[0].Values = new ChartValues<float>();
+            DataHistoryPX[0].Values.Add(s1.AvgP);
+            DataHistoryPX[0].Values.Add(s2.AvgP);
+            DataHistoryPX[0].Values.Add(s3.AvgP);
+            int cnt = -1;
+            DataHistoryPY[0] = s1.TimeStamp.Hour.ToString();
+            DataHistoryPY[1] = s2.TimeStamp.Hour.ToString();
+            DataHistoryPY[2] = s3.TimeStamp.Hour.ToString();
+
+            DataHistoryQX[0].Values = new ChartValues<float>();
+            DataHistoryQX[0].Values.Add(s1.AvgP);
+            DataHistoryQX[0].Values.Add(s2.AvgP);
+            DataHistoryQX[0].Values.Add(s3.AvgP);
+            DataHistoryQY[0] = s1.TimeStamp.Hour.ToString();
+            DataHistoryQY[1] = s2.TimeStamp.Hour.ToString();
+            DataHistoryQY[2] = s3.TimeStamp.Hour.ToString();
+
+            DataHistoryVX[0].Values = new ChartValues<float>();
+            DataHistoryVX[0].Values.Add(s1.AvgP);
+            DataHistoryVX[0].Values.Add(s2.AvgP);
+            DataHistoryVX[0].Values.Add(s3.AvgP);
+            DataHistoryVY[0] = s1.TimeStamp.Hour.ToString();
+            DataHistoryVY[1] = s2.TimeStamp.Hour.ToString();
+            DataHistoryVY[2] = s3.TimeStamp.Hour.ToString();
         }
 
         public static ConsumptionStatisticViewModel Instance
@@ -106,6 +178,90 @@ namespace AMIClient.ViewModels
             {
                 this.dataHistoryV = value;
                 RaisePropertyChanged("DataHistoryV");
+            }
+        }
+
+        public SeriesCollection DataHistoryPX
+        {
+            get
+            {
+                return dataHistoryPX;
+            }
+
+            set
+            {
+                dataHistoryPX = value;
+                RaisePropertyChanged("DataHistoryPX");
+            }
+        }
+
+        public string[] DataHistoryPY
+        {
+            get
+            {
+                return dataHistoryPY;
+            }
+
+            set
+            {
+                dataHistoryPY = value;
+                RaisePropertyChanged("DataHistoryPY");
+            }
+        }
+
+        public SeriesCollection DataHistoryQX
+        {
+            get
+            {
+                return dataHistoryQX;
+            }
+
+            set
+            {
+                dataHistoryQX = value;
+                RaisePropertyChanged("DataHistoryQX");
+            }
+        }
+
+        public string[] DataHistoryQY
+        {
+            get
+            {
+                return dataHistoryQY;
+            }
+
+            set
+            {
+                dataHistoryQY = value;
+                RaisePropertyChanged("DataHistoryQY");
+            }
+        }
+
+        public SeriesCollection DataHistoryVX
+        {
+            get
+            {
+                return dataHistoryVX;
+            }
+
+            set
+            {
+                dataHistoryVX = value;
+                RaisePropertyChanged("DataHistoryVX");
+            }
+        }
+
+        public string[] DataHistoryVY
+        {
+            get
+            {
+                return dataHistoryVY;
+            }
+
+            set
+            {
+                dataHistoryVY = value;
+                RaisePropertyChanged("DataHistoryVY");
             }
         }
 
@@ -450,9 +606,24 @@ namespace AMIClient.ViewModels
             List<KeyValuePair<DateTime, float>> tempP = new List<KeyValuePair<DateTime, float>>();
             List<KeyValuePair<DateTime, float>> tempQ = new List<KeyValuePair<DateTime, float>>();
             List<KeyValuePair<DateTime, float>> tempV = new List<KeyValuePair<DateTime, float>>();
+            DataHistoryPX[0].Values.Clear();
+            DataHistoryQX[0].Values.Clear();
+            DataHistoryVX[0].Values.Clear();
+            DataHistoryPY = new string[measForChart.Item1.Count];
+            DataHistoryQY = new string[measForChart.Item1.Count];
+            DataHistoryVY = new string[measForChart.Item1.Count];
+            int cntP = -1;
+            int cntQ = -1;
+            int cntV = -1;
 
             foreach (Statistics dm in measForChart.Item1)
             {
+                DataHistoryPX[0].Values.Add(dm.AvgP);
+                DataHistoryQX[0].Values.Add(dm.AvgQ);
+                DataHistoryVX[0].Values.Add(dm.AvgV);
+                DataHistoryPY[++cntP] = dm.TimeStamp.ToString();
+                DataHistoryQY[++cntQ] = dm.TimeStamp.ToString();
+                DataHistoryVY[++cntV] = dm.TimeStamp.ToString();
                 tempP.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.AvgP));
                 tempQ.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.AvgQ));
                 tempV.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.AvgV));
