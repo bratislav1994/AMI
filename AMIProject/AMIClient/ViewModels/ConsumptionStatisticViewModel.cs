@@ -331,6 +331,10 @@ namespace AMIClient.ViewModels
             set
             {
                 consumerTypeChecked = value;
+                if (value)
+                {
+                    ConsumerTypeSelected = ConsumerTypeCb[0];
+                }
                 RaisePropertyChanged("ConsumerTypeChecked");
             }
         }
@@ -345,6 +349,11 @@ namespace AMIClient.ViewModels
             set
             {
                 consumerTypeCb = value;
+                if (value.Count == 1)
+                {
+                    this.ConsumerTypeSelected = ConsumerTypeCb[0];
+                    this.consumerTypeChecked = true;
+                }
                 RaisePropertyChanged("ConsumerTypeCb");
             }
         }
