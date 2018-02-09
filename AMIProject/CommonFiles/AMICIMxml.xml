@@ -98,8 +98,8 @@
 
 	<cim:EnergyConsumer rdf:ID="EC_1_1">
 		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
-		<cim:EnergyConsumer.pMax>40</cim:EnergyConsumer.pMax>
-		<cim:EnergyConsumer.qMax>4</cim:EnergyConsumer.qMax>
+		<cim:EnergyConsumer.pMax>48</cim:EnergyConsumer.pMax>
+		<cim:EnergyConsumer.qMax>12</cim:EnergyConsumer.qMax>
 		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
 		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
@@ -110,8 +110,8 @@
 	
 	<cim:EnergyConsumer rdf:ID="EC_1_2">
 		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
-		<cim:EnergyConsumer.pMax>40</cim:EnergyConsumer.pMax>
-		<cim:EnergyConsumer.qMax>4</cim:EnergyConsumer.qMax>
+		<cim:EnergyConsumer.pMax>56</cim:EnergyConsumer.pMax>
+		<cim:EnergyConsumer.qMax>8</cim:EnergyConsumer.qMax>
 		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
 		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
@@ -122,8 +122,8 @@
 	
 	<cim:EnergyConsumer rdf:ID="EC_1_3">
 		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
-		<cim:EnergyConsumer.pMax>40</cim:EnergyConsumer.pMax>
-		<cim:EnergyConsumer.qMax>4</cim:EnergyConsumer.qMax>
+		<cim:EnergyConsumer.pMax>36</cim:EnergyConsumer.pMax>
+		<cim:EnergyConsumer.qMax>7</cim:EnergyConsumer.qMax>
 		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
 		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
@@ -134,44 +134,8 @@
 	
 	<cim:EnergyConsumer rdf:ID="EC_1_4">
 		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
-		<cim:EnergyConsumer.pMax>40</cim:EnergyConsumer.pMax>
-		<cim:EnergyConsumer.qMax>4</cim:EnergyConsumer.qMax>
-		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
-		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
-		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
-		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_1"/>
-		<cim:IdentifiedObject.mRID>EC_1_4</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>EConsumer_1_4</cim:IdentifiedObject.name>
-	</cim:EnergyConsumer>
-	
-	<cim:EnergyConsumer rdf:ID="EC_1_5">
-		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
-		<cim:EnergyConsumer.pMax>40</cim:EnergyConsumer.pMax>
-		<cim:EnergyConsumer.qMax>4</cim:EnergyConsumer.qMax>
-		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
-		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
-		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
-		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_2"/>
-		<cim:IdentifiedObject.mRID>EC_1_5</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>EConsumer_1_5</cim:IdentifiedObject.name>
-	</cim:EnergyConsumer>
-	
-	<cim:EnergyConsumer rdf:ID="EC_1_6">
-		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
-		<cim:EnergyConsumer.pMax>40</cim:EnergyConsumer.pMax>
-		<cim:EnergyConsumer.qMax>4</cim:EnergyConsumer.qMax>
-		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
-		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
-		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
-		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_2"/>
-		<cim:IdentifiedObject.mRID>EC_1_6</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>EConsumer_1_6</cim:IdentifiedObject.name>
-	</cim:EnergyConsumer>
-	
-	<cim:EnergyConsumer rdf:ID="EC_1_7">
-		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
-		<cim:EnergyConsumer.pMax>40</cim:EnergyConsumer.pMax>
-		<cim:EnergyConsumer.qMax>4</cim:EnergyConsumer.qMax>
+		<cim:EnergyConsumer.pMax>406</cim:EnergyConsumer.pMax>
+		<cim:EnergyConsumer.qMax>28</cim:EnergyConsumer.qMax>
 		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
 		<cim:EnergyConsumer.consumerType>SHOPPING_CENTER</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_2"/>
@@ -180,64 +144,16 @@
 		<cim:IdentifiedObject.name>EConsumer_1_7</cim:IdentifiedObject.name>
 	</cim:EnergyConsumer>
 	
-	<cim:EnergyConsumer rdf:ID="EC_1_8">
+	<cim:EnergyConsumer rdf:ID="EC_1_5">
 		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
-		<cim:EnergyConsumer.pMax>40</cim:EnergyConsumer.pMax>
-		<cim:EnergyConsumer.qMax>4</cim:EnergyConsumer.qMax>
-		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
-		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
-		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
-		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_3"/>
-		<cim:IdentifiedObject.mRID>EC_1_8</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>EConsumer_1_8</cim:IdentifiedObject.name>
-	</cim:EnergyConsumer>
-	
-	<cim:EnergyConsumer rdf:ID="EC_1_9">
-		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
-		<cim:EnergyConsumer.pMax>40</cim:EnergyConsumer.pMax>
-		<cim:EnergyConsumer.qMax>4</cim:EnergyConsumer.qMax>
-		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
-		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
-		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
-		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_2"/>
-		<cim:IdentifiedObject.mRID>EC_1_9</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>EConsumer_1_9</cim:IdentifiedObject.name>
-	</cim:EnergyConsumer>
-	
-	<cim:EnergyConsumer rdf:ID="EC_1_10">
-		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
-		<cim:EnergyConsumer.pMax>40</cim:EnergyConsumer.pMax>
-		<cim:EnergyConsumer.qMax>4</cim:EnergyConsumer.qMax>
+		<cim:EnergyConsumer.pMax>521</cim:EnergyConsumer.pMax>
+		<cim:EnergyConsumer.qMax>36</cim:EnergyConsumer.qMax>
 		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
 		<cim:EnergyConsumer.consumerType>FIRM</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_3"/>
 		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_3"/>
 		<cim:IdentifiedObject.mRID>EC_1_10</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>EConsumer_1_10</cim:IdentifiedObject.name>
-	</cim:EnergyConsumer>
-	
-	<cim:EnergyConsumer rdf:ID="EC_1_11">
-		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
-		<cim:EnergyConsumer.pMax>40</cim:EnergyConsumer.pMax>
-		<cim:EnergyConsumer.qMax>4</cim:EnergyConsumer.qMax>
-		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
-		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
-		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
-		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_1"/>
-		<cim:IdentifiedObject.mRID>EC_1_11</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>EConsumer_1_11</cim:IdentifiedObject.name>
-	</cim:EnergyConsumer>
-	
-	<cim:EnergyConsumer rdf:ID="EC_1_12">
-		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
-		<cim:EnergyConsumer.pMax>40</cim:EnergyConsumer.pMax>
-		<cim:EnergyConsumer.qMax>4</cim:EnergyConsumer.qMax>
-		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
-		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
-		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
-		<cim:Equipment.EquipmentContainer rdf:resource="#SUB_1_1"/>
-		<cim:IdentifiedObject.mRID>EC_1_12</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>EConsumer_1_12</cim:IdentifiedObject.name>
 	</cim:EnergyConsumer>
 	
 	<cim:Analog rdf:ID="ANALOG_1_1_1">
@@ -283,51 +199,6 @@
 		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_1_5_1</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_5_1</cim:IdentifiedObject.name>
-	</cim:Analog>
-	
-	<cim:Analog rdf:ID="ANALOG_1_6_1">
-		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_6"/>
-		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
-		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
-		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
-		<cim:IdentifiedObject.mRID>ANALOG_1_6_1</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_1_6_1</cim:IdentifiedObject.name>
-	</cim:Analog>
-	
-	<cim:Analog rdf:ID="ANALOG_1_7_1">
-		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_7"/>
-		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
-		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
-		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
-		<cim:IdentifiedObject.mRID>ANALOG_1_7_1</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_1_7_1</cim:IdentifiedObject.name>
-	</cim:Analog>
-	
-	<cim:Analog rdf:ID="ANALOG_1_8_1">
-		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_8"/>
-		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
-		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
-		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
-		<cim:IdentifiedObject.mRID>ANALOG_1_8_1</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_1_8_1</cim:IdentifiedObject.name>
-	</cim:Analog>
-	
-	<cim:Analog rdf:ID="ANALOG_1_9_1">
-		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_9"/>
-		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
-		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
-		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
-		<cim:IdentifiedObject.mRID>ANALOG_1_9_1</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_1_9_1</cim:IdentifiedObject.name>
-	</cim:Analog>
-	
-	<cim:Analog rdf:ID="ANALOG_1_10_1">
-		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_10"/>
-		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
-		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
-		<cim:Measurement.unitSymbol>P</cim:Measurement.unitSymbol>
-		<cim:IdentifiedObject.mRID>ANALOG_1_10_1</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_1_10_1</cim:IdentifiedObject.name>
 	</cim:Analog>
 		
 	<cim:Analog rdf:ID="ANALOG_1_1_2">
@@ -375,52 +246,6 @@
 		<cim:IdentifiedObject.name>ANALOG_1_5_2</cim:IdentifiedObject.name>
 	</cim:Analog>
 	
-	<cim:Analog rdf:ID="ANALOG_1_6_2">
-		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_6"/>
-		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
-		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
-		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
-		<cim:IdentifiedObject.mRID>ANALOG_1_6_2</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_1_6_2</cim:IdentifiedObject.name>
-	</cim:Analog>
-	
-	<cim:Analog rdf:ID="ANALOG_1_7_2">
-		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_7"/>
-		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
-		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
-		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
-		<cim:IdentifiedObject.mRID>ANALOG_1_7_2</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_1_7_2</cim:IdentifiedObject.name>
-	</cim:Analog>
-	
-	<cim:Analog rdf:ID="ANALOG_1_8_2">
-		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_8"/>
-		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
-		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
-		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
-		<cim:IdentifiedObject.mRID>ANALOG_1_8_2</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_1_8_2</cim:IdentifiedObject.name>
-	</cim:Analog>
-	
-	<cim:Analog rdf:ID="ANALOG_1_9_2">
-		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_9"/>
-		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
-		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
-		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
-		<cim:IdentifiedObject.mRID>ANALOG_1_9_2</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_1_9_2</cim:IdentifiedObject.name>
-	</cim:Analog>
-	
-	<cim:Analog rdf:ID="ANALOG_1_10_2">
-		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_10"/>
-		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
-		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
-		<cim:Measurement.unitSymbol>Q</cim:Measurement.unitSymbol>
-		<cim:IdentifiedObject.mRID>ANALOG_1_10_2</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_1_10_2</cim:IdentifiedObject.name>
-	</cim:Analog>
-
-	
 	<cim:Analog rdf:ID="ANALOG_1_1_3">
 		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_1"/>
 		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
@@ -464,51 +289,6 @@
 		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
 		<cim:IdentifiedObject.mRID>ANALOG_1_5_3</cim:IdentifiedObject.mRID>
 		<cim:IdentifiedObject.name>ANALOG_1_5_3</cim:IdentifiedObject.name>
-	</cim:Analog>
-	
-	<cim:Analog rdf:ID="ANALOG_1_6_3">
-		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_6"/>
-		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
-		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
-		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
-		<cim:IdentifiedObject.mRID>ANALOG_1_6_3</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_1_6_3</cim:IdentifiedObject.name>
-	</cim:Analog>
-	
-	<cim:Analog rdf:ID="ANALOG_1_7_3">
-		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_7"/>
-		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
-		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
-		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
-		<cim:IdentifiedObject.mRID>ANALOG_1_7_3</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_1_7_3</cim:IdentifiedObject.name>
-	</cim:Analog>
-	
-	<cim:Analog rdf:ID="ANALOG_1_8_3">
-		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_8"/>
-		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
-		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
-		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
-		<cim:IdentifiedObject.mRID>ANALOG_1_8_3</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_1_8_3</cim:IdentifiedObject.name>
-	</cim:Analog>
-	
-	<cim:Analog rdf:ID="ANALOG_1_9_3">
-		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_9"/>
-		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
-		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
-		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
-		<cim:IdentifiedObject.mRID>ANALOG_1_9_3</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_1_9_3</cim:IdentifiedObject.name>
-	</cim:Analog>
-	
-	<cim:Analog rdf:ID="ANALOG_1_10_3">
-		<cim:Measurement.PowerSystemResource rdf:resource="#EC_1_10"/>
-		<cim:Measurement.rtuAddress>10</cim:Measurement.rtuAddress>
-		<cim:Measurement.signalDirection>READ</cim:Measurement.signalDirection>
-		<cim:Measurement.unitSymbol>V</cim:Measurement.unitSymbol>
-		<cim:IdentifiedObject.mRID>ANALOG_1_10_3</cim:IdentifiedObject.mRID>
-		<cim:IdentifiedObject.name>ANALOG_1_10_3</cim:IdentifiedObject.name>
 	</cim:Analog>
 	
 	<cim:Analog rdf:ID="ANALOGT_1_1_1">
