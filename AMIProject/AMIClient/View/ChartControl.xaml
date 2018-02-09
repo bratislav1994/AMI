@@ -58,11 +58,6 @@
             <Button Grid.Row="1" Grid.Column="0" Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
 
             <lvc:CartesianChart Width="auto" Height="auto" Background="#7EBE8E" Series="{Binding DataHistoryPX}" DataContext="{Binding}" Name="Chart" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
-                <!--<lvc:CartesianChart.Series>
-                    <lvc:LineSeries Values="{Binding DataHistoryP}" DataContext="{Binding}" LineSmoothness="1" StrokeThickness="10" 
-                                DataLabels="True" FontSize="20" Foreground="#6B303030"
-                                Stroke="White" Fill="Transparent" PointGeometrySize="0"/>
-                </lvc:CartesianChart.Series>-->
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis Labels="{Binding DataHistoryPY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
@@ -71,9 +66,9 @@
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Foreground="White" FontSize="14">
+                    <lvc:Axis MinValue="0" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
-                            <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" Step="100" />
+                            <lvc:Separator Step="100" StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
                         </lvc:Axis.Separator>
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisY>
@@ -86,26 +81,26 @@
             <StackPanel Width="120" Grid.Row="2" Grid.Column="3" Background="#7EBE8E" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0, 4, 0, 0">
                 <StackPanel Background="#4CFFFFFF">
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Maximum</TextBlock>
-                    
+
                     <DockPanel>
                         <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.MaxP, StringFormat=F2}"></TextBlock>
                         <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kW</TextBlock>
                     </DockPanel>
-                    
+
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Minimum</TextBlock>
 
                     <DockPanel>
                         <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.MinP, StringFormat=F2}" />
                         <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kW</TextBlock>
                     </DockPanel>
-                    
+
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Average</TextBlock>
 
                     <DockPanel>
                         <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.AvgP, StringFormat=F2}"></TextBlock>
                         <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kW</TextBlock>
                     </DockPanel>
-                    
+
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Consumption</TextBlock>
 
                     <DockPanel>
@@ -114,60 +109,8 @@
                     </DockPanel>
                 </StackPanel>
             </StackPanel>
-            
-
-            <!--<DVC:Chart Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Background="#E3E3E3">
-
-                <DVC:Chart.LegendStyle>
-                    <Style TargetType="Control">
-                        <Setter Property="Width" Value="0"/>
-                        <Setter Property="Height" Value="0"/>
-                    </Style>
-                </DVC:Chart.LegendStyle>
-
-                <DVC:Chart.Series>
-                    <DVC:AreaSeries BorderBrush="White" Background="Red" Title="Data history"
-                    ItemsSource="{Binding DataHistoryP, UpdateSourceTrigger=PropertyChanged}"
-                    DataContext="{Binding}"
-                    IndependentValueBinding="{Binding Path=Key}"
-                    DependentValueBinding="{Binding Path=Value}" Margin="0,0,0,-2"/>
-                </DVC:Chart.Series>
-                
-                
-            </DVC:Chart>
-
-            <StackPanel Grid.Row="2" Grid.Column="3">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Pmax: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.MaxP}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="kW" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Pmin: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.MinP}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="kW" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Pavg: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.AvgP}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="kW" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Energy: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.IntegralP}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="kWh" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-            </StackPanel>-->
 
             <lvc:CartesianChart Width="auto" Height="auto" Background="#7EBE8E" Series="{Binding DataHistoryQX}" DataContext="{Binding}" Name="Chart1" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
-                <!--<lvc:CartesianChart.Series>
-                    <lvc:LineSeries Values="{Binding DataHistoryQ}" DataContext="{Binding}" LineSmoothness="1" StrokeThickness="10" 
-                                DataLabels="True" FontSize="20" Foreground="#6B303030"
-                                Stroke="White" Fill="Transparent" PointGeometrySize="0"/>
-                </lvc:CartesianChart.Series>-->
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis Labels="{Binding DataHistoryQY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
@@ -176,7 +119,7 @@
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Foreground="White" FontSize="14">
+                    <lvc:Axis MinValue="0" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" Step="100" />
                         </lvc:Axis.Separator>
@@ -194,21 +137,21 @@
 
                     <DockPanel>
                         <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.MaxQ, StringFormat=F2}"></TextBlock>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kW</TextBlock>
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kVAr</TextBlock>
                     </DockPanel>
 
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Minimum</TextBlock>
 
                     <DockPanel>
                         <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.MinQ, StringFormat=F2}" />
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kW</TextBlock>
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kVAr</TextBlock>
                     </DockPanel>
 
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Average</TextBlock>
 
                     <DockPanel>
                         <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.AvgQ, StringFormat=F2}"></TextBlock>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kW</TextBlock>
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kVAr</TextBlock>
                     </DockPanel>
 
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Consumption</TextBlock>
@@ -220,57 +163,7 @@
                 </StackPanel>
             </StackPanel>
 
-            <!--<DVC:Chart Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"  Background="#E3E3E3">
-
-                <DVC:Chart.LegendStyle>
-                    <Style TargetType="Control">
-                        <Setter Property="Width" Value="0"/>
-                        <Setter Property="Height" Value="0"/>
-                    </Style>
-                </DVC:Chart.LegendStyle>
-
-                <DVC:Chart.Series>
-                    <DVC:AreaSeries BorderBrush="White" Background="Red" Title="Data history"
-                    
-                    ItemsSource="{Binding DataHistoryQ}"
-                    DataContext="{Binding}"
-                    IndependentValueBinding="{Binding Path=Key}"
-                    DependentValueBinding="{Binding Path=Value}" Margin="0,0,0,-2"/>
-                </DVC:Chart.Series>
-            </DVC:Chart>
-
-            <StackPanel Grid.Row="3" Grid.Column="3">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Qmax: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.MaxQ}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="kVAr" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Qmin: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.MinQ}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="kVAr" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Qavg: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.AvgQ}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="kVAr" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Energy: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.IntegralQ}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="kWh" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-            </StackPanel>-->
-
             <lvc:CartesianChart Width="auto" Height="auto" Background="#7EBE8E" Series="{Binding DataHistoryVX}" DataContext="{Binding}" Name="Chart2" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
-                <!--<lvc:CartesianChart.Series>
-                    <lvc:LineSeries Values="{Binding DataHistoryV}" DataContext="{Binding}" LineSmoothness="1" StrokeThickness="10" 
-                                DataLabels="True" FontSize="20" Foreground="#6B303030"
-                                Stroke="White" Fill="Transparent" PointGeometrySize="0"/>
-                </lvc:CartesianChart.Series>-->
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis Labels="{Binding DataHistoryVY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
@@ -279,7 +172,7 @@
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Foreground="White" FontSize="14">
+                    <lvc:Axis MinValue="0" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" Step="100" />
                         </lvc:Axis.Separator>
@@ -297,69 +190,25 @@
 
                     <DockPanel>
                         <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.MaxV, StringFormat=F2}"></TextBlock>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kW</TextBlock>
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">V</TextBlock>
                     </DockPanel>
 
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Minimum</TextBlock>
 
                     <DockPanel>
                         <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.MinV, StringFormat=F2}" />
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kW</TextBlock>
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">V</TextBlock>
                     </DockPanel>
 
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Average</TextBlock>
 
                     <DockPanel>
                         <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.AvgV, StringFormat=F2}"></TextBlock>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kW</TextBlock>
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">V</TextBlock>
                     </DockPanel>
 
-                    <!--<TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Consumption</TextBlock>
-
-                    <DockPanel>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.IntegralV, StringFormat=F2}"></TextBlock>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kWh</TextBlock>
-                    </DockPanel>-->
                 </StackPanel>
             </StackPanel>
-
-            <!--<DVC:Chart Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Background="#E3E3E3">
-
-                <DVC:Chart.LegendStyle>
-                    <Style TargetType="Control">
-                        <Setter Property="Width" Value="0"/>
-                        <Setter Property="Height" Value="0"/>
-                    </Style>
-                </DVC:Chart.LegendStyle>
-
-                <DVC:Chart.Series>
-                    <DVC:AreaSeries BorderBrush="White" Background="Red" Title="Data history"
-                    ItemsSource="{Binding DataHistoryV}"
-                    DataContext="{Binding}"
-                    IndependentValueBinding="{Binding Path=Key}"
-                    DependentValueBinding="{Binding Path=Value}" Margin="0,0,0,-2"/>
-                </DVC:Chart.Series>
-            </DVC:Chart>
-
-            <StackPanel Grid.Row="4" Grid.Column="3">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Vmax: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.MaxV}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="V" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Vmin: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.MinV}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="V" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Vavg: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.AvgV}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="V" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-            </StackPanel>-->
 
         </Grid>
 

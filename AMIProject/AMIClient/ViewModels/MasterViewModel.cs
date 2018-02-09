@@ -15,10 +15,8 @@ namespace AMIClient.ViewModels
     {
         private NetworkPreviewViewModel tvm;
         private AddCimXmlViewModel xmlvm;
-        private ChartViewModel chartVM;
         private DataGridViewModel dgVM;
         private AlarmSummariesViewModel alarmVM;
-        private ConsumptionStatisticViewModel consumptionVM;
         private Model model;
 
         public MasterViewModel()
@@ -49,19 +47,6 @@ namespace AMIClient.ViewModels
             set
             {
                 tvm = value;
-            }
-        }
-
-        public ChartViewModel ChartVM
-        {
-            get
-            {
-                return chartVM;
-            }
-
-            set
-            {
-                chartVM = value;
             }
         }
 
@@ -99,13 +84,11 @@ namespace AMIClient.ViewModels
             tvm = NetworkPreviewViewModel.Instance;
             tvm.SetModel(Model);
             xmlvm = AddCimXmlViewModel.Instance;
-            //chartVM = new ChartViewModel();
             this.DgVM = DataGridViewModel.Instance;
             this.DgVM.SetModel(Model);
             this.CurrentViewModel = Tvm;
             alarmVM = AlarmSummariesViewModel.Instance;
             this.AlarmVM.SetModel(Model);
-            consumptionVM = new ConsumptionStatisticViewModel();
         }
 
         private object currentViewModel;
@@ -158,44 +141,6 @@ namespace AMIClient.ViewModels
             this.CurrentViewModel = Xmlvm;
         }
 
-        private DelegateCommand chartCommand;
-        public DelegateCommand ChartCommand
-        {
-            get
-            {
-                if (chartCommand == null)
-                {
-                    chartCommand = new DelegateCommand(ChartAction);
-                }
-
-                return chartCommand;
-            }
-        }
-
-        private void ChartAction()
-        {
-            this.CurrentViewModel = ChartVM;
-        }
-
-        private DelegateCommand consumptionStatisticCommand;
-        public DelegateCommand ConsumptionStatisticCommand
-        {
-            get
-            {
-                if (consumptionStatisticCommand == null)
-                {
-                    consumptionStatisticCommand = new DelegateCommand(ConsumptionStatisticAction);
-                }
-
-                return chartCommand;
-            }
-        }
-
-        private void ConsumptionStatisticAction()
-        {
-            this.CurrentViewModel = ConsumptionVM;
-        }
-
         private DelegateCommand alarmSummariesCommand;
         public DelegateCommand AlarmSummariesCommand
         {
@@ -225,19 +170,6 @@ namespace AMIClient.ViewModels
             set
             {
                 dgVM = value;
-            }
-        }
-
-        public ConsumptionStatisticViewModel ConsumptionVM
-        {
-            get
-            {
-                return consumptionVM;
-            }
-
-            set
-            {
-                consumptionVM = value;
             }
         }
 

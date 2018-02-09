@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:AMIClient.View"
              mc:Ignorable="d" 
              xmlns:vml="clr-namespace:AMIClient.VML"
+             xmlns:classes="clr-namespace:AMIClient.Classes"
              xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" 
              xmlns:visualizationToolkit="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit" 
              xmlns:Primitives="clr-namespace:System.Windows.Controls.DataVisualization.Charting.Primitives;assembly=System.Windows.Controls.DataVisualization.Toolkit" 
@@ -31,7 +32,7 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="90"></ColumnDefinition>
-                <ColumnDefinition Width="170"></ColumnDefinition>
+                <ColumnDefinition Width="180"></ColumnDefinition>
                 <ColumnDefinition Width="7*"></ColumnDefinition>
                 <ColumnDefinition Width="150"></ColumnDefinition>
             </Grid.ColumnDefinitions>
@@ -69,7 +70,17 @@
 
                     <DockPanel>
                         <CheckBox Content="Type of day:" Width="110" HorizontalAlignment="Left" IsChecked="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsTypeOfDayCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
-                        <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding TypeOfDayCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding TypeOfDaySelected, UpdateSourceTrigger=PropertyChanged}"/>
+                        <!--<ComboBox HorizontalAlignment="Left" ItemsSource="{Binding TypeOfDayCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding TypeOfDaySelected, UpdateSourceTrigger=PropertyChanged}"/>-->
+                        <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding TypeOfDayCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate DataType="classes:DayOfWeek">
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox IsChecked="{Binding IsChecked}"/>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </DockPanel>
 
                     <DockPanel>
@@ -82,11 +93,6 @@
             </Expander>
 
             <lvc:CartesianChart Width="auto" Height="auto" Background="#7EBE8E" Series="{Binding DataHistoryPX}" DataContext="{Binding}" Name="Chart" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
-                <!--<lvc:CartesianChart.Series>
-                    <lvc:LineSeries Values="{Binding DataHistoryP}" DataContext="{Binding}" LineSmoothness="1" StrokeThickness="10" 
-                                DataLabels="True" FontSize="20" Foreground="#6B303030"
-                                Stroke="White" Fill="Transparent" PointGeometrySize="0"/>
-                </lvc:CartesianChart.Series>-->
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis Labels="{Binding DataHistoryPY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
@@ -95,7 +101,7 @@
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Foreground="White" FontSize="14">
+                    <lvc:Axis MinValue="0" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" Step="100" />
                         </lvc:Axis.Separator>
@@ -140,11 +146,6 @@
             </StackPanel>
 
             <lvc:CartesianChart Width="auto" Height="auto" Background="#7EBE8E" Series="{Binding DataHistoryQX}" DataContext="{Binding}" Name="Chart1" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
-                <!--<lvc:CartesianChart.Series>
-                    <lvc:LineSeries Values="{Binding DataHistoryQ}" DataContext="{Binding}" LineSmoothness="1" StrokeThickness="10" 
-                                DataLabels="True" FontSize="20" Foreground="#6B303030"
-                                Stroke="White" Fill="Transparent" PointGeometrySize="0"/>
-                </lvc:CartesianChart.Series>-->
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis Labels="{Binding DataHistoryQY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
@@ -153,7 +154,7 @@
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Foreground="White" FontSize="14">
+                    <lvc:Axis MinValue="0" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" Step="100" />
                         </lvc:Axis.Separator>
@@ -198,11 +199,6 @@
             </StackPanel>
 
             <lvc:CartesianChart Width="auto" Height="auto" Background="#7EBE8E" Series="{Binding DataHistoryVX}" DataContext="{Binding}" Name="Chart2" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
-                <!--<lvc:CartesianChart.Series>
-                    <lvc:LineSeries Values="{Binding DataHistoryV}" DataContext="{Binding}" LineSmoothness="1" StrokeThickness="10" 
-                                DataLabels="True" FontSize="20" Foreground="#6B303030"
-                                Stroke="White" Fill="Transparent" PointGeometrySize="0"/>
-                </lvc:CartesianChart.Series>-->
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis Labels="{Binding DataHistoryVY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
@@ -211,7 +207,7 @@
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Foreground="White" FontSize="14">
+                    <lvc:Axis MinValue="0" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" Step="100" />
                         </lvc:Axis.Separator>
@@ -247,138 +243,6 @@
                     </DockPanel>
                 </StackPanel>
             </StackPanel>
-
-            <!--<DVC:Chart Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Background="#E3E3E3">
-
-                <DVC:Chart.LegendStyle>
-                    <Style TargetType="Control">
-                        <Setter Property="Width" Value="0"/>
-                        <Setter Property="Height" Value="0"/>
-                    </Style>
-                </DVC:Chart.LegendStyle>
-
-                <DVC:Chart.Series>
-                    <DVC:AreaSeries BorderBrush="White" Background="Red" Title="Data history"
-                    ItemsSource="{Binding DataHistoryP, UpdateSourceTrigger=PropertyChanged}"
-                    DataContext="{Binding}"
-                    IndependentValueBinding="{Binding Path=Key}"
-                    DependentValueBinding="{Binding Path=Value}" Margin="0,0,0,-2"/>
-                </DVC:Chart.Series>
-
-
-            </DVC:Chart>
-
-            <StackPanel Grid.Row="2" Grid.Column="3">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Pmax: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.MaxP}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="kW" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Pmin: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.MinP}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="kW" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Pavg: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.AvgP}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="kW" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Energy: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.IntegralP}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="kWh" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-            </StackPanel>
-
-            <DVC:Chart Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"  Background="#E3E3E3">
-
-                <DVC:Chart.LegendStyle>
-                    <Style TargetType="Control">
-                        <Setter Property="Width" Value="0"/>
-                        <Setter Property="Height" Value="0"/>
-                    </Style>
-                </DVC:Chart.LegendStyle>
-
-                <DVC:Chart.Series>
-                    <DVC:AreaSeries BorderBrush="White" Background="Red" Title="Data history"
-                    
-                    ItemsSource="{Binding DataHistoryQ}"
-                    DataContext="{Binding}"
-                    IndependentValueBinding="{Binding Path=Key}"
-                    DependentValueBinding="{Binding Path=Value}" Margin="0,0,0,-2"/>
-                </DVC:Chart.Series>
-            </DVC:Chart>
-
-            <StackPanel Grid.Row="3" Grid.Column="3">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Qmax: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.MaxQ}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="kVAr" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Qmin: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.MinQ}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="kVAr" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Qavg: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.AvgQ}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="kVAr" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Energy: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.IntegralQ}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="kWh" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-            </StackPanel>
-
-            <DVC:Chart Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Background="#E3E3E3">
-
-                <DVC:Chart.LegendStyle>
-                    <Style TargetType="Control">
-                        <Setter Property="Width" Value="0"/>
-                        <Setter Property="Height" Value="0"/>
-                    </Style>
-                </DVC:Chart.LegendStyle>
-
-                <DVC:Chart.Series>
-                    <DVC:AreaSeries BorderBrush="White" Background="Red" Title="Data history"
-                    ItemsSource="{Binding DataHistoryV}"
-                    DataContext="{Binding}"
-                    IndependentValueBinding="{Binding Path=Key}"
-                    DependentValueBinding="{Binding Path=Value}" Margin="0,0,0,-2"/>
-                </DVC:Chart.Series>
-            </DVC:Chart>
-
-            <StackPanel Grid.Row="4" Grid.Column="3">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Vmax: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.MaxV}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="V" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Vmin: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.MinV}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="V" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Vavg: " HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="50"/>
-                    <Label Content="{Binding Statistics.AvgV}" ContentStringFormat="F2" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="60"/>
-                    <Label Content="V" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="40"/>
-                </StackPanel>
-            </StackPanel>-->
-            
-            
-
         </Grid>
 
     </ScrollViewer>

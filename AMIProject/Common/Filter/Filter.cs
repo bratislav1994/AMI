@@ -11,7 +11,7 @@ namespace FTN.Common.Filter
     public class Filter
     {
         private Season season;
-        private TypeOfDay typeOfDay;
+        private List<DayOfWeek> typeOfDay;
         private ConsumerType consumerType;
         private bool seasonHasValue;
         private bool typeOfDayHasValue;
@@ -19,7 +19,7 @@ namespace FTN.Common.Filter
 
         public Filter()
         {
-
+            this.typeOfDay = new List<DayOfWeek>();
         }
 
         [DataMember]
@@ -37,7 +37,7 @@ namespace FTN.Common.Filter
         }
 
         [DataMember]
-        public TypeOfDay TypeOfDay
+        public List<DayOfWeek> TypeOfDay
         {
             get
             {

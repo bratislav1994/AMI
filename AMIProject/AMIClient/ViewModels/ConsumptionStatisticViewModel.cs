@@ -19,9 +19,6 @@ namespace AMIClient.ViewModels
     public class ConsumptionStatisticViewModel : AvalonDockMVVM.ViewModel.DockWindowViewModel, INotifyPropertyChanged
     {
         private static ConsumptionStatisticViewModel instance;
-        private List<KeyValuePair<DateTime, float>> dataHistoryP;
-        private List<KeyValuePair<DateTime, float>> dataHistoryQ;
-        private List<KeyValuePair<DateTime, float>> dataHistoryV;
         private string fromPeriod;
         private DelegateCommand showDataCommand;
         private Model model;
@@ -35,7 +32,7 @@ namespace AMIClient.ViewModels
         private Season seasonSelected;
         private bool isSeasonCheckBoxEnabled;
         private bool typeOfDayChecked = false;
-        private List<TypeOfDay> typeOfDayCb;
+        private List<Classes.DayOfWeek> typeOfDayCb;
         private TypeOfDay typeOfDaySelected;
         private bool isTypeOfDayCheckBoxEnabled;
         private bool consumerTypeChecked = false;
@@ -43,22 +40,21 @@ namespace AMIClient.ViewModels
         private ConsumerType consumerTypeSelected;
         private bool isConsumerTypeCheckBoxEnabled;
         private SeriesCollection dataHistoryPX;
-        private string[] dataHistoryPY = new string[3];
+        private string[] dataHistoryPY;
         private SeriesCollection dataHistoryQX;
-        private string[] dataHistoryQY = new string[3];
+        private string[] dataHistoryQY;
         private SeriesCollection dataHistoryVX;
-        private string[] dataHistoryVY = new string[3];
+        private string[] dataHistoryVY;
 
         public ConsumptionStatisticViewModel()
         {
             SeasonCb = new List<Season>() { Season.SUMMER, Season.WINTER };
-            TypeOfDayCb = new List<TypeOfDay>() { TypeOfDay.WORKDAY, TypeOfDay.WEEKEND };
+            TypeOfDayCb = new List<AMIClient.Classes.DayOfWeek>() { new Classes.DayOfWeek(DayOfWeek.Monday) , new Classes.DayOfWeek(DayOfWeek.Tuesday), new Classes.DayOfWeek(DayOfWeek.Wednesday),
+                                                                    new Classes.DayOfWeek(DayOfWeek.Thursday), new Classes.DayOfWeek(DayOfWeek.Friday), new Classes.DayOfWeek(DayOfWeek.Saturday),
+                                                                    new Classes.DayOfWeek(DayOfWeek.Sunday)};
             ConsumerTypeCb = new List<ConsumerType>() { ConsumerType.HOUSEHOLD, ConsumerType.FIRM, ConsumerType.SHOPPING_CENTER };
             IsSeasonCheckBoxEnabled = true;
             IsTypeOfDayCheckBoxEnabled = true;
-            dataHistoryP = new List<KeyValuePair<DateTime, float>>();
-            dataHistoryQ = new List<KeyValuePair<DateTime, float>>();
-            dataHistoryV = new List<KeyValuePair<DateTime, float>>();
             this.ShowDataCommand.RaiseCanExecuteChanged();
             DataHistoryPX = new SeriesCollection();
             DataHistoryQX = new SeriesCollection();
@@ -66,64 +62,22 @@ namespace AMIClient.ViewModels
 
             DataHistoryPX.Add(new LineSeries
             {
-                //Values = new ChartValues<double> { 67, 12, 56, 99, -10 },
-                LineSmoothness = 0, //straight lines, 1 really smooth lines
+                Values = new ChartValues<float>(),
+                LineSmoothness = 1, //straight lines, 1 really smooth lines
 
             });
             DataHistoryQX.Add(new LineSeries
             {
-                //Values = new ChartValues<double> { 67, 12, 56, 99, -10 },
-                LineSmoothness = 0, //straight lines, 1 really smooth lines
+                Values = new ChartValues<float>(),
+                LineSmoothness = 1, //straight lines, 1 really smooth lines
 
             });
             DataHistoryVX.Add(new LineSeries
             {
-                //Values = new ChartValues<double> { 67, 12, 56, 99, -10 },
-                LineSmoothness = 0, //straight lines, 1 really smooth lines
+                Values = new ChartValues<float>(),
+                LineSmoothness = 1, //straight lines, 1 really smooth lines
 
             });
-
-            List<KeyValuePair<DateTime, float>> tempP = new List<KeyValuePair<DateTime, float>>();
-            Statistics s1 = new Statistics();
-            Statistics s2 = new Statistics();
-            Statistics s3 = new Statistics();
-            s1.TimeStamp = new DateTime(2018, 2, 8);
-            s2.TimeStamp = new DateTime(2018, 2, 8);
-            s3.TimeStamp = new DateTime(2018, 2, 8);
-            s1.TimeStamp = s1.TimeStamp.AddHours(14);
-            s2.TimeStamp = s2.TimeStamp.AddHours(15);
-            s3.TimeStamp = s3.TimeStamp.AddHours(16);
-            s1.TimeStamp.AddMinutes(15);
-            s2.TimeStamp.AddMinutes(30);
-            s3.TimeStamp.AddMinutes(45);
-            s1.AvgP = 90;
-            s2.AvgP = 20;
-            s3.AvgP = 80;
-
-            DataHistoryPX[0].Values = new ChartValues<float>();
-            DataHistoryPX[0].Values.Add(s1.AvgP);
-            DataHistoryPX[0].Values.Add(s2.AvgP);
-            DataHistoryPX[0].Values.Add(s3.AvgP);
-            int cnt = -1;
-            DataHistoryPY[0] = s1.TimeStamp.Hour.ToString();
-            DataHistoryPY[1] = s2.TimeStamp.Hour.ToString();
-            DataHistoryPY[2] = s3.TimeStamp.Hour.ToString();
-
-            DataHistoryQX[0].Values = new ChartValues<float>();
-            DataHistoryQX[0].Values.Add(s1.AvgP);
-            DataHistoryQX[0].Values.Add(s2.AvgP);
-            DataHistoryQX[0].Values.Add(s3.AvgP);
-            DataHistoryQY[0] = s1.TimeStamp.Hour.ToString();
-            DataHistoryQY[1] = s2.TimeStamp.Hour.ToString();
-            DataHistoryQY[2] = s3.TimeStamp.Hour.ToString();
-
-            DataHistoryVX[0].Values = new ChartValues<float>();
-            DataHistoryVX[0].Values.Add(s1.AvgP);
-            DataHistoryVX[0].Values.Add(s2.AvgP);
-            DataHistoryVX[0].Values.Add(s3.AvgP);
-            DataHistoryVY[0] = s1.TimeStamp.Hour.ToString();
-            DataHistoryVY[1] = s2.TimeStamp.Hour.ToString();
-            DataHistoryVY[2] = s3.TimeStamp.Hour.ToString();
         }
 
         public static ConsumptionStatisticViewModel Instance
@@ -138,49 +92,7 @@ namespace AMIClient.ViewModels
                 return instance;
             }
         }
-
-        public List<KeyValuePair<DateTime, float>> DataHistoryP
-        {
-            get
-            {
-                return this.dataHistoryP;
-            }
-
-            set
-            {
-                this.dataHistoryP = value;
-                RaisePropertyChanged("DataHistoryP");
-            }
-        }
-
-        public List<KeyValuePair<DateTime, float>> DataHistoryQ
-        {
-            get
-            {
-                return this.dataHistoryQ;
-            }
-
-            set
-            {
-                this.dataHistoryQ = value;
-                RaisePropertyChanged("DataHistoryQ");
-            }
-        }
-
-        public List<KeyValuePair<DateTime, float>> DataHistoryV
-        {
-            get
-            {
-                return this.dataHistoryV;
-            }
-
-            set
-            {
-                this.dataHistoryV = value;
-                RaisePropertyChanged("DataHistoryV");
-            }
-        }
-
+        
         public SeriesCollection DataHistoryPX
         {
             get
@@ -435,7 +347,7 @@ namespace AMIClient.ViewModels
             }
         }
 
-        public List<TypeOfDay> TypeOfDayCb
+        public List<Classes.DayOfWeek> TypeOfDayCb
         {
             get
             {
@@ -505,11 +417,13 @@ namespace AMIClient.ViewModels
             set
             {
                 consumerTypeCb = value;
+
                 if (value.Count == 1)
                 {
                     this.ConsumerTypeSelected = ConsumerTypeCb[0];
                     this.consumerTypeChecked = true;
                 }
+
                 RaisePropertyChanged("ConsumerTypeCb");
             }
         }
@@ -592,9 +506,16 @@ namespace AMIClient.ViewModels
                 TypeOfDayHasValue = this.TypeOfDayChecked ? true : false,
                 SeasonHasValue = this.SeasonChecked ? true : false,
                 ConsumerType = this.ConsumerTypeSelected,
-                TypeOfDay = this.TypeOfDaySelected,
                 Season = this.SeasonSelected
             };
+
+            foreach (Classes.DayOfWeek day in TypeOfDayCb)
+            {
+                if (day.IsChecked)
+                {
+                    filter.TypeOfDay.Add(day.Name);
+                }
+            }
 
             Tuple<List<HourAggregation>, Statistics> measForChart = this.Model.GetMeasurementsForChartViewByFilter(AmiGids, filter);
 
@@ -602,36 +523,25 @@ namespace AMIClient.ViewModels
             {
                 return;
             }
-
-            List<KeyValuePair<DateTime, float>> tempP = new List<KeyValuePair<DateTime, float>>();
-            List<KeyValuePair<DateTime, float>> tempQ = new List<KeyValuePair<DateTime, float>>();
-            List<KeyValuePair<DateTime, float>> tempV = new List<KeyValuePair<DateTime, float>>();
+            
             DataHistoryPX[0].Values.Clear();
             DataHistoryQX[0].Values.Clear();
             DataHistoryVX[0].Values.Clear();
             DataHistoryPY = new string[measForChart.Item1.Count];
             DataHistoryQY = new string[measForChart.Item1.Count];
             DataHistoryVY = new string[measForChart.Item1.Count];
-            int cntP = -1;
-            int cntQ = -1;
-            int cntV = -1;
+            int cnt = -1;
 
             foreach (Statistics dm in measForChart.Item1)
             {
                 DataHistoryPX[0].Values.Add(dm.AvgP);
                 DataHistoryQX[0].Values.Add(dm.AvgQ);
                 DataHistoryVX[0].Values.Add(dm.AvgV);
-                DataHistoryPY[++cntP] = dm.TimeStamp.ToString();
-                DataHistoryQY[++cntQ] = dm.TimeStamp.ToString();
-                DataHistoryVY[++cntV] = dm.TimeStamp.ToString();
-                tempP.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.AvgP));
-                tempQ.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.AvgQ));
-                tempV.Add(new KeyValuePair<DateTime, float>(dm.TimeStamp, dm.AvgV));
+                DataHistoryPY[++cnt] = dm.TimeStamp.Hour.ToString();
+                DataHistoryQY[cnt] = dm.TimeStamp.Hour.ToString();
+                DataHistoryVY[cnt] = dm.TimeStamp.Hour.ToString();
             }
-
-            this.DataHistoryP = tempP;
-            this.DataHistoryQ = tempQ;
-            this.DataHistoryV = tempV;
+            
             this.Statistics = measForChart.Item2;
         }
 

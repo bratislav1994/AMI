@@ -54,10 +54,10 @@ namespace CalculationEngine
             //timeSeriesDataBaseAdapter.DoUndone();
             //timeSeriesDataBaseAdapter.StartThreads();
             //
-            Filler f = new Filler();
-            f.DbAdapter = dataBaseAdapter;
-            f.TimeSeriesDbAdapter = timeSeriesDataBaseAdapter;
-            f.Fill();
+            //Filler f = new Filler();
+            //f.DbAdapter = dataBaseAdapter;
+            //f.TimeSeriesDbAdapter = timeSeriesDataBaseAdapter;
+            //f.Fill();
             this.DoUndoneFill();
             //
             geoRegions = new Dictionary<long, GeographicalRegionDb>();
@@ -630,6 +630,7 @@ namespace CalculationEngine
                 hourAggregation.AvgV /= kvp.Value.Count;
                 hourAggregation.IntegralP /= kvp.Value.Count;
                 hourAggregation.IntegralQ /= kvp.Value.Count;
+                hourAggregation.TimeStamp = kvp.Value[0].TimeStamp;
 
                 retVal.Add(hourAggregation);
             }

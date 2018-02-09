@@ -1254,21 +1254,9 @@ namespace CalculationEngine.Access
             {
                 foreach (HourAggregation hAgg in ret.Reverse<HourAggregation>())
                 {
-                    if (filter.TypeOfDay == TypeOfDay.WEEKEND)
+                    if (!filter.TypeOfDay.Any(x => x == hAgg.TimeStamp.DayOfWeek))
                     {
-                        if (hAgg.TimeStamp.DayOfWeek != DayOfWeek.Saturday && hAgg.TimeStamp.DayOfWeek != DayOfWeek.Sunday)
-                        {
-                            ret.Remove(hAgg);
-                        }
-                    }
-                    else
-                    {
-                        if (hAgg.TimeStamp.DayOfWeek != DayOfWeek.Monday && hAgg.TimeStamp.DayOfWeek != DayOfWeek.Tuesday &&
-                            hAgg.TimeStamp.DayOfWeek != DayOfWeek.Wednesday && hAgg.TimeStamp.DayOfWeek != DayOfWeek.Thursday &&
-                            hAgg.TimeStamp.DayOfWeek != DayOfWeek.Friday)
-                        {
-                            ret.Remove(hAgg);
-                        }
+                        ret.Remove(hAgg);
                     }
                 }
             }
@@ -1276,16 +1264,7 @@ namespace CalculationEngine.Access
             {
                 using (var access = new AccessTSDB())
                 {
-                    if (filter.TypeOfDay == TypeOfDay.WEEKEND)
-                    {
-                        ret = access.AggregationForHours.Where(x => (x.TimeStamp.DayOfWeek == DayOfWeek.Saturday || x.TimeStamp.DayOfWeek == DayOfWeek.Sunday) && gids.Any(y => y == x.PsrRef)).ToList();
-                    }
-                    else
-                    {
-                        ret = access.AggregationForHours.Where(x => x.TimeStamp.DayOfWeek == DayOfWeek.Monday || x.TimeStamp.DayOfWeek == DayOfWeek.Tuesday ||
-                                                                    x.TimeStamp.DayOfWeek == DayOfWeek.Wednesday || x.TimeStamp.DayOfWeek == DayOfWeek.Thursday ||
-                                                                    x.TimeStamp.DayOfWeek == DayOfWeek.Friday).ToList();
-                    }
+                    ret = access.AggregationForHours.Where(x => filter.TypeOfDay.Any(y => y == x.TimeStamp.DayOfWeek) && gids.Any(y => y == x.PsrRef)).ToList();
                 }
             }
 
