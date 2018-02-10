@@ -286,7 +286,8 @@ namespace AMIClient.ViewModels
 
             try
             {
-                DateTime.Parse(dt);
+                var inputCulture = CultureInfo.CreateSpecificCulture("us-en");
+                DateTime.Parse(dt, inputCulture);
             }
             catch
             {
@@ -309,10 +310,10 @@ namespace AMIClient.ViewModels
             switch (this.Resolution)
             {
                 case ResolutionType.MINUTE:
-                    from = RoundDown(DateTime.Parse(FromPeriod), TimeSpan.FromHours(1));
+                    from = RoundDown(DateTime.Parse(FromPeriod, inputCulture), TimeSpan.FromHours(1));
                     break;
                 case ResolutionType.HOUR:
-                    from = RoundDown(DateTime.Parse(FromPeriod), TimeSpan.FromDays(1));
+                    from = RoundDown(DateTime.Parse(FromPeriod, inputCulture), TimeSpan.FromDays(1));
                     break;
                 case ResolutionType.DAY:
                     DateTime dt = new DateTime(from.Year, 1, 1);

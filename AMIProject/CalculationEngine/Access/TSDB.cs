@@ -1338,9 +1338,11 @@ namespace CalculationEngine.Access
                 while (roundDownCollect < roudUpCollect)
                 {
                     roundDownCollectPlus15Minutes = roundDownCollect.AddMinutes(15);
+                    DateTime roundDownCollectMinus15Minutes = roundDownCollect.AddMinutes(-15);
                     var tempListMinute1 = access.Collect.Where(x => DateTime.Compare(roundDownCollect, x.TimeStamp) <= 0 && DateTime.Compare(roundDownCollectPlus15Minutes, x.TimeStamp) > 0).ToList(); // merenja koja treba da se upisu u bazu (minutna tabela)
+                    var forIntegral = access.Collect.Where(x => DateTime.Compare(roundDownCollectMinus15Minutes, x.TimeStamp) <= 0 && DateTime.Compare(roundDownCollect, x.TimeStamp) > 0).ToList();
 
-                    foreach (DynamicMeasurement dm in tempListMinute1)
+                    foreach (DynamicMeasurement dm in forIntegral)
                     {
                         DynamicMeasurement value = null;
                         if (!lastMeasurementsFromCollect.TryGetValue(dm.PsrRef, out value))
@@ -1357,9 +1359,11 @@ namespace CalculationEngine.Access
                         access.AggregationForMinutes.Add(maa);
                     }
 
-                    access.SaveChanges();
                     roundDownCollect = roundDownCollect.AddMinutes(15);
+                    lastMeasurementsFromCollect.Clear();
                 }
+
+                access.SaveChanges();
             }
             catch (Exception ex)
             {
