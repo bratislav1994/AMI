@@ -770,8 +770,8 @@ namespace AMIClient
                         changesForAmis.Add(dm.PsrRef, dm);
                     }
                 }
-                Logger.LogMessageToFile(string.Format("AMIClient.Model.Updatetables; line: {0}; Update finished", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
 
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.Updatetables; line: {0}; Update finished", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 this.timeOfLastMeas = DateTime.Now;
             }
         }
@@ -908,6 +908,7 @@ namespace AMIClient
                     }
                 }
             }
+
             Logger.LogMessageToFile(string.Format("AMIClient.Model.UpdateAlarms; line: {0}; Update alarms finished", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             this.timeOfLastUpdateAlarm = DateTime.Now;
         }

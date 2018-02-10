@@ -236,7 +236,7 @@ namespace AMIClient.ViewModels
 
                     foreach (IdentifiedObject io in amis)
                     {
-                        this.AmiTableItems.Add(new TableItem(io));
+                        this.AmiTableItems.Add(new TableItem(io) { ConsumerType = ((EnergyConsumer)io).Type });
                         this.positionsAmi.Add(io.GlobalId, this.AmiTableItems.Count - 1);
                     }
 
@@ -256,7 +256,7 @@ namespace AMIClient.ViewModels
 
                     foreach (IdentifiedObject io in amisC2)
                     {
-                        this.AmiTableItems.Add(new TableItem(io));
+                        this.AmiTableItems.Add(new TableItem(io) { ConsumerType = ((EnergyConsumer)io).Type });
                         this.positionsAmi.Add(io.GlobalId, this.AmiTableItems.Count - 1);
                     }
                     break;
@@ -270,7 +270,7 @@ namespace AMIClient.ViewModels
 
                     foreach (IdentifiedObject io in amisC3)
                     {
-                        this.AmiTableItems.Add(new TableItem(io));
+                        this.AmiTableItems.Add(new TableItem(io) { ConsumerType = ((EnergyConsumer)io).Type });
                         this.positionsAmi.Add(io.GlobalId, this.AmiTableItems.Count - 1);
                     }
                     break;
@@ -335,7 +335,7 @@ namespace AMIClient.ViewModels
                     }
                     else if (filter.Key.Equals(DataGridHeader.Type.ToString()))
                     {
-                        DataGridType type = ((TableItem)item).Type;
+                        ConsumerType type = ((TableItem)item).ConsumerType;
                         containsFilter = EnumDescription.GetEnumDescription(type).IndexOf(TypeFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
                     }
 

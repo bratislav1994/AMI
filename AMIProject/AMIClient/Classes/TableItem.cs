@@ -24,6 +24,7 @@ namespace AMIClient
         private Brush status;
         private DataGridType type;
         private bool isAlarm;
+        private ConsumerType consumerType;
 
         public TableItem(IdentifiedObject io)
         {
@@ -128,6 +129,20 @@ namespace AMIClient
             set
             {
                 isAlarm = value;
+            }
+        }
+
+        public ConsumerType ConsumerType
+        {
+            get
+            {
+                return consumerType;
+            }
+
+            set
+            {
+                consumerType = value;
+                RaisePropertyChanged("ConsumerType");
             }
         }
 
