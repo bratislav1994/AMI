@@ -1236,6 +1236,7 @@ namespace CalculationEngine.Access
         public List<HourAggregation> ReadHourAggregationTableByFilter(List<long> gids, Filter filter)
         {
             List<HourAggregation> ret = new List<HourAggregation>();
+            bool freshList = true;
 
             if (!filter.ConsumerHasValue && !filter.SeasonHasValue && !filter.TypeOfDayHasValue && 
                 filter.Month == -1 && filter.Day == -1)
@@ -1254,6 +1255,7 @@ namespace CalculationEngine.Access
                 {
                     ret = access.AggregationForHours.Where(x => x.Season == filter.Season && gids.Any(y => y == x.PsrRef) && 
                     x.TimeStamp.Year >= filter.YearFrom && x.TimeStamp.Year <= filter.YearTo).ToList();
+                    freshList = false;
                 }
             }
 
@@ -1273,6 +1275,7 @@ namespace CalculationEngine.Access
                 {
                     ret = access.AggregationForHours.Where(x => filter.TypeOfDay.Any(y => y == x.TimeStamp.DayOfWeek) && 
                     gids.Any(y => y == x.PsrRef) && x.TimeStamp.Year >= filter.YearFrom && x.TimeStamp.Year <= filter.YearTo).ToList();
+                    freshList = false;
                 }
             }
 
@@ -1292,6 +1295,7 @@ namespace CalculationEngine.Access
                 {
                     ret = access.AggregationForHours.Where(x => x.Type == filter.ConsumerType && gids.Any(y => y == x.PsrRef) && 
                     x.TimeStamp.Year >= filter.YearFrom && x.TimeStamp.Year <= filter.YearTo).ToList();
+                    freshList = false;
                 }
             }
 
@@ -1312,10 +1316,11 @@ namespace CalculationEngine.Access
                     ret = access.AggregationForHours.Where(x => gids.Any(y => y == x.PsrRef) &&
                     x.TimeStamp.Month == filter.Month &&
                     x.TimeStamp.Year >= filter.YearFrom && x.TimeStamp.Year <= filter.YearTo).ToList();
+                    freshList = false;
                 }
             }
 
-            if (filter.Day != -1 && ret.Count > 0)
+            if (filter.Day != -1 && (ret.Count > 0 || !freshList))
             {
                 foreach (HourAggregation hAgg in ret.Reverse<HourAggregation>())
                 {
@@ -1332,6 +1337,7 @@ namespace CalculationEngine.Access
                     ret = access.AggregationForHours.Where(x => gids.Any(y => y == x.PsrRef) &&
                     x.TimeStamp.Day == filter.Day &&
                     x.TimeStamp.Year >= filter.YearFrom && x.TimeStamp.Year <= filter.YearTo).ToList();
+                    freshList = false;
                 }
             }
 

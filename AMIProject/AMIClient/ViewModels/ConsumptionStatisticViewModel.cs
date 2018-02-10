@@ -44,7 +44,7 @@ namespace AMIClient.ViewModels
         private List<int> dayCb;
         private int selectedFromYear = -1;
         private int selectedToYear = -1;
-        private string selectedMonth;
+        private string selectedMonth = "";
         private int selectedDay = -1;
         private List<ConsumerType> consumerTypeCb;
         private ConsumerType consumerTypeSelected;
