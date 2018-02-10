@@ -323,17 +323,18 @@ namespace AMIClient.ViewModels
 
             Tuple<List<Statistics>, Statistics> measForChart = this.Model.GetMeasForChart(AmiGids, from, this.Resolution);
 
-            if (measForChart == null)
-            {
-                return;
-            }
-
             DataHistoryPX[0].Values.Clear();
             DataHistoryQX[0].Values.Clear();
             DataHistoryVX[0].Values.Clear();
             DataHistoryPY = new string[measForChart.Item1.Count];
             DataHistoryQY = new string[measForChart.Item1.Count];
             DataHistoryVY = new string[measForChart.Item1.Count];
+
+            if (measForChart == null)
+            {
+                return;
+            }
+            
             int cnt = -1;
 
             foreach (Statistics dm in measForChart.Item1)
