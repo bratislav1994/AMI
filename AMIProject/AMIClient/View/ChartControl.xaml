@@ -66,9 +66,9 @@
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis MinValue="0" Foreground="White" FontSize="14">
+                    <lvc:Axis MaxValue="{Binding StepP, UpdateSourceTrigger=PropertyChanged}" MinValue="0" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
-                            <lvc:Separator Step="100" StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
+                            <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
                         </lvc:Axis.Separator>
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisY>
@@ -119,9 +119,9 @@
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis MinValue="0" Foreground="White" FontSize="14">
+                    <lvc:Axis MaxValue="{Binding StepQ, UpdateSourceTrigger=PropertyChanged}" MinValue="0" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
-                            <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" Step="100" />
+                            <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8"/>
                         </lvc:Axis.Separator>
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisY>
@@ -172,9 +172,9 @@
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis MinValue="0" Foreground="White" FontSize="14">
+                    <lvc:Axis MaxValue="{Binding StepV, UpdateSourceTrigger=PropertyChanged}" MinValue="0" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
-                            <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" Step="100" />
+                            <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8"/>
                         </lvc:Axis.Separator>
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisY>

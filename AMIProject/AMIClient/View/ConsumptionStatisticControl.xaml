@@ -87,7 +87,7 @@
                 <lvc:CartesianChart.AxisY>
                     <lvc:Axis MinValue="0" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
-                            <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" Step="100" />
+                            <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
                         </lvc:Axis.Separator>
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisY>
@@ -140,7 +140,7 @@
                 <lvc:CartesianChart.AxisY>
                     <lvc:Axis MinValue="0" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
-                            <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" Step="100" />
+                            <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
                         </lvc:Axis.Separator>
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisY>
@@ -193,7 +193,7 @@
                 <lvc:CartesianChart.AxisY>
                     <lvc:Axis MinValue="0" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
-                            <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" Step="100" />
+                            <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
                         </lvc:Axis.Separator>
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisY>

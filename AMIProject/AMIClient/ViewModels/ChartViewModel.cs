@@ -258,7 +258,7 @@ namespace AMIClient.ViewModels
                 RaisePropertyChanged("Statistics");
             }
         }
-
+        
         public DelegateCommand ShowDataCommand
         {
             get
