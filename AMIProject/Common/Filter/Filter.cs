@@ -110,6 +110,7 @@ namespace FTN.Common.Filter
             }
         }
 
+        [DataMember]
         public int Day
         {
             get
@@ -123,6 +124,7 @@ namespace FTN.Common.Filter
             }
         }
 
+        [DataMember]
         public int Month
         {
             get
@@ -135,7 +137,8 @@ namespace FTN.Common.Filter
                 month = value;
             }
         }
-
+        
+        [DataMember]
         public int YearFrom
         {
             get
@@ -149,6 +152,7 @@ namespace FTN.Common.Filter
             }
         }
 
+        [DataMember]
         public int YearTo
         {
             get
