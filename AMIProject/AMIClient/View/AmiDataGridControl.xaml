@@ -70,7 +70,7 @@
         SortMemberPath="Type" MinWidth="100" Width="100">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Type}" />
+                                <TextBlock Text="{Binding ConsumerType}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                         <!--NAME COLUMN-->

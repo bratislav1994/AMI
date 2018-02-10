@@ -312,10 +312,14 @@ namespace SCADA
 
             foreach (Measurement m in Ps)
             {
+                if (!simulators.ContainsKey(m.RtuAddress))
+                {
+                    return false;
+                }
+
                 if (!RTUsThatNeedsToBeStopped.Contains(m.RtuAddress))
                 {
                     RTUsThatNeedsToBeStopped.Add(m.RtuAddress);
-                    simulators[m.RtuAddress].AddingStarted();
                 }
             }
 
