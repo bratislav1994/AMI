@@ -1237,8 +1237,14 @@ namespace CalculationEngine.Access
         {
             List<HourAggregation> ret = new List<HourAggregation>();
 
-            if (!filter.ConsumerHasValue && !filter.SeasonHasValue && !filter.TypeOfDayHasValue)
+            if (!filter.ConsumerHasValue && !filter.SeasonHasValue && !filter.TypeOfDayHasValue && 
+                filter.Month == -1 && filter.Day == -1)
             {
+                using (var access = new AccessTSDB())
+                {
+                    ret = access.AggregationForHours.ToList();
+                }
+
                 return ret;
             }
 
@@ -1246,7 +1252,8 @@ namespace CalculationEngine.Access
             {
                 using (var access = new AccessTSDB())
                 {
-                    ret = access.AggregationForHours.Where(x => x.Season == filter.Season && gids.Any(y => y == x.PsrRef)).ToList();
+                    ret = access.AggregationForHours.Where(x => x.Season == filter.Season && gids.Any(y => y == x.PsrRef) && 
+                    x.TimeStamp.Year >= filter.YearFrom && x.TimeStamp.Year <= filter.YearTo).ToList();
                 }
             }
 
@@ -1264,7 +1271,8 @@ namespace CalculationEngine.Access
             {
                 using (var access = new AccessTSDB())
                 {
-                    ret = access.AggregationForHours.Where(x => filter.TypeOfDay.Any(y => y == x.TimeStamp.DayOfWeek) && gids.Any(y => y == x.PsrRef)).ToList();
+                    ret = access.AggregationForHours.Where(x => filter.TypeOfDay.Any(y => y == x.TimeStamp.DayOfWeek) && 
+                    gids.Any(y => y == x.PsrRef) && x.TimeStamp.Year >= filter.YearFrom && x.TimeStamp.Year <= filter.YearTo).ToList();
                 }
             }
 
@@ -1282,7 +1290,48 @@ namespace CalculationEngine.Access
             {
                 using (var access = new AccessTSDB())
                 {
-                    ret = access.AggregationForHours.Where(x => x.Type == filter.ConsumerType && gids.Any(y => y == x.PsrRef)).ToList();
+                    ret = access.AggregationForHours.Where(x => x.Type == filter.ConsumerType && gids.Any(y => y == x.PsrRef) && 
+                    x.TimeStamp.Year >= filter.YearFrom && x.TimeStamp.Year <= filter.YearTo).ToList();
+                }
+            }
+
+            if (filter.Month != -1 && ret.Count > 0)
+            {
+                foreach (HourAggregation hAgg in ret.Reverse<HourAggregation>())
+                {
+                    if (hAgg.TimeStamp.Month != filter.Month)
+                    {
+                        ret.Remove(hAgg);
+                    }
+                }
+            }
+            else if (filter.Month != -1)
+            {
+                using (var access = new AccessTSDB())
+                {
+                    ret = access.AggregationForHours.Where(x => gids.Any(y => y == x.PsrRef) &&
+                    x.TimeStamp.Month == filter.Month &&
+                    x.TimeStamp.Year >= filter.YearFrom && x.TimeStamp.Year <= filter.YearTo).ToList();
+                }
+            }
+
+            if (filter.Day != -1 && ret.Count > 0)
+            {
+                foreach (HourAggregation hAgg in ret.Reverse<HourAggregation>())
+                {
+                    if (hAgg.TimeStamp.Day != filter.Day)
+                    {
+                        ret.Remove(hAgg);
+                    }
+                }
+            }
+            else if (filter.Day != -1)
+            {
+                using (var access = new AccessTSDB())
+                {
+                    ret = access.AggregationForHours.Where(x => gids.Any(y => y == x.PsrRef) &&
+                    x.TimeStamp.Day == filter.Day &&
+                    x.TimeStamp.Year >= filter.YearFrom && x.TimeStamp.Year <= filter.YearTo).ToList();
                 }
             }
 

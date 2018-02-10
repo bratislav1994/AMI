@@ -16,6 +16,10 @@ namespace FTN.Common.Filter
         private bool seasonHasValue;
         private bool typeOfDayHasValue;
         private bool consumerHasValue;
+        private int yearTo;
+        private int yearFrom;
+        private int month;
+        private int day;
 
         public Filter()
         {
@@ -103,6 +107,58 @@ namespace FTN.Common.Filter
             set
             {
                 consumerHasValue = value;
+            }
+        }
+
+        public int Day
+        {
+            get
+            {
+                return day;
+            }
+
+            set
+            {
+                day = value;
+            }
+        }
+
+        public int Month
+        {
+            get
+            {
+                return month;
+            }
+
+            set
+            {
+                month = value;
+            }
+        }
+
+        public int YearFrom
+        {
+            get
+            {
+                return yearFrom;
+            }
+
+            set
+            {
+                yearFrom = value;
+            }
+        }
+
+        public int YearTo
+        {
+            get
+            {
+                return yearTo;
+            }
+
+            set
+            {
+                yearTo = value;
             }
         }
     }

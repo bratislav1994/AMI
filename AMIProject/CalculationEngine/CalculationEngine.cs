@@ -620,10 +620,10 @@ namespace CalculationEngine
 
                 hourAggregation.MaxP = kvp.Value.Max(x => x.MaxP);
                 hourAggregation.MaxQ = kvp.Value.Max(x => x.MaxQ);
-                hourAggregation.MinP = kvp.Value.Max(x => x.MinP);
-                hourAggregation.MinQ = kvp.Value.Max(x => x.MinQ);
-                hourAggregation.MinV = kvp.Value.Max(x => x.MinV);
-                hourAggregation.MinV = kvp.Value.Max(x => x.MinV);
+                hourAggregation.MinP = kvp.Value.Min(x => x.MinP);
+                hourAggregation.MinQ = kvp.Value.Min(x => x.MinQ);
+                hourAggregation.MaxV = kvp.Value.Max(x => x.MaxV);
+                hourAggregation.MinV = kvp.Value.Min(x => x.MinV);
 
                 hourAggregation.AvgP /= kvp.Value.Count;
                 hourAggregation.AvgQ /= kvp.Value.Count;

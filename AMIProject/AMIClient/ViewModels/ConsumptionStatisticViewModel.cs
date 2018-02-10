@@ -36,6 +36,16 @@ namespace AMIClient.ViewModels
         private TypeOfDay typeOfDaySelected;
         private bool isTypeOfDayCheckBoxEnabled;
         private bool consumerTypeChecked = false;
+        private bool isSpecificCheckBoxEnabled;
+        private bool specificDayChecked = false;
+        private List<int> yearCb;
+        private List<string> monthCb;
+        private Dictionary<string, int> months;
+        private List<int> dayCb;
+        private int selectedFromYear = -1;
+        private int selectedToYear = -1;
+        private string selectedMonth;
+        private int selectedDay = -1;
         private List<ConsumerType> consumerTypeCb;
         private ConsumerType consumerTypeSelected;
         private bool isConsumerTypeCheckBoxEnabled;
@@ -45,6 +55,7 @@ namespace AMIClient.ViewModels
         private string[] dataHistoryQY;
         private SeriesCollection dataHistoryVX;
         private string[] dataHistoryVY;
+        private List<int> days;
 
         public ConsumptionStatisticViewModel()
         {
@@ -53,8 +64,34 @@ namespace AMIClient.ViewModels
                                                                     new Classes.DayOfWeek(DayOfWeek.Thursday), new Classes.DayOfWeek(DayOfWeek.Friday), new Classes.DayOfWeek(DayOfWeek.Saturday),
                                                                     new Classes.DayOfWeek(DayOfWeek.Sunday)};
             ConsumerTypeCb = new List<ConsumerType>() { ConsumerType.HOUSEHOLD, ConsumerType.FIRM, ConsumerType.SHOPPING_CENTER };
+            YearCb= new List<int>();
+            months = new Dictionary<string, int>();
+            days = new List<int>();
+            int year = DateTime.Now.Year;
+
+            for (int i = 1; i <= 31; i++)
+            {
+                days.Add(i);
+            }
+
+            DayCb = days;
+
+            for (int i = 0; i < 30; i++)
+            {
+                YearCb.Add(year - i);
+            }
+
+            MonthCb = DateTimeFormatInfo.CurrentInfo.MonthNames.ToList().GetRange(0,12);
+
+            int j = 0;
+            foreach(string name in MonthCb)
+            {
+                months.Add(name, ++j);
+            }
+
             IsSeasonCheckBoxEnabled = true;
             IsTypeOfDayCheckBoxEnabled = true;
+            IsSpecificCheckBoxEnabled = true;
             this.ShowDataCommand.RaiseCanExecuteChanged();
             DataHistoryPX = new SeriesCollection();
             DataHistoryQX = new SeriesCollection();
@@ -468,9 +505,146 @@ namespace AMIClient.ViewModels
                 return this.showDataCommand;
             }
         }
-        
+
+        public bool SpecificDayChecked
+        {
+            get
+            {
+                return specificDayChecked;
+            }
+
+            set
+            {
+                specificDayChecked = value;
+                RaisePropertyChanged("SpecificDayChecked");
+            }
+        }
+
+        public List<int> YearCb
+        {
+            get
+            {
+                return yearCb;
+            }
+
+            set
+            {
+                yearCb = value;
+            }
+        }
+
+        public List<string> MonthCb
+        {
+            get
+            {
+                return monthCb;
+            }
+
+            set
+            {
+                monthCb = value;
+            }
+        }
+
+        public List<int> DayCb
+        {
+            get
+            {
+                return dayCb;
+            }
+
+            set
+            {
+                dayCb = value;
+                RaisePropertyChanged("DayCb");
+            }
+        }
+
+        public int SelectedFromYear
+        {
+            get
+            {
+                return selectedFromYear;
+            }
+
+            set
+            {
+                selectedFromYear = value;
+                RaisePropertyChanged("SelectedFromYear");
+                this.ShowDataCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public int SelectedToYear
+        {
+            get
+            {
+                return selectedToYear;
+            }
+
+            set
+            {
+                selectedToYear = value;
+                RaisePropertyChanged("SelectedToYear");
+                this.ShowDataCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public string SelectedMonth
+        {
+            get
+            {
+                return selectedMonth;
+            }
+
+            set
+            {
+                selectedMonth = value;
+                int numberOfDays = DateTime.DaysInMonth(2016, months[value]);
+                DayCb = days.GetRange(0, numberOfDays);
+                RaisePropertyChanged("SelectedMonth");
+
+            }
+        }
+
+        public int SelectedDay
+        {
+            get
+            {
+                return selectedDay;
+            }
+
+            set
+            {
+                selectedDay = value;
+                RaisePropertyChanged("SelectedDay");
+            }
+        }
+
+        public bool IsSpecificCheckBoxEnabled
+        {
+            get
+            {
+                return isSpecificCheckBoxEnabled;
+            }
+
+            set
+            {
+                isSpecificCheckBoxEnabled = value;
+                RaisePropertyChanged("IsSpecificCheckBoxEnabled");
+            }
+        }
+
         private bool CanShowDataExecute()
         {
+            if (SelectedFromYear != -1 && SelectedToYear != -1)
+            {
+                if (SelectedFromYear > SelectedToYear)
+                {
+                    return false;
+                }
+            }
+
             return true;
         }
 
@@ -506,7 +680,11 @@ namespace AMIClient.ViewModels
                 TypeOfDayHasValue = this.TypeOfDayChecked ? true : false,
                 SeasonHasValue = this.SeasonChecked ? true : false,
                 ConsumerType = this.ConsumerTypeSelected,
-                Season = this.SeasonSelected
+                Season = this.SeasonSelected,
+                YearFrom = SelectedFromYear == -1 ? 1 : SelectedFromYear,
+                YearTo = SelectedToYear == -1 ? DateTime.Now.Year : SelectedToYear,
+                Month = SelectedMonth == "" ? -1 : months[SelectedMonth],
+                Day = SelectedDay
             };
 
             foreach (Classes.DayOfWeek day in TypeOfDayCb)

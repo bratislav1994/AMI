@@ -24,52 +24,36 @@
         <Grid Margin="0,0,0,0" Background="#E3E3E3" VerticalAlignment="Stretch" Height="auto">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"></RowDefinition>
                 <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition Height="220"></RowDefinition>
                 <RowDefinition Height="220"></RowDefinition>
                 <RowDefinition Height="220"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="90"></ColumnDefinition>
+                <ColumnDefinition Width="130"></ColumnDefinition>
                 <ColumnDefinition Width="180"></ColumnDefinition>
                 <ColumnDefinition Width="7*"></ColumnDefinition>
                 <ColumnDefinition Width="150"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" Content="From: " HorizontalAlignment="Left" VerticalAlignment="Center" Height="29" Width="95"/>
-            <wpfToolkit:DateTimePicker Grid.Row="0" Grid.Column="1" Visibility="{Binding DateTimePick}"
-                                   Text="{Binding FromPeriod, UpdateSourceTrigger=PropertyChanged}"
-                                Format="Custom" FormatString="dd/MMM/yyyy HH:mm:ss.fff"
-                                   TimeFormat="Custom" TimeFormatString="HH:mm:ss.fff" 
-                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="170" />
-            <DatePicker Grid.Row="0" Grid.Column="1" Visibility="{Binding DatePick}"
-                                   SelectedDate="{Binding FromPeriod, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:dd/MMM/yyyy}}"
-                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="170">
-                <DatePicker.Resources>
-                    <Style TargetType="DatePickerTextBox">
-                        <Setter Property="Control.Template">
-                            <Setter.Value>
-                                <ControlTemplate>
-                                    <TextBox Text="{Binding Path=SelectedDate, StringFormat = {}{0:dd/MM/yyyy}, 
-                                         RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" />
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </DatePicker.Resources>
-            </DatePicker>
-
-            <Expander Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1"
+            <Expander Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0"
 				  HorizontalAlignment="Stretch">
                 <StackPanel>
                     <DockPanel>
-                        <CheckBox Content="Season:" Width="110" HorizontalAlignment="Left" IsChecked="{Binding SeasonChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsSeasonCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
+                        <CheckBox Content="Specific month/day:" Width="130" HorizontalAlignment="Left" IsChecked="{Binding SpecificDayChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsSpecificCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
+                        <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding YearCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SpecificDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedFromYear, UpdateSourceTrigger=PropertyChanged}" Text="From year" Foreground="White" IsEditable="True" IsReadOnly="True"/>
+                        <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding YearCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SpecificDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedToYear, UpdateSourceTrigger=PropertyChanged}" Text="To year" Foreground="White" IsEditable="True" IsReadOnly="True"/>
+                        <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding MonthCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SpecificDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedMonth, UpdateSourceTrigger=PropertyChanged}" Text="Month" Foreground="White" IsEditable="True" IsReadOnly="True"/>
+                        <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding DayCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SpecificDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedDay, UpdateSourceTrigger=PropertyChanged}" Text="Day" Foreground="White" IsEditable="True" IsReadOnly="True"/>
+                    </DockPanel>
+                    
+                    <DockPanel>
+                        <CheckBox Content="Season:" Width="130" HorizontalAlignment="Left" IsChecked="{Binding SeasonChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsSeasonCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
                         <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding SeasonCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SeasonChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SeasonSelected, UpdateSourceTrigger=PropertyChanged}"/>
                     </DockPanel>
 
                     <DockPanel>
-                        <CheckBox Content="Type of day:" Width="110" HorizontalAlignment="Left" IsChecked="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsTypeOfDayCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
+                        <CheckBox Content="Type of day:" Width="130" HorizontalAlignment="Left" IsChecked="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsTypeOfDayCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
                         <!--<ComboBox HorizontalAlignment="Left" ItemsSource="{Binding TypeOfDayCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding TypeOfDaySelected, UpdateSourceTrigger=PropertyChanged}"/>-->
                         <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding TypeOfDayCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}">
                             <ComboBox.ItemTemplate>
@@ -84,7 +68,7 @@
                     </DockPanel>
 
                     <DockPanel>
-                        <CheckBox Content="Consumer type:" Width="110" HorizontalAlignment="Left" IsChecked="{Binding ConsumerTypeChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsConsumerTypeCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
+                        <CheckBox Content="Consumer type:" Width="130" HorizontalAlignment="Left" IsChecked="{Binding ConsumerTypeChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsConsumerTypeCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
                         <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding ConsumerTypeCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ConsumerTypeChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding ConsumerTypeSelected, UpdateSourceTrigger=PropertyChanged}"/>
                     </DockPanel>
                     
@@ -92,7 +76,7 @@
                 </StackPanel>
             </Expander>
 
-            <lvc:CartesianChart Width="auto" Height="auto" Background="#7EBE8E" Series="{Binding DataHistoryPX}" DataContext="{Binding}" Name="Chart" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
+            <lvc:CartesianChart Width="auto" Height="auto" Background="#7EBE8E" Series="{Binding DataHistoryPX}" DataContext="{Binding}" Name="Chart" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis Labels="{Binding DataHistoryPY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
@@ -109,11 +93,11 @@
                 </lvc:CartesianChart.AxisY>
             </lvc:CartesianChart>
 
-            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="40, 0, 0, 0">
+            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="40, 0, 0, 0">
                 <TextBlock FontSize="22" Foreground="White">Active power</TextBlock>
             </StackPanel>
 
-            <StackPanel Width="150" Grid.Row="2" Grid.Column="3" Background="#7EBE8E" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0, 4, 0, 0">
+            <StackPanel Width="150" Grid.Row="1" Grid.Column="3" Background="#7EBE8E" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0, 4, 0, 0">
                 <StackPanel Background="#4CFFFFFF">
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Maximum</TextBlock>
 
@@ -145,7 +129,7 @@
                 </StackPanel>
             </StackPanel>
 
-            <lvc:CartesianChart Width="auto" Height="auto" Background="#7EBE8E" Series="{Binding DataHistoryQX}" DataContext="{Binding}" Name="Chart1" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
+            <lvc:CartesianChart Width="auto" Height="auto" Background="#7EBE8E" Series="{Binding DataHistoryQX}" DataContext="{Binding}" Name="Chart1" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis Labels="{Binding DataHistoryQY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
@@ -162,11 +146,11 @@
                 </lvc:CartesianChart.AxisY>
             </lvc:CartesianChart>
 
-            <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="40, 0, 0, 0">
+            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="40, 0, 0, 0">
                 <TextBlock FontSize="22" Foreground="White">Reactive power</TextBlock>
             </StackPanel>
 
-            <StackPanel Width="150" Grid.Row="3" Grid.Column="3" Background="#7EBE8E" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0, 4, 0, 0">
+            <StackPanel Width="150" Grid.Row="2" Grid.Column="3" Background="#7EBE8E" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0, 4, 0, 0">
                 <StackPanel Background="#4CFFFFFF">
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Maximum</TextBlock>
 
@@ -198,7 +182,7 @@
                 </StackPanel>
             </StackPanel>
 
-            <lvc:CartesianChart Width="auto" Height="auto" Background="#7EBE8E" Series="{Binding DataHistoryVX}" DataContext="{Binding}" Name="Chart2" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
+            <lvc:CartesianChart Width="auto" Height="auto" Background="#7EBE8E" Series="{Binding DataHistoryVX}" DataContext="{Binding}" Name="Chart2" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis Labels="{Binding DataHistoryVY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
@@ -215,11 +199,11 @@
                 </lvc:CartesianChart.AxisY>
             </lvc:CartesianChart>
 
-            <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="40, 0, 0, 0">
+            <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="40, 0, 0, 0">
                 <TextBlock FontSize="22" Foreground="White">Voltage</TextBlock>
             </StackPanel>
 
-            <StackPanel Width="150" Grid.Row="4" Grid.Column="3" Background="#7EBE8E" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0, 4, 0, 0">
+            <StackPanel Width="150" Grid.Row="3" Grid.Column="3" Background="#7EBE8E" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0, 4, 0, 0">
                 <StackPanel Background="#4CFFFFFF">
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Maximum</TextBlock>
 
