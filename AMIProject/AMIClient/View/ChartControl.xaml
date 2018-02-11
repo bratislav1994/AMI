@@ -158,7 +158,7 @@
 
                     <DockPanel>
                         <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.IntegralQ, StringFormat=F2}"></TextBlock>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kWh</TextBlock>
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kVArh</TextBlock>
                     </DockPanel>
                 </StackPanel>
             </StackPanel>

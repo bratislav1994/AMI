@@ -18,6 +18,29 @@
         <Style TargetType="Expander">
 
         </Style>
+
+        <DataTemplate x:Key="DropDownItemTemplate" DataType="wpfApplication1:ItemSourceModel">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsChecked}"/>
+                <TextBlock Text="{Binding Name}"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SelectionBoxTemplate">
+
+        </DataTemplate>
+
+        <DataTemplate x:Key="ComboBoxTemplate">
+            <ContentPresenter x:Name="Presenter"
+               Content="{Binding}"
+               ContentTemplate="{StaticResource DropDownItemTemplate}" />
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor,ComboBoxItem,1}}" Value="{x:Null}">
+                    <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource SelectionBoxTemplate}" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
@@ -55,15 +78,8 @@
                     <DockPanel>
                         <CheckBox Content="Type of day:" Width="130" HorizontalAlignment="Left" IsChecked="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsTypeOfDayCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
                         <!--<ComboBox HorizontalAlignment="Left" ItemsSource="{Binding TypeOfDayCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding TypeOfDaySelected, UpdateSourceTrigger=PropertyChanged}"/>-->
-                        <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding TypeOfDayCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate DataType="classes:DayOfWeek">
-                                    <StackPanel Orientation="Horizontal">
-                                        <CheckBox IsChecked="{Binding IsChecked}"/>
-                                        <TextBlock Text="{Binding Name}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
+                        <ComboBox ItemTemplate="{StaticResource ComboBoxTemplate}" HorizontalAlignment="Left" ItemsSource="{Binding TypeOfDayCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}">
+                            
                         </ComboBox>
                     </DockPanel>
 
@@ -177,7 +193,7 @@
 
                     <DockPanel>
                         <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.IntegralQ, StringFormat=F2}"></TextBlock>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kWh</TextBlock>
+                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kVArh</TextBlock>
                     </DockPanel>
                 </StackPanel>
             </StackPanel>

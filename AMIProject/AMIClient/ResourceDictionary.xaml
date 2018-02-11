@@ -1343,11 +1343,11 @@
                             <Setter Property="Stroke" TargetName="rectangle" Value="{StaticResource ExpanderButtonHoverBorderBrush}" />
                             <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ExpanderArrowHoverBorderBrush}" />
                         </Trigger>
-                        <Trigger Property="IsPressed" Value="true">
+                        <!--<Trigger Property="IsPressed" Value="true">
                             <Setter Property="Fill" TargetName="rectangle" Value="{StaticResource ExpanderButtonPressedBackgroundBrush}" />
                             <Setter Property="Stroke" TargetName="rectangle" Value="{StaticResource ExpanderButtonPressedBorderBrush}" />
                             <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ExpanderArrowPressedBorderBrush}" />
-                        </Trigger>
+                        </Trigger>-->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -1390,11 +1390,11 @@
                             <Setter Property="Stroke" TargetName="rectangle" Value="{StaticResource ExpanderButtonHoverBorderBrush}" />
                             <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ExpanderArrowHoverBorderBrush}" />
                         </Trigger>
-                        <Trigger Property="IsPressed" Value="true">
+                        <!--<Trigger Property="IsPressed" Value="true">
                             <Setter Property="Fill" TargetName="rectangle" Value="{StaticResource ExpanderButtonPressedBackgroundBrush}" />
                             <Setter Property="Stroke" TargetName="rectangle" Value="{StaticResource ExpanderButtonPressedBorderBrush}" />
                             <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ExpanderArrowPressedBorderBrush}" />
-                        </Trigger>
+                        </Trigger>-->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -1437,11 +1437,11 @@
                             <Setter Property="Stroke" TargetName="rectangle" Value="{StaticResource ExpanderButtonHoverBorderBrush}" />
                             <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ExpanderArrowHoverBorderBrush}" />
                         </Trigger>
-                        <Trigger Property="IsPressed" Value="true">
+                        <!--<Trigger Property="IsPressed" Value="true">
                             <Setter Property="Fill" TargetName="rectangle" Value="{StaticResource ExpanderButtonPressedBackgroundBrush}" />
                             <Setter Property="Stroke" TargetName="rectangle" Value="{StaticResource ExpanderButtonPressedBorderBrush}" />
                             <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ExpanderArrowPressedBorderBrush}" />
-                        </Trigger>
+                        </Trigger>-->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -1473,11 +1473,11 @@
                             <Setter Property="Stroke" TargetName="rectangle" Value="{StaticResource ExpanderButtonHoverBorderBrush}" />
                             <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ExpanderArrowHoverBorderBrush}" />
                         </Trigger>
-                        <Trigger Property="IsPressed" Value="true">
+                        <!--<Trigger Property="IsPressed" Value="true">
                             <Setter Property="Fill" TargetName="rectangle" Value="{StaticResource ExpanderButtonPressedBackgroundBrush}" />
                             <Setter Property="Stroke" TargetName="rectangle" Value="{StaticResource ExpanderButtonPressedBorderBrush}" />
                             <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ExpanderArrowPressedBorderBrush}" />
-                        </Trigger>
+                        </Trigger>-->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

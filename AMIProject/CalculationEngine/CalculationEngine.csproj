@@ -142,7 +142,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="DB\Db.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -151,12 +150,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>Db.mdf</DependentUpon>
     </Content>
-    <Content Include="DB\TimeSeriesDB.mdf">
+    <Content Include="DB\TimeSeriesDb.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="DB\TimeSeriesDB_log.ldf">
+    <Content Include="DB\TimeSeriesDb_log.ldf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>TimeSeriesDB.mdf</DependentUpon>
+      <DependentUpon>TimeSeriesDb.mdf</DependentUpon>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

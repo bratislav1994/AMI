@@ -56,6 +56,7 @@ namespace AMIClient.ViewModels
         private SeriesCollection dataHistoryVX;
         private string[] dataHistoryVY;
         private List<int> days;
+        private string selectedDaysView;
 
         public ConsumptionStatisticViewModel()
         {
@@ -632,6 +633,20 @@ namespace AMIClient.ViewModels
             {
                 isSpecificCheckBoxEnabled = value;
                 RaisePropertyChanged("IsSpecificCheckBoxEnabled");
+            }
+        }
+
+        public string SelectedDaysView
+        {
+            get
+            {
+                return selectedDaysView;
+            }
+
+            set
+            {
+                selectedDaysView = string.Empty;
+                RaisePropertyChanged("SelectedDaysView");
             }
         }
 
