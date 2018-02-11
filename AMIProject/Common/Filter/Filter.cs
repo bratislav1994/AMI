@@ -16,6 +16,7 @@ namespace FTN.Common.Filter
         private bool seasonHasValue;
         private bool typeOfDayHasValue;
         private bool consumerHasValue;
+        private bool specificDayHasValue;
         private int yearTo;
         private int yearFrom;
         private int month;
@@ -107,6 +108,27 @@ namespace FTN.Common.Filter
             set
             {
                 consumerHasValue = value;
+            }
+        }
+
+        [DataMember]
+        public bool SpecificDayHasValue
+        {
+            get
+            {
+                return specificDayHasValue;
+            }
+
+            set
+            {
+                specificDayHasValue = value;
+                if (!value)
+                {
+                    this.Day = -1;
+                    this.Month = -1;
+                    this.YearFrom = 1;
+                    this.YearTo = DateTime.Now.Year;
+                }
             }
         }
 

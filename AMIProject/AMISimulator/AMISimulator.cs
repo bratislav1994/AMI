@@ -107,7 +107,7 @@ namespace AMISimulator
         private IOutstation InitializeOutstation(OutstationStackConfig config, IDNP3Manager mgr)
         {
             config.databaseTemplate = new DatabaseTemplate(0, 0, (numberOfAnalogPointsP + numberOfAnalogPointsQ + numberOfAnalogPointsV), 0, 0, 0, 0, 0);
-            config.link.responseTimeout = new TimeSpan(0, 0, 0, 1, 0);
+            config.link.responseTimeout = new TimeSpan(0, 0, 0, 10, 0);
 
             foreach (var analog in config.databaseTemplate.analogs)
             {
@@ -245,7 +245,7 @@ namespace AMISimulator
                             if (type == ConsumerType.HOUSEHOLD)
                             {
 
-                                double valueToSend = DailyConsumption.GetPQHouseHold(now, rnd, consumers[measurements[i].PowerSystemResourceRef].PMax);
+                                double valueToSend = DailyConsumption.GetPQHouseHold(now, rnd, consumers[measurements[i].PowerSystemResourceRef].PMax) / 1000;
 
                                 if (valueToSend < 0)
                                 {
@@ -253,13 +253,13 @@ namespace AMISimulator
                                 }
 
                                 activePowers.Add(measurements[i].PowerSystemResourceRef, valueToSend);
-                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                                 //outstation.Load(changeset);
                             }
                             else if (type == ConsumerType.SHOPPING_CENTER)
                             {
                                 //ChangeSet changeset = new ChangeSet();
-                                double valueToSend = DailyConsumption.GetPQShoppingCenter(now, rnd, consumers[measurements[i].PowerSystemResourceRef].PMax);
+                                double valueToSend = DailyConsumption.GetPQShoppingCenter(now, rnd, consumers[measurements[i].PowerSystemResourceRef].PMax) / 1000;
 
                                 if (valueToSend < 0)
                                 {
@@ -267,13 +267,13 @@ namespace AMISimulator
                                 }
 
                                 activePowers.Add(measurements[i].PowerSystemResourceRef, valueToSend);
-                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                                 //outstation.Load(changeset);
                             }
                             else if (type == ConsumerType.FIRM)
                             {
                                 //ChangeSet changeset = new ChangeSet();
-                                double valueToSend = DailyConsumption.GetPQFirm(now, rnd, consumers[measurements[i].PowerSystemResourceRef].PMax);
+                                double valueToSend = DailyConsumption.GetPQFirm(now, rnd, consumers[measurements[i].PowerSystemResourceRef].PMax) / 1000;
 
                                 if (valueToSend < 0)
                                 {
@@ -281,7 +281,7 @@ namespace AMISimulator
                                 }
 
                                 activePowers.Add(measurements[i].PowerSystemResourceRef, valueToSend);
-                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                                 //outstation.Load(changeset);
                             }
                         }
@@ -290,40 +290,40 @@ namespace AMISimulator
                             if (type == ConsumerType.HOUSEHOLD)
                             {
                                 //ChangeSet changeset = new ChangeSet();
-                                double valueToSend = DailyConsumption.GetPQHouseHold(now, rnd, consumers[measurements[i].PowerSystemResourceRef].QMax);
+                                double valueToSend = DailyConsumption.GetPQHouseHold(now, rnd, consumers[measurements[i].PowerSystemResourceRef].QMax) / 1000;
 
                                 if (valueToSend < 0)
                                 {
                                     valueToSend = 0;
                                 }
 
-                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                                 //outstation.Load(changeset);
                             }
                             else if (type == ConsumerType.SHOPPING_CENTER)
                             {
                                 //ChangeSet changeset = new ChangeSet();
-                                double valueToSend = DailyConsumption.GetPQShoppingCenter(now, rnd, consumers[measurements[i].PowerSystemResourceRef].QMax);
+                                double valueToSend = DailyConsumption.GetPQShoppingCenter(now, rnd, consumers[measurements[i].PowerSystemResourceRef].QMax) / 1000;
 
                                 if (valueToSend < 0)
                                 {
                                     valueToSend = 0;
                                 }
 
-                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                                 //outstation.Load(changeset);
                             }
                             else if (type == ConsumerType.FIRM)
                             {
                                 //ChangeSet changeset = new ChangeSet();
-                                double valueToSend = DailyConsumption.GetPQFirm(now, rnd, consumers[measurements[i].PowerSystemResourceRef].QMax);
+                                double valueToSend = DailyConsumption.GetPQFirm(now, rnd, consumers[measurements[i].PowerSystemResourceRef].QMax) / 1000;
 
                                 if (valueToSend < 0)
                                 {
                                     valueToSend = 0;
                                 }
 
-                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 2, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
                                 //outstation.Load(changeset);
                             }
                         }
@@ -334,57 +334,20 @@ namespace AMISimulator
                             long powerTransId = this.GetPowerTransformerForEnConsumer(consumer.EqContainerID, consumer.BaseVoltageId);
                             double currentVoltage = this.GetNominalVoltageForPowerTransformer(powerTransId);
 
-                            if (type == ConsumerType.HOUSEHOLD)
+                            //ChangeSet changeset = new ChangeSet();
+                            double valueToSend = -1;
+
+                            if ((activePowers[measurements[i].PowerSystemResourceRef] / (consumer.PMax / 1000)) < 0.1)
                             {
-                                //ChangeSet changeset = new ChangeSet();
-                                double valueToSend = -1;
-
-                                if ((activePowers[measurements[i].PowerSystemResourceRef] / consumer.PMax) < 0.1)
-                                {
-                                    valueToSend = currentVoltage + currentVoltage * voltageLoss * 100;
-                                }
-                                else
-                                {
-                                    valueToSend = currentVoltage - currentVoltage * voltageLoss * ((activePowers[measurements[i].PowerSystemResourceRef] / consumer.PMax) * 100);
-                                }
-
-                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
-                                //outstation.Load(changeset);
+                                valueToSend = currentVoltage + currentVoltage * voltageLoss * 100;
                             }
-                            else if (type == ConsumerType.SHOPPING_CENTER)
+                            else
                             {
-                                //ChangeSet changeset = new ChangeSet();
-                                double valueToSend = -1;
-
-                                if ((activePowers[measurements[i].PowerSystemResourceRef] / consumer.PMax) < 0.1)
-                                {
-                                    valueToSend = currentVoltage + currentVoltage * voltageLoss * 100;
-                                }
-                                else
-                                {
-                                    valueToSend = currentVoltage - currentVoltage * voltageLoss * ((activePowers[measurements[i].PowerSystemResourceRef] / consumer.PMax) * 100);
-                                }
-
-                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
-                                //outstation.Load(changeset);
+                                valueToSend = currentVoltage - currentVoltage * voltageLoss * ((activePowers[measurements[i].PowerSystemResourceRef] / (consumer.PMax / 1000)) * 100);
                             }
-                            else if (type == ConsumerType.FIRM)
-                            {
-                                //ChangeSet changeset = new ChangeSet();
-                                double valueToSend = -1;
 
-                                if ((activePowers[measurements[i].PowerSystemResourceRef] / consumer.PMax) < 0.1)
-                                {
-                                    valueToSend = currentVoltage + currentVoltage * voltageLoss * 100;
-                                }
-                                else
-                                {
-                                    valueToSend = currentVoltage - currentVoltage * voltageLoss * ((activePowers[measurements[i].PowerSystemResourceRef] / consumer.PMax) * 100);
-                                }
-
-                                changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
-                                //outstation.Load(changeset);
-                            }
+                            changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
+                            //outstation.Load(changeset);
                         }
                     }
                 }

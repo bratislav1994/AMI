@@ -1075,29 +1075,30 @@ namespace DailyConsumptions
         public static float GetPQFirm(DateTime beginning, Random rnd, float maxPQ)
         {
             float valueToSendFirmPQ = 0;
-
+            int randomChanges = (int)(0.3 * maxPQ);
+            
             if (beginning.DayOfWeek == DayOfWeek.Saturday || beginning.DayOfWeek == DayOfWeek.Sunday)
             {
                 if (GetSeason(beginning) == Season.SUMMER) // letoooo
                 {
                     if (beginning.Month == WorkersDay.Month && beginning.Day == WorkersDay.Day)
                     {
-                        valueToSendFirmPQ = maxPQ * FirmConsumptionHolidaySummer[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendFirmPQ = maxPQ * FirmConsumptionHolidaySummer[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                     else
                     {
-                        valueToSendFirmPQ = maxPQ * FirmConsumptionWeekendSummer[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendFirmPQ = maxPQ * FirmConsumptionWeekendSummer[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                 }
                 else if (GetSeason(beginning) == Season.WINTER)
                 {
                     if (beginning.Month == Christmas.Month && beginning.Day == Christmas.Day)
                     {
-                        valueToSendFirmPQ = maxPQ * FirmConsumptionHolidayWinter[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendFirmPQ = maxPQ * FirmConsumptionHolidayWinter[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                     else
                     {
-                        valueToSendFirmPQ = maxPQ * FirmConsumptionWeekendWinter[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendFirmPQ = maxPQ * FirmConsumptionWeekendWinter[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                 }
             }
@@ -1107,22 +1108,22 @@ namespace DailyConsumptions
                 {
                     if (beginning.Month == WorkersDay.Month && beginning.Day == WorkersDay.Day)
                     {
-                        valueToSendFirmPQ = maxPQ * FirmConsumptionHolidaySummer[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendFirmPQ = maxPQ * FirmConsumptionHolidaySummer[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                     else
                     {
-                        valueToSendFirmPQ = maxPQ * FirmConsumptionWorkDaySummer[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendFirmPQ = maxPQ * FirmConsumptionWorkDaySummer[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                 }
                 else if (GetSeason(beginning) == Season.WINTER)
                 {
                     if (beginning.Month == Christmas.Month && beginning.Day == Christmas.Day)
                     {
-                        valueToSendFirmPQ = maxPQ * FirmConsumptionHolidayWinter[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendFirmPQ = maxPQ * FirmConsumptionHolidayWinter[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                     else
                     {
-                        valueToSendFirmPQ = maxPQ * FirmConsumptionWorkDayWinter[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendFirmPQ = maxPQ * FirmConsumptionWorkDayWinter[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                 }
             }
@@ -1132,6 +1133,7 @@ namespace DailyConsumptions
 
         public static float GetPQHouseHold(DateTime beginning, Random rnd, float maxPQ)
         {
+            int randomChanges = (int)(0.3 * maxPQ);
             float valueToSendHouseHoldPQ = 0;
 
             if (beginning.DayOfWeek == DayOfWeek.Saturday || beginning.DayOfWeek == DayOfWeek.Sunday)
@@ -1140,22 +1142,22 @@ namespace DailyConsumptions
                 {
                     if (beginning.Month == WorkersDay.Month && beginning.Day == WorkersDay.Day)
                     {
-                        valueToSendHouseHoldPQ = maxPQ * HouseholdConsumptionHolidaySummer[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendHouseHoldPQ = maxPQ * HouseholdConsumptionHolidaySummer[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                     else
                     {
-                        valueToSendHouseHoldPQ = maxPQ * HouseholdConsumptionWeekendSummer[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendHouseHoldPQ = maxPQ * HouseholdConsumptionWeekendSummer[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                 }
                 else if (GetSeason(beginning) == Season.WINTER)
                 {
                     if (beginning.Month == Christmas.Month && beginning.Day == Christmas.Day)
                     {
-                        valueToSendHouseHoldPQ = maxPQ * HouseholdConsumptionHolidayWinter[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendHouseHoldPQ = maxPQ * HouseholdConsumptionHolidayWinter[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                     else
                     {
-                        valueToSendHouseHoldPQ = maxPQ * HouseholdConsumptionWeekendWinter[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendHouseHoldPQ = maxPQ * HouseholdConsumptionWeekendWinter[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                 }
             }
@@ -1165,22 +1167,22 @@ namespace DailyConsumptions
                 {
                     if (beginning.Month == WorkersDay.Month && beginning.Day == WorkersDay.Day)
                     {
-                        valueToSendHouseHoldPQ = maxPQ * HouseholdConsumptionHolidaySummer[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendHouseHoldPQ = maxPQ * HouseholdConsumptionHolidaySummer[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                     else
                     {
-                        valueToSendHouseHoldPQ = maxPQ * HouseholdConsumptionWorkDaySummer[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendHouseHoldPQ = maxPQ * HouseholdConsumptionWorkDaySummer[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                 }
                 else if (GetSeason(beginning) == Season.WINTER)
                 {
                     if (beginning.Month == Christmas.Month && beginning.Day == Christmas.Day)
                     {
-                        valueToSendHouseHoldPQ = maxPQ * HouseholdConsumptionHolidayWinter[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendHouseHoldPQ = maxPQ * HouseholdConsumptionHolidayWinter[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                     else
                     {
-                        valueToSendHouseHoldPQ = maxPQ * HouseholdConsumptionWorkDayWinter[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendHouseHoldPQ = maxPQ * HouseholdConsumptionWorkDayWinter[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                 }
             }
@@ -1190,6 +1192,7 @@ namespace DailyConsumptions
 
         public static float GetPQShoppingCenter(DateTime beginning, Random rnd, float maxPQ)
         {
+            int randomChanges = (int)(0.3 * maxPQ);
             float valueToSendShocppingCenterPQ = 0;
 
             if (beginning.DayOfWeek == DayOfWeek.Saturday || beginning.DayOfWeek == DayOfWeek.Sunday)
@@ -1198,22 +1201,22 @@ namespace DailyConsumptions
                 {
                     if (beginning.Month == WorkersDay.Month && beginning.Day == WorkersDay.Day)
                     {
-                        valueToSendShocppingCenterPQ = maxPQ * ShoppingCenterConsumptionHolidaySummer[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendShocppingCenterPQ = maxPQ * ShoppingCenterConsumptionHolidaySummer[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                     else
                     {
-                        valueToSendShocppingCenterPQ = maxPQ * ShoppingCenterConsumptionWeekendSummer[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendShocppingCenterPQ = maxPQ * ShoppingCenterConsumptionWeekendSummer[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                 }
                 else if (GetSeason(beginning) == Season.WINTER)
                 {
                     if (beginning.Month == Christmas.Month && beginning.Day == Christmas.Day)
                     {
-                        valueToSendShocppingCenterPQ = maxPQ * ShoppingCenterConsumptionHolidayWinter[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendShocppingCenterPQ = maxPQ * ShoppingCenterConsumptionHolidayWinter[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                     else
                     {
-                        valueToSendShocppingCenterPQ = maxPQ * ShoppingCenterConsumptionWeekendWinter[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendShocppingCenterPQ = maxPQ * ShoppingCenterConsumptionWeekendWinter[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                 }
             }
@@ -1223,22 +1226,22 @@ namespace DailyConsumptions
                 {
                     if (beginning.Month == WorkersDay.Month && beginning.Day == WorkersDay.Day)
                     {
-                        valueToSendShocppingCenterPQ = maxPQ * ShoppingCenterConsumptionHolidaySummer[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendShocppingCenterPQ = maxPQ * ShoppingCenterConsumptionHolidaySummer[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                     else
                     {
-                        valueToSendShocppingCenterPQ = maxPQ * ShoppingCenterConsumptionWorkDaySummer[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendShocppingCenterPQ = maxPQ * ShoppingCenterConsumptionWorkDaySummer[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                 }
                 else if (GetSeason(beginning) == Season.WINTER)
                 {
                     if (beginning.Month == Christmas.Month && beginning.Day == Christmas.Day)
                     {
-                        valueToSendShocppingCenterPQ = maxPQ * ShoppingCenterConsumptionHolidayWinter[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendShocppingCenterPQ = maxPQ * ShoppingCenterConsumptionHolidayWinter[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                     else
                     {
-                        valueToSendShocppingCenterPQ = maxPQ * ShoppingCenterConsumptionWorkDayWinter[beginning.Hour % 24] + rnd.Next(-5, 5);
+                        valueToSendShocppingCenterPQ = maxPQ * ShoppingCenterConsumptionWorkDayWinter[beginning.Hour % 24] + rnd.Next(-randomChanges, randomChanges);
                     }
                 }
             }

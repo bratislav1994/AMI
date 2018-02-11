@@ -911,6 +911,7 @@ namespace SCADA
                 var config = new MasterStackConfig();
                 config.link.localAddr = 1;
                 config.link.remoteAddr = (ushort)ret;
+
                 var master = channel.AddMaster("master" + ret, handler, DefaultMasterApplication.Instance, config);
 
                 lock (lockObject)

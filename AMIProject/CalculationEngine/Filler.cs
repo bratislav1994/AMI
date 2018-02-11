@@ -89,7 +89,7 @@ namespace CalculationEngine
                             float valueToSendFirmQ = 0;
                             float valueToSendFirmV = 0;
 
-                            valueToSendFirmP = DailyConsumption.GetPQFirm(beginning, rnd, ec.PMax);
+                            valueToSendFirmP = DailyConsumption.GetPQFirm(beginning, rnd, ec.PMax) / 1000;
 
                             if (valueToSendFirmP < 0)
                             {
@@ -99,7 +99,7 @@ namespace CalculationEngine
                             measurements[ec.GlobalId].CurrentP = valueToSendFirmP;
                             measurements[ec.GlobalId].Season = DailyConsumption.GetSeason(beginning);
                             measurements[ec.GlobalId].Type = ec.Type;
-                            valueToSendFirmQ = DailyConsumption.GetPQFirm(beginning, rnd, ec.QMax);
+                            valueToSendFirmQ = DailyConsumption.GetPQFirm(beginning, rnd, ec.QMax) / 1000;
 
                             if (valueToSendFirmQ < 0)
                             {
@@ -109,13 +109,13 @@ namespace CalculationEngine
                             measurements[ec.GlobalId].CurrentQ = valueToSendFirmQ;
                             float bvF = ((BaseVoltage)voltages[ec.BaseVoltage]).NominalVoltage;
 
-                            if ((valueToSendFirmP / ec.PMax) < 0.1)
+                            if ((valueToSendFirmP / (ec.PMax / 1000)) < 0.1)
                             {
                                 valueToSendFirmV = (float)(bvF + bvF * voltageLoss * 100);
                             }
                             else
                             {
-                                valueToSendFirmV = (float)(bvF - bvF * voltageLoss * ((valueToSendFirmP / ec.PMax) * 100));
+                                valueToSendFirmV = (float)(bvF - bvF * voltageLoss * ((valueToSendFirmP / (ec.PMax / 1000)) * 100));
                             }
 
                             measurements[ec.GlobalId].CurrentV = valueToSendFirmV;
@@ -131,7 +131,7 @@ namespace CalculationEngine
                             float valueToSendHHQ = 0;
                             float valueToSendHHV = 0;
 
-                            valueToSendHHP = DailyConsumption.GetPQHouseHold(beginning, rnd, ec.PMax);
+                            valueToSendHHP = DailyConsumption.GetPQHouseHold(beginning, rnd, ec.PMax) / 1000;
 
                             if (valueToSendHHP < 0)
                             {
@@ -142,7 +142,7 @@ namespace CalculationEngine
                             measurements[ec.GlobalId].Season = DailyConsumption.GetSeason(beginning);
                             measurements[ec.GlobalId].Type = ec.Type;
 
-                            valueToSendHHQ = DailyConsumption.GetPQHouseHold(beginning, rnd, ec.QMax);
+                            valueToSendHHQ = DailyConsumption.GetPQHouseHold(beginning, rnd, ec.QMax) / 1000;
 
                             if (valueToSendHHQ < 0)
                             {
@@ -152,13 +152,13 @@ namespace CalculationEngine
                             measurements[ec.GlobalId].CurrentQ = valueToSendHHQ;
                             float bvHH = ((BaseVoltage)voltages[ec.BaseVoltage]).NominalVoltage;
 
-                            if ((valueToSendHHP / ec.PMax) < 0.1)
+                            if ((valueToSendHHP / (ec.PMax / 1000)) < 0.1)
                             {
                                 valueToSendHHV = (float)(bvHH + bvHH * voltageLoss * 100);
                             }
                             else
                             {
-                                valueToSendHHV = (float)(bvHH - bvHH * voltageLoss * ((valueToSendHHP / ec.PMax) * 100));
+                                valueToSendHHV = (float)(bvHH - bvHH * voltageLoss * ((valueToSendHHP / (ec.PMax / 1000)) * 100));
                             }
 
                             measurements[ec.GlobalId].CurrentV = valueToSendHHV;
@@ -173,7 +173,7 @@ namespace CalculationEngine
                             float valueToSendSCP = 0;
                             float valueToSendSCQ = 0;
                             float valueToSendSCV = 0;
-                            valueToSendSCP = DailyConsumption.GetPQShoppingCenter(beginning, rnd, ec.PMax);
+                            valueToSendSCP = DailyConsumption.GetPQShoppingCenter(beginning, rnd, ec.PMax) / 1000;
 
                             if (valueToSendSCP < 0)
                             {
@@ -183,7 +183,7 @@ namespace CalculationEngine
                             measurements[ec.GlobalId].CurrentP = valueToSendSCP;
                             measurements[ec.GlobalId].Season = DailyConsumption.GetSeason(beginning);
                             measurements[ec.GlobalId].Type = ec.Type;
-                            valueToSendSCQ = DailyConsumption.GetPQShoppingCenter(beginning, rnd, ec.QMax);
+                            valueToSendSCQ = DailyConsumption.GetPQShoppingCenter(beginning, rnd, ec.QMax) / 1000;
 
                             if (valueToSendSCQ < 0)
                             {
@@ -193,13 +193,13 @@ namespace CalculationEngine
                             measurements[ec.GlobalId].CurrentQ = valueToSendSCQ;
                             float bvSC = ((BaseVoltage)voltages[ec.BaseVoltage]).NominalVoltage;
 
-                            if ((valueToSendSCP / ec.PMax) < 0.1)
+                            if ((valueToSendSCP / (ec.PMax / 1000)) < 0.1)
                             {
                                 valueToSendSCV = (float)(bvSC + bvSC * voltageLoss * 100);
                             }
                             else
                             {
-                                valueToSendSCV = (float)(bvSC - bvSC * voltageLoss * ((valueToSendSCP / ec.PMax) * 100));
+                                valueToSendSCV = (float)(bvSC - bvSC * voltageLoss * ((valueToSendSCP / (ec.PMax / 1000)) * 100));
                             }
 
                             measurements[ec.GlobalId].CurrentV = valueToSendSCV;

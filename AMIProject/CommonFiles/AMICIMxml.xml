@@ -98,8 +98,8 @@
 
 	<cim:EnergyConsumer rdf:ID="EC_1_1">
 		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
-		<cim:EnergyConsumer.pMax>3</cim:EnergyConsumer.pMax>
-		<cim:EnergyConsumer.qMax>1</cim:EnergyConsumer.qMax>
+		<cim:EnergyConsumer.pMax>3000</cim:EnergyConsumer.pMax>
+		<cim:EnergyConsumer.qMax>1000</cim:EnergyConsumer.qMax>
 		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
 		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
@@ -110,8 +110,8 @@
 	
 	<cim:EnergyConsumer rdf:ID="EC_1_2">
 		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
-		<cim:EnergyConsumer.pMax>3.3</cim:EnergyConsumer.pMax>
-		<cim:EnergyConsumer.qMax>1.2</cim:EnergyConsumer.qMax>
+		<cim:EnergyConsumer.pMax>3300</cim:EnergyConsumer.pMax>
+		<cim:EnergyConsumer.qMax>1200</cim:EnergyConsumer.qMax>
 		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
 		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
@@ -122,8 +122,8 @@
 	
 	<cim:EnergyConsumer rdf:ID="EC_1_3">
 		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
-		<cim:EnergyConsumer.pMax>2.8</cim:EnergyConsumer.pMax>
-		<cim:EnergyConsumer.qMax>0.9</cim:EnergyConsumer.qMax>
+		<cim:EnergyConsumer.pMax>2800</cim:EnergyConsumer.pMax>
+		<cim:EnergyConsumer.qMax>900</cim:EnergyConsumer.qMax>
 		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
 		<cim:EnergyConsumer.consumerType>HOUSEHOLD</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_1"/>
@@ -134,8 +134,8 @@
 	
 	<cim:EnergyConsumer rdf:ID="EC_1_4">
 		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
-		<cim:EnergyConsumer.pMax>70</cim:EnergyConsumer.pMax>
-		<cim:EnergyConsumer.qMax>20</cim:EnergyConsumer.qMax>
+		<cim:EnergyConsumer.pMax>70000</cim:EnergyConsumer.pMax>
+		<cim:EnergyConsumer.qMax>20000</cim:EnergyConsumer.qMax>
 		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
 		<cim:EnergyConsumer.consumerType>SHOPPING_CENTER</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_2"/>
@@ -146,8 +146,8 @@
 	
 	<cim:EnergyConsumer rdf:ID="EC_1_5">
 		<cim:EnergyConsumer.invalidRangePercent>0.06</cim:EnergyConsumer.invalidRangePercent>
-		<cim:EnergyConsumer.pMax>110</cim:EnergyConsumer.pMax>
-		<cim:EnergyConsumer.qMax>36</cim:EnergyConsumer.qMax>
+		<cim:EnergyConsumer.pMax>110000</cim:EnergyConsumer.pMax>
+		<cim:EnergyConsumer.qMax>36000</cim:EnergyConsumer.qMax>
 		<cim:EnergyConsumer.validRangePercent>0.05</cim:EnergyConsumer.validRangePercent>
 		<cim:EnergyConsumer.consumerType>FIRM</cim:EnergyConsumer.consumerType>
 		<cim:ConductingEquipment.BaseVoltage rdf:resource="#BV_1_3"/>

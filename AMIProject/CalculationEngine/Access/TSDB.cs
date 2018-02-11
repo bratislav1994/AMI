@@ -1238,7 +1238,7 @@ namespace CalculationEngine.Access
             List<HourAggregation> ret = new List<HourAggregation>();
             bool freshList = true;
 
-            if (!filter.ConsumerHasValue && !filter.SeasonHasValue && !filter.TypeOfDayHasValue && 
+            if (!filter.ConsumerHasValue && !filter.SeasonHasValue && 
                 filter.Month == -1 && filter.Day == -1)
             {
                 using (var access = new AccessTSDB())
@@ -1258,27 +1258,7 @@ namespace CalculationEngine.Access
                     freshList = false;
                 }
             }
-
-            if (filter.TypeOfDayHasValue && ret.Count > 0)
-            {
-                foreach (HourAggregation hAgg in ret.Reverse<HourAggregation>())
-                {
-                    if (!filter.TypeOfDay.Any(x => x == hAgg.TimeStamp.DayOfWeek))
-                    {
-                        ret.Remove(hAgg);
-                    }
-                }
-            }
-            else if (filter.TypeOfDayHasValue)
-            {
-                using (var access = new AccessTSDB())
-                {
-                    ret = access.AggregationForHours.Where(x => filter.TypeOfDay.Any(y => y == x.TimeStamp.DayOfWeek) && 
-                    gids.Any(y => y == x.PsrRef) && x.TimeStamp.Year >= filter.YearFrom && x.TimeStamp.Year <= filter.YearTo).ToList();
-                    freshList = false;
-                }
-            }
-
+            
             if (filter.ConsumerHasValue && ret.Count > 0)
             {
                 foreach (HourAggregation hAgg in ret.Reverse<HourAggregation>())
@@ -1338,6 +1318,17 @@ namespace CalculationEngine.Access
                     x.TimeStamp.Day == filter.Day &&
                     x.TimeStamp.Year >= filter.YearFrom && x.TimeStamp.Year <= filter.YearTo).ToList();
                     freshList = false;
+                }
+            }
+
+            if (filter.TypeOfDayHasValue && ret.Count > 0)
+            {
+                foreach (HourAggregation hAgg in ret.Reverse<HourAggregation>())
+                {
+                    if (!filter.TypeOfDay.Any(x => x == hAgg.TimeStamp.DayOfWeek))
+                    {
+                        ret.Remove(hAgg);
+                    }
                 }
             }
 

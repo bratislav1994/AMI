@@ -684,7 +684,8 @@ namespace AMIClient.ViewModels
                 YearFrom = SelectedFromYear == -1 ? 1 : SelectedFromYear,
                 YearTo = SelectedToYear == -1 ? DateTime.Now.Year : SelectedToYear,
                 Month = SelectedMonth == "" ? -1 : months[SelectedMonth],
-                Day = SelectedDay
+                Day = SelectedDay,
+                SpecificDayHasValue = this.SpecificDayChecked ? true : false
             };
 
             foreach (Classes.DayOfWeek day in TypeOfDayCb)

@@ -101,13 +101,14 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Content Include="DB\DeltaDb.mdf">
+    <Content Include="DB\DeltaDB.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="DB\DeltaDb_log.ldf">
+    <Content Include="DB\DeltaDB_log.ldf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>DeltaDb.mdf</DependentUpon>
+      <DependentUpon>DeltaDB.mdf</DependentUpon>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
