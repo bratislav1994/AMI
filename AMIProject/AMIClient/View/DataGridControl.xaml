@@ -15,9 +15,10 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+    
         <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
-            <DataGrid SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.ViewTableItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
+           <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <DataGrid CanUserResizeColumns="True" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.ViewTableItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
 
 
                 <DataGrid.Resources>
@@ -150,6 +151,7 @@
 
                 </DataGrid.Columns>
             </DataGrid>
-        </Grid>
-    </ScrollViewer>
+        </ScrollViewer>
+    </Grid>
+    
 </UserControl>

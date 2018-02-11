@@ -14,14 +14,15 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="30"></RowDefinition>
-            </Grid.RowDefinitions>
+    <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <DataGrid SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding ViewAmiTableItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
 
                 <DataGrid.Resources>
@@ -150,24 +151,25 @@
 
                 </DataGrid.Columns>
             </DataGrid>
+        </ScrollViewer>
 
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="First" Width="50" Command="{Binding FirstCommand}"/>
-                <Label Width="5" Background="Transparent" />
-                <Button Content="Previous" Width="50" Command="{Binding PreviousCommand}"/>
-                <Label Width="5" Background="Transparent" />
-                <TextBox HorizontalContentAlignment="Right" Background="Transparent" BorderBrush="Transparent" MinWidth="30" MaxWidth="200" Width="auto" Text="{Binding EnteredPage, UpdateSourceTrigger=PropertyChanged}">
-                    <TextBox.InputBindings>
-                        <KeyBinding Command="{Binding EnterCommand}" Gesture="Enter" Key="Return" />
-                    </TextBox.InputBindings>
-                </TextBox>
-                <TextBox Background="Transparent" BorderThickness="0" IsReadOnly="True" BorderBrush="Transparent" Text="of"/>
-                <TextBox Background="Transparent" BorderThickness="0" IsReadOnly="True" BorderBrush="Transparent" MinWidth="30" Width="auto" Text="{Binding TotalPages, Mode=OneWay}"/>
-                <Button Content="Next" Width="50" Command="{Binding NextCommand}"/>
-                <Label Width="5" Background="Transparent" />
-                <Button Content="Last" Width="50" Command="{Binding LastCommand}"/>
-            </StackPanel>
-        </Grid>
-    </ScrollViewer>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="First" Width="50" Command="{Binding FirstCommand}"/>
+            <Label Width="5" Background="Transparent" />
+            <Button Content="Previous" Width="50" Command="{Binding PreviousCommand}"/>
+            <Label Width="5" Background="Transparent" />
+            <TextBox HorizontalContentAlignment="Right" Background="Transparent" BorderBrush="Transparent" MinWidth="30" MaxWidth="200" Width="auto" Text="{Binding EnteredPage, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding EnterCommand}" Gesture="Enter" Key="Return" />
+                </TextBox.InputBindings>
+            </TextBox>
+            <TextBox Background="Transparent" BorderThickness="0" IsReadOnly="True" BorderBrush="Transparent" Text="of"/>
+            <TextBox Background="Transparent" BorderThickness="0" IsReadOnly="True" BorderBrush="Transparent" MinWidth="30" Width="auto" Text="{Binding TotalPages, Mode=OneWay}"/>
+            <Button Content="Next" Width="50" Command="{Binding NextCommand}"/>
+            <Label Width="5" Background="Transparent" />
+            <Button Content="Last" Width="50" Command="{Binding LastCommand}"/>
+        </StackPanel>
+    </Grid>
+
 </UserControl>
 
