@@ -1323,11 +1323,15 @@ namespace CalculationEngine.Access
 
             if (filter.TypeOfDayHasValue && ret.Count > 0)
             {
-                foreach (HourAggregation hAgg in ret.Reverse<HourAggregation>())
+                if (filter.TypeOfDay.Count != 0)
                 {
-                    if (!filter.TypeOfDay.Any(x => x == hAgg.TimeStamp.DayOfWeek))
+                    foreach (HourAggregation hAgg in ret.Reverse<HourAggregation>())
                     {
-                        ret.Remove(hAgg);
+                        if (!filter.TypeOfDay.Any(x => x == hAgg.TimeStamp.DayOfWeek))
+                        {
+                            ret.Remove(hAgg);
+                        }
+
                     }
                 }
             }

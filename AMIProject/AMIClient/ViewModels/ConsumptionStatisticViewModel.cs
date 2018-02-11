@@ -712,9 +712,17 @@ namespace AMIClient.ViewModels
             }
 
             Tuple<List<HourAggregation>, Statistics> measForChart = this.Model.GetMeasurementsForChartViewByFilter(AmiGids, filter);
+            
 
             if (measForChart == null)
             {
+                DataHistoryPX[0].Values.Clear();
+                DataHistoryQX[0].Values.Clear();
+                DataHistoryVX[0].Values.Clear();
+                DataHistoryPY = new string[0];
+                DataHistoryQY = new string[0];
+                DataHistoryVY = new string[0];
+
                 return;
             }
             

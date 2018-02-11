@@ -326,15 +326,21 @@ namespace AMIClient.ViewModels
             DataHistoryPX[0].Values.Clear();
             DataHistoryQX[0].Values.Clear();
             DataHistoryVX[0].Values.Clear();
+            
+
+            if (measForChart == null)
+            {
+                DataHistoryPY = new string[0];
+                DataHistoryQY = new string[0];
+                DataHistoryVY = new string[0];
+
+                return;
+            }
+
             DataHistoryPY = new string[measForChart.Item1.Count];
             DataHistoryQY = new string[measForChart.Item1.Count];
             DataHistoryVY = new string[measForChart.Item1.Count];
 
-            if (measForChart == null)
-            {
-                return;
-            }
-            
             int cnt = -1;
 
             foreach (Statistics dm in measForChart.Item1)
