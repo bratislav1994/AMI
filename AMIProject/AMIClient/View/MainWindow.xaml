@@ -32,7 +32,7 @@
 
     </Window.Resources>
 
-    <Grid Background="#4c4c4c">
+    <Grid Background="#282828">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
