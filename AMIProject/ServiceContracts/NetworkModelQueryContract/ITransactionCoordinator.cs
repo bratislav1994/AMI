@@ -12,6 +12,9 @@ namespace FTN.ServiceContracts
     public interface ITransactionCoordinator
     {
         [OperationContract]
-        bool ApplyDelta(Delta delta);
+        Task<bool> ApplyDelta(Delta delta);
+
+        [OperationContract]
+        void Connect(string traceID, string serviceName);
     }
 }

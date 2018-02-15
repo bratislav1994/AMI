@@ -122,7 +122,7 @@ namespace CalculationEngine
                     DuplexChannelFactory<ITransactionDuplexCE> factory = new DuplexChannelFactory<ITransactionDuplexCE>(
                     new InstanceContext(this),
                         binding,
-                        new EndpointAddress("net.tcp://localhost:10103/TransactionCoordinator/CE"));
+                        new EndpointAddress(/*"net.tcp://localhost:10103/TransactionCoordinator/CE"*/"net.tcp://localhost:10101/TransactionCoordinatorProxy/CalculationEngine/"));
                     proxyCoordinator = factory.CreateChannel();
                     firstTimeCoordinator = false;
                 }

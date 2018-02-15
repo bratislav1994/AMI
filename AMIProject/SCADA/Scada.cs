@@ -1,5 +1,4 @@
-﻿using AMISimulator;
-using Automatak.DNP3.Adapter;
+﻿using Automatak.DNP3.Adapter;
 using Automatak.DNP3.Interface;
 using FTN.Common;
 using FTN.ServiceContracts;
@@ -21,7 +20,6 @@ using SCADA.Access;
 using TC57CIM.IEC61970.Wires;
 using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using TC57CIM.IEC61970.Core;
-using AMIClient.HelperClasses;
 
 namespace SCADA
 {
@@ -75,7 +73,7 @@ namespace SCADA
                     DuplexChannelFactory<ITransactionDuplexScada> factory = new DuplexChannelFactory<ITransactionDuplexScada>(
                     new InstanceContext(this),
                         binding,
-                        new EndpointAddress("net.tcp://localhost:10002/TransactionCoordinator/Scada"));
+                        new EndpointAddress(/*"net.tcp://localhost:10002/TransactionCoordinator/Scada"*/"net.tcp://localhost:10103/TransactionCoordinatorProxy/Scada/"));
                     proxyCoordinator = factory.CreateChannel();
                     firstTimeCoordinator = false;
                 }

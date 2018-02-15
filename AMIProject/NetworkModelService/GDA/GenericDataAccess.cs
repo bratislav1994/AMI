@@ -66,7 +66,7 @@ namespace FTN.Services.NetworkModelService
                     DuplexChannelFactory<ITransactionDuplexNMS> factory = new DuplexChannelFactory<ITransactionDuplexNMS>(
                     new InstanceContext(this),
                         binding,
-                        new EndpointAddress("net.tcp://localhost:10003/TransactionCoordinator/NMS"));
+                        new EndpointAddress(/*"net.tcp://localhost:10003/TransactionCoordinator/NMS"*/"net.tcp://localhost:10102/TransactionCoordinatorProxy/NMS/"));
                     proxyCoordinator = factory.CreateChannel();
                     FirstTimeCoordinator = false;
                 }

@@ -6,7 +6,6 @@ using System.Text;
 using Automatak.DNP3.Adapter;
 using Automatak.DNP3.Interface;
 using System.ServiceModel;
-using AMISimulator;
 using TC57CIM.IEC61970.Meas;
 using FTN.ServiceContracts;
 using FTN.Common.Logger;
@@ -39,7 +38,7 @@ namespace SCADA
             binding.MaxBufferSize = Int32.MaxValue;
             svc.AddServiceEndpoint(typeof(IScadaDuplexSimulator),
                                    binding,
-                                   new Uri("net.tcp://localhost:10100/Scada/Simulator"));
+                                   new Uri("net.tcp://localhost:10200/Scada/Simulator"));
             svc.Open();
 
             svc2 = new ServiceHost(scada);

@@ -237,5 +237,15 @@ namespace TransactionCoordinator
                 return false;
             }
         }
+
+        Task<bool> ITransactionCoordinator.ApplyDelta(Delta delta)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Connect(string traceID, string serviceName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
