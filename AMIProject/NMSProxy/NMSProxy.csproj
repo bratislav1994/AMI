@@ -67,6 +67,9 @@
       <HintPath>..\packages\Microsoft.ServiceFabric.Services.3.0.456\lib\net45\Microsoft.ServiceFabric.Services.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.ServiceFabric.Services.Wcf">
+      <HintPath>..\Micro Services\TransactionCoordinatorProxy\bin\Debug\Microsoft.ServiceFabric.Services.Wcf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Fabric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=AMD64">
@@ -99,6 +102,24 @@
     <None Include="PackageRoot\ServiceManifest.xml" />
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonMS\CommonMS.csproj">
+      <Project>{993a5bcf-107d-4210-a6ee-8a2dc4170b6a}</Project>
+      <Name>CommonMS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{892cbe15-9ed7-4540-81fa-0eaaba592138}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetworkModelService\DataModel\DataModel.csproj">
+      <Project>{ade96497-7c11-40b6-ae82-57f956c9f104}</Project>
+      <Name>DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServiceContracts\NetworkModelQueryContract\ServiceContracts.csproj">
+      <Project>{B726FB71-D295-41EE-9644-B2B0B1BC8911}</Project>
+      <Name>ServiceContracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

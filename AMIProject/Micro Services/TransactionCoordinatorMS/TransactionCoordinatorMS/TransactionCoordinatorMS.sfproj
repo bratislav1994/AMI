@@ -40,6 +40,9 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\NMSDB\NMSDB.csproj" />
+    <ProjectReference Include="..\..\..\NMSProxy\NMSProxy.csproj" />
+    <ProjectReference Include="..\..\..\NMS\NMS.csproj" />
     <ProjectReference Include="..\..\TransactionCoordinatorProxy\TransactionCoordinatorProxy.csproj" />
     <ProjectReference Include="..\..\TransactionCoordinator\TransactionCoordinator.csproj" />
   </ItemGroup>

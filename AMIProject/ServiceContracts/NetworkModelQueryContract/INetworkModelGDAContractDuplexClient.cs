@@ -16,5 +16,8 @@ namespace FTN.ServiceContracts
         
         [OperationContract(IsOneWay = true)]
         void Ping();
+
+        [OperationContract]
+        void Connect(string traceID, string serviceName);
     }
 }

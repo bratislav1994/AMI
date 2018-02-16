@@ -18,10 +18,10 @@ namespace FTN.ServiceContracts
 		/// <param name="propIds">List of requested properties</param>		
 		/// <returns>Resource description of the specified entity</returns>
 		[OperationContract]
-        ResourceDescription GetValues(long resourceId, List<ModelCode> propIds);
+        Task<ResourceDescription> GetValues(long resourceId, List<ModelCode> propIds);
 
         [OperationContract]
-        List<long> GetGlobalIds();
+        Task<List<long>> GetGlobalIds();
 
         /// <summary>
         /// Gets id of the resource iterator that holds descriptions for all entities of the specified type.
@@ -30,7 +30,7 @@ namespace FTN.ServiceContracts
         /// <param name="propIds">List of requested property codes</param>
         /// <returns>Id of resource iterator for the requested entities</returns>
         [OperationContract]
-        int GetExtentValues(ModelCode entityType, List<ModelCode> propIds);
+        Task<int> GetExtentValues(ModelCode entityType, List<ModelCode> propIds);
 
         /// <summary>
         /// Gets id of the resource iterator that holds descriptions for all entities related to specified source.
@@ -40,7 +40,7 @@ namespace FTN.ServiceContracts
         /// <param name="association">Relation between source and entities that should be returned</param>		
         /// <returns>Id of the resource iterator for the requested entities</returns>
         [OperationContract]
-        int GetRelatedValues(long source, List<ModelCode> propIds, Association association);
+        Task<int> GetRelatedValues(long source, List<ModelCode> propIds, Association association);
 
         /// <summary>
         /// Gets list of next n resource descriptions from the iterator.
@@ -49,7 +49,7 @@ namespace FTN.ServiceContracts
         /// <param name="id">Id of the resource iterator</param>
         /// <returns>List of resource descriptions</returns>
         [OperationContract]
-        List<ResourceDescription> IteratorNext(int n, int id);
+        Task<List<ResourceDescription>> IteratorNext(int n, int id);
 
         /// <summary>
         /// Resets current position in resource iterator to the iterator's beginning
@@ -57,7 +57,7 @@ namespace FTN.ServiceContracts
         /// <param name="id">Id of the resource iterator</param>
         /// <returns>TRUE if current position in iterator is successfully reseted</returns>
         [OperationContract]
-        bool IteratorRewind(int id);
+        Task<bool> IteratorRewind(int id);
 
         /// <summary>
         /// Gets the total number of the resource descriptions in resource iterator.
@@ -65,7 +65,7 @@ namespace FTN.ServiceContracts
         /// <param name="id">Id of the resource iterator</param>
         /// <returns>Total number of resources in resource iterator</returns>
         [OperationContract]
-        int IteratorResourcesTotal(int id);
+        Task<int> IteratorResourcesTotal(int id);
 
         /// <summary>
         /// Gets the number of resource descriptions left from current position in iterator to iterator's end
@@ -73,7 +73,7 @@ namespace FTN.ServiceContracts
         /// <param name="id">Id of the resource iterator</param>
         /// <returns>Number of resource iterator left to return in next calls</returns>
         [OperationContract]
-        int IteratorResourcesLeft(int id);
+        Task<int> IteratorResourcesLeft(int id);
 
         /// <summary>
         /// Closes the iterator.
@@ -81,6 +81,6 @@ namespace FTN.ServiceContracts
         /// <param name="id">Id of the resource iterator</param>
         /// <returns>TRUE if iterator is successfully closed</returns>
         [OperationContract]
-        bool IteratorClose(int id);
+        Task<bool> IteratorClose(int id);
     }
 }

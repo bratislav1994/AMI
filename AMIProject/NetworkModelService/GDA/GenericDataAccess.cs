@@ -12,6 +12,7 @@ using TC57CIM.IEC61970.Meas;
 using TC57CIM.IEC61970.Core;
 using FTN.Common.Logger;
 using TC57CIM.IEC61970.Wires;
+using System.Threading.Tasks;
 
 namespace FTN.Services.NetworkModelService
 {
@@ -186,12 +187,12 @@ namespace FTN.Services.NetworkModelService
             return true;
         }
 
-        public ResourceDescription GetValues(long resourceId, List<ModelCode> propIds)
+        public Task<ResourceDescription> GetValues(long resourceId, List<ModelCode> propIds)
         {
             try
             {
                 ResourceDescription retVal = nm.GetValues(resourceId, propIds);
-                return retVal;
+                return Task.FromResult<ResourceDescription>(retVal);
             }
             catch (Exception ex)
             {
@@ -201,12 +202,12 @@ namespace FTN.Services.NetworkModelService
             }
         }
 
-        public List<long> GetGlobalIds()
+        public Task<List<long>> GetGlobalIds()
         {
             try
             {
                 List<long> retVal = nm.GetGlobalIds();
-                return retVal;
+                return Task.FromResult<List<long>>(retVal);
             }
             catch (Exception ex)
             {
@@ -216,14 +217,14 @@ namespace FTN.Services.NetworkModelService
             }
         }
 
-        public int GetExtentValues(ModelCode entityType, List<ModelCode> propIds)
+        public Task<int> GetExtentValues(ModelCode entityType, List<ModelCode> propIds)
         {
             try
             {
                 ResourceIterator ri = nm.GetExtentValues(entityType, propIds);
                 int retVal = AddIterator(ri);
 
-                return retVal;
+                return Task.FromResult<int>(retVal);
             }
             catch (Exception ex)
             {
@@ -233,14 +234,14 @@ namespace FTN.Services.NetworkModelService
             }
         }
 
-        public int GetRelatedValues(long source, List<ModelCode> propIds, Association association)
+        public Task<int> GetRelatedValues(long source, List<ModelCode> propIds, Association association)
         {
             try
             {
                 ResourceIterator ri = nm.GetRelatedValues(source, propIds, association);
                 int retVal = AddIterator(ri);
 
-                return retVal;
+                return Task.FromResult<int>(retVal);
             }
             catch (Exception ex)
             {
@@ -250,13 +251,13 @@ namespace FTN.Services.NetworkModelService
             }
         }
 
-        public List<ResourceDescription> IteratorNext(int n, int id)
+        public Task<List<ResourceDescription>> IteratorNext(int n, int id)
         {
             try
             {
                 List<ResourceDescription> retVal = GetIterator(id).Next(n);
 
-                return retVal;
+                return Task.FromResult<List<ResourceDescription>>(retVal);
             }
             catch (Exception ex)
             {
@@ -266,13 +267,13 @@ namespace FTN.Services.NetworkModelService
             }
         }
 
-        public bool IteratorRewind(int id)
+        public Task<bool> IteratorRewind(int id)
         {
             try
             {
                 GetIterator(id).Rewind();
 
-                return true;
+                return Task.FromResult<bool>(true);
             }
             catch (Exception ex)
             {
@@ -282,12 +283,13 @@ namespace FTN.Services.NetworkModelService
             }
         }
 
-        public int IteratorResourcesTotal(int id)
+        public Task<int> IteratorResourcesTotal(int id)
         {
             try
             {
                 int retVal = GetIterator(id).ResourcesTotal();
-                return retVal;
+
+                return Task.FromResult<int>(retVal);
             }
             catch (Exception ex)
             {
@@ -297,13 +299,13 @@ namespace FTN.Services.NetworkModelService
             }
         }
 
-        public int IteratorResourcesLeft(int id)
+        public Task<int> IteratorResourcesLeft(int id)
         {
             try
             {
                 int resourcesLeft = GetIterator(id).ResourcesLeft();
 
-                return resourcesLeft;
+                return Task.FromResult<int>(resourcesLeft);
             }
             catch (Exception ex)
             {
@@ -313,9 +315,9 @@ namespace FTN.Services.NetworkModelService
             }
         }
 
-        public bool IteratorClose(int id)
+        public Task<bool> IteratorClose(int id)
         {
-            return RemoveIterator(id);
+            return Task.FromResult<bool>(RemoveIterator(id));
         }
 
         private int AddIterator(ResourceIterator iterator)
@@ -369,6 +371,11 @@ namespace FTN.Services.NetworkModelService
         public Dictionary<long, IdentifiedObject> GetVoltages()
         {
             return nm.GetVoltages();
+        }
+
+        public void Connect(string traceID, string serviceName)
+        {
+            throw new NotImplementedException();
         }
     }
 }
