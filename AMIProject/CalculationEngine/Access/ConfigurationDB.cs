@@ -13,7 +13,7 @@ namespace CalculationEngine.Access
         {
             AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;
-            ContextKey = "ALARMDB";
+            ContextKey = "DB";
         }
     }
 }
