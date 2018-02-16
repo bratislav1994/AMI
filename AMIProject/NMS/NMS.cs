@@ -16,13 +16,15 @@ using System.ServiceModel.Channels;
 using Microsoft.ServiceFabric.Services.Client;
 using FTN.Services.NetworkModelService;
 using System.ServiceModel;
+using FTN.Common.ClassesForAlarmDB;
+using FTN.Common;
 
 namespace NMS
 {
     /// <summary>
     /// An instance of this class is created for each service replica by the Service Fabric runtime.
     /// </summary>
-    internal sealed class NMS : StatefulService, INetworkModelGDAContractDuplexClient
+    internal sealed class NMS : StatefulService, INetworkModelGDAContractDuplexClient, INetworkModel
     {
         private IReliableDictionary<string, string> proxies;
         private WcfNMSProxy proxy;
@@ -30,13 +32,127 @@ namespace NMS
 
         private NetworkModel nm = null;
         private List<ServiceHost> hosts = null;
-        private ServiceHost svcDuplexClient = null;
-        private ServiceHost svcScript = null;
+
+        private bool firstContactDB = true;
+        private IDatabaseForNMS dbProxy;
+
+        private ITransactionDuplexNMS proxyCoordinator;
+        private bool firstTimeCoordinator = true;
+        private GenericDataAccess gda = null;
 
         public NMS(StatefulServiceContext context)
             : base(context)
-        { }
-        
+        {
+            this.ConnectToDb();
+            this.nm = new NetworkModel();
+            this.nm.Initialize(ReadAllDeltas());
+            this.gda = new GenericDataAccess();
+            this.Run();
+            this.gda.NetworkModel = nm;
+            ResourceIterator.NetworkModel = nm;
+            //svcScript = new ServiceHost(gda);
+            //svcScript.AddServiceEndpoint(typeof(INMSForScript),
+            //                        new NetTcpBinding(),
+            //                        new Uri("net.tcp://localhost:10011/NetworkModelService/FillingScript"));
+        }
+
+        #region nm
+
+        private void ConnectToDb()
+        {
+            while (true)
+            {
+                try
+                {
+                    this.DBProxy.Connect();
+                    break;
+                }
+                catch
+                {
+                    FirstContactDB = true;
+                    Thread.Sleep(1000);
+                }
+            }
+        }
+
+        private void SaveDelta(Delta delta)
+        {
+            DBProxy.SaveDelta(delta);
+        }
+
+        private List<Delta> ReadAllDeltas()
+        {
+            return DBProxy.ReadDelta();
+        }
+
+        private void InformClients()
+        {
+            proxy.InvokeWithRetry(client => client.Channel.NewDeltaApplied());
+        }
+
+        #endregion
+
+        #region gda
+
+        public void Run()
+        {
+            while (true)
+            {
+                try
+                {
+                    this.ProxyCoordinator.ConnectNMS();
+                    break;
+                }
+                catch
+                {
+                    FirstTimeCoordinator = true;
+                    Thread.Sleep(1000);
+                }
+            }
+        }
+
+        public ITransactionDuplexNMS ProxyCoordinator
+        {
+            get
+            {
+                if (FirstTimeCoordinator)
+                {
+                    NetTcpBinding binding = new NetTcpBinding();
+                    binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    binding.MaxReceivedMessageSize = Int32.MaxValue;
+                    binding.MaxBufferSize = Int32.MaxValue;
+                    DuplexChannelFactory<ITransactionDuplexNMS> factory = new DuplexChannelFactory<ITransactionDuplexNMS>(
+                    new InstanceContext(this),
+                        binding,
+                        new EndpointAddress(/*"net.tcp://localhost:10003/TransactionCoordinator/NMS"*/"net.tcp://localhost:10102/TransactionCoordinatorProxy/NMS/"));
+                    proxyCoordinator = factory.CreateChannel();
+                    FirstTimeCoordinator = false;
+                }
+
+                return proxyCoordinator;
+            }
+
+            set
+            {
+                proxyCoordinator = value;
+            }
+        }
+
+        public bool FirstTimeCoordinator
+        {
+            get
+            {
+                return firstTimeCoordinator;
+            }
+
+            set
+            {
+                firstTimeCoordinator = value;
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// Optional override to create listeners (e.g., HTTP, Service Remoting, WCF, etc.) for this service replica to handle client or user requests.
         /// </summary>
@@ -79,6 +195,45 @@ namespace NMS
             //       or remove this RunAsync override if it's not needed in your service.
 
             proxies = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, string>>("Proxies");
+            
+        }
+
+        public IDatabaseForNMS DBProxy
+        {
+            get
+            {
+                if (FirstContactDB)
+                {
+                    NetTcpBinding binding = new NetTcpBinding();
+                    binding.MaxReceivedMessageSize = Int32.MaxValue;
+                    binding.MaxBufferSize = Int32.MaxValue;
+                    binding.SendTimeout = TimeSpan.FromMinutes(5);
+                    ChannelFactory<IDatabaseForNMS> factoryDB = new ChannelFactory<IDatabaseForNMS>(binding,
+                                                                                        new EndpointAddress("net.tcp://localhost:10009/Database/NMS"));
+                    dbProxy = factoryDB.CreateChannel();
+                    FirstContactDB = false;
+                }
+
+                return dbProxy;
+            }
+
+            set
+            {
+                dbProxy = value;
+            }
+        }
+
+        public bool FirstContactDB
+        {
+            get
+            {
+                return firstContactDB;
+            }
+
+            set
+            {
+                firstContactDB = value;
+            }
         }
 
         public void ConnectClient()
@@ -88,47 +243,47 @@ namespace NMS
 
         public Task<int> GetExtentValues(FTN.Common.ModelCode entityType, List<FTN.Common.ModelCode> propIds)
         {
-            throw new NotImplementedException();
+            return this.gda.GetExtentValues(entityType, propIds);
         }
 
         public Task<List<long>> GetGlobalIds()
         {
-            throw new NotImplementedException();
+            return this.gda.GetGlobalIds();
         }
 
         public Task<int> GetRelatedValues(long source, List<FTN.Common.ModelCode> propIds, FTN.Common.Association association)
         {
-            throw new NotImplementedException();
+            return this.gda.GetRelatedValues(source, propIds, association);
         }
 
         public Task<FTN.Common.ResourceDescription> GetValues(long resourceId, List<FTN.Common.ModelCode> propIds)
         {
-            throw new NotImplementedException();
+            return this.gda.GetValues(resourceId, propIds);
         }
 
         public Task<bool> IteratorClose(int id)
         {
-            throw new NotImplementedException();
+            return this.gda.IteratorClose(id);
         }
 
         public Task<List<FTN.Common.ResourceDescription>> IteratorNext(int n, int id)
         {
-            throw new NotImplementedException();
+            return this.gda.IteratorNext(n, id);
         }
 
         public Task<int> IteratorResourcesLeft(int id)
         {
-            throw new NotImplementedException();
+            return this.gda.IteratorResourcesLeft(id);
         }
 
         public Task<int> IteratorResourcesTotal(int id)
         {
-            throw new NotImplementedException();
+            return this.gda.IteratorResourcesTotal(id);
         }
 
         public Task<bool> IteratorRewind(int id)
         {
-            throw new NotImplementedException();
+            return this.gda.IteratorRewind(id);
         }
 
         public async void Ping()
@@ -175,5 +330,46 @@ namespace NMS
                             ServicePartitionKey.Singleton,
                             "NMSListener");
         }
+
+        public void NewDeltaApplied()
+        {
+            proxy.InvokeWithRetry(client => client.Channel.NewDeltaApplied());
+        }
+
+        public void SendMeasurements(List<FTN.Services.NetworkModelService.DataModel.DynamicMeasurement> measurements)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SendAlarm(DeltaForAlarm delta)
+        {
+            throw new NotImplementedException();
+        }
+
+        #region INetworkModel
+
+        public void EnlistDelta(Delta delta)
+        {
+            this.gda.EnlistDelta(delta);
+        }
+
+        public Delta Prepare()
+        {
+            return this.gda.Prepare();
+        }
+
+        public void Commit()
+        {
+            this.gda.Commit();
+            this.SaveDelta(this.gda.delta);
+            new Thread(() => this.InformClients()).Start();
+        }
+
+        public void Rollback()
+        {
+            this.gda.Rollback();
+        }
+
+        #endregion
     }
 }

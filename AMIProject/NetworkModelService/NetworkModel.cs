@@ -29,87 +29,21 @@ namespace FTN.Services.NetworkModelService
         /// </summary>
         private ModelResourcesDesc resourcesDescs;
 
-        private List<IModelForDuplex> clients;
-        private List<IModelForDuplex> clientsForDeleting;
-        private Thread updateThreadClient;
-        private bool clientsNeedToUpdate = false;
         private object lockObjectClient;
         private object lockObjectScada;
-        private bool firstContactDB = true;
-        private IDatabaseForNMS dbProxy;
 
         /// <summary>
         /// Initializes a new instance of the Model class.
         /// </summary>
         public NetworkModel()
         {
-            Start();
             IsTest = false;
             LockObjectClient = new object();
             LockObjectScada = new object();
             networkDataModel = new Dictionary<DMSType, Container>();
             ResourcesDescs = new ModelResourcesDesc();
-            Clients = new List<IModelForDuplex>();
-            ClientsForDeleting = new List<IModelForDuplex>();
-            UpdateThreadClient = new Thread(() => InformClients());
-            UpdateThreadClient.Start();
         }
-
-        public IDatabaseForNMS DBProxy
-        {
-            get
-            {
-                if (FirstContactDB)
-                {
-                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel.DBProxy; line: {0}; Create channel between NMS and DB", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    NetTcpBinding binding = new NetTcpBinding();
-                    binding.MaxReceivedMessageSize = Int32.MaxValue;
-                    binding.MaxBufferSize = Int32.MaxValue;
-                    binding.SendTimeout = TimeSpan.FromMinutes(5);
-                    ChannelFactory<IDatabaseForNMS> factoryDB = new ChannelFactory<IDatabaseForNMS>(binding,
-                                                                                        new EndpointAddress("net.tcp://localhost:10009/Database/NMS"));
-                    dbProxy = factoryDB.CreateChannel();
-                    FirstContactDB = false;
-                }
-
-                Logger.LogMessageToFile(string.Format("NSM.NetworkModel.DBProxy; line: {0}; Channel NMS-DB is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-
-                return dbProxy;
-            }
-
-            set
-            {
-                dbProxy = value;
-            }
-        }
-
-        private void Start()
-        {
-            Thread t = new Thread(() => ConnectToDB());
-            t.Start();
-            t.Join();
-        }
-
-        private void ConnectToDB()
-        {
-            while (true)
-            {
-                try
-                {
-                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS try to connect to DB", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    this.DBProxy.Connect();
-                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS is connected to the DB", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    break;
-                }
-                catch
-                {
-                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS failed to connect to DB", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    FirstContactDB = true;
-                    Thread.Sleep(1000);
-                }
-            }
-        }
-
+ 
         public ModelResourcesDesc ResourcesDescs
         {
             get
@@ -120,58 +54,6 @@ namespace FTN.Services.NetworkModelService
             set
             {
                 resourcesDescs = value;
-            }
-        }
-
-        public List<IModelForDuplex> Clients
-        {
-            get
-            {
-                return clients;
-            }
-
-            set
-            {
-                clients = value;
-            }
-        }
-
-        public List<IModelForDuplex> ClientsForDeleting
-        {
-            get
-            {
-                return clientsForDeleting;
-            }
-
-            set
-            {
-                clientsForDeleting = value;
-            }
-        }
-
-        public Thread UpdateThreadClient
-        {
-            get
-            {
-                return updateThreadClient;
-            }
-
-            set
-            {
-                updateThreadClient = value;
-            }
-        }
-
-        public bool ClientsNeedToUpdate
-        {
-            get
-            {
-                return clientsNeedToUpdate;
-            }
-
-            set
-            {
-                clientsNeedToUpdate = value;
             }
         }
 
@@ -199,11 +81,6 @@ namespace FTN.Services.NetworkModelService
             {
                 lockObjectScada = value;
             }
-        }
-
-        public void ConnectClient()
-        {
-            this.Clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
         }
 
         #region Find
@@ -455,10 +332,10 @@ namespace FTN.Services.NetworkModelService
             return delta;
         }
 
-        public void IssueSaveDelta(Delta delta)
-        {
-            SaveDelta(delta);
-        }
+        //public void IssueSaveDelta(Delta delta)
+        //{
+        //    SaveDelta(delta);
+        //}
 
         /// <summary>
         /// Inserts entity into the network model.
@@ -766,10 +643,8 @@ namespace FTN.Services.NetworkModelService
             return relatedGids;
         }
 
-        public void Initialize()
+        public void Initialize(List<Delta> result)
         {
-            List<Delta> result = ReadAllDeltas();
-
             foreach (Delta delta in result)
             {
                 try
@@ -798,29 +673,6 @@ namespace FTN.Services.NetworkModelService
 
         public bool IsTest { get; set; }
 
-        public bool FirstContactDB
-        {
-            get
-            {
-                return firstContactDB;
-            }
-
-            set
-            {
-                firstContactDB = value;
-            }
-        }
-
-        private void SaveDelta(Delta delta)
-        {
-            DBProxy.SaveDelta(delta);
-        }
-
-        private List<Delta> ReadAllDeltas()
-        {
-            return DBProxy.ReadDelta();
-        }
-
         private Dictionary<short, int> GetCounters()
         {
             Dictionary<short, int> typesCounters = new Dictionary<short, int>();
@@ -837,46 +689,15 @@ namespace FTN.Services.NetworkModelService
 
             return typesCounters;
         }
-
-        private void InformClients()
-        {
-            while (true)
-            {
-                lock (LockObjectClient)
-                {
-                    if (ClientsNeedToUpdate)
-                    {
-                        ClientsForDeleting.Clear();
-                        foreach (IModelForDuplex client in Clients)
-                        {
-                            try
-                            {
-                                client.NewDeltaApplied();
-                            }
-                            catch
-                            {
-                                ClientsForDeleting.Add(client);
-                            }
-                        }
-                        foreach (IModelForDuplex client in ClientsForDeleting)
-                        {
-                            Clients.Remove(client);
-                        }
-                        ClientsNeedToUpdate = false;
-                    }
-                }
-                Thread.Sleep(200);
-            }
-        }
-
-        public void UpdateClients()
-        {
-            lock (LockObjectClient)
-            {
-                ClientsNeedToUpdate = true;
-            }
-        }
-
+        
+        //public void UpdateClients()
+        //{
+        //    lock (LockObjectClient)
+        //    {
+        //        ClientsNeedToUpdate = true;
+        //    }
+        //}
+        
         public Dictionary<DMSType, Container> DeepCopy()
         {
             Dictionary<DMSType, Container> retVal = new Dictionary<DMSType, Container>();
@@ -924,11 +745,6 @@ namespace FTN.Services.NetworkModelService
             }
 
             return retVal;
-        }
-
-        public void Dispose()
-        {
-            UpdateThreadClient.Abort();
         }
 
         public List<IdentifiedObject> GetConsumers()
