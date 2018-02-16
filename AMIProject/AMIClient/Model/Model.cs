@@ -71,7 +71,8 @@ namespace AMIClient
                     factory = new DuplexChannelFactory<INetworkModelGDAContractDuplexClient>(
                     new InstanceContext(this),
                         binding,
-                        new EndpointAddress("net.tcp://localhost:10000/NetworkModelService/GDADuplexClient"));
+                        new EndpointAddress(/*"net.tcp://localhost:10000/NetworkModelService/GDADuplexClient"*/
+                                            "net.tcp://localhost:10110/NMSProxy/Client/"));
                     gdaQueryProxy = factory.CreateChannel();
                     FirstContact = false;
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.GdaQueryProxy; line: {0}; Channel Client-NMS is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));

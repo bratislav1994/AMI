@@ -112,9 +112,9 @@
     <Compile Include="IDatabaseForNMS.cs" />
     <Compile Include="IModelForDuplex.cs" />
     <Compile Include="INetworkModel.cs" />
-    <Compile Include="INetworkModelGDAContract.cs" />
     <Compile Include="INetworkModelGDAContractDuplexClient.cs" />
     <Compile Include="INMSForScript.cs" />
+    <Compile Include="INMSProxy.cs" />
     <Compile Include="IScadaDuplexSimulator.cs" />
     <Compile Include="IScadaForCECommand.cs" />
     <Compile Include="ISmartCacheDuplexForClient.cs" />
