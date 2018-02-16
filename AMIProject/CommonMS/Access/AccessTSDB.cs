@@ -11,7 +11,7 @@ using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Meas;
 using TC57CIM.IEC61970.Wires;
 
-namespace CommonMS.Access
+namespace CalculationEngine.Access
 {
     public class AccessTSDB : DbContext
     {

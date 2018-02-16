@@ -40,6 +40,9 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\AggregationService\AggregationService.csproj" />
+    <ProjectReference Include="..\..\..\CEProxy\CEProxy.csproj" />
+    <ProjectReference Include="..\..\..\CE\CE.csproj" />
     <ProjectReference Include="..\..\..\NMSDB\NMSDB.csproj" />
     <ProjectReference Include="..\..\..\NMSProxy\NMSProxy.csproj" />
     <ProjectReference Include="..\..\..\NMS\NMS.csproj" />

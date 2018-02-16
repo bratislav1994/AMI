@@ -1,20 +1,21 @@
-﻿using FTN.Common;
-using FTN.Common.ClassesForAlarmDB;
-using FTN.Common.Filter;
-using FTN.Services.NetworkModelService.DataModel;
-using FTN.Services.NetworkModelService.DataModel.Dynamic;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Fabric;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TC57CIM.IEC61970.Core;
-using TC57CIM.IEC61970.Wires;
+using Microsoft.ServiceFabric.Services.Communication.Runtime;
+using Microsoft.ServiceFabric.Services.Runtime;
+using FTN.Services.NetworkModelService.DataModel;
+using FTN.Services.NetworkModelService.DataModel.Dynamic;
+using CommonMS.Access;
 
-namespace CommonMS.Access
+namespace AggregationService
 {
-    public class TSDB
+    /// <summary>
+    /// An instance of this class is created for each service instance by the Service Fabric runtime.
+    /// </summary>
+    internal sealed class AggregationService : StatelessService
     {
         private static object lockObj = new object();
         private static object lockObjH = new object();
@@ -29,33 +30,97 @@ namespace CommonMS.Access
         private bool isDayDone = false;
         private DateTime lastMeasForHoursBeforeAppStart;
         private DateTime lastMeasForMinutesBeforeAppStart;
-        private DB dbAdapter;
 
-        public TSDB()
+        public AggregationService(StatelessServiceContext context)
+            : base(context)
+        { }
+
+        /// <summary>
+        /// Optional override to create listeners (e.g., TCP, HTTP) for this service replica to handle client or user requests.
+        /// </summary>
+        /// <returns>A collection of listeners.</returns>
+        protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners()
         {
-
+            return new ServiceInstanceListener[0];
         }
 
-        public DB DbAdapter
-        {
-            get
-            {
-                return this.dbAdapter;
-            }
-
-            set
-            {
-                this.dbAdapter = value;
-            }
-        }
-
-        public void DoUndone()
+        /// <summary>
+        /// This is the main entry point for your service instance.
+        /// </summary>
+        /// <param name="cancellationToken">Canceled when Service Fabric needs to shut down this service instance.</param>
+        protected override async Task RunAsync(CancellationToken cancellationToken)
         {
             //this.DoUndoneByMinute();
             //this.DoUndoneByHour();
             //this.DoUndoneByDay();
+            StartThreads();
         }
 
+        private void StartThreads()
+        {
+            DateTime now = DateTime.Now;
+            DateTime argument = RoundUp(now, TimeSpan.FromMinutes(15));
+            this.SetUpTimer(argument);
+            DateTime argumentH = RoundUp(now, TimeSpan.FromHours(1));
+            this.SetUpTimerForHours(argumentH);
+            DateTime argumentD = RoundUp(now, TimeSpan.FromDays(1));
+            this.SetUpTimerForDays(argumentD);
+        }
+
+        #region Setup timers
+
+        private void SetUpTimer(DateTime argument)
+        {
+            DateTime current = DateTime.Now;
+            DateTime alertTime = argument.AddMilliseconds(-10);
+            TimeSpan timeToGo = alertTime.TimeOfDay - current.TimeOfDay;
+
+            if (timeToGo < TimeSpan.Zero)
+            {
+                return;//time already passed
+            }
+            this.timer = new System.Threading.Timer(x =>
+            {
+                this.AggregateForMinute(argument);
+            }, null, timeToGo, Timeout.InfiniteTimeSpan);
+        }
+
+        private void SetUpTimerForDays(DateTime argument)
+        {
+            DateTime current = DateTime.Now;
+            DateTime alertTime = argument;
+            TimeSpan timeToGo = alertTime.TimeOfDay - current.TimeOfDay;
+
+            if (timeToGo < TimeSpan.Zero)
+            {
+                return; //time already passed
+            }
+
+            this.timerDays = new System.Threading.Timer(x =>
+            {
+                this.AggregateForDay(argument);
+            }, null, timeToGo, Timeout.InfiniteTimeSpan);
+        }
+
+        private void SetUpTimerForHours(DateTime argument)
+        {
+            DateTime current = DateTime.Now;
+            DateTime alertTime = argument.AddMilliseconds(-5);
+            TimeSpan timeToGo = alertTime.TimeOfDay - current.TimeOfDay;
+
+            if (timeToGo < TimeSpan.Zero)
+            {
+                return; //time already passed
+            }
+
+            this.timerHours = new System.Threading.Timer(x =>
+            {
+                this.AggregateForHour(argument);
+            }, null, timeToGo, Timeout.InfiniteTimeSpan);
+        }
+
+        #endregion Setup timers
+        
         #region hour
 
         public void DoUndoneByHour()
@@ -253,23 +318,6 @@ namespace CommonMS.Access
             return retVal;
         }
 
-        private void SetUpTimerForHours(DateTime argument)
-        {
-            DateTime current = DateTime.Now;
-            DateTime alertTime = argument.AddMilliseconds(-5);
-            TimeSpan timeToGo = alertTime.TimeOfDay - current.TimeOfDay;
-
-            if (timeToGo < TimeSpan.Zero)
-            {
-                return; //time already passed
-            }
-
-            this.timerHours = new System.Threading.Timer(x =>
-            {
-                this.AggregateForHour(argument);
-            }, null, timeToGo, Timeout.InfiniteTimeSpan);
-        }
-
         private void AggregateForHour(DateTime to)
         {
             this.isHourDone = false;
@@ -343,46 +391,6 @@ namespace CommonMS.Access
 
             this.SetUpTimerForHours(argForSetUpTimer);
             this.isHourDone = true;
-        }
-
-        public List<Statistics> ReadHourAggregationTable(List<long> gids, DateTime from)
-        {
-            Dictionary<DateTime, Statistics> measurements = new Dictionary<DateTime, Statistics>();
-            DateTime to = from.AddDays(1);
-
-            lock (lockObj)
-            {
-                using (var access = new AccessTSDB())
-                {
-                    var rawMeas = access.AggregationForHours.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList();
-                    Dictionary<DateTime, int> cntForVoltage = new Dictionary<DateTime, int>();
-
-                    foreach (var meas in rawMeas)
-                    {
-                        if (!measurements.ContainsKey(meas.TimeStamp))
-                        {
-                            measurements.Add(meas.TimeStamp, meas);
-                            cntForVoltage.Add(meas.TimeStamp, 1);
-                        }
-                        else
-                        {
-                            measurements[meas.TimeStamp].AvgP += meas.AvgP;
-                            measurements[meas.TimeStamp].AvgQ += meas.AvgQ;
-                            measurements[meas.TimeStamp].AvgV += meas.AvgV;
-                            ++cntForVoltage[meas.TimeStamp];
-                            measurements[meas.TimeStamp].IntegralP += meas.IntegralP;
-                            measurements[meas.TimeStamp].IntegralQ += meas.IntegralQ;
-                        }
-                    }
-
-                    foreach (KeyValuePair<DateTime, int> kvp in cntForVoltage)
-                    {
-                        measurements[kvp.Key].AvgV /= kvp.Value;
-                    }
-
-                    return measurements.Values.ToList();
-                }
-            }
         }
 
         #endregion
@@ -580,24 +588,7 @@ namespace CommonMS.Access
 
             return retVal;
         }
-
-        private void SetUpTimerForDays(DateTime argument)
-        {
-            DateTime current = DateTime.Now;
-            DateTime alertTime = argument;
-            TimeSpan timeToGo = alertTime.TimeOfDay - current.TimeOfDay;
-
-            if (timeToGo < TimeSpan.Zero)
-            {
-                return; //time already passed
-            }
-
-            this.timerDays = new System.Threading.Timer(x =>
-            {
-                this.AggregateForDay(argument);
-            }, null, timeToGo, Timeout.InfiniteTimeSpan);
-        }
-
+        
         private void AggregateForDay(DateTime to)
         {
             isDayDone = false;
@@ -673,47 +664,7 @@ namespace CommonMS.Access
             this.SetUpTimerForDays(argForSetUpTimer);
             isDayDone = true;
         }
-
-        public List<Statistics> ReadDayAggregationTable(List<long> gids, DateTime from)
-        {
-            Dictionary<DateTime, Statistics> measurements = new Dictionary<DateTime, Statistics>();
-            DateTime to = from.AddMonths(1);
-
-            lock (lockObj)
-            {
-                using (var access = new AccessTSDB())
-                {
-                    var rawMeas = access.AggregationForDays.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList();
-                    Dictionary<DateTime, int> cntForVoltage = new Dictionary<DateTime, int>();
-
-                    foreach (var meas in rawMeas)
-                    {
-                        if (!measurements.ContainsKey(meas.TimeStamp))
-                        {
-                            measurements.Add(meas.TimeStamp, meas);
-                            cntForVoltage.Add(meas.TimeStamp, 1);
-                        }
-                        else
-                        {
-                            measurements[meas.TimeStamp].AvgP += meas.AvgP;
-                            measurements[meas.TimeStamp].AvgQ += meas.AvgQ;
-                            measurements[meas.TimeStamp].AvgV += meas.AvgV;
-                            ++cntForVoltage[meas.TimeStamp];
-                            measurements[meas.TimeStamp].IntegralP += meas.IntegralP;
-                            measurements[meas.TimeStamp].IntegralQ += meas.IntegralQ;
-                        }
-                    }
-
-                    foreach (KeyValuePair<DateTime, int> kvp in cntForVoltage)
-                    {
-                        measurements[kvp.Key].AvgV /= kvp.Value;
-                    }
-
-                    return measurements.Values.ToList();
-                }
-            }
-        }
-
+        
         #endregion
 
         #region minutes
@@ -871,155 +822,95 @@ namespace CommonMS.Access
             }
         }
 
-        #endregion minutes
-
-        public void StartThreads()
+        private Dictionary<long, List<DynamicMeasurement>> CreateDictionary(List<DynamicMeasurement> toBeWritten1)
         {
-            DateTime now = DateTime.Now;
-            DateTime argument = RoundUp(now, TimeSpan.FromMinutes(15));
-            this.SetUpTimer(argument);
-            DateTime dt = new DateTime(2018, 1, 15, 19, 19, 0);
-            DateTime argumentH = RoundUp(now, TimeSpan.FromHours(1));
-            this.SetUpTimerForHours(argumentH);
-            DateTime argumentD = RoundUp(now, TimeSpan.FromDays(1));
-            this.SetUpTimerForDays(argumentD);
-        }
+            Dictionary<long, List<DynamicMeasurement>> retVal = new Dictionary<long, List<DynamicMeasurement>>();
 
-        public bool AddMeasurements(List<DynamicMeasurement> measurements)
-        {
-            lock (lockObj)
+            foreach (DynamicMeasurement dm in toBeWritten1)
             {
-                using (var access = new AccessTSDB())
+                List<DynamicMeasurement> value = null;
+
+                if (!retVal.TryGetValue(dm.PsrRef, out value))
                 {
-                    foreach (DynamicMeasurement m in measurements)
-                    {
-                        try
-                        {
-                            var lastMeas = access.Collect.Where(x => x.PsrRef == m.PsrRef).OrderByDescending(x => x.TimeStamp).FirstOrDefault();
-
-                            if (lastMeas != null && (m.CurrentP == -1 || m.CurrentQ == -1 || m.CurrentV == -1))
-                            {
-                                if ((Math.Abs((double)(m.TimeStamp - lastMeas.TimeStamp).TotalSeconds)) < 25)
-                                {
-                                    if (m.CurrentP != -1)
-                                    {
-                                        lastMeas.CurrentP = m.CurrentP;
-                                    }
-
-                                    if (m.CurrentQ != -1)
-                                    {
-                                        lastMeas.CurrentQ = m.CurrentQ;
-                                    }
-
-                                    if (m.CurrentV != -1)
-                                    {
-                                        lastMeas.CurrentV = m.CurrentV;
-                                    }
-
-                                    lastMeas.IsAlarm = m.IsAlarm;
-
-                                    access.Entry(lastMeas).State = System.Data.Entity.EntityState.Modified;
-
-                                    int i = access.SaveChanges();
-
-                                    if (i > 0)
-                                    {
-                                    }
-                                    else
-                                    {
-                                        return false;
-                                    }
-                                }
-                                else
-                                {
-                                    if (m.CurrentP == -1)
-                                    {
-                                        m.CurrentP = lastMeas.CurrentP;
-                                    }
-
-                                    if (m.CurrentQ == -1)
-                                    {
-                                        m.CurrentQ = lastMeas.CurrentQ;
-                                    }
-
-                                    if (m.CurrentV == -1)
-                                    {
-                                        m.CurrentV = lastMeas.CurrentV;
-                                    }
-
-                                    access.Collect.Add(m);
-
-                                    int i = access.SaveChanges();
-
-                                    if (i > 0)
-                                    {
-                                    }
-                                    else
-                                    {
-                                        return false;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                throw new InvalidOperationException();
-                            }
-                        }
-                        catch (InvalidOperationException)
-                        {
-                            access.Collect.Add(m);
-
-                            int i = access.SaveChanges();
-
-                            if (i > 0)
-                            {
-                            }
-                            else
-                            {
-                                return false;
-                            }
-                        }
-                    }
-
-                    return true;
+                    retVal[dm.PsrRef] = new List<DynamicMeasurement>();
                 }
+
+                retVal[dm.PsrRef].Add(dm);
             }
+
+            return retVal;
         }
 
-        public List<DynamicMeasurement> GetMeasForChart(List<long> gids, DateTime from, DateTime to)
+        private List<MinuteAggregation> CreateMinuteAggregationsWhenMinuteTableIsNotEmpty(DateTime temp, Dictionary<long, DynamicMeasurement> toBeWrittenDic, Dictionary<long, List<DynamicMeasurement>> measurementsFromCollect)
         {
-            List<DynamicMeasurement> measurements = new List<DynamicMeasurement>();
+            List<MinuteAggregation> retVal = new List<MinuteAggregation>();
 
-            lock (lockObj)
+            foreach (KeyValuePair<long, List<DynamicMeasurement>> kvp in measurementsFromCollect)
             {
-                using (var access = new AccessTSDB())
+                MinuteAggregation ma = new MinuteAggregation();
+                ma.PsrRef = kvp.Key;
+                ma.MinP = kvp.Value.Min(x => x.CurrentP);
+                ma.MinQ = kvp.Value.Min(x => x.CurrentQ);
+                ma.MinV = kvp.Value.Min(x => x.CurrentV);
+                ma.MaxP = kvp.Value.Max(x => x.CurrentP);
+                ma.MaxQ = kvp.Value.Max(x => x.CurrentQ);
+                ma.MaxV = kvp.Value.Max(x => x.CurrentV);
+                ma.AvgP = kvp.Value.Average(x => x.CurrentP);
+                ma.AvgQ = kvp.Value.Average(x => x.CurrentQ);
+                ma.AvgV = kvp.Value.Average(x => x.CurrentV);
+                ma.TimeStamp = temp;
+                ma.Season = kvp.Value[0].Season;
+                ma.Type = kvp.Value[0].Type;
+
+                if (toBeWrittenDic.Count != 0)
                 {
-                    foreach (var meas in access.Collect.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp <= to).ToList())
-                    {
-                        measurements.Add(meas);
-                    }
-
-                    return measurements;
+                    ma.IntegralP += (toBeWrittenDic[kvp.Key].CurrentP * (((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[0].CurrentP - toBeWrittenDic[kvp.Key].CurrentP))) / 2;
+                    ma.IntegralQ += (toBeWrittenDic[kvp.Key].CurrentQ * (((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[0].CurrentQ - toBeWrittenDic[kvp.Key].CurrentQ))) / 2;
                 }
+
+                for (int i = 1; i < kvp.Value.Count; i++)
+                {
+                    ma.IntegralP += (kvp.Value[i].CurrentP * (((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[i].CurrentP - kvp.Value[i - 1].CurrentP))) / 2;
+                    ma.IntegralQ += (kvp.Value[i].CurrentQ * (((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[i].CurrentQ - kvp.Value[i - 1].CurrentQ))) / 2;
+                }
+
+                retVal.Add(ma);
             }
+
+            return retVal;
         }
 
-        #region private methods
-
-        private void SetUpTimer(DateTime argument)
+        private List<MinuteAggregation> CreateMinuteAggregationsWhenMinuteTableIsEmpty(Dictionary<long, List<DynamicMeasurement>> measurementsFromCollect1)
         {
-            DateTime current = DateTime.Now;
-            DateTime alertTime = argument.AddMilliseconds(-10);
-            TimeSpan timeToGo = alertTime.TimeOfDay - current.TimeOfDay;
+            List<MinuteAggregation> retVal = new List<MinuteAggregation>();
 
-            if (timeToGo < TimeSpan.Zero)
+            foreach (KeyValuePair<long, List<DynamicMeasurement>> kvp in measurementsFromCollect1)
             {
-                return;//time already passed
+                MinuteAggregation ma = new MinuteAggregation();
+                ma.PsrRef = kvp.Key;
+                ma.MinP = kvp.Value.Min(x => x.CurrentP);
+                ma.MinQ = kvp.Value.Min(x => x.CurrentQ);
+                ma.MinV = kvp.Value.Min(x => x.CurrentV);
+                ma.MaxP = kvp.Value.Max(x => x.CurrentP);
+                ma.MaxQ = kvp.Value.Max(x => x.CurrentQ);
+                ma.MaxV = kvp.Value.Max(x => x.CurrentV);
+                ma.AvgP = kvp.Value.Average(x => x.CurrentP);
+                ma.AvgQ = kvp.Value.Average(x => x.CurrentQ);
+                ma.AvgV = kvp.Value.Average(x => x.CurrentV);
+                ma.TimeStamp = RoundDown(kvp.Value[0].TimeStamp, TimeSpan.FromMinutes(1));
+                ma.Season = kvp.Value[0].Season;
+                ma.Type = kvp.Value[0].Type;
+
+                for (int i = 1; i < kvp.Value.Count; i++)
+                {
+                    ma.IntegralP += (kvp.Value[i].CurrentP * (((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[i].CurrentP - kvp.Value[i - 1].CurrentP))) / 2;
+                    ma.IntegralQ += (kvp.Value[i].CurrentQ * (((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[i].CurrentQ - kvp.Value[i - 1].CurrentQ))) / 2;
+                }
+
+                retVal.Add(ma);
             }
-            this.timer = new System.Threading.Timer(x =>
-            {
-                this.AggregateForMinute(argument);
-            }, null, timeToGo, Timeout.InfiniteTimeSpan);
+
+            return retVal;
         }
 
         private void AggregateForMinute(DateTime to)
@@ -1102,242 +993,7 @@ namespace CommonMS.Access
             this.isMinuteDone = true;
         }
 
-        private List<MinuteAggregation> CreateMinuteAggregationsWhenMinuteTableIsNotEmpty(DateTime temp, Dictionary<long, DynamicMeasurement> toBeWrittenDic, Dictionary<long, List<DynamicMeasurement>> measurementsFromCollect)
-        {
-            List<MinuteAggregation> retVal = new List<MinuteAggregation>();
-
-            foreach (KeyValuePair<long, List<DynamicMeasurement>> kvp in measurementsFromCollect)
-            {
-                MinuteAggregation ma = new MinuteAggregation();
-                ma.PsrRef = kvp.Key;
-                ma.MinP = kvp.Value.Min(x => x.CurrentP);
-                ma.MinQ = kvp.Value.Min(x => x.CurrentQ);
-                ma.MinV = kvp.Value.Min(x => x.CurrentV);
-                ma.MaxP = kvp.Value.Max(x => x.CurrentP);
-                ma.MaxQ = kvp.Value.Max(x => x.CurrentQ);
-                ma.MaxV = kvp.Value.Max(x => x.CurrentV);
-                ma.AvgP = kvp.Value.Average(x => x.CurrentP);
-                ma.AvgQ = kvp.Value.Average(x => x.CurrentQ);
-                ma.AvgV = kvp.Value.Average(x => x.CurrentV);
-                ma.TimeStamp = temp;
-                ma.Season = kvp.Value[0].Season;
-                ma.Type = kvp.Value[0].Type;
-
-                if (toBeWrittenDic.Count != 0)
-                {
-                    ma.IntegralP += (toBeWrittenDic[kvp.Key].CurrentP * (((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[0].CurrentP - toBeWrittenDic[kvp.Key].CurrentP))) / 2;
-                    ma.IntegralQ += (toBeWrittenDic[kvp.Key].CurrentQ * (((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[0].CurrentQ - toBeWrittenDic[kvp.Key].CurrentQ))) / 2;
-                }
-
-                for (int i = 1; i < kvp.Value.Count; i++)
-                {
-                    ma.IntegralP += (kvp.Value[i].CurrentP * (((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[i].CurrentP - kvp.Value[i - 1].CurrentP))) / 2;
-                    ma.IntegralQ += (kvp.Value[i].CurrentQ * (((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[i].CurrentQ - kvp.Value[i - 1].CurrentQ))) / 2;
-                }
-
-                retVal.Add(ma);
-            }
-
-            return retVal;
-        }
-
-        private List<MinuteAggregation> CreateMinuteAggregationsWhenMinuteTableIsEmpty(Dictionary<long, List<DynamicMeasurement>> measurementsFromCollect1)
-        {
-            List<MinuteAggregation> retVal = new List<MinuteAggregation>();
-
-            foreach (KeyValuePair<long, List<DynamicMeasurement>> kvp in measurementsFromCollect1)
-            {
-                MinuteAggregation ma = new MinuteAggregation();
-                ma.PsrRef = kvp.Key;
-                ma.MinP = kvp.Value.Min(x => x.CurrentP);
-                ma.MinQ = kvp.Value.Min(x => x.CurrentQ);
-                ma.MinV = kvp.Value.Min(x => x.CurrentV);
-                ma.MaxP = kvp.Value.Max(x => x.CurrentP);
-                ma.MaxQ = kvp.Value.Max(x => x.CurrentQ);
-                ma.MaxV = kvp.Value.Max(x => x.CurrentV);
-                ma.AvgP = kvp.Value.Average(x => x.CurrentP);
-                ma.AvgQ = kvp.Value.Average(x => x.CurrentQ);
-                ma.AvgV = kvp.Value.Average(x => x.CurrentV);
-                ma.TimeStamp = RoundDown(kvp.Value[0].TimeStamp, TimeSpan.FromMinutes(1));
-                ma.Season = kvp.Value[0].Season;
-                ma.Type = kvp.Value[0].Type;
-
-                for (int i = 1; i < kvp.Value.Count; i++)
-                {
-                    ma.IntegralP += (kvp.Value[i].CurrentP * (((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[i].CurrentP - kvp.Value[i - 1].CurrentP))) / 2;
-                    ma.IntegralQ += (kvp.Value[i].CurrentQ * (((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[i].TimeStamp - kvp.Value[i - 1].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[i].CurrentQ - kvp.Value[i - 1].CurrentQ))) / 2;
-                }
-
-                retVal.Add(ma);
-            }
-
-            return retVal;
-        }
-
-        private Dictionary<long, List<DynamicMeasurement>> CreateDictionary(List<DynamicMeasurement> toBeWritten1)
-        {
-            Dictionary<long, List<DynamicMeasurement>> retVal = new Dictionary<long, List<DynamicMeasurement>>();
-
-            foreach (DynamicMeasurement dm in toBeWritten1)
-            {
-                List<DynamicMeasurement> value = null;
-
-                if (!retVal.TryGetValue(dm.PsrRef, out value))
-                {
-                    retVal[dm.PsrRef] = new List<DynamicMeasurement>();
-                }
-
-                retVal[dm.PsrRef].Add(dm);
-            }
-
-            return retVal;
-        }
-
-        public List<Statistics> ReadMinuteAggregationTable(List<long> gids, DateTime from)
-        {
-            Dictionary<DateTime, Statistics> measurements = new Dictionary<DateTime, Statistics>();
-            DateTime to = from.AddHours(1);
-
-            lock (lockObj)
-            {
-                using (var access = new AccessTSDB())
-                {
-                    var rawMeas = access.AggregationForMinutes.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList();
-                    Dictionary<DateTime, int> cntForVoltage = new Dictionary<DateTime, int>();
-
-                    foreach (var meas in rawMeas)
-                    {
-                        if (!measurements.ContainsKey(meas.TimeStamp))
-                        {
-                            measurements.Add(meas.TimeStamp, meas);
-                            cntForVoltage.Add(meas.TimeStamp, 1);
-                        }
-                        else
-                        {
-                            measurements[meas.TimeStamp].AvgP += meas.AvgP;
-                            measurements[meas.TimeStamp].AvgQ += meas.AvgQ;
-                            measurements[meas.TimeStamp].AvgV += meas.AvgV;
-                            ++cntForVoltage[meas.TimeStamp];
-                            measurements[meas.TimeStamp].IntegralP += meas.IntegralP;
-                            measurements[meas.TimeStamp].IntegralQ += meas.IntegralQ;
-                        }
-                    }
-
-                    foreach (KeyValuePair<DateTime, int> kvp in cntForVoltage)
-                    {
-                        measurements[kvp.Key].AvgV /= kvp.Value;
-                    }
-
-                    return measurements.Values.ToList();
-                }
-            }
-        }
-
-        public List<HourAggregation> ReadHourAggregationTableByFilter(List<long> gids, Filter filter)
-        {
-            List<HourAggregation> ret = new List<HourAggregation>();
-            bool freshList = true;
-
-            if (!filter.ConsumerHasValue && !filter.SeasonHasValue && 
-                filter.Month == -1 && filter.Day == -1)
-            {
-                using (var access = new AccessTSDB())
-                {
-                    ret = access.AggregationForHours.ToList();
-                }
-
-                return ret;
-            }
-
-            if (filter.SeasonHasValue)
-            {
-                using (var access = new AccessTSDB())
-                {
-                    ret = access.AggregationForHours.Where(x => x.Season == filter.Season && gids.Any(y => y == x.PsrRef) && 
-                    x.TimeStamp.Year >= filter.YearFrom && x.TimeStamp.Year <= filter.YearTo).ToList();
-                    freshList = false;
-                }
-            }
-            
-            if (filter.ConsumerHasValue && ret.Count > 0)
-            {
-                foreach (HourAggregation hAgg in ret.Reverse<HourAggregation>())
-                {
-                    if (hAgg.Type != filter.ConsumerType)
-                    {
-                        ret.Remove(hAgg);
-                    }
-                }
-            }
-            else if (filter.ConsumerHasValue)
-            {
-                using (var access = new AccessTSDB())
-                {
-                    ret = access.AggregationForHours.Where(x => x.Type == filter.ConsumerType && gids.Any(y => y == x.PsrRef) && 
-                    x.TimeStamp.Year >= filter.YearFrom && x.TimeStamp.Year <= filter.YearTo).ToList();
-                    freshList = false;
-                }
-            }
-
-            if (filter.Month != -1 && ret.Count > 0)
-            {
-                foreach (HourAggregation hAgg in ret.Reverse<HourAggregation>())
-                {
-                    if (hAgg.TimeStamp.Month != filter.Month)
-                    {
-                        ret.Remove(hAgg);
-                    }
-                }
-            }
-            else if (filter.Month != -1)
-            {
-                using (var access = new AccessTSDB())
-                {
-                    ret = access.AggregationForHours.Where(x => gids.Any(y => y == x.PsrRef) &&
-                    x.TimeStamp.Month == filter.Month &&
-                    x.TimeStamp.Year >= filter.YearFrom && x.TimeStamp.Year <= filter.YearTo).ToList();
-                    freshList = false;
-                }
-            }
-
-            if (filter.Day != -1 && (ret.Count > 0 || !freshList))
-            {
-                foreach (HourAggregation hAgg in ret.Reverse<HourAggregation>())
-                {
-                    if (hAgg.TimeStamp.Day != filter.Day)
-                    {
-                        ret.Remove(hAgg);
-                    }
-                }
-            }
-            else if (filter.Day != -1)
-            {
-                using (var access = new AccessTSDB())
-                {
-                    ret = access.AggregationForHours.Where(x => gids.Any(y => y == x.PsrRef) &&
-                    x.TimeStamp.Day == filter.Day &&
-                    x.TimeStamp.Year >= filter.YearFrom && x.TimeStamp.Year <= filter.YearTo).ToList();
-                    freshList = false;
-                }
-            }
-
-            if (filter.TypeOfDayHasValue && ret.Count > 0)
-            {
-                if (filter.TypeOfDay.Count != 0)
-                {
-                    foreach (HourAggregation hAgg in ret.Reverse<HourAggregation>())
-                    {
-                        if (!filter.TypeOfDay.Any(x => x == hAgg.TimeStamp.DayOfWeek))
-                        {
-                            ret.Remove(hAgg);
-                        }
-
-                    }
-                }
-            }
-
-            return ret;
-        }
+        #endregion minutes
 
         DateTime RoundUp(DateTime dt, TimeSpan d)
         {
@@ -1348,142 +1004,5 @@ namespace CommonMS.Access
         {
             return new DateTime((dt.Ticks / d.Ticks) * d.Ticks);
         }
-
-        #endregion private methods
-
-        #region Fill methods
-
-        public void DoUndoneFill()
-        {
-            using (var access = new AccessTSDB())
-            {
-                FillMinuteTable(access);
-                FillHourTable(access);
-                FillMonthTable(access);
-            }
-        }
-
-        private void FillMinuteTable(AccessTSDB access)
-        {
-            try
-            {
-                var dtMin = access.Collect.Min(x => x.TimeStamp);
-                var dtMax = access.Collect.Max(x => x.TimeStamp);
-                DateTime roundDownCollect = this.RoundDown(dtMin, TimeSpan.FromMinutes(1));
-                DateTime roudUpCollect = this.RoundUp(dtMax, TimeSpan.FromMinutes(1));
-                Dictionary<long, DynamicMeasurement> lastMeasurementsFromCollect = new Dictionary<long, DynamicMeasurement>();
-                DateTime roundDownCollectPlus15Minutes = roundDownCollect.AddMinutes(15);
-                var tempListMinute = access.Collect.Where(x => DateTime.Compare(roundDownCollect, x.TimeStamp) <= 0 && DateTime.Compare(roundDownCollectPlus15Minutes, x.TimeStamp) > 0).ToList(); // merenja koja treba da se upisu u bazu (minutna tabela)
-
-                var measurementsFromCollect = CreateDictionary(tempListMinute);
-                List<MinuteAggregation> aggregationsMinute = CreateMinuteAggregationsWhenMinuteTableIsEmpty(measurementsFromCollect);
-
-                foreach (MinuteAggregation maa in aggregationsMinute)
-                {
-                    access.AggregationForMinutes.Add(maa);
-                }
-
-                roundDownCollect = roundDownCollect.AddMinutes(15);
-
-                while (roundDownCollect < roudUpCollect)
-                {
-                    roundDownCollectPlus15Minutes = roundDownCollect.AddMinutes(15);
-                    DateTime roundDownCollectMinus15Minutes = roundDownCollect.AddMinutes(-15);
-                    var tempListMinute1 = access.Collect.Where(x => DateTime.Compare(roundDownCollect, x.TimeStamp) <= 0 && DateTime.Compare(roundDownCollectPlus15Minutes, x.TimeStamp) > 0).ToList(); // merenja koja treba da se upisu u bazu (minutna tabela)
-                    var forIntegral = access.Collect.Where(x => DateTime.Compare(roundDownCollectMinus15Minutes, x.TimeStamp) <= 0 && DateTime.Compare(roundDownCollect, x.TimeStamp) > 0).ToList();
-
-                    foreach (DynamicMeasurement dm in forIntegral)
-                    {
-                        DynamicMeasurement value = null;
-                        if (!lastMeasurementsFromCollect.TryGetValue(dm.PsrRef, out value))
-                        {
-                            lastMeasurementsFromCollect[dm.PsrRef] = dm;
-                        }
-                    }
-
-                    var measurementsFromCollect1 = CreateDictionary(tempListMinute1);
-                    List<MinuteAggregation> aggregationsMinute1 = CreateMinuteAggregationsWhenMinuteTableIsNotEmpty(roundDownCollect, lastMeasurementsFromCollect, measurementsFromCollect1);
-
-                    foreach (MinuteAggregation maa in aggregationsMinute1)
-                    {
-                        access.AggregationForMinutes.Add(maa);
-                    }
-
-                    roundDownCollect = roundDownCollect.AddMinutes(15);
-                    lastMeasurementsFromCollect.Clear();
-                }
-
-                access.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-
-        private void FillHourTable(AccessTSDB access)
-        {
-            try
-            {
-                var dtMin = access.AggregationForMinutes.Min(x => x.TimeStamp);
-                var dtMax = access.AggregationForMinutes.Max(x => x.TimeStamp);
-                DateTime roundDownMinute = this.RoundDown(dtMin, TimeSpan.FromHours(1));
-                DateTime roudUpMinute = this.RoundUp(dtMax, TimeSpan.FromHours(1));
-
-                while (roundDownMinute < roudUpMinute)
-                {
-                    DateTime roundDownMinutePlusOneHour = roundDownMinute.AddHours(1);
-                    var tempList = access.AggregationForMinutes.Where(x => DateTime.Compare(roundDownMinute, x.TimeStamp) < 0 && DateTime.Compare(roundDownMinutePlusOneHour, x.TimeStamp) > 0).ToList(); // merenja koja treba da se upisu u bazu (minutna tabela)
-                    Dictionary<long, List<MinuteAggregation>> measurementsFromCollect = CreateDictionaryForHour(tempList);
-                    List<HourAggregation> aggregations = CreateHourAggregations(roundDownMinute, measurementsFromCollect);
-
-                    foreach (HourAggregation ma in aggregations)
-                    {
-                        access.AggregationForHours.Add(ma);
-                    }
-
-                    access.SaveChanges();
-                    roundDownMinute = roundDownMinute.AddHours(1);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-
-
-        private void FillMonthTable(AccessTSDB access)
-        {
-            try
-            {
-                var dtMin = access.AggregationForMinutes.Min(x => x.TimeStamp);
-                var dtMax = access.AggregationForMinutes.Max(x => x.TimeStamp);
-                DateTime roundDownHour = this.RoundDown(dtMin, TimeSpan.FromHours(1));
-                DateTime roudUpHour = this.RoundUp(dtMax, TimeSpan.FromHours(1));
-
-                while (roundDownHour < roudUpHour)
-                {
-                    DateTime roundDownHourPlusOneDay = roundDownHour.AddDays(1);
-                    var tempList = access.AggregationForHours.Where(x => DateTime.Compare(roundDownHour, x.TimeStamp) < 0 && DateTime.Compare(roundDownHourPlusOneDay, x.TimeStamp) > 0).ToList(); // merenja koja treba da se upisu u bazu (minutna tabela)
-                    Dictionary<long, List<HourAggregation>> measurementsFromCollect = CreateDictionaryForDay(tempList);
-                    List<DayAggregation> aggregations = CreateDayAggregations(roundDownHour, measurementsFromCollect);
-
-                    foreach (DayAggregation da in aggregations)
-                    {
-                        access.AggregationForDays.Add(da);
-                    }
-
-                    access.SaveChanges();
-                    roundDownHour = roundDownHour.AddDays(1);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-
-        #endregion Fill methods
     }
 }

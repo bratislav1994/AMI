@@ -19,7 +19,7 @@ using TC57CIM.IEC61970.Wires;
 namespace CalculationEngine
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class CalculationEngine : ICalculationEngine, ICalculationForClient, ICalculationEngineDuplexSmartCache, ICalculationEngineForScript
+    public class CalculationEngine : ICalculationEngine, ICalculationForClient, ICalculationEngineDuplexSmartCache, ICalculationEngineForScript, ICalculationEngineForScada
     {
         private static CalculationEngine instance;
         private ITransactionDuplexCE proxyCoordinator;
@@ -638,6 +638,11 @@ namespace CalculationEngine
             Statistics s = FillHourAgg(retVal);
 
             return new Tuple<List<HourAggregation>, Statistics>(retVal, s);
+        }
+
+        public void Connect()
+        {
+            throw new NotImplementedException();
         }
     }
 }

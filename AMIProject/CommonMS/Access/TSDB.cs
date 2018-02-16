@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Wires;
 
-namespace CommonMS.Access
+namespace CalculationEngine.Access
 {
     public class TSDB
     {
@@ -48,14 +48,14 @@ namespace CommonMS.Access
                 this.dbAdapter = value;
             }
         }
-
+/*
         public void DoUndone()
         {
             //this.DoUndoneByMinute();
             //this.DoUndoneByHour();
             //this.DoUndoneByDay();
-        }
-
+        }*/
+        /*
         #region hour
 
         public void DoUndoneByHour()
@@ -343,46 +343,6 @@ namespace CommonMS.Access
 
             this.SetUpTimerForHours(argForSetUpTimer);
             this.isHourDone = true;
-        }
-
-        public List<Statistics> ReadHourAggregationTable(List<long> gids, DateTime from)
-        {
-            Dictionary<DateTime, Statistics> measurements = new Dictionary<DateTime, Statistics>();
-            DateTime to = from.AddDays(1);
-
-            lock (lockObj)
-            {
-                using (var access = new AccessTSDB())
-                {
-                    var rawMeas = access.AggregationForHours.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList();
-                    Dictionary<DateTime, int> cntForVoltage = new Dictionary<DateTime, int>();
-
-                    foreach (var meas in rawMeas)
-                    {
-                        if (!measurements.ContainsKey(meas.TimeStamp))
-                        {
-                            measurements.Add(meas.TimeStamp, meas);
-                            cntForVoltage.Add(meas.TimeStamp, 1);
-                        }
-                        else
-                        {
-                            measurements[meas.TimeStamp].AvgP += meas.AvgP;
-                            measurements[meas.TimeStamp].AvgQ += meas.AvgQ;
-                            measurements[meas.TimeStamp].AvgV += meas.AvgV;
-                            ++cntForVoltage[meas.TimeStamp];
-                            measurements[meas.TimeStamp].IntegralP += meas.IntegralP;
-                            measurements[meas.TimeStamp].IntegralQ += meas.IntegralQ;
-                        }
-                    }
-
-                    foreach (KeyValuePair<DateTime, int> kvp in cntForVoltage)
-                    {
-                        measurements[kvp.Key].AvgV /= kvp.Value;
-                    }
-
-                    return measurements.Values.ToList();
-                }
-            }
         }
 
         #endregion
@@ -673,47 +633,7 @@ namespace CommonMS.Access
             this.SetUpTimerForDays(argForSetUpTimer);
             isDayDone = true;
         }
-
-        public List<Statistics> ReadDayAggregationTable(List<long> gids, DateTime from)
-        {
-            Dictionary<DateTime, Statistics> measurements = new Dictionary<DateTime, Statistics>();
-            DateTime to = from.AddMonths(1);
-
-            lock (lockObj)
-            {
-                using (var access = new AccessTSDB())
-                {
-                    var rawMeas = access.AggregationForDays.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList();
-                    Dictionary<DateTime, int> cntForVoltage = new Dictionary<DateTime, int>();
-
-                    foreach (var meas in rawMeas)
-                    {
-                        if (!measurements.ContainsKey(meas.TimeStamp))
-                        {
-                            measurements.Add(meas.TimeStamp, meas);
-                            cntForVoltage.Add(meas.TimeStamp, 1);
-                        }
-                        else
-                        {
-                            measurements[meas.TimeStamp].AvgP += meas.AvgP;
-                            measurements[meas.TimeStamp].AvgQ += meas.AvgQ;
-                            measurements[meas.TimeStamp].AvgV += meas.AvgV;
-                            ++cntForVoltage[meas.TimeStamp];
-                            measurements[meas.TimeStamp].IntegralP += meas.IntegralP;
-                            measurements[meas.TimeStamp].IntegralQ += meas.IntegralQ;
-                        }
-                    }
-
-                    foreach (KeyValuePair<DateTime, int> kvp in cntForVoltage)
-                    {
-                        measurements[kvp.Key].AvgV /= kvp.Value;
-                    }
-
-                    return measurements.Values.ToList();
-                }
-            }
-        }
-
+        
         #endregion
 
         #region minutes
@@ -884,7 +804,7 @@ namespace CommonMS.Access
             DateTime argumentD = RoundUp(now, TimeSpan.FromDays(1));
             this.SetUpTimerForDays(argumentD);
         }
-
+        */
         public bool AddMeasurements(List<DynamicMeasurement> measurements)
         {
             lock (lockObj)
@@ -1005,7 +925,7 @@ namespace CommonMS.Access
         }
 
         #region private methods
-
+        /*
         private void SetUpTimer(DateTime argument)
         {
             DateTime current = DateTime.Now;
@@ -1191,7 +1111,7 @@ namespace CommonMS.Access
             }
 
             return retVal;
-        }
+        }*/
 
         public List<Statistics> ReadMinuteAggregationTable(List<long> gids, DateTime from)
         {
@@ -1203,6 +1123,86 @@ namespace CommonMS.Access
                 using (var access = new AccessTSDB())
                 {
                     var rawMeas = access.AggregationForMinutes.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList();
+                    Dictionary<DateTime, int> cntForVoltage = new Dictionary<DateTime, int>();
+
+                    foreach (var meas in rawMeas)
+                    {
+                        if (!measurements.ContainsKey(meas.TimeStamp))
+                        {
+                            measurements.Add(meas.TimeStamp, meas);
+                            cntForVoltage.Add(meas.TimeStamp, 1);
+                        }
+                        else
+                        {
+                            measurements[meas.TimeStamp].AvgP += meas.AvgP;
+                            measurements[meas.TimeStamp].AvgQ += meas.AvgQ;
+                            measurements[meas.TimeStamp].AvgV += meas.AvgV;
+                            ++cntForVoltage[meas.TimeStamp];
+                            measurements[meas.TimeStamp].IntegralP += meas.IntegralP;
+                            measurements[meas.TimeStamp].IntegralQ += meas.IntegralQ;
+                        }
+                    }
+
+                    foreach (KeyValuePair<DateTime, int> kvp in cntForVoltage)
+                    {
+                        measurements[kvp.Key].AvgV /= kvp.Value;
+                    }
+
+                    return measurements.Values.ToList();
+                }
+            }
+        }
+
+        public List<Statistics> ReadHourAggregationTable(List<long> gids, DateTime from)
+        {
+            Dictionary<DateTime, Statistics> measurements = new Dictionary<DateTime, Statistics>();
+            DateTime to = from.AddDays(1);
+
+            lock (lockObj)
+            {
+                using (var access = new AccessTSDB())
+                {
+                    var rawMeas = access.AggregationForHours.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList();
+                    Dictionary<DateTime, int> cntForVoltage = new Dictionary<DateTime, int>();
+
+                    foreach (var meas in rawMeas)
+                    {
+                        if (!measurements.ContainsKey(meas.TimeStamp))
+                        {
+                            measurements.Add(meas.TimeStamp, meas);
+                            cntForVoltage.Add(meas.TimeStamp, 1);
+                        }
+                        else
+                        {
+                            measurements[meas.TimeStamp].AvgP += meas.AvgP;
+                            measurements[meas.TimeStamp].AvgQ += meas.AvgQ;
+                            measurements[meas.TimeStamp].AvgV += meas.AvgV;
+                            ++cntForVoltage[meas.TimeStamp];
+                            measurements[meas.TimeStamp].IntegralP += meas.IntegralP;
+                            measurements[meas.TimeStamp].IntegralQ += meas.IntegralQ;
+                        }
+                    }
+
+                    foreach (KeyValuePair<DateTime, int> kvp in cntForVoltage)
+                    {
+                        measurements[kvp.Key].AvgV /= kvp.Value;
+                    }
+
+                    return measurements.Values.ToList();
+                }
+            }
+        }
+
+        public List<Statistics> ReadDayAggregationTable(List<long> gids, DateTime from)
+        {
+            Dictionary<DateTime, Statistics> measurements = new Dictionary<DateTime, Statistics>();
+            DateTime to = from.AddMonths(1);
+
+            lock (lockObj)
+            {
+                using (var access = new AccessTSDB())
+                {
+                    var rawMeas = access.AggregationForDays.Where(x => gids.Any(y => y == x.PsrRef) && x.TimeStamp >= from && x.TimeStamp < to).ToList();
                     Dictionary<DateTime, int> cntForVoltage = new Dictionary<DateTime, int>();
 
                     foreach (var meas in rawMeas)

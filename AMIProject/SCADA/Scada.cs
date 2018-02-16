@@ -45,7 +45,7 @@ namespace SCADA
         private Dictionary<int, Dictionary<long, DynamicMeasurement>> resourcesToSend;
         private Dictionary<int, object> lockObjects = new Dictionary<int, object>();
         private Thread sendingThread;
-        private ICalculationEngine proxyCE;
+        private ICalculationEngineForScada proxyCE;
         private Dictionary<int, ISimulator> simulators;
         private object lockObjectForSimulators = new object();
         private object lockObject = new object();
@@ -88,7 +88,7 @@ namespace SCADA
             }
         }
 
-        public ICalculationEngine ProxyCE
+        public ICalculationEngineForScada ProxyCE
         {
             get
             {
@@ -98,7 +98,7 @@ namespace SCADA
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.MaxReceivedMessageSize = Int32.MaxValue;
                     binding.MaxBufferSize = Int32.MaxValue;
-                    ChannelFactory<ICalculationEngine> factory = new ChannelFactory<ICalculationEngine>(binding,
+                    ChannelFactory<ICalculationEngineForScada> factory = new ChannelFactory<ICalculationEngineForScada>(binding,
                                                                                         new EndpointAddress("net.tcp://localhost:10050/ICalculationEngine/Calculation"));
                     proxyCE = factory.CreateChannel();
                     firstTimeCE = false;

@@ -46,7 +46,7 @@ namespace CalculationEngine
             var binding1 = new NetTcpBinding();
             binding1.MaxReceivedMessageSize = Int32.MaxValue;
             binding1.MaxBufferSize = Int32.MaxValue;
-            svc1.AddServiceEndpoint(typeof(ICalculationEngine), binding1, new Uri("net.tcp://localhost:10050/ICalculationEngine/Calculation"));
+            svc1.AddServiceEndpoint(typeof(ICalculationEngineForScada), binding1, new Uri("net.tcp://localhost:10050/ICalculationEngine/Calculation"));
 
             svc2 = new ServiceHost(CalculationEngine.Instance);
             var binding2 = new NetTcpBinding();
