@@ -27,8 +27,6 @@ namespace NMSProxy
         private WcfCommunicationClientFactory<INetworkModelGDAContractDuplexClient> wcfClientFactory;
         private WcfNMS proxy;
         private StatelessServiceContext context;
-        private bool clientsNeedToUpdate = false;
-        private object lockObjectClient = new object();
 
         public NMSProxy(StatelessServiceContext context)
             : base(context)
@@ -114,32 +112,6 @@ namespace NMSProxy
             }
         }
 
-        public bool ClientsNeedToUpdate
-        {
-            get
-            {
-                return clientsNeedToUpdate;
-            }
-
-            set
-            {
-                clientsNeedToUpdate = value;
-            }
-        }
-
-        public object LockObjectClient
-        {
-            get
-            {
-                return lockObjectClient;
-            }
-
-            set
-            {
-                lockObjectClient = value;
-            }
-        }
-
         public void ConnectClient()
         {
             this.Clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
@@ -207,35 +179,12 @@ namespace NMSProxy
 
         public void NewDeltaApplied()
         {
-            while (true)
+            try
             {
-                lock (LockObjectClient)
-                {
-                    if (ClientsNeedToUpdate)
-                    {
-                        foreach (IModelForDuplex client in Clients)
-                        {
-                            try
-                            {
-                                client.NewDeltaApplied();
-                            }
-                            catch
-                            {
-                            }
-                        }
-
-                        ClientsNeedToUpdate = false;
-                    }
-                }
-                Thread.Sleep(200);
+                this.Clients.ForEach(x => x.NewDeltaApplied());
             }
-        }
-
-        public void UpdateClients()
-        {
-            lock (LockObjectClient)
+            catch
             {
-                ClientsNeedToUpdate = true;
             }
         }
 

@@ -17,70 +17,20 @@ using System.Threading.Tasks;
 namespace FTN.Services.NetworkModelService
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class GenericDataAccess : INetworkModelGDAContractDuplexClient, INetworkModel, INMSForScript
+    public class GenericDataAccess : INMSForScript
     {
         //INetworkModelGDAContract,
         private static Dictionary<int, ResourceIterator> resourceItMap = new Dictionary<int, ResourceIterator>();
         private static int resourceItId = 0;
         private NetworkModel nm = null;
         private NetworkModel nmCopy = null;
-        private ITransactionDuplexNMS proxyCoordinator;
-        private bool firstTimeCoordinator = true;
-        private Delta delta;
+        public Delta delta;
 
         public GenericDataAccess()
         {
 
         }
-
-        public void Run()
-        {
-            while (true)
-            {
-                try
-                {
-                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS try to connect with Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    this.ProxyCoordinator.ConnectNMS();
-                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS is connected to the Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    break;
-                }
-                catch
-                {
-                    FirstTimeCoordinator = true;
-                    Logger.LogMessageToFile(string.Format("NMS.NetworkModel; line: {0}; NMS faild to connect with Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    Thread.Sleep(1000);
-                }
-            }
-        }
-
-        public ITransactionDuplexNMS ProxyCoordinator
-        {
-            get
-            {
-                if (FirstTimeCoordinator)
-                {
-                    //Logger.LogMessageToFile(string.Format("NMS.NetworkModel.ProxyCoordinator; line: {0}; Create channel between NMS and Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    NetTcpBinding binding = new NetTcpBinding();
-                    binding.SendTimeout = TimeSpan.FromSeconds(3);
-                    binding.MaxReceivedMessageSize = Int32.MaxValue;
-                    binding.MaxBufferSize = Int32.MaxValue;
-                    DuplexChannelFactory<ITransactionDuplexNMS> factory = new DuplexChannelFactory<ITransactionDuplexNMS>(
-                    new InstanceContext(this),
-                        binding,
-                        new EndpointAddress(/*"net.tcp://localhost:10003/TransactionCoordinator/NMS"*/"net.tcp://localhost:10102/TransactionCoordinatorProxy/NMS/"));
-                    proxyCoordinator = factory.CreateChannel();
-                    FirstTimeCoordinator = false;
-                }
-                //Logger.LogMessageToFile(string.Format("NMS.NetworkModel.ProxyCoordinator; line: {0}; Channel NMS-Coordinator is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                return proxyCoordinator;
-            }
-
-            set
-            {
-                proxyCoordinator = value;
-            }
-        }
-
+        
         public NetworkModel NetworkModel
         {
             get
@@ -93,24 +43,6 @@ namespace FTN.Services.NetworkModelService
                 nm = value;
                 nmCopy = nm;
             }
-        }
-
-        public bool FirstTimeCoordinator
-        {
-            get
-            {
-                return firstTimeCoordinator;
-            }
-
-            set
-            {
-                firstTimeCoordinator = value;
-            }
-        }
-
-        public void ConnectClient()
-        {
-            nm.ConnectClient();
         }
 
         public void EnlistDelta(Delta delta)
@@ -126,15 +58,9 @@ namespace FTN.Services.NetworkModelService
             }
 
             nmCopy = new NetworkModel();
-            nmCopy.Clients = nm.Clients;
-            nmCopy.ClientsForDeleting = nm.ClientsForDeleting;
-            nmCopy.ClientsNeedToUpdate = nm.ClientsNeedToUpdate;
             nmCopy.LockObjectClient = nm.LockObjectClient;
             nmCopy.LockObjectScada = nm.LockObjectScada;
             nmCopy.ResourcesDescs = nm.ResourcesDescs;
-            nmCopy.UpdateThreadClient = nm.UpdateThreadClient;
-            nmCopy.DBProxy = nm.DBProxy;
-            nmCopy.FirstContactDB = nm.FirstContactDB;
 
             Dictionary<DMSType, Container> copy = nm.DeepCopy();
             nmCopy.networkDataModel = copy;
@@ -147,8 +73,8 @@ namespace FTN.Services.NetworkModelService
             nmCopy.IsTest = nm.IsTest;
             nm = nmCopy;
             ResourceIterator.NetworkModel = nm;
-            nm.UpdateClients();
-            nm.IssueSaveDelta(delta);
+            //nm.UpdateClients();
+            //nm.IssueSaveDelta(delta);
         }
 
         public void Rollback()
@@ -353,11 +279,6 @@ namespace FTN.Services.NetworkModelService
             }
         }
 
-        public void Ping()
-        {
-            return;
-        }
-
         public void ClearResourceMap()
         {
             resourceItMap.Clear();
@@ -371,11 +292,6 @@ namespace FTN.Services.NetworkModelService
         public Dictionary<long, IdentifiedObject> GetVoltages()
         {
             return nm.GetVoltages();
-        }
-
-        public void Connect(string traceID, string serviceName)
-        {
-            throw new NotImplementedException();
         }
     }
 }

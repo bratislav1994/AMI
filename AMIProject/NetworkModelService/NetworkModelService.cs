@@ -21,25 +21,25 @@ namespace FTN.Services.NetworkModelService
 
         public NetworkModelService()
 		{			
-			nm = new NetworkModel();
-            nm.Initialize();
-            GenericDataAccess gda = new GenericDataAccess();
-            gda.Run();			
-			gda.NetworkModel = nm;
-            ResourceIterator.NetworkModel = nm;
-            svcDuplexClient = new ServiceHost(gda);
-            NetTcpBinding binding = new NetTcpBinding();
-            binding.SendTimeout = TimeSpan.FromSeconds(3);
-            binding.MaxReceivedMessageSize = Int32.MaxValue;
-            binding.MaxBufferSize = Int32.MaxValue;
-            svcDuplexClient.AddServiceEndpoint(typeof(INetworkModelGDAContractDuplexClient),
-                                    binding,
-                                    new Uri("net.tcp://localhost:10000/NetworkModelService/GDADuplexClient"));
+			//nm = new NetworkModel();
+   //         nm.Initialize();
+   //         GenericDataAccess gda = new GenericDataAccess();
+   //         gda.Run();			
+			//gda.NetworkModel = nm;
+   //         ResourceIterator.NetworkModel = nm;
+   //         svcDuplexClient = new ServiceHost(gda);
+   //         NetTcpBinding binding = new NetTcpBinding();
+   //         binding.SendTimeout = TimeSpan.FromSeconds(3);
+   //         binding.MaxReceivedMessageSize = Int32.MaxValue;
+   //         binding.MaxBufferSize = Int32.MaxValue;
+   //         svcDuplexClient.AddServiceEndpoint(typeof(INetworkModelGDAContractDuplexClient),
+   //                                 binding,
+   //                                 new Uri("net.tcp://localhost:10000/NetworkModelService/GDADuplexClient"));
 
-            svcScript = new ServiceHost(gda);
-            svcScript.AddServiceEndpoint(typeof(INMSForScript),
-                                    new NetTcpBinding(),
-                                    new Uri("net.tcp://localhost:10011/NetworkModelService/FillingScript"));
+   //         svcScript = new ServiceHost(gda);
+   //         svcScript.AddServiceEndpoint(typeof(INMSForScript),
+   //                                 new NetTcpBinding(),
+   //                                 new Uri("net.tcp://localhost:10011/NetworkModelService/FillingScript"));
 
 
             //InitializeHosts();
