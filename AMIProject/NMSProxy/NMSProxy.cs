@@ -93,7 +93,7 @@ namespace NMSProxy
 
             proxy = new WcfNMS(
                             wcfClientFactory,
-                            new Uri("fabric:/NetworkModelServiceMS/NMS"),
+                            new Uri("fabric:/TransactionCoordinatorMS/NMS"),
                             new ServicePartitionKey(1));
 
             proxy.InvokeWithRetry(client => client.Channel.Connect(base.Context.PartitionId.ToString() + "-" + base.Context.ReplicaOrInstanceId, base.Context.ServiceName.ToString()));

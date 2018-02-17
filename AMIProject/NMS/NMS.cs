@@ -331,11 +331,6 @@ namespace NMS
                             "NMSListener");
         }
 
-        public void NewDeltaApplied()
-        {
-            proxy.InvokeWithRetry(client => client.Channel.NewDeltaApplied());
-        }
-
         public void SendMeasurements(List<FTN.Services.NetworkModelService.DataModel.DynamicMeasurement> measurements)
         {
             throw new NotImplementedException();
