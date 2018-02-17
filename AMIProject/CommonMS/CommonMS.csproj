@@ -137,6 +137,7 @@
     <Compile Include="Access\DB.cs" />
     <Compile Include="Access\TSDB.cs" />
     <Compile Include="WcfCE.cs" />
+    <Compile Include="WcfCEProxy.cs" />
     <Compile Include="WcfCEScada.cs" />
     <Compile Include="WcfNMS.cs" />
     <Compile Include="WcfNMSProxy.cs" />

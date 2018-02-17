@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Services.Runtime;
 
-namespace Stateless1
+namespace CEScada
 {
-    [EventSource(Name = "MyCompany-NetworkModelServiceMS-Stateless1")]
+    [EventSource(Name = "MyCompany-TransactionCoordinatorMS-CEScada")]
     internal sealed class ServiceEventSource : EventSource
     {
         public static readonly ServiceEventSource Current = new ServiceEventSource();
@@ -65,7 +65,7 @@ namespace Stateless1
         }
 
         [NonEvent]
-        public void ServiceMessage(StatelessServiceContext serviceContext, string message, params object[] args)
+        public void ServiceMessage(StatefulServiceContext serviceContext, string message, params object[] args)
         {
             if (this.IsEnabled())
             {
@@ -73,7 +73,7 @@ namespace Stateless1
                 ServiceMessage(
                     serviceContext.ServiceName.ToString(),
                     serviceContext.ServiceTypeName,
-                    serviceContext.InstanceId,
+                    serviceContext.ReplicaId,
                     serviceContext.PartitionId,
                     serviceContext.CodePackageActivationContext.ApplicationName,
                     serviceContext.CodePackageActivationContext.ApplicationTypeName,

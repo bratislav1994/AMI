@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Services.Runtime;
 
-namespace CE
+namespace CEClient
 {
-    [EventSource(Name = "MyCompany-TransactionCoordinatorMS-CE")]
+    [EventSource(Name = "MyCompany-TransactionCoordinatorMS-CEClient")]
     internal sealed class ServiceEventSource : EventSource
     {
         public static readonly ServiceEventSource Current = new ServiceEventSource();
@@ -65,7 +65,7 @@ namespace CE
         }
 
         [NonEvent]
-        public void ServiceMessage(StatefulServiceContext serviceContext, string message, params object[] args)
+        public void ServiceMessage(StatelessServiceContext serviceContext, string message, params object[] args)
         {
             if (this.IsEnabled())
             {
@@ -73,7 +73,7 @@ namespace CE
                 ServiceMessage(
                     serviceContext.ServiceName.ToString(),
                     serviceContext.ServiceTypeName,
-                    serviceContext.ReplicaId,
+                    serviceContext.InstanceId,
                     serviceContext.PartitionId,
                     serviceContext.CodePackageActivationContext.ApplicationName,
                     serviceContext.CodePackageActivationContext.ApplicationTypeName,

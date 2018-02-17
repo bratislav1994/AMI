@@ -12,7 +12,7 @@ namespace FTN.ServiceContracts
     public interface ICalculationEngineForScada
     {
         [OperationContract]
-        void Connect();
+        void Connect(string traceID, string serviceName);
 
         [OperationContract]
         void DataFromScada(Dictionary<long, DynamicMeasurement> measurements);

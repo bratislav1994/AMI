@@ -25,7 +25,7 @@ namespace CEProxy
     /// <summary>
     /// An instance of this class is created for each service instance by the Service Fabric runtime.
     /// </summary>
-    internal sealed class CEProxy : StatelessService, ICalculationForClient, ICalculationEngineForScada
+    internal sealed class CEProxy : StatelessService, ICalculationForClient, ICalculationEngineForScada, IScadaForCECommand
     {
         private WcfCommunicationClientFactory<ICalculationForClient> wcfClientFactory;
         private WcfCE proxyClient;
@@ -51,7 +51,25 @@ namespace CEProxy
             new WcfCommunicationListener<ICalculationEngineForScada>(context, this,
             new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10121/CEProxy/Scada/")), "ScadaListener");
 
-            return new ServiceInstanceListener[] { clientListener, scadaListener };
+            var serviceListener = new ServiceInstanceListener((context) =>
+        new WcfCommunicationListener<IScadaForCECommand>(
+            wcfServiceObject: this,
+            serviceContext: context,
+            //
+            // The name of the endpoint configured in the ServiceManifest under the Endpoints section
+            // that identifies the endpoint that the WCF ServiceHost should listen on.
+            //
+            endpointResourceName: "ServiceEndpoint",
+
+            //
+            // Populate the binding information that you want the service to use.
+            //
+            listenerBinding: WcfUtility.CreateTcpListenerBinding()
+        ),
+        "CEScadaListener"
+    );
+
+            return new ServiceInstanceListener[] { clientListener, scadaListener, serviceListener };
         }
 
         /// <summary>
@@ -74,9 +92,9 @@ namespace CEProxy
             //
             proxyClient = new WcfCE(
                             wcfClientFactory,
-                            new Uri("fabric:/TransactionCoordinatorMS/CE"),
-                            new ServicePartitionKey(1),
-                            "ClientListener");
+                            new Uri("fabric:/TransactionCoordinatorMS/CEClient"),
+                            ServicePartitionKey.Singleton,
+                            "CEClientListener");
             
             Binding bindingScada = WcfUtility.CreateTcpClientBinding();
             IServicePartitionResolver partitionResolverScada = ServicePartitionResolver.GetDefault();
@@ -84,9 +102,11 @@ namespace CEProxy
                 (clientBinding: bindingScada, servicePartitionResolver: partitionResolverScada);
             proxyScada = new WcfCEScada(
                             wcfScadaFactory,
-                            new Uri("fabric:/TransactionCoordinatorMS/CE"),
+                            new Uri("fabric:/TransactionCoordinatorMS/CEScada"),
                             new ServicePartitionKey(1),
                             "ScadaListener");
+
+            proxyScada.InvokeWithRetry(client => client.Channel.Connect(base.Context.PartitionId.ToString() + "-" + base.Context.ReplicaOrInstanceId, base.Context.ServiceName.ToString()));
         }
 
         public void ConnectClient()
@@ -119,9 +139,14 @@ namespace CEProxy
             proxyScada.InvokeWithRetry(client => client.Channel.DataFromScada(measurements));
         }
 
-        public void Connect()
+        public void Connect(string traceID = "", string serviceName = "")
         {
             scada = OperationContext.Current.GetCallbackChannel<IScadaForCECommand>();
+        }
+
+        public string Command(Dictionary<long, DynamicMeasurement> measurementsInAlarm)
+        {
+            return scada.Command(measurementsInAlarm);
         }
     }
 }
