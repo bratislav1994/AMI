@@ -76,7 +76,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ServiceFabric.Services.Wcf">
-      <HintPath>..\Micro Services\TransactionCoordinatorProxy\bin\x64\Debug\Microsoft.ServiceFabric.Services.Wcf.dll</HintPath>
+      <HintPath>..\Micro Services\TransactionCoordinatorProxy\bin\Debug\Microsoft.ServiceFabric.Services.Wcf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
