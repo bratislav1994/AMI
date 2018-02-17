@@ -162,5 +162,10 @@ namespace SmartCacheCE
             }
             Logger.LogMessageToFile(string.Format("SC.SmartCache.SendAlarm; line: {0}; Alarms sent", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
+
+        public void Connect(string traceID, string serviceName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -16,5 +16,8 @@ namespace FTN.ServiceContracts
 
         [OperationContract]
         List<DynamicMeasurement> GetLastMeas(List<long> gidsInTable);
+
+        [OperationContract]
+        void Connect(string traceID, string serviceName);
     }
 }

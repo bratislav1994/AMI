@@ -47,6 +47,8 @@
     <ProjectReference Include="..\..\..\NMSDB\NMSDB.csproj" />
     <ProjectReference Include="..\..\..\NMSProxy\NMSProxy.csproj" />
     <ProjectReference Include="..\..\..\NMS\NMS.csproj" />
+    <ProjectReference Include="..\..\..\SmartCacheProxy\SmartCacheProxy.csproj" />
+    <ProjectReference Include="..\..\..\SmartCache\SmartCache.csproj" />
     <ProjectReference Include="..\..\TransactionCoordinatorProxy\TransactionCoordinatorProxy.csproj" />
     <ProjectReference Include="..\..\TransactionCoordinator\TransactionCoordinator.csproj" />
   </ItemGroup>
