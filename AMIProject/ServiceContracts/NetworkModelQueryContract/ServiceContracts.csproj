@@ -105,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IBaseNetworkModelGDAContract.cs" />
+    <Compile Include="ICalculationEngineForScada.cs" />
     <Compile Include="ICalculationEngineForScript.cs" />
     <Compile Include="ICalculationForClient.cs" />
     <Compile Include="ICalculationEngine.cs" />

@@ -1,4 +1,5 @@
-﻿using FTN.Common.ClassesForAlarmDB;
+﻿using CommonMS.Access;
+using FTN.Common.ClassesForAlarmDB;
 using FTN.Services.NetworkModelService.DataModel;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CalculationEngine.Access
+namespace CommonMS.Access
 {
     public class DB
     {

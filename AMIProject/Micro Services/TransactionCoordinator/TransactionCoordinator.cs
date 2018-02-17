@@ -72,7 +72,7 @@ namespace TransactionCoordinator
             // TODO: Replace the following sample code with your own logic 
             //       or remove this RunAsync override if it's not needed in your service.
 
-            proxies = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, string>>("Proxies");
+            proxies = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, string>>("ProxiesForTransactionCoordinator");
         }
 
         public Task<bool> ApplyDelta(Delta delta)
@@ -200,7 +200,7 @@ namespace TransactionCoordinator
             {
                 var result = await proxies.TryGetValueAsync(tx, traceID);
 
-                if (result.HasValue)
+                if (!result.HasValue)
                 {
                     await proxies.AddAsync(tx, traceID, serviceName);
                 }

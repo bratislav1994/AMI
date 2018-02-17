@@ -13,9 +13,6 @@ namespace FTN.ServiceContracts
     public interface ICalculationEngine
     {
         [OperationContract]
-        void DataFromScada(Dictionary<long, DynamicMeasurement> measurements);
-
-        [OperationContract]
         void EnlistMeas(List<ResourceDescription> measurement);
 
         [OperationContract]
