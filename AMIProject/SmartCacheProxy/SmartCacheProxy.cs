@@ -16,6 +16,7 @@ using System.ServiceModel.Channels;
 using Microsoft.ServiceFabric.Services.Client;
 using FTN.Services.NetworkModelService.DataModel;
 using FTN.Common.ClassesForAlarmDB;
+using FTN.Common;
 
 namespace SmartCacheProxy
 {
@@ -28,10 +29,13 @@ namespace SmartCacheProxy
         private WcfCommunicationClientFactory<ISmartCacheDuplexForClient> wcfClientFactory;
         private WcfSmartCache proxy;
         private StatelessServiceContext context;
+        private object lockObjectForClient;
 
         public SmartCacheProxy(StatelessServiceContext context)
             : base(context)
-        { }
+        {
+            lockObjectForClient = new object();
+        }
 
         /// <summary>
         /// Optional override to create listeners (e.g., TCP, HTTP) for this service replica to handle client or user requests.
@@ -96,7 +100,7 @@ namespace SmartCacheProxy
                             new Uri("fabric:/TransactionCoordinatorMS/SmartCache"),
                             new ServicePartitionKey(1));
 
-            proxy.InvokeWithRetry(client => client.Channel.Connect(base.Context.PartitionId.ToString() + "-" + base.Context.ReplicaOrInstanceId, base.Context.ServiceName.ToString()));
+            proxy.InvokeWithRetry(client => client.Channel.Connect(new ServiceInfo(base.Context.PartitionId.ToString() + "-" + base.Context.ReplicaOrInstanceId, base.Context.ServiceName.ToString(), ServiceType.STATELESS)));
         }
 
         public List<IModelForDuplex> Clients
@@ -114,15 +118,18 @@ namespace SmartCacheProxy
 
         public void Subscribe()
         {
-            this.Clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
+            lock (lockObjectForClient)
+            {
+                this.Clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
+            }
         }
 
         public List<DynamicMeasurement> GetLastMeas(List<long> gidsInTable)
         {
-            throw new NotImplementedException();
+            return proxy.InvokeWithRetry(client => client.Channel.GetLastMeas(gidsInTable));
         }
 
-        public void Connect(string traceID, string serviceName)
+        public void Connect(ServiceInfo serviceInfo)
         {
             throw new NotImplementedException();
         }
@@ -134,23 +141,51 @@ namespace SmartCacheProxy
 
         public void SendMeasurements(List<DynamicMeasurement> measurements)
         {
-            try
+            List<IModelForDuplex> clientsForDeleting = new List<IModelForDuplex>();
+            
+            foreach (IModelForDuplex client in clients)
             {
-                this.Clients.ForEach(x => x.SendMeasurements(measurements));
+                try
+                {
+                    lock (lockObjectForClient)
+                    {
+                        client.SendMeasurements(measurements);
+                    }
+                }
+                catch
+                {
+                    clientsForDeleting.Add(client);
+                }
             }
-            catch
+
+            foreach (IModelForDuplex client in clientsForDeleting)
             {
+                clients.Remove(client);
             }
         }
 
         public void SendAlarm(DeltaForAlarm delta)
         {
-            try
+            List<IModelForDuplex> clientsForDeleting = new List<IModelForDuplex>();
+
+            foreach (IModelForDuplex client in clients)
             {
-                this.Clients.ForEach(x => x.SendAlarm(delta));
+                try
+                {
+                    lock (lockObjectForClient)
+                    {
+                        client.SendAlarm(delta);
+                    }
+                }
+                catch
+                {
+                    clientsForDeleting.Add(client);
+                }
             }
-            catch
+
+            foreach (IModelForDuplex client in clientsForDeleting)
             {
+                clients.Remove(client);
             }
         }
     }

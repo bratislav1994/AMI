@@ -124,6 +124,7 @@
     <Compile Include="Logger\Logger.cs" />
     <Compile Include="ModelException\ErrorCode.cs" />
     <Compile Include="ModelException\ModelException.cs" />
+    <Compile Include="MS\ServiceInfo.cs" />
     <Compile Include="Trace\CommonTrace.cs" />
     <Compile Include="ModelCodeHelper.cs" />
     <Compile Include="ModelResourcesDesc.cs" />

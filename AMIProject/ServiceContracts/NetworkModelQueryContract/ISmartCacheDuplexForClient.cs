@@ -1,4 +1,5 @@
-﻿using FTN.Services.NetworkModelService.DataModel;
+﻿using FTN.Common;
+using FTN.Services.NetworkModelService.DataModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FTN.ServiceContracts
 {
-    [ServiceContract(CallbackContract = typeof(IModelForDuplex))]
+    [ServiceContract]
     public interface ISmartCacheDuplexForClient
     {
         [OperationContract(IsOneWay = true)]
@@ -18,6 +19,6 @@ namespace FTN.ServiceContracts
         List<DynamicMeasurement> GetLastMeas(List<long> gidsInTable);
 
         [OperationContract]
-        void Connect(string traceID, string serviceName);
+        void Connect(ServiceInfo serviceInfo);
     }
 }

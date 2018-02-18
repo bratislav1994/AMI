@@ -26,18 +26,18 @@ namespace NMS
     /// </summary>
     internal sealed class NMS : StatefulService, INetworkModelGDAContractDuplexClient, INetworkModel
     {
-        private IReliableDictionary<string, string> proxies;
+        private IReliableDictionary<string, ServiceInfo> proxies;
         private WcfNMSProxy proxy;
         private WcfCommunicationClientFactory<IModelForDuplex> factory;
 
+        private WcfTransactionCoordinatorNMS proxyTransactionCoordinator;
+        private WcfCommunicationClientFactory<ITransactionDuplexNMS> factoryTransactionCoordinator;
+
+        private WcfNMSDB proxyNMSDB;
+        private WcfCommunicationClientFactory<IDatabaseForNMS> factoryNMSDB;
+
         private NetworkModel nm = null;
-        private List<ServiceHost> hosts = null;
-
-        private bool firstContactDB = true;
-        private IDatabaseForNMS dbProxy;
-
-        private ITransactionDuplexNMS proxyCoordinator;
-        private bool firstTimeCoordinator = true;
+        
         private GenericDataAccess gda = null;
 
         public NMS(StatefulServiceContext context)
@@ -47,42 +47,21 @@ namespace NMS
             this.nm = new NetworkModel();
             this.nm.Initialize(ReadAllDeltas());
             this.gda = new GenericDataAccess();
-            this.Run();
+            this.ConnectToTransactionCoordinator();
             this.gda.NetworkModel = nm;
             ResourceIterator.NetworkModel = nm;
-            //svcScript = new ServiceHost(gda);
-            //svcScript.AddServiceEndpoint(typeof(INMSForScript),
-            //                        new NetTcpBinding(),
-            //                        new Uri("net.tcp://localhost:10011/NetworkModelService/FillingScript"));
         }
 
         #region nm
-
-        private void ConnectToDb()
+        
+        private Task<bool> SaveDelta(Delta delta)
         {
-            while (true)
-            {
-                try
-                {
-                    this.DBProxy.Connect();
-                    break;
-                }
-                catch
-                {
-                    FirstContactDB = true;
-                    Thread.Sleep(1000);
-                }
-            }
-        }
-
-        private void SaveDelta(Delta delta)
-        {
-            DBProxy.SaveDelta(delta);
+            return Task.FromResult<bool>(proxyNMSDB.InvokeWithRetryAsync(client => client.Channel.SaveDelta(delta)).Result);
         }
 
         private List<Delta> ReadAllDeltas()
         {
-            return DBProxy.ReadDelta();
+            return proxyNMSDB.InvokeWithRetry(client => client.Channel.ReadDelta());
         }
 
         private void InformClients()
@@ -91,68 +70,7 @@ namespace NMS
         }
 
         #endregion
-
-        #region gda
-
-        public void Run()
-        {
-            while (true)
-            {
-                try
-                {
-                    this.ProxyCoordinator.ConnectNMS();
-                    break;
-                }
-                catch
-                {
-                    FirstTimeCoordinator = true;
-                    Thread.Sleep(1000);
-                }
-            }
-        }
-
-        public ITransactionDuplexNMS ProxyCoordinator
-        {
-            get
-            {
-                if (FirstTimeCoordinator)
-                {
-                    NetTcpBinding binding = new NetTcpBinding();
-                    binding.SendTimeout = TimeSpan.FromSeconds(3);
-                    binding.MaxReceivedMessageSize = Int32.MaxValue;
-                    binding.MaxBufferSize = Int32.MaxValue;
-                    DuplexChannelFactory<ITransactionDuplexNMS> factory = new DuplexChannelFactory<ITransactionDuplexNMS>(
-                    new InstanceContext(this),
-                        binding,
-                        new EndpointAddress(/*"net.tcp://localhost:10003/TransactionCoordinator/NMS"*/"net.tcp://localhost:10102/TransactionCoordinatorProxy/NMS/"));
-                    proxyCoordinator = factory.CreateChannel();
-                    FirstTimeCoordinator = false;
-                }
-
-                return proxyCoordinator;
-            }
-
-            set
-            {
-                proxyCoordinator = value;
-            }
-        }
-
-        public bool FirstTimeCoordinator
-        {
-            get
-            {
-                return firstTimeCoordinator;
-            }
-
-            set
-            {
-                firstTimeCoordinator = value;
-            }
-        }
-
-        #endregion
-
+        
         /// <summary>
         /// Optional override to create listeners (e.g., HTTP, Service Remoting, WCF, etc.) for this service replica to handle client or user requests.
         /// </summary>
@@ -181,7 +99,26 @@ namespace NMS
                                     "NMSProxyListener"
                                 );
 
-            return new ServiceReplicaListener[] { serviceListener };
+            var transactionCoordinatorListener = new ServiceReplicaListener((context) =>
+                                  new WcfCommunicationListener<INetworkModel>
+                                  (
+                                    wcfServiceObject: this,
+                                    serviceContext: context,
+                                    //
+                                    // The name of the endpoint configured in the ServiceManifest under the Endpoints section
+                                    // that identifies the endpoint that the WCF ServiceHost should listen on.
+                                    //
+                                    endpointResourceName: "ServiceEndpoint",
+
+                                    //
+                                    // Populate the binding information that you want the service to use.
+                                    //
+                                    listenerBinding: WcfUtility.CreateTcpListenerBinding()
+                                  ),
+                                    "TransactionCoordinatorListener"
+                                );
+
+            return new ServiceReplicaListener[] { serviceListener, transactionCoordinatorListener };
         }
 
         /// <summary>
@@ -194,46 +131,51 @@ namespace NMS
             // TODO: Replace the following sample code with your own logic 
             //       or remove this RunAsync override if it's not needed in your service.
 
-            proxies = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, string>>("Proxies");
+            proxies = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, ServiceInfo>>("Proxies");
             
         }
 
-        public IDatabaseForNMS DBProxy
+        private void ConnectToDb()
         {
-            get
-            {
-                if (FirstContactDB)
-                {
-                    NetTcpBinding binding = new NetTcpBinding();
-                    binding.MaxReceivedMessageSize = Int32.MaxValue;
-                    binding.MaxBufferSize = Int32.MaxValue;
-                    binding.SendTimeout = TimeSpan.FromMinutes(5);
-                    ChannelFactory<IDatabaseForNMS> factoryDB = new ChannelFactory<IDatabaseForNMS>(binding,
-                                                                                        new EndpointAddress("net.tcp://localhost:10009/Database/NMS"));
-                    dbProxy = factoryDB.CreateChannel();
-                    FirstContactDB = false;
-                }
+            // Create binding
+            Binding binding = WcfUtility.CreateTcpClientBinding();
+            // Create a partition resolver
+            IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
+            // create a  WcfCommunicationClientFactory object.
+            factoryNMSDB = new WcfCommunicationClientFactory<IDatabaseForNMS>
+                (clientBinding: binding, servicePartitionResolver: partitionResolver);
 
-                return dbProxy;
-            }
+            //
+            // Create a client for communicating with the ICalculator service that has been created with the
+            // Singleton partition scheme.
+            //
+            proxyNMSDB = new WcfNMSDB(
+                            factoryNMSDB,
+                            new Uri("fabric:/TransactionCoordinatorMS/NMSDB"),
+                            ServicePartitionKey.Singleton, "NMSListener");
 
-            set
-            {
-                dbProxy = value;
-            }
         }
 
-        public bool FirstContactDB
+        private void ConnectToTransactionCoordinator()
         {
-            get
-            {
-                return firstContactDB;
-            }
+            // Create binding
+            Binding binding = WcfUtility.CreateTcpClientBinding();
+            // Create a partition resolver
+            IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
+            // create a  WcfCommunicationClientFactory object.
+            factoryTransactionCoordinator = new WcfCommunicationClientFactory<ITransactionDuplexNMS>
+                (clientBinding: binding, servicePartitionResolver: partitionResolver);
 
-            set
-            {
-                firstContactDB = value;
-            }
+            //
+            // Create a client for communicating with the ICalculator service that has been created with the
+            // Singleton partition scheme.
+            //
+            proxyTransactionCoordinator = new WcfTransactionCoordinatorNMS(
+                            factoryTransactionCoordinator,
+                            new Uri("fabric:/TransactionCoordinatorMS/TransactionCoordinator"),
+                            new ServicePartitionKey(1));
+
+            proxyTransactionCoordinator.InvokeWithRetry(client => client.Channel.ConnectNMS(new ServiceInfo(base.Context.PartitionId.ToString() + "-" + base.Context.ReplicaOrInstanceId, base.Context.ServiceName.ToString(), FTN.Common.ServiceType.STATEFFUL)));
         }
 
         public void ConnectClient()
@@ -241,47 +183,47 @@ namespace NMS
             throw new NotImplementedException();
         }
 
-        public Task<int> GetExtentValues(FTN.Common.ModelCode entityType, List<FTN.Common.ModelCode> propIds)
+        public int GetExtentValues(FTN.Common.ModelCode entityType, List<FTN.Common.ModelCode> propIds)
         {
             return this.gda.GetExtentValues(entityType, propIds);
         }
 
-        public Task<List<long>> GetGlobalIds()
+        public List<long> GetGlobalIds()
         {
             return this.gda.GetGlobalIds();
         }
 
-        public Task<int> GetRelatedValues(long source, List<FTN.Common.ModelCode> propIds, FTN.Common.Association association)
+        public int GetRelatedValues(long source, List<FTN.Common.ModelCode> propIds, FTN.Common.Association association)
         {
             return this.gda.GetRelatedValues(source, propIds, association);
         }
 
-        public Task<FTN.Common.ResourceDescription> GetValues(long resourceId, List<FTN.Common.ModelCode> propIds)
+        public FTN.Common.ResourceDescription GetValues(long resourceId, List<FTN.Common.ModelCode> propIds)
         {
             return this.gda.GetValues(resourceId, propIds);
         }
 
-        public Task<bool> IteratorClose(int id)
+        public bool IteratorClose(int id)
         {
             return this.gda.IteratorClose(id);
         }
 
-        public Task<List<FTN.Common.ResourceDescription>> IteratorNext(int n, int id)
+        public List<FTN.Common.ResourceDescription> IteratorNext(int n, int id)
         {
             return this.gda.IteratorNext(n, id);
         }
 
-        public Task<int> IteratorResourcesLeft(int id)
+        public int IteratorResourcesLeft(int id)
         {
             return this.gda.IteratorResourcesLeft(id);
         }
 
-        public Task<int> IteratorResourcesTotal(int id)
+        public int IteratorResourcesTotal(int id)
         {
             return this.gda.IteratorResourcesTotal(id);
         }
 
-        public Task<bool> IteratorRewind(int id)
+        public bool IteratorRewind(int id)
         {
             return this.gda.IteratorRewind(id);
         }
@@ -291,7 +233,7 @@ namespace NMS
             return;
         }
 
-        public async void Connect(string traceID, string serviceName)
+        public async void Connect(ServiceInfo serviceInfo)
         {
             while (proxies == null)
             {
@@ -300,11 +242,11 @@ namespace NMS
 
             using (var tx = this.StateManager.CreateTransaction())
             {
-                var result = await proxies.TryGetValueAsync(tx, traceID);
+                var result = await proxies.TryGetValueAsync(tx, serviceInfo.TraceID);
 
                 if (result.HasValue)
                 {
-                    await proxies.AddAsync(tx, traceID, serviceName);
+                    await proxies.AddAsync(tx, serviceInfo.TraceID, serviceInfo);
                 }
 
                 // If an exception is thrown before calling CommitAsync, the transaction aborts, all changes are 
@@ -318,7 +260,7 @@ namespace NMS
             IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.
             factory = new WcfCommunicationClientFactory<IModelForDuplex>
-                (clientBinding: binding, servicePartitionResolver: partitionResolver, traceId: traceID);
+                (clientBinding: binding, servicePartitionResolver: partitionResolver, traceId: serviceInfo.TraceID);
 
             //
             // Create a client for communicating with the ICalculator service that has been created with the
@@ -326,7 +268,7 @@ namespace NMS
             //
             proxy = new WcfNMSProxy(
                             factory,
-                            new Uri(serviceName),
+                            new Uri(serviceInfo.ServiceName),
                             ServicePartitionKey.Singleton,
                             "NMSListener");
         }

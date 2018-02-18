@@ -15,6 +15,6 @@ namespace FTN.ServiceContracts
         Task<bool> ApplyDelta(Delta delta);
 
         [OperationContract]
-        void Connect(string traceID, string serviceName);
+        void Connect(ServiceInfo serviceInfo);
     }
 }

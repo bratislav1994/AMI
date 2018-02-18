@@ -44,6 +44,7 @@
     <ProjectReference Include="..\..\..\CEClient\CEClient.csproj" />
     <ProjectReference Include="..\..\..\CEProxy\CEProxy.csproj" />
     <ProjectReference Include="..\..\..\CEScada\CEScada.csproj" />
+    <ProjectReference Include="..\..\..\CETransactionCoordinator\CETransactionCoordinator.csproj" />
     <ProjectReference Include="..\..\..\NMSDB\NMSDB.csproj" />
     <ProjectReference Include="..\..\..\NMSProxy\NMSProxy.csproj" />
     <ProjectReference Include="..\..\..\NMS\NMS.csproj" />

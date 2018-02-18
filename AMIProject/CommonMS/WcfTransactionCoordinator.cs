@@ -12,7 +12,7 @@ namespace CommonMS
 {
     public class WcfTransactionCoordinator : ServicePartitionClient<WcfCommunicationClient<ITransactionCoordinator>>
     {
-        public WcfTransactionCoordinator(ICommunicationClientFactory<WcfCommunicationClient<ITransactionCoordinator>> communicationClientFactory, Uri serviceUri, ServicePartitionKey partitionKey = null, TargetReplicaSelector targetReplicaSelector = TargetReplicaSelector.Default, string listenerName = null, OperationRetrySettings retrySettings = null)
+        public WcfTransactionCoordinator(ICommunicationClientFactory<WcfCommunicationClient<ITransactionCoordinator>> communicationClientFactory, Uri serviceUri, ServicePartitionKey partitionKey = null, string listenerName = null, TargetReplicaSelector targetReplicaSelector = TargetReplicaSelector.Default, OperationRetrySettings retrySettings = null)
             : base(communicationClientFactory, serviceUri, partitionKey, targetReplicaSelector, listenerName, retrySettings)
         {
         }

@@ -21,11 +21,19 @@ namespace TransactionCoordinator
     /// <summary>
     /// An instance of this class is created for each service replica by the Service Fabric runtime.
     /// </summary>
-    internal sealed class TransactionCoordinator : StatefulService, ITransactionCoordinator
+    internal sealed class TransactionCoordinator : StatefulService, ITransactionCoordinator, ITransactionDuplexNMS, ITransactionDuplexCE
     {
-        IReliableDictionary<string, string> proxies;
+        IReliableDictionary<string, ServiceInfo> proxies;
         private WcfTransactionCoordinatorProxy proxy;
         private WcfCommunicationClientFactory<ITransactionCoordinatorProxy> factory;
+
+        IReliableDictionary<string, ServiceInfo> NMSs;
+        private WcfNMSDelta proxyNMS;
+        private WcfCommunicationClientFactory<INetworkModel> factoryNMS;
+
+        IReliableDictionary<string, ServiceInfo> CEs;
+        private WcfCEDelta proxyCE;
+        private WcfCommunicationClientFactory<ICalculationEngine> factoryCE;
 
 
         public TransactionCoordinator(StatefulServiceContext context)
@@ -41,6 +49,7 @@ namespace TransactionCoordinator
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
+            //PROXY
             var serviceListener = new ServiceReplicaListener((context) =>
         new WcfCommunicationListener<ITransactionCoordinator>(
             wcfServiceObject: this,
@@ -58,8 +67,44 @@ namespace TransactionCoordinator
         ),
         "TransactionCoordinatorProxyListener"
     );
+            //NMS 
+            var NMSListener = new ServiceReplicaListener((context) =>
+        new WcfCommunicationListener<ITransactionDuplexNMS>(
+            wcfServiceObject: this,
+            serviceContext: context,
+            //
+            // The name of the endpoint configured in the ServiceManifest under the Endpoints section
+            // that identifies the endpoint that the WCF ServiceHost should listen on.
+            //
+            endpointResourceName: "ServiceEndpoint",
 
-            return new ServiceReplicaListener[] { serviceListener };
+            //
+            // Populate the binding information that you want the service to use.
+            //
+            listenerBinding: WcfUtility.CreateTcpListenerBinding()
+        ),
+        "NSMListener"
+    );
+            //CE
+            var CEListener = new ServiceReplicaListener((context) =>
+        new WcfCommunicationListener<ITransactionDuplexCE>(
+            wcfServiceObject: this,
+            serviceContext: context,
+            //
+            // The name of the endpoint configured in the ServiceManifest under the Endpoints section
+            // that identifies the endpoint that the WCF ServiceHost should listen on.
+            //
+            endpointResourceName: "ServiceEndpoint",
+
+            //
+            // Populate the binding information that you want the service to use.
+            //
+            listenerBinding: WcfUtility.CreateTcpListenerBinding()
+        ),
+        "CEListener"
+    );
+
+            return new ServiceReplicaListener[] { serviceListener, NMSListener, CEListener };
         }
 
         /// <summary>
@@ -72,7 +117,9 @@ namespace TransactionCoordinator
             // TODO: Replace the following sample code with your own logic 
             //       or remove this RunAsync override if it's not needed in your service.
 
-            proxies = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, string>>("ProxiesForTransactionCoordinator");
+            proxies = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, ServiceInfo>>("ProxiesForTransactionCoordinator");
+            NMSs = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, ServiceInfo>>("NMSChannels");
+            CEs = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, ServiceInfo>>("CEChannels");
         }
 
         public Task<bool> ApplyDelta(Delta delta)
@@ -85,8 +132,8 @@ namespace TransactionCoordinator
 
             try
             {
-                proxy.InvokeWithRetry(client => client.Channel.EnlistDeltaNMS(delta));
-                newDelta = proxy.InvokeWithRetry(client => client.Channel.PrepareNMS());
+                proxyNMS.InvokeWithRetry(client => client.Channel.EnlistDelta(delta));
+                newDelta = proxyNMS.InvokeWithRetry(client => client.Channel.Prepare());
             }
             catch
             {
@@ -121,8 +168,8 @@ namespace TransactionCoordinator
 
                 try
                 {
-                    proxy.InvokeWithRetry(client => client.Channel.EnlistDeltaCE(dataForCE));
-                    CalculationEnginePrepareSuccess = proxy.InvokeWithRetry(client => client.Channel.PrepareCE());
+                    proxyCE.InvokeWithRetry(client => client.Channel.EnlistMeas(dataForCE));
+                    CalculationEnginePrepareSuccess = proxyCE.InvokeWithRetry(client => client.Channel.Prepare());
                 }
                 catch
                 {
@@ -142,7 +189,7 @@ namespace TransactionCoordinator
                 {
                     try
                     {
-                        proxy.InvokeWithRetry(client => client.Channel.CommitNMS());
+                        proxyNMS.InvokeWithRetry(client => client.Channel.Commit());
                     }
                     catch
                     {
@@ -151,7 +198,7 @@ namespace TransactionCoordinator
 
                     try
                     {
-                        proxy.InvokeWithRetry(client => client.Channel.CommitCE());
+                        proxyCE.InvokeWithRetry(client => client.Channel.Commit());
 
                     }
                     catch
@@ -172,9 +219,9 @@ namespace TransactionCoordinator
                 }
                 else
                 {
-                    proxy.InvokeWithRetry(client => client.Channel.RollbackNMS());
+                    proxyNMS.InvokeWithRetry(client => client.Channel.Rollback());
 
-                    proxy.InvokeWithRetry(client => client.Channel.RollbackCE());
+                    proxyCE.InvokeWithRetry(client => client.Channel.Rollback());
 
                     proxy.InvokeWithRetry(client => client.Channel.RollbackScada());
 
@@ -183,13 +230,13 @@ namespace TransactionCoordinator
             }
             else
             {
-                proxy.InvokeWithRetry(client => client.Channel.RollbackNMS());
+                proxyNMS.InvokeWithRetry(client => client.Channel.Rollback());
 
                 return Task.FromResult<bool>(false);
             }
         }
 
-        public async void Connect(string traceID, string serviceName)
+        public async void Connect(ServiceInfo serviceInfo)
         {
             while (proxies == null)
             {
@@ -198,11 +245,11 @@ namespace TransactionCoordinator
 
             using (var tx = this.StateManager.CreateTransaction())
             {
-                var result = await proxies.TryGetValueAsync(tx, traceID);
+                var result = await proxies.TryGetValueAsync(tx, serviceInfo.TraceID);
 
                 if (!result.HasValue)
                 {
-                    await proxies.AddAsync(tx, traceID, serviceName);
+                    await proxies.AddAsync(tx, serviceInfo.TraceID, serviceInfo);
                 }
 
                 // If an exception is thrown before calling CommitAsync, the transaction aborts, all changes are 
@@ -216,7 +263,7 @@ namespace TransactionCoordinator
             IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.
             factory = new WcfCommunicationClientFactory<ITransactionCoordinatorProxy>
-                (clientBinding: binding, servicePartitionResolver: partitionResolver, traceId:traceID);
+                (clientBinding: binding, servicePartitionResolver: partitionResolver, traceId: serviceInfo.TraceID);
 
             //
             // Create a client for communicating with the ICalculator service that has been created with the
@@ -224,7 +271,87 @@ namespace TransactionCoordinator
             //
             proxy= new WcfTransactionCoordinatorProxy(
                             factory,
-                            new Uri(serviceName),
+                            new Uri(serviceInfo.ServiceName),
+                            ServicePartitionKey.Singleton,
+                            "TransactionCoordinatorListener");
+        }
+
+        public async void ConnectNMS(ServiceInfo serviceInfo)
+        {
+            while (NMSs == null)
+            {
+                Thread.Sleep(1000);
+            }
+
+            using (var tx = this.StateManager.CreateTransaction())
+            {
+                var result = await NMSs.TryGetValueAsync(tx, serviceInfo.TraceID);
+
+                if (!result.HasValue)
+                {
+                    await NMSs.AddAsync(tx, serviceInfo.TraceID, serviceInfo);
+                }
+
+                // If an exception is thrown before calling CommitAsync, the transaction aborts, all changes are 
+                // discarded, and nothing is saved to the secondary replicas.
+                await tx.CommitAsync();
+            }
+
+            // Create binding
+            Binding binding = WcfUtility.CreateTcpClientBinding();
+            // Create a partition resolver
+            IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
+            // create a  WcfCommunicationClientFactory object.
+            factoryNMS = new WcfCommunicationClientFactory<INetworkModel>
+                (clientBinding: binding, servicePartitionResolver: partitionResolver, traceId: serviceInfo.TraceID);
+
+            //
+            // Create a client for communicating with the ICalculator service that has been created with the
+            // Singleton partition scheme.
+            //
+            proxyNMS = new WcfNMSDelta(
+                            factoryNMS,
+                            new Uri(serviceInfo.ServiceName),
+                            new ServicePartitionKey(1),
+                            "TransactionCoordinatorListener");
+        }
+
+        public async void ConnectCE(ServiceInfo serviceInfo)
+        {
+            while (CEs == null)
+            {
+                Thread.Sleep(1000);
+            }
+
+            using (var tx = this.StateManager.CreateTransaction())
+            {
+                var result = await CEs.TryGetValueAsync(tx, serviceInfo.TraceID);
+
+                if (!result.HasValue)
+                {
+                    await CEs.AddAsync(tx, serviceInfo.TraceID, serviceInfo);
+                }
+
+                // If an exception is thrown before calling CommitAsync, the transaction aborts, all changes are 
+                // discarded, and nothing is saved to the secondary replicas.
+                await tx.CommitAsync();
+            }
+
+            // Create binding
+            Binding binding = WcfUtility.CreateTcpClientBinding();
+            // Create a partition resolver
+            IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
+            // create a  WcfCommunicationClientFactory object.
+            factoryCE = new WcfCommunicationClientFactory<ICalculationEngine>
+                (clientBinding: binding, servicePartitionResolver: partitionResolver, traceId: serviceInfo.TraceID);
+
+            //
+            // Create a client for communicating with the ICalculator service that has been created with the
+            // Singleton partition scheme.
+            //
+            proxyCE = new WcfCEDelta(
+                            factoryCE,
+                            new Uri(serviceInfo.ServiceName),
                             ServicePartitionKey.Singleton,
                             "TransactionCoordinatorListener");
         }

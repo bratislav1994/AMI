@@ -12,7 +12,7 @@ namespace CommonMS
 {
     public class WcfNMS : ServicePartitionClient<WcfCommunicationClient<INetworkModelGDAContractDuplexClient>>
     {
-        public WcfNMS(ICommunicationClientFactory<WcfCommunicationClient<INetworkModelGDAContractDuplexClient>> communicationClientFactory, Uri serviceUri, ServicePartitionKey partitionKey = null, TargetReplicaSelector targetReplicaSelector = TargetReplicaSelector.Default, string listenerName = null, OperationRetrySettings retrySettings = null)
+        public WcfNMS(ICommunicationClientFactory<WcfCommunicationClient<INetworkModelGDAContractDuplexClient>> communicationClientFactory, Uri serviceUri, ServicePartitionKey partitionKey = null, string listenerName = null, TargetReplicaSelector targetReplicaSelector = TargetReplicaSelector.Default, OperationRetrySettings retrySettings = null)
             : base(communicationClientFactory, serviceUri, partitionKey, targetReplicaSelector, listenerName, retrySettings)
         {
         }

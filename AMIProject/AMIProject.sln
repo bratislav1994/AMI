@@ -89,6 +89,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartCacheProxy", "SmartCac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartCache", "SmartCache\SmartCache.csproj", "{244B1524-1085-45D3-B6D5-3A1C1F20F020}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CETransactionCoordinator", "CETransactionCoordinator\CETransactionCoordinator.csproj", "{A35D9AFE-3586-41D5-A9BA-CF9D2200B3F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -455,6 +457,14 @@ Global
 		{244B1524-1085-45D3-B6D5-3A1C1F20F020}.Release|x64.ActiveCfg = Release|x64
 		{244B1524-1085-45D3-B6D5-3A1C1F20F020}.Release|x64.Build.0 = Release|x64
 		{244B1524-1085-45D3-B6D5-3A1C1F20F020}.Release|x86.ActiveCfg = Release|x64
+		{A35D9AFE-3586-41D5-A9BA-CF9D2200B3F6}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{A35D9AFE-3586-41D5-A9BA-CF9D2200B3F6}.Debug|x64.ActiveCfg = Debug|x64
+		{A35D9AFE-3586-41D5-A9BA-CF9D2200B3F6}.Debug|x64.Build.0 = Debug|x64
+		{A35D9AFE-3586-41D5-A9BA-CF9D2200B3F6}.Debug|x86.ActiveCfg = Debug|x64
+		{A35D9AFE-3586-41D5-A9BA-CF9D2200B3F6}.Release|Any CPU.ActiveCfg = Release|x64
+		{A35D9AFE-3586-41D5-A9BA-CF9D2200B3F6}.Release|x64.ActiveCfg = Release|x64
+		{A35D9AFE-3586-41D5-A9BA-CF9D2200B3F6}.Release|x64.Build.0 = Release|x64
+		{A35D9AFE-3586-41D5-A9BA-CF9D2200B3F6}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -490,5 +500,6 @@ Global
 		{BEE1C835-F817-496A-822C-C4E410083DB9} = {A4549DD7-0F7D-41D3-9243-9195F115ADF3}
 		{91001C0F-2CFE-45EA-BFC8-F5E0DBF5BDDA} = {A4549DD7-0F7D-41D3-9243-9195F115ADF3}
 		{244B1524-1085-45D3-B6D5-3A1C1F20F020} = {A4549DD7-0F7D-41D3-9243-9195F115ADF3}
+		{A35D9AFE-3586-41D5-A9BA-CF9D2200B3F6} = {A4549DD7-0F7D-41D3-9243-9195F115ADF3}
 	EndGlobalSection
 EndGlobal

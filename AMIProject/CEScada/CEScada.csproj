@@ -113,10 +113,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CalculationEngine\CalculationEngine.csproj">
-      <Project>{3D8F41E3-A5F4-4949-864E-4FBDF15D8CAA}</Project>
-      <Name>CalculationEngine</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CommonMS\CommonMS.csproj">
       <Project>{993A5BCF-107D-4210-A6EE-8A2DC4170B6A}</Project>
       <Name>CommonMS</Name>

@@ -74,11 +74,6 @@ namespace NMSDB
             //}
         }
 
-        public int Connect()
-        {
-            return 1;
-        }
-
         public void Ping()
         {
             return;
@@ -89,9 +84,9 @@ namespace NMSDB
             return dataBaseAdapter.ReadDelta();
         }
 
-        public bool SaveDelta(Delta delta)
+        public Task<bool> SaveDelta(Delta delta)
         {
-            return dataBaseAdapter.AddDelta(delta);
+            return Task.FromResult<bool>(dataBaseAdapter.AddDelta(delta));
         }
     }
 }

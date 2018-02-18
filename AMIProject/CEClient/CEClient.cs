@@ -13,6 +13,7 @@ using FTN.Common.Filter;
 using FTN.Common.ClassesForAlarmDB;
 using Microsoft.ServiceFabric.Services.Communication.Wcf;
 using CommonMS.Access;
+using Microsoft.ServiceFabric.Services.Communication.Wcf.Runtime;
 
 namespace CEClient
 {

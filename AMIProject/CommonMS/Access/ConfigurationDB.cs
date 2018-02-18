@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CalculationEngine.Access
+namespace CommonMS.Access
 {
-    public class ConfigurationDB : DbMigrationsConfiguration<AccessDB>
+    public class ConfigurationDB : DbMigrationsConfiguration<CommonMS.Access.AccessDB>
     {
         public ConfigurationDB()
         {

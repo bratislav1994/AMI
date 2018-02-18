@@ -105,7 +105,6 @@
     <Compile Include="CEClient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ServiceEventSource.cs" />
-    <Compile Include="WcfCommunicationListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PackageRoot\Config\Settings.xml" />
@@ -114,9 +113,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CalculationEngine\CalculationEngine.csproj">
-      <Project>{3D8F41E3-A5F4-4949-864E-4FBDF15D8CAA}</Project>
-      <Name>CalculationEngine</Name>
+    <ProjectReference Include="..\CommonMS\CommonMS.csproj">
+      <Project>{993A5BCF-107D-4210-A6EE-8A2DC4170B6A}</Project>
+      <Name>CommonMS</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{892CBE15-9ED7-4540-81FA-0EAABA592138}</Project>

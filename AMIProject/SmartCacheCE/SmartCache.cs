@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FTN.Common.ClassesForAlarmDB;
+using FTN.Common;
 
 namespace SmartCacheCE
 {
@@ -163,7 +164,7 @@ namespace SmartCacheCE
             Logger.LogMessageToFile(string.Format("SC.SmartCache.SendAlarm; line: {0}; Alarms sent", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
         }
 
-        public void Connect(string traceID, string serviceName)
+        public void Connect(ServiceInfo serviceInfo)
         {
             throw new NotImplementedException();
         }

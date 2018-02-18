@@ -17,16 +17,19 @@ using Microsoft.ServiceFabric.Services.Client;
 using CommonMS;
 using FTN.Common.ClassesForAlarmDB;
 using CommonMS.Access;
+using FTN.Common;
 
 namespace CEScada
 {
     /// <summary>
     /// An instance of this class is created for each service replica by the Service Fabric runtime.
     /// </summary>
-    internal sealed class CEScada : StatefulService, ICalculationEngineForScada
+    internal sealed class CEScada : StatefulService, ICalculationEngineForScada, ICalculationEngineDuplexSmartCache
     {
-        IReliableDictionary<string, string> proxies;
+        IReliableDictionary<string, ServiceInfo> proxies;
+        IReliableDictionary<string, ServiceInfo> caches;
         private WcfCEProxy proxy;
+        private WcfSmartCacheCE smartCache;
         private WcfCommunicationClientFactory<IScadaForCECommand> factory;
         private Dictionary<long, GeographicalRegionDb> geoRegions;
         private Dictionary<long, SubGeographicalRegionDb> subGeoRegions;
@@ -37,7 +40,8 @@ namespace CEScada
 
         public CEScada(StatefulServiceContext context)
             : base(context)
-        { }
+        {
+        }
 
         /// <summary>
         /// Optional override to create listeners (e.g., HTTP, Service Remoting, WCF, etc.) for this service replica to handle client or user requests.
@@ -79,7 +83,8 @@ namespace CEScada
             // TODO: Replace the following sample code with your own logic 
             //       or remove this RunAsync override if it's not needed in your service.
 
-            proxies = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, string>>("ProxiesForCEScada");
+            proxies = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, ServiceInfo>>("ProxiesForCEScada");
+            caches = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, ServiceInfo>>("SmartCaches");
             dataBaseAdapter = new DB();
             geoRegions = new Dictionary<long, GeographicalRegionDb>();
             subGeoRegions = new Dictionary<long, SubGeographicalRegionDb>();
@@ -92,7 +97,7 @@ namespace CEScada
             amis = dataBaseAdapter.ReadConsumers();
             alarmActiveDB = dataBaseAdapter.ReadActiveAlarm();
         }
-        public async void Connect(string traceID, string serviceName)
+        public async void Connect(ServiceInfo serviceInfo)
         {
             while (proxies == null)
             {
@@ -101,11 +106,11 @@ namespace CEScada
 
             using (var tx = this.StateManager.CreateTransaction())
             {
-                var result = await proxies.TryGetValueAsync(tx, traceID);
+                var result = await proxies.TryGetValueAsync(tx, serviceInfo.TraceID);
 
                 if (!result.HasValue)
                 {
-                    await proxies.AddAsync(tx, traceID, serviceName);
+                    await proxies.AddAsync(tx, serviceInfo.TraceID, serviceInfo);
                 }
 
                 // If an exception is thrown before calling CommitAsync, the transaction aborts, all changes are 
@@ -119,7 +124,7 @@ namespace CEScada
             IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.
             factory = new WcfCommunicationClientFactory<IScadaForCECommand>
-                (clientBinding: binding, servicePartitionResolver: partitionResolver, traceId: traceID);
+                (clientBinding: binding, servicePartitionResolver: partitionResolver, traceId: serviceInfo.TraceID);
 
             //
             // Create a client for communicating with the ICalculator service that has been created with the
@@ -127,7 +132,7 @@ namespace CEScada
             //
             proxy = new WcfCEProxy(
                             factory,
-                            new Uri(serviceName),
+                            new Uri(serviceInfo.ServiceName),
                             ServicePartitionKey.Singleton,
                             "TransactionCoordinatorListener");
         }
@@ -251,25 +256,8 @@ namespace CEScada
                 }
             }
 
-            /*smartCachesForDeleting.Clear();
-
-            foreach (ISmartCacheForCE sc in smartCaches)
-            {
-                try
-                {
-                    sc.SendMeasurements(measurements);
-                    sc.SendAlarm(delta);
-                }
-                catch
-                {
-                    smartCachesForDeleting.Add(sc);
-                }
-            }
-
-            foreach (ISmartCacheForCE sc in smartCachesForDeleting)
-            {
-                smartCaches.Remove(sc);
-            }*/
+            smartCache.InvokeWithRetry(client => client.Channel.SendMeasurements(measurements));
+            smartCache.InvokeWithRetry(client => client.Channel.SendAlarm(delta));
         }
 
         private DeltaForAlarm CheckAlarms(List<DynamicMeasurement> measurements)
@@ -358,6 +346,46 @@ namespace CEScada
 
                 return true;
             }
+        }
+
+        public async void Subscribe(ServiceInfo serviceInfo)
+        {
+            while (caches == null)
+            {
+                Thread.Sleep(1000);
+            }
+
+            using (var tx = this.StateManager.CreateTransaction())
+            {
+                var result = await caches.TryGetValueAsync(tx, serviceInfo.TraceID);
+
+                if (!result.HasValue)
+                {
+                    await caches.AddAsync(tx, serviceInfo.TraceID, serviceInfo);
+                }
+
+                // If an exception is thrown before calling CommitAsync, the transaction aborts, all changes are 
+                // discarded, and nothing is saved to the secondary replicas.
+                await tx.CommitAsync();
+            }
+
+            // Create binding
+            Binding binding = WcfUtility.CreateTcpClientBinding();
+            // Create a partition resolver
+            IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
+            // create a  WcfCommunicationClientFactory object.
+            var factory = new WcfCommunicationClientFactory<ISmartCacheForCE>
+                (clientBinding: binding, servicePartitionResolver: partitionResolver, traceId: serviceInfo.TraceID);
+
+            //
+            // Create a client for communicating with the ICalculator service that has been created with the
+            // Singleton partition scheme.
+            //
+           smartCache = new WcfSmartCacheCE(
+                            factory,
+                            new Uri(serviceInfo.ServiceName),
+                            new ServicePartitionKey(1),
+                            "CEListener");
         }
     }
 }

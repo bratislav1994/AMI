@@ -12,10 +12,7 @@ namespace FTN.ServiceContracts
     public interface IDatabaseForNMS
     {
         [OperationContract]
-        int Connect();
-
-        [OperationContract]
-        bool SaveDelta(Delta delta);
+        Task<bool> SaveDelta(Delta delta);
 
         [OperationContract]
         List<Delta> ReadDelta();

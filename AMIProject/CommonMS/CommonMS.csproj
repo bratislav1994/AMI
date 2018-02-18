@@ -140,14 +140,21 @@
     <Compile Include="NMSAccess\Configuration.cs" />
     <Compile Include="NMSAccess\FunctionDB.cs" />
     <Compile Include="WcfCE.cs" />
+    <Compile Include="WcfCEDelta.cs" />
     <Compile Include="WcfCEProxy.cs" />
     <Compile Include="WcfCEScada.cs" />
+    <Compile Include="WcfCESmartCache.cs" />
     <Compile Include="WcfNMS.cs" />
+    <Compile Include="WcfNMSDB.cs" />
+    <Compile Include="WcfNMSDelta.cs" />
     <Compile Include="WcfNMSProxy.cs" />
     <Compile Include="WcfSmartCache.cs" />
+    <Compile Include="WcfSmartCacheCE.cs" />
     <Compile Include="WcfSmartCacheProxy.cs" />
     <Compile Include="WcfTransactionCoordinator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WcfTransactionCoordinatorCE.cs" />
+    <Compile Include="WcfTransactionCoordinatorNMS.cs" />
     <Compile Include="WcfTransactionCoordinatorProxy.cs" />
   </ItemGroup>
   <ItemGroup>

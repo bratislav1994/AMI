@@ -128,7 +128,6 @@
     <Compile Include="IScada.cs" />
     <Compile Include="ISimulator.cs" />
     <Compile Include="IBaseTransaction.cs" />
-    <Compile Include="NetworkModelGDAProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

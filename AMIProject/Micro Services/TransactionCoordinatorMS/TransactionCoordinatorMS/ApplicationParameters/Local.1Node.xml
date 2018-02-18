@@ -1,22 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Application xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="fabric:/TransactionCoordinatorMS" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
+    <Parameter Name="CETransactionCoordinator_InstanceCount" Value="1" />
     <Parameter Name="SmartCache_PartitionCount" Value="1" />
-    <Parameter Name="SmartCache_MinReplicaSetSize" Value="1" />
-    <Parameter Name="SmartCache_TargetReplicaSetSize" Value="1" />
+    <Parameter Name="SmartCache_MinReplicaSetSize" Value="3" />
+    <Parameter Name="SmartCache_TargetReplicaSetSize" Value="3" />
     <Parameter Name="SmartCacheProxy_InstanceCount" Value="1" />
     <Parameter Name="CEScada_PartitionCount" Value="1" />
-    <Parameter Name="CEScada_MinReplicaSetSize" Value="1" />
-    <Parameter Name="CEScada_TargetReplicaSetSize" Value="1" />
+    <Parameter Name="CEScada_MinReplicaSetSize" Value="3" />
+    <Parameter Name="CEScada_TargetReplicaSetSize" Value="3" />
     <Parameter Name="CEClient_InstanceCount" Value="1" />
     <Parameter Name="AggregationService_InstanceCount" Value="1" />
     <Parameter Name="CEProxy_InstanceCount" Value="1" />
-    <Parameter Name="CE_PartitionCount" Value="1" />
-    <Parameter Name="CE_MinReplicaSetSize" Value="1" />
-    <Parameter Name="CE_TargetReplicaSetSize" Value="1" />
     <Parameter Name="TransactionCoordinatorProxy_InstanceCount" Value="1" />
     <Parameter Name="TransactionCoordinator_PartitionCount" Value="1" />
-    <Parameter Name="TransactionCoordinator_MinReplicaSetSize" Value="1" />
-    <Parameter Name="TransactionCoordinator_TargetReplicaSetSize" Value="1" />
+    <Parameter Name="TransactionCoordinator_MinReplicaSetSize" Value="3" />
+    <Parameter Name="TransactionCoordinator_TargetReplicaSetSize" Value="3" />
+    <Parameter Name="NMSProxy_InstanceCount" Value="1" />
+    <Parameter Name="NMSDB_InstanceCount" Value="1" />
+    <Parameter Name="NMS_PartitionCount" Value="1" />
+    <Parameter Name="NMS_MinReplicaSetSize" Value="3" />
+    <Parameter Name="NMS_TargetReplicaSetSize" Value="3" />
   </Parameters>
 </Application>

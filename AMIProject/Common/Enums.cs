@@ -57,4 +57,10 @@ namespace FTN.Common
         WORKDAY = 0,
         WEEKEND
     }
+
+    public enum ServiceType : int
+    {
+        STATEFFUL = 0,
+        STATELESS
+    }
 }

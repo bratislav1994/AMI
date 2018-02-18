@@ -16,6 +16,7 @@ using Microsoft.ServiceFabric.Services.Client;
 using System.ServiceModel.Channels;
 using System.ServiceModel;
 using FTN.Services.NetworkModelService.DataModel;
+using FTN.Common;
 
 namespace SmartCache
 {
@@ -28,14 +29,16 @@ namespace SmartCache
         private WcfSmartCacheProxy proxy;
         private WcfCommunicationClientFactory<IModelForDuplex> factory;
 
-        private ICalculationEngineDuplexSmartCache proxyCE;
-        private bool firstTimeCE = true;
+        private WcfCESmartCache proxyCE;
+        private WcfCommunicationClientFactory<ICalculationEngineDuplexSmartCache> factoryCE;
 
         private Dictionary<long, DynamicMeasurement> measurements = new Dictionary<long, DynamicMeasurement>();
 
         public SmartCache(StatefulServiceContext context)
             : base(context)
-        { }
+        {
+            Run();
+        }
 
         /// <summary>
         /// Optional override to create listeners (e.g., HTTP, Service Remoting, WCF, etc.) for this service replica to handle client or user requests.
@@ -63,7 +66,26 @@ namespace SmartCache
                 ),
             "SmartCacheProxyListener"
             );
-            return new ServiceReplicaListener[] { serviceListener };
+
+            var CEListener = new ServiceReplicaListener((context) =>
+                new WcfCommunicationListener<ISmartCacheForCE>(
+                wcfServiceObject: this,
+                serviceContext: context,
+                //
+                // The name of the endpoint configured in the ServiceManifest under the Endpoints section
+                // that identifies the endpoint that the WCF ServiceHost should listen on.
+                //
+                endpointResourceName: "ServiceEndpoint",
+
+                //
+                // Populate the binding information that you want the service to use.
+                //
+                listenerBinding: WcfUtility.CreateTcpListenerBinding()
+                ),
+            "CEListener"
+            );
+
+            return new ServiceReplicaListener[] { serviceListener, CEListener };
         }
 
         /// <summary>
@@ -79,7 +101,7 @@ namespace SmartCache
             proxies = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, string>>("Proxies");
         }
 
-        public async void Connect(string traceID, string serviceName)
+        public async void Connect(ServiceInfo serviceInfo)
         {
             while (proxies == null)
             {
@@ -88,11 +110,11 @@ namespace SmartCache
 
             using (var tx = this.StateManager.CreateTransaction())
             {
-                var result = await proxies.TryGetValueAsync(tx, traceID);
+                var result = await proxies.TryGetValueAsync(tx, serviceInfo.TraceID);
 
                 if (result.HasValue)
                 {
-                    await proxies.AddAsync(tx, traceID, serviceName);
+                    await proxies.AddAsync(tx, serviceInfo.TraceID, serviceInfo.ServiceName);
                 }
 
                 // If an exception is thrown before calling CommitAsync, the transaction aborts, all changes are 
@@ -106,7 +128,7 @@ namespace SmartCache
             IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.
             factory = new WcfCommunicationClientFactory<IModelForDuplex>
-                (clientBinding: binding, servicePartitionResolver: partitionResolver, traceId: traceID);
+                (clientBinding: binding, servicePartitionResolver: partitionResolver, traceId: serviceInfo.TraceID);
 
             //
             // Create a client for communicating with the ICalculator service that has been created with the
@@ -114,64 +136,32 @@ namespace SmartCache
             //
             proxy = new WcfSmartCacheProxy(
                             factory,
-                            new Uri(serviceName),
+                            new Uri(serviceInfo.ServiceName),
                             ServicePartitionKey.Singleton,
                             "SmartCacheListener");
         }
 
         public void Run()
         {
-            while (true)
-            {
-                try
-                {
-                    this.ProxyCE.Subscribe();
-                    break;
-                }
-                catch
-                {
-                    FirstTimeCE = true;
-                    Thread.Sleep(1000);
-                }
-            }
-        }
+            // Create binding
+            Binding binding = WcfUtility.CreateTcpClientBinding();
+            // Create a partition resolver
+            IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
+            // create a  WcfCommunicationClientFactory object.
+            factoryCE = new WcfCommunicationClientFactory<ICalculationEngineDuplexSmartCache>
+                (clientBinding: binding, servicePartitionResolver: partitionResolver);
 
-        public bool FirstTimeCE
-        {
-            get
-            {
-                return firstTimeCE;
-            }
+            //
+            // Create a client for communicating with the ICalculator service that has been created with the
+            // Singleton partition scheme.
+            //
+            proxyCE = new WcfCESmartCache(
+                            factoryCE,
+                            new Uri("fabric:/TransactionCoordinatorMS/CEScada"),
+                            new ServicePartitionKey(1),
+                            "SmartCacheListener");
 
-            set
-            {
-                firstTimeCE = value;
-            }
-        }
-
-        public ICalculationEngineDuplexSmartCache ProxyCE
-        {
-            get
-            {
-                if (firstTimeCE)
-                {
-                    NetTcpBinding binding = new NetTcpBinding();
-                    binding.SendTimeout = TimeSpan.FromSeconds(3);
-                    DuplexChannelFactory<ICalculationEngineDuplexSmartCache> factory = new DuplexChannelFactory<ICalculationEngineDuplexSmartCache>(
-                    new InstanceContext(this),
-                        binding,
-                        new EndpointAddress(/*"net.tcp://localhost:10007/ICalculationEngineDuplexSmartCache/SmartCache"*/ "net.tcp://localhost:10208/SmartCache/Client"));
-                    proxyCE = factory.CreateChannel();
-                    firstTimeCE = false;
-                }
-
-                return proxyCE;
-            }
-
-            set
-            {
-                proxyCE = value;
-            }
+            proxyCE.InvokeWithRetry(client => client.Channel.Subscribe(new ServiceInfo(base.Context.PartitionId.ToString() + "-" + base.Context.ReplicaOrInstanceId, base.Context.ServiceName.ToString(), ServiceType.STATEFFUL)));
         }
 
         public List<DynamicMeasurement> GetLastMeas(List<long> gidsInTable)

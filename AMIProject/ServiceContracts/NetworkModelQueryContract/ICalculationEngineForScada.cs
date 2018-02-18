@@ -1,4 +1,5 @@
-﻿using FTN.Services.NetworkModelService.DataModel;
+﻿using FTN.Common;
+using FTN.Services.NetworkModelService.DataModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace FTN.ServiceContracts
     public interface ICalculationEngineForScada
     {
         [OperationContract]
-        void Connect(string traceID, string serviceName);
+        void Connect(ServiceInfo serviceInfo);
 
         [OperationContract]
         void DataFromScada(Dictionary<long, DynamicMeasurement> measurements);

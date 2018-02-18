@@ -11,39 +11,38 @@ namespace FTN.ServiceContracts
     [ServiceContract]
     public interface ITransactionCoordinatorProxy
     {
-        [OperationContract]
-
-        void EnlistDeltaNMS(Delta delta);
+        /*[OperationContract]
+        void EnlistDeltaNMS(Delta delta);*/
 
         [OperationContract]
         void EnlistMeasScada(List<ResourceDescription> measurements);
 
-        [OperationContract]
-        void EnlistDeltaCE(List<ResourceDescription> data);
+        /*[OperationContract]
+        void EnlistDeltaCE(List<ResourceDescription> data);*/
 
-        [OperationContract]
+        /*[OperationContract]
         Delta PrepareNMS();
 
         [OperationContract]
-        bool PrepareCE();
+        bool PrepareCE();*/
 
         [OperationContract]
         bool PrepareScada();
 
-        [OperationContract]
+        /*[OperationContract]
         void CommitNMS();
 
         [OperationContract]
-        void CommitCE();
+        void CommitCE();*/
 
         [OperationContract]
         void CommitScada();
 
-        [OperationContract]
+        /*[OperationContract]
         void RollbackNMS();
 
         [OperationContract]
-        void RollbackCE();
+        void RollbackCE();*/
 
         [OperationContract]
         void RollbackScada();

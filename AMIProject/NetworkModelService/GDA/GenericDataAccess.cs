@@ -113,12 +113,12 @@ namespace FTN.Services.NetworkModelService
             return true;
         }
 
-        public Task<ResourceDescription> GetValues(long resourceId, List<ModelCode> propIds)
+        public ResourceDescription GetValues(long resourceId, List<ModelCode> propIds)
         {
             try
             {
                 ResourceDescription retVal = nm.GetValues(resourceId, propIds);
-                return Task.FromResult<ResourceDescription>(retVal);
+                return (retVal);
             }
             catch (Exception ex)
             {
@@ -128,12 +128,12 @@ namespace FTN.Services.NetworkModelService
             }
         }
 
-        public Task<List<long>> GetGlobalIds()
+        public List<long> GetGlobalIds()
         {
             try
             {
                 List<long> retVal = nm.GetGlobalIds();
-                return Task.FromResult<List<long>>(retVal);
+                return (retVal);
             }
             catch (Exception ex)
             {
@@ -143,14 +143,14 @@ namespace FTN.Services.NetworkModelService
             }
         }
 
-        public Task<int> GetExtentValues(ModelCode entityType, List<ModelCode> propIds)
+        public int GetExtentValues(ModelCode entityType, List<ModelCode> propIds)
         {
             try
             {
                 ResourceIterator ri = nm.GetExtentValues(entityType, propIds);
                 int retVal = AddIterator(ri);
 
-                return Task.FromResult<int>(retVal);
+                return (retVal);
             }
             catch (Exception ex)
             {
@@ -160,14 +160,14 @@ namespace FTN.Services.NetworkModelService
             }
         }
 
-        public Task<int> GetRelatedValues(long source, List<ModelCode> propIds, Association association)
+        public int GetRelatedValues(long source, List<ModelCode> propIds, Association association)
         {
             try
             {
                 ResourceIterator ri = nm.GetRelatedValues(source, propIds, association);
                 int retVal = AddIterator(ri);
 
-                return Task.FromResult<int>(retVal);
+                return (retVal);
             }
             catch (Exception ex)
             {
@@ -177,13 +177,13 @@ namespace FTN.Services.NetworkModelService
             }
         }
 
-        public Task<List<ResourceDescription>> IteratorNext(int n, int id)
+        public List<ResourceDescription> IteratorNext(int n, int id)
         {
             try
             {
                 List<ResourceDescription> retVal = GetIterator(id).Next(n);
 
-                return Task.FromResult<List<ResourceDescription>>(retVal);
+                return (retVal);
             }
             catch (Exception ex)
             {
@@ -193,13 +193,13 @@ namespace FTN.Services.NetworkModelService
             }
         }
 
-        public Task<bool> IteratorRewind(int id)
+        public bool IteratorRewind(int id)
         {
             try
             {
                 GetIterator(id).Rewind();
 
-                return Task.FromResult<bool>(true);
+                return true;
             }
             catch (Exception ex)
             {
@@ -209,13 +209,13 @@ namespace FTN.Services.NetworkModelService
             }
         }
 
-        public Task<int> IteratorResourcesTotal(int id)
+        public int IteratorResourcesTotal(int id)
         {
             try
             {
                 int retVal = GetIterator(id).ResourcesTotal();
 
-                return Task.FromResult<int>(retVal);
+                return (retVal);
             }
             catch (Exception ex)
             {
@@ -225,13 +225,13 @@ namespace FTN.Services.NetworkModelService
             }
         }
 
-        public Task<int> IteratorResourcesLeft(int id)
+        public int IteratorResourcesLeft(int id)
         {
             try
             {
                 int resourcesLeft = GetIterator(id).ResourcesLeft();
 
-                return Task.FromResult<int>(resourcesLeft);
+                return (resourcesLeft);
             }
             catch (Exception ex)
             {
@@ -241,9 +241,9 @@ namespace FTN.Services.NetworkModelService
             }
         }
 
-        public Task<bool> IteratorClose(int id)
+        public bool IteratorClose(int id)
         {
-            return Task.FromResult<bool>(RemoveIterator(id));
+            return (RemoveIterator(id));
         }
 
         private int AddIterator(ResourceIterator iterator)

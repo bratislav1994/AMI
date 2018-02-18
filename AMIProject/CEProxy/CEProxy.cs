@@ -106,7 +106,7 @@ namespace CEProxy
                             new ServicePartitionKey(1),
                             "ScadaListener");
 
-            proxyScada.InvokeWithRetry(client => client.Channel.Connect(base.Context.PartitionId.ToString() + "-" + base.Context.ReplicaOrInstanceId, base.Context.ServiceName.ToString()));
+            proxyScada.InvokeWithRetry(client => client.Channel.Connect(new ServiceInfo(base.Context.PartitionId.ToString() + "-" + base.Context.ReplicaOrInstanceId, base.Context.ServiceName.ToString(), ServiceType.STATELESS)));
         }
 
         public void ConnectClient()
@@ -139,7 +139,7 @@ namespace CEProxy
             proxyScada.InvokeWithRetry(client => client.Channel.DataFromScada(measurements));
         }
 
-        public void Connect(string traceID = "", string serviceName = "")
+        public void Connect(ServiceInfo serviceInfo = null)
         {
             scada = OperationContext.Current.GetCallbackChannel<IScadaForCECommand>();
         }

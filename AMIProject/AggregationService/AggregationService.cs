@@ -30,10 +30,17 @@ namespace AggregationService
         private bool isDayDone = false;
         private DateTime lastMeasForHoursBeforeAppStart;
         private DateTime lastMeasForMinutesBeforeAppStart;
+        private DB dbAdapter;
 
         public AggregationService(StatelessServiceContext context)
             : base(context)
-        { }
+        {
+            dbAdapter = new DB();
+            //this.DoUndoneByMinute();
+            //this.DoUndoneByHour();
+            //this.DoUndoneByDay();
+            StartThreads();
+        }
 
         /// <summary>
         /// Optional override to create listeners (e.g., TCP, HTTP) for this service replica to handle client or user requests.
@@ -50,10 +57,7 @@ namespace AggregationService
         /// <param name="cancellationToken">Canceled when Service Fabric needs to shut down this service instance.</param>
         protected override async Task RunAsync(CancellationToken cancellationToken)
         {
-            //this.DoUndoneByMinute();
-            //this.DoUndoneByHour();
-            //this.DoUndoneByDay();
-            StartThreads();
+            
         }
 
         private void StartThreads()

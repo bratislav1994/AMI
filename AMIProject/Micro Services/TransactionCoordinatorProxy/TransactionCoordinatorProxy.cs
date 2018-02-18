@@ -15,13 +15,14 @@ using Microsoft.ServiceFabric.Services.Communication.Wcf;
 using Microsoft.ServiceFabric.Services.Client;
 using Microsoft.ServiceFabric.Services.Communication.Wcf.Client;
 using CommonMS;
+using System.Fabric.Management.ServiceModel;
 
 namespace TransactionCoordinatorProxy
 {
     /// <summary>
     /// An instance of this class is created for each service instance by the Service Fabric runtime.
     /// </summary>
-    internal sealed class TransactionCoordinatorProxy : StatelessService, ITransactionCoordinatorProxy, ITransactionCoordinator, ITransactionDuplexCE, ITransactionDuplexNMS, ITransactionDuplexScada
+    internal sealed class TransactionCoordinatorProxy : StatelessService, ITransactionCoordinatorProxy, ITransactionCoordinator, /*ITransactionDuplexCE, ITransactionDuplexNMS,*/ ITransactionDuplexScada
     {
         private ICalculationEngine ce;
         private INetworkModel nms;
@@ -44,14 +45,14 @@ namespace TransactionCoordinatorProxy
             new WcfCommunicationListener<ITransactionCoordinator>(context, this,
             new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10100/TransactionCoordinatorProxy/Adapter/")),"AdapterListener");
 
-            var CEListener = new ServiceInstanceListener((context) =>
+            /*var CEListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ITransactionDuplexCE>(context, this,
-            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10101/TransactionCoordinatorProxy/CalculationEngine/")), "CEListener");
-
-            var NMSListener = new ServiceInstanceListener((context) =>
+            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10101/TransactionCoordinatorProxy/CalculationEngine/")), "CEListener");*/
+            
+            /*var NMSListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ITransactionDuplexNMS>(context, this,
-            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10102/TransactionCoordinatorProxy/NMS/")), "NMSListener");
-
+            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10102/TransactionCoordinatorProxy/NMS/")), "NMSListener");*/
+            
             var scadaListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ITransactionDuplexScada>(context, this,
             new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10103/TransactionCoordinatorProxy/Scada/")), "ScadaListener");
@@ -74,7 +75,7 @@ namespace TransactionCoordinatorProxy
         "TransactionCoordinatorListener"
     );
 
-            return new ServiceInstanceListener[] { adapterListener, CEListener, NMSListener, scadaListener, serviceListener };
+            return new ServiceInstanceListener[] { adapterListener, /*CEListener, NMSListener,*/ scadaListener, serviceListener };
         }
 
         /// <summary>
@@ -103,7 +104,7 @@ namespace TransactionCoordinatorProxy
                             new Uri("fabric:/TransactionCoordinatorMS/TransactionCoordinator"),
                             new ServicePartitionKey(1));
 
-            proxy.InvokeWithRetry(client => client.Channel.Connect(base.Context.PartitionId.ToString() + "-" + base.Context.ReplicaOrInstanceId, base.Context.ServiceName.ToString()));
+            proxy.InvokeWithRetry(client => client.Channel.Connect(new ServiceInfo(base.Context.PartitionId.ToString() + "-" + base.Context.ReplicaOrInstanceId, base.Context.ServiceName.ToString(), FTN.Common.ServiceType.STATELESS)));
         }
 
         public Task<bool> ApplyDelta(Delta delta)
@@ -112,7 +113,7 @@ namespace TransactionCoordinatorProxy
                 client => client.Channel.ApplyDelta(delta)).Result);
         }
 
-        public void ConnectCE()
+        /*public void ConnectCE()
         {
             ce = OperationContext.Current.GetCallbackChannel<ICalculationEngine>();
         }
@@ -120,29 +121,29 @@ namespace TransactionCoordinatorProxy
         public void ConnectNMS()
         {
             nms = OperationContext.Current.GetCallbackChannel<INetworkModel>();
-        }
+        }*/
 
         public void ConnectScada()
         {
             scada = OperationContext.Current.GetCallbackChannel<IScada>();
         }
 
-        public void EnlistDeltaNMS(Delta delta)
+        /*public void EnlistDeltaNMS(Delta delta)
         {
             nms.EnlistDelta(delta);
-        }
+        }*/
 
         public void EnlistMeasScada(List<ResourceDescription> measurements)
         {
             scada.EnlistMeas(measurements);
         }
 
-        public void EnlistDeltaCE(List<ResourceDescription> data)
+        /*public void EnlistDeltaCE(List<ResourceDescription> data)
         {
             ce.EnlistMeas(data);
-        }
+        }*/
 
-        public Delta PrepareNMS()
+        /*public Delta PrepareNMS()
         {
             return nms.Prepare();
         }
@@ -150,14 +151,14 @@ namespace TransactionCoordinatorProxy
         public bool PrepareCE()
         {
             return ce.Prepare();
-        }
+        }*/
 
         public bool PrepareScada()
         {
             return scada.Prepare();
         }
 
-        public void CommitNMS()
+        /*public void CommitNMS()
         {
             nms.Commit();
         }
@@ -166,13 +167,13 @@ namespace TransactionCoordinatorProxy
         {
             ce.Commit();
         }
-
+        */
         public void CommitScada()
         {
             scada.Commit();
         }
 
-        public void RollbackNMS()
+        /*public void RollbackNMS()
         {
             nms.Rollback();
         }
@@ -180,14 +181,14 @@ namespace TransactionCoordinatorProxy
         public void RollbackCE()
         {
             ce.Rollback();
-        }
+        }*/
 
         public void RollbackScada()
         {
             scada.Rollback();
         }
 
-        public void Connect(string traceID, string serviceName)
+        public void Connect(ServiceInfo serviceInfo)
         {
             throw new NotImplementedException();
         }
