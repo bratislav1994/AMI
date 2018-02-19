@@ -52,7 +52,7 @@ namespace CEScada
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
-            var serviceListener = new ServiceReplicaListener((context) =>
+            var scadaListener = new ServiceReplicaListener((context) =>
         new WcfCommunicationListener<ICalculationEngineForScada>(
             wcfServiceObject: this,
             serviceContext: context,
@@ -70,7 +70,25 @@ namespace CEScada
         "ScadaListener"
     );
 
-            return new ServiceReplicaListener[] { serviceListener };
+            var SCListener = new ServiceReplicaListener((context) =>
+        new WcfCommunicationListener<ICalculationEngineDuplexSmartCache>(
+            wcfServiceObject: this,
+            serviceContext: context,
+            //
+            // The name of the endpoint configured in the ServiceManifest under the Endpoints section
+            // that identifies the endpoint that the WCF ServiceHost should listen on.
+            //
+            endpointResourceName: "ServiceEndpoint",
+
+            //
+            // Populate the binding information that you want the service to use.
+            //
+            listenerBinding: WcfUtility.CreateTcpListenerBinding()
+        ),
+        "SmartCacheListener"
+    );
+
+            return new ServiceReplicaListener[] { scadaListener, SCListener };
         }
 
         /// <summary>
@@ -134,7 +152,7 @@ namespace CEScada
                             factory,
                             new Uri(serviceInfo.ServiceName),
                             ServicePartitionKey.Singleton,
-                            "TransactionCoordinatorListener");
+                            "CEScadaListener");
         }
 
         public void DataFromScada(Dictionary<long, DynamicMeasurement> measurements)

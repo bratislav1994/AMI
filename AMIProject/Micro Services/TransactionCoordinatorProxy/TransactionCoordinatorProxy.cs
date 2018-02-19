@@ -44,14 +44,6 @@ namespace TransactionCoordinatorProxy
             var adapterListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ITransactionCoordinator>(context, this,
             new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10100/TransactionCoordinatorProxy/Adapter/")),"AdapterListener");
-
-            /*var CEListener = new ServiceInstanceListener((context) =>
-            new WcfCommunicationListener<ITransactionDuplexCE>(context, this,
-            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10101/TransactionCoordinatorProxy/CalculationEngine/")), "CEListener");*/
-            
-            /*var NMSListener = new ServiceInstanceListener((context) =>
-            new WcfCommunicationListener<ITransactionDuplexNMS>(context, this,
-            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10102/TransactionCoordinatorProxy/NMS/")), "NMSListener");*/
             
             var scadaListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ITransactionDuplexScada>(context, this,
@@ -75,7 +67,7 @@ namespace TransactionCoordinatorProxy
         "TransactionCoordinatorListener"
     );
 
-            return new ServiceInstanceListener[] { adapterListener, /*CEListener, NMSListener,*/ scadaListener, serviceListener };
+            return new ServiceInstanceListener[] { adapterListener, scadaListener, serviceListener };
         }
 
         /// <summary>
@@ -102,7 +94,8 @@ namespace TransactionCoordinatorProxy
             proxy = new WcfTransactionCoordinator(
                             wcfClientFactory,
                             new Uri("fabric:/TransactionCoordinatorMS/TransactionCoordinator"),
-                            new ServicePartitionKey(1));
+                            new ServicePartitionKey(1),
+                            "TransactionCoordinatorProxyListener");
 
             proxy.InvokeWithRetry(client => client.Channel.Connect(new ServiceInfo(base.Context.PartitionId.ToString() + "-" + base.Context.ReplicaOrInstanceId, base.Context.ServiceName.ToString(), FTN.Common.ServiceType.STATELESS)));
         }

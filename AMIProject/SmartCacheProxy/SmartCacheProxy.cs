@@ -98,7 +98,8 @@ namespace SmartCacheProxy
             proxy = new WcfSmartCache(
                             wcfClientFactory,
                             new Uri("fabric:/TransactionCoordinatorMS/SmartCache"),
-                            new ServicePartitionKey(1));
+                            new ServicePartitionKey(1),
+                            "SmartCacheProxyListener");
 
             proxy.InvokeWithRetry(client => client.Channel.Connect(new ServiceInfo(base.Context.PartitionId.ToString() + "-" + base.Context.ReplicaOrInstanceId, base.Context.ServiceName.ToString(), ServiceType.STATELESS)));
         }

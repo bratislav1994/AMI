@@ -109,7 +109,8 @@ namespace CETransactionCoordinator
             proxy = new WcfTransactionCoordinatorCE(
                             factory,
                             new Uri("fabric:/TransactionCoordinatorMS/TransactionCoordinator"),
-                            new ServicePartitionKey(1));
+                            new ServicePartitionKey(1),
+                            "CEListener");
 
             proxy.InvokeWithRetry(client => client.Channel.ConnectCE(new ServiceInfo(base.Context.PartitionId.ToString() + "-" + base.Context.ReplicaOrInstanceId, base.Context.ServiceName.ToString(), FTN.Common.ServiceType.STATELESS)));
         }

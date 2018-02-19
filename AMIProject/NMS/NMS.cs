@@ -173,7 +173,8 @@ namespace NMS
             proxyTransactionCoordinator = new WcfTransactionCoordinatorNMS(
                             factoryTransactionCoordinator,
                             new Uri("fabric:/TransactionCoordinatorMS/TransactionCoordinator"),
-                            new ServicePartitionKey(1));
+                            new ServicePartitionKey(1),
+                            "NMSListener");
 
             proxyTransactionCoordinator.InvokeWithRetry(client => client.Channel.ConnectNMS(new ServiceInfo(base.Context.PartitionId.ToString() + "-" + base.Context.ReplicaOrInstanceId, base.Context.ServiceName.ToString(), FTN.Common.ServiceType.STATEFFUL)));
         }

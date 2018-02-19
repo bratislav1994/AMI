@@ -353,7 +353,7 @@ namespace TransactionCoordinator
                             factoryCE,
                             new Uri(serviceInfo.ServiceName),
                             ServicePartitionKey.Singleton,
-                            "TransactionCoordinatorListener");
+                            "CETransactionCoordinatorListener");
         }
     }
 }
