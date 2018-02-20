@@ -24,7 +24,7 @@ namespace CEScada
     /// <summary>
     /// An instance of this class is created for each service replica by the Service Fabric runtime.
     /// </summary>
-    internal sealed class CEScada : StatefulService, ICalculationEngineForScada, ICalculationEngineDuplexSmartCache
+    internal sealed class CEScada : StatefulService, ICEScada, ICalculationEngineDuplexSmartCache
     {
         IReliableDictionary<string, ServiceInfo> proxies;
         IReliableDictionary<string, ServiceInfo> caches;
@@ -53,7 +53,7 @@ namespace CEScada
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
             var scadaListener = new ServiceReplicaListener((context) =>
-        new WcfCommunicationListener<ICalculationEngineForScada>(
+        new WcfCommunicationListener<ICEScada>(
             wcfServiceObject: this,
             serviceContext: context,
             //
@@ -155,7 +155,7 @@ namespace CEScada
                             "CEScadaListener");
         }
 
-        public void DataFromScada(Dictionary<long, DynamicMeasurement> measurements)
+        public async void DataFromScada(Dictionary<long, DynamicMeasurement> measurements)
         {
             int cntForVoltage = 0;
             Dictionary<long, DynamicMeasurement> addSubstations = new Dictionary<long, DynamicMeasurement>();
@@ -274,6 +274,11 @@ namespace CEScada
                 }
             }
 
+            new Thread(() => SendToClient(measurements, delta)).Start();
+        }
+
+        private void SendToClient(Dictionary<long, DynamicMeasurement> measurements, DeltaForAlarm delta)
+        {
             smartCache.InvokeWithRetry(client => client.Channel.SendMeasurements(measurements));
             smartCache.InvokeWithRetry(client => client.Channel.SendAlarm(delta));
         }

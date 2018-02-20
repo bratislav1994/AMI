@@ -23,7 +23,7 @@ namespace SmartCache
     /// <summary>
     /// An instance of this class is created for each service replica by the Service Fabric runtime.
     /// </summary>
-    internal sealed class SmartCache : StatefulService, ISmartCacheDuplexForClient, ISmartCacheForCE
+    internal sealed class SmartCache : StatefulService, ISmartCacheMS, ISmartCacheForCE
     {
         private IReliableDictionary<string, string> proxies;
         private WcfSmartCacheProxy proxy;
@@ -50,7 +50,7 @@ namespace SmartCache
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
             var serviceListener = new ServiceReplicaListener((context) =>
-                new WcfCommunicationListener<ISmartCacheDuplexForClient>(
+                new WcfCommunicationListener<ISmartCacheMS>(
                 wcfServiceObject: this,
                 serviceContext: context,
                 //
@@ -198,11 +198,6 @@ namespace SmartCache
             }
 
             proxy.InvokeWithRetry(client => client.Channel.SendMeasurements(this.measurements.Values.ToList()));
-        }
-
-        public void Subscribe()
-        {
-            throw new NotImplementedException();
         }
     }
 }

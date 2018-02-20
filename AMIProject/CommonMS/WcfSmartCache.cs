@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace CommonMS
 {
-    public class WcfSmartCache : ServicePartitionClient<WcfCommunicationClient<ISmartCacheDuplexForClient>>
+    public class WcfSmartCache : ServicePartitionClient<WcfCommunicationClient<ISmartCacheMS>>
     {
-        public WcfSmartCache(ICommunicationClientFactory<WcfCommunicationClient<ISmartCacheDuplexForClient>> communicationClientFactory, Uri serviceUri, ServicePartitionKey partitionKey = null, string listenerName = null, TargetReplicaSelector targetReplicaSelector = TargetReplicaSelector.Default, OperationRetrySettings retrySettings = null)
+        public WcfSmartCache(ICommunicationClientFactory<WcfCommunicationClient<ISmartCacheMS>> communicationClientFactory, Uri serviceUri, ServicePartitionKey partitionKey = null, string listenerName = null, TargetReplicaSelector targetReplicaSelector = TargetReplicaSelector.Default, OperationRetrySettings retrySettings = null)
             : base(communicationClientFactory, serviceUri, partitionKey, targetReplicaSelector, listenerName, retrySettings)
         {
         }

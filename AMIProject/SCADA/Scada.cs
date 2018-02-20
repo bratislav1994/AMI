@@ -73,7 +73,7 @@ namespace SCADA
                     DuplexChannelFactory<ITransactionDuplexScada> factory = new DuplexChannelFactory<ITransactionDuplexScada>(
                     new InstanceContext(this),
                         binding,
-                        new EndpointAddress(/*"net.tcp://localhost:10002/TransactionCoordinator/Scada"*/"net.tcp://localhost:10103/TransactionCoordinatorProxy/Scada/"));
+                        new EndpointAddress("net.tcp://localhost:10301/TransactionCoordinatorProxy/Scada/"));
                     proxyCoordinator = factory.CreateChannel();
                     firstTimeCoordinator = false;
                 }
@@ -98,8 +98,8 @@ namespace SCADA
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.MaxReceivedMessageSize = Int32.MaxValue;
                     binding.MaxBufferSize = Int32.MaxValue;
-                    ChannelFactory<ICalculationEngineForScada> factory = new ChannelFactory<ICalculationEngineForScada>(binding,
-                                                                                        new EndpointAddress("net.tcp://localhost:10050/ICalculationEngine/Calculation"));
+                    DuplexChannelFactory<ICalculationEngineForScada> factory = new DuplexChannelFactory<ICalculationEngineForScada>(new InstanceContext(this),binding,
+                                                                                        new EndpointAddress("net.tcp://localhost:10101/CEProxy/Scada/"));
                     proxyCE = factory.CreateChannel();
                     firstTimeCE = false;
                 }
@@ -156,6 +156,23 @@ namespace SCADA
                 {
                     Logger.LogMessageToFile(string.Format("SCADA.Scada; line: {0}; Scada faild to connect with Coordinator. CATCH", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     firstTimeCoordinator = true;
+                    Thread.Sleep(1000);
+                }
+            }
+
+            while (true)
+            {
+                try
+                {
+                    Logger.LogMessageToFile(string.Format("SCADA.Scada; line: {0}; Scada try to connect with CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    ProxyCE.Connect();
+                    Logger.LogMessageToFile(string.Format("SCADA.Scada; line: {0}; Scada is connected to the CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    break;
+                }
+                catch
+                {
+                    Logger.LogMessageToFile(string.Format("SCADA.Scada; line: {0}; Scada faild to connect with CE. CATCH", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                    firstTimeCE = true;
                     Thread.Sleep(1000);
                 }
             }

@@ -83,7 +83,7 @@ namespace TransactionCoordinator
             //
             listenerBinding: WcfUtility.CreateTcpListenerBinding()
         ),
-        "NSMListener"
+        "NMSListener"
     );
             //CE
             var CEListener = new ServiceReplicaListener((context) =>

@@ -72,7 +72,7 @@ namespace AMIClient
                     new InstanceContext(this),
                         binding,
                         new EndpointAddress(/*"net.tcp://localhost:10000/NetworkModelService/GDADuplexClient"*/
-                                            "net.tcp://localhost:10110/NMSProxy/Client/"));
+                                            "net.tcp://localhost:10200/NMSProxy/Client/"));
                     gdaQueryProxy = factory.CreateChannel();
                     FirstContact = false;
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.GdaQueryProxy; line: {0}; Channel Client-NMS is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -100,7 +100,7 @@ namespace AMIClient
                     binding.MaxBufferSize = Int32.MaxValue;
                     factoryCE = new ChannelFactory<ICalculationForClient>(
                         binding,
-                        new EndpointAddress("net.tcp://localhost:10006/CalculationEngine/Client"));
+                        new EndpointAddress("net.tcp://localhost:10100/CEProxy/Client/"));
                     ceQueryProxy = factoryCE.CreateChannel();
                     FirstContactCE = false;
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.CEQueryProxy; line: {0}; Channel Client-CE is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -129,7 +129,7 @@ namespace AMIClient
                     factorySC = new DuplexChannelFactory<ISmartCacheDuplexForClient>(
                     new InstanceContext(this),
                         binding,
-                        new EndpointAddress("net.tcp://localhost:10008/SmartCache/Client"));
+                        new EndpointAddress("net.tcp://localhost:10400/SmartCache/Client/"));
                     scProxy = factorySC.CreateChannel();
                     FirstContactSC = false;
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.SCProxy; line: {0}; Channel Client-SC is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -318,7 +318,7 @@ namespace AMIClient
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToSC; line: {0}; Client is connected to the SC", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     break;
                 }
-                catch
+                catch(Exception ex)
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToSC; line: {0}; Client faild to connect to SC. CATCH", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     FirstContactSC = true;

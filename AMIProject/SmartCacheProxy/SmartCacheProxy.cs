@@ -26,7 +26,7 @@ namespace SmartCacheProxy
     internal sealed class SmartCacheProxy : StatelessService, ISmartCacheDuplexForClient, IModelForDuplex
     {
         private List<IModelForDuplex> clients;
-        private WcfCommunicationClientFactory<ISmartCacheDuplexForClient> wcfClientFactory;
+        private WcfCommunicationClientFactory<ISmartCacheMS> wcfClientFactory;
         private WcfSmartCache proxy;
         private StatelessServiceContext context;
         private object lockObjectForClient;
@@ -45,7 +45,7 @@ namespace SmartCacheProxy
         {
             var clientListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ISmartCacheDuplexForClient>(context, this,
-            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10208/SmartCache/Client")), "ClientListener");
+            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10400/SmartCache/Client/")), "ClientListener");
 
             var serviceListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<IModelForDuplex>(
@@ -82,7 +82,7 @@ namespace SmartCacheProxy
             // Create a partition resolver
             IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.
-            wcfClientFactory = new WcfCommunicationClientFactory<ISmartCacheDuplexForClient>
+            wcfClientFactory = new WcfCommunicationClientFactory<ISmartCacheMS>
                 (clientBinding: binding, servicePartitionResolver: partitionResolver);
 
             //

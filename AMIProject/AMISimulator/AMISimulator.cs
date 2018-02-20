@@ -65,7 +65,7 @@ namespace AMISimulator
                             binding.MaxBufferSize = Int32.MaxValue;
                             factory = new DuplexChannelFactory<IScadaDuplexSimulator>(new InstanceContext(this),
                                                                                     binding,
-                                                                                    new EndpointAddress("net.tcp://localhost:10200/Scada/Simulator"));
+                                                                                    new EndpointAddress("net.tcp://localhost:10000/Scada/Simulator"));
 
                             proxyScada = factory.CreateChannel();
                             firstContact = false;

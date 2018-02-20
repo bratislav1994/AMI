@@ -1,5 +1,4 @@
 ﻿using FTN.Common;
-using FTN.Services.NetworkModelService.DataModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace FTN.ServiceContracts
 {
-    [ServiceContract(CallbackContract =typeof(IScadaForCECommand))]
-    public interface ICalculationEngineForScada
+    [ServiceContract]
+    public interface INMSMicroService : IBaseNetworkModelGDAContract
     {
         [OperationContract]
-        void Connect();
+        void Ping();
 
         [OperationContract]
-        void DataFromScada(Dictionary<long, DynamicMeasurement> measurements);
+        void Connect(ServiceInfo serviceInfo);
     }
 }

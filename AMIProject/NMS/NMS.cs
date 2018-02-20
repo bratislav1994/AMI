@@ -24,7 +24,7 @@ namespace NMS
     /// <summary>
     /// An instance of this class is created for each service replica by the Service Fabric runtime.
     /// </summary>
-    internal sealed class NMS : StatefulService, INetworkModelGDAContractDuplexClient, INetworkModel
+    internal sealed class NMS : StatefulService, INMSMicroService, INetworkModel
     {
         private IReliableDictionary<string, ServiceInfo> proxies;
         private WcfNMSProxy proxy;
@@ -81,7 +81,7 @@ namespace NMS
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
             var serviceListener = new ServiceReplicaListener((context) =>
-                                  new WcfCommunicationListener<INetworkModelGDAContractDuplexClient>
+                                  new WcfCommunicationListener<INMSMicroService>
                                   (
                                     wcfServiceObject: this,
                                     serviceContext: context,

@@ -43,11 +43,11 @@ namespace TransactionCoordinatorProxy
         {
             var adapterListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ITransactionCoordinator>(context, this,
-            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10100/TransactionCoordinatorProxy/Adapter/")),"AdapterListener");
+            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10300/TransactionCoordinatorProxy/Adapter/")),"AdapterListener");
             
             var scadaListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ITransactionDuplexScada>(context, this,
-            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10103/TransactionCoordinatorProxy/Scada/")), "ScadaListener");
+            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10301/TransactionCoordinatorProxy/Scada/")), "ScadaListener");
 
             var serviceListener = new ServiceInstanceListener((context) =>
         new WcfCommunicationListener<ITransactionCoordinatorProxy>(

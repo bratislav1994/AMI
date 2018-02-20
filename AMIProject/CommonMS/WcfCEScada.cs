@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace CommonMS
 {
-    public class WcfCEScada : ServicePartitionClient<WcfCommunicationClient<ICalculationEngineForScada>>
+    public class WcfCEScada : ServicePartitionClient<WcfCommunicationClient<ICEScada>>
     {
-        public WcfCEScada(ICommunicationClientFactory<WcfCommunicationClient<ICalculationEngineForScada>> communicationClientFactory, Uri serviceUri, ServicePartitionKey partitionKey = null, string listenerName = null, TargetReplicaSelector targetReplicaSelector = TargetReplicaSelector.Default, OperationRetrySettings retrySettings = null)
+        public WcfCEScada(ICommunicationClientFactory<WcfCommunicationClient<ICEScada>> communicationClientFactory, Uri serviceUri, ServicePartitionKey partitionKey = null, string listenerName = null, TargetReplicaSelector targetReplicaSelector = TargetReplicaSelector.Default, OperationRetrySettings retrySettings = null)
             : base(communicationClientFactory, serviceUri, partitionKey, targetReplicaSelector, listenerName, retrySettings)
         {
         }

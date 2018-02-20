@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace FTN.ServiceContracts
 {
-    [ServiceContract(CallbackContract =typeof(IScadaForCECommand))]
-    public interface ICalculationEngineForScada
+    [ServiceContract]
+    public interface ISmartCacheMS
     {
         [OperationContract]
-        void Connect();
+        List<DynamicMeasurement> GetLastMeas(List<long> gidsInTable);
 
         [OperationContract]
-        void DataFromScada(Dictionary<long, DynamicMeasurement> measurements);
+        void Connect(ServiceInfo serviceInfo);
     }
 }

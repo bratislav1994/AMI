@@ -29,7 +29,7 @@ namespace CEProxy
     {
         private WcfCommunicationClientFactory<ICalculationForClient> wcfClientFactory;
         private WcfCE proxyClient;
-        private WcfCommunicationClientFactory<ICalculationEngineForScada> wcfScadaFactory;
+        private WcfCommunicationClientFactory<ICEScada> wcfScadaFactory;
         private WcfCEScada proxyScada;
         private IScadaForCECommand scada;
 
@@ -45,11 +45,11 @@ namespace CEProxy
         {
             var clientListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ICalculationForClient>(context, this,
-            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10120/CEProxy/Client/")), "ClientListener");
+            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10100/CEProxy/Client/")), "ClientListener");
 
             var scadaListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ICalculationEngineForScada>(context, this,
-            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10121/CEProxy/Scada/")), "ScadaListener");
+            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10101/CEProxy/Scada/")), "ScadaListener");
 
             var serviceListener = new ServiceInstanceListener((context) =>
         new WcfCommunicationListener<IScadaForCECommand>(
@@ -95,10 +95,10 @@ namespace CEProxy
                             new Uri("fabric:/TransactionCoordinatorMS/CEClient"),
                             ServicePartitionKey.Singleton,
                             "CEClientListener");
-            
+
             Binding bindingScada = WcfUtility.CreateTcpClientBinding();
             IServicePartitionResolver partitionResolverScada = ServicePartitionResolver.GetDefault();
-            wcfScadaFactory = new WcfCommunicationClientFactory<ICalculationEngineForScada>
+            wcfScadaFactory = new WcfCommunicationClientFactory<ICEScada>
                 (clientBinding: bindingScada, servicePartitionResolver: partitionResolverScada);
             proxyScada = new WcfCEScada(
                             wcfScadaFactory,
@@ -136,10 +136,15 @@ namespace CEProxy
 
         public void DataFromScada(Dictionary<long, DynamicMeasurement> measurements)
         {
+            new Thread(() => ForwardMeasurements(measurements)).Start();
+        }
+
+        private void ForwardMeasurements(Dictionary<long, DynamicMeasurement> measurements)
+        {
             proxyScada.InvokeWithRetry(client => client.Channel.DataFromScada(measurements));
         }
 
-        public void Connect(ServiceInfo serviceInfo = null)
+        public void Connect()
         {
             scada = OperationContext.Current.GetCallbackChannel<IScadaForCECommand>();
         }

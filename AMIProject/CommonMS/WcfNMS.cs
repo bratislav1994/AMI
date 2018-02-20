@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace CommonMS
 {
-    public class WcfNMS : ServicePartitionClient<WcfCommunicationClient<INetworkModelGDAContractDuplexClient>>
+    public class WcfNMS : ServicePartitionClient<WcfCommunicationClient<INMSMicroService>>
     {
-        public WcfNMS(ICommunicationClientFactory<WcfCommunicationClient<INetworkModelGDAContractDuplexClient>> communicationClientFactory, Uri serviceUri, ServicePartitionKey partitionKey = null, string listenerName = null, TargetReplicaSelector targetReplicaSelector = TargetReplicaSelector.Default, OperationRetrySettings retrySettings = null)
+        public WcfNMS(ICommunicationClientFactory<WcfCommunicationClient<INMSMicroService>> communicationClientFactory, Uri serviceUri, ServicePartitionKey partitionKey = null, string listenerName = null, TargetReplicaSelector targetReplicaSelector = TargetReplicaSelector.Default, OperationRetrySettings retrySettings = null)
             : base(communicationClientFactory, serviceUri, partitionKey, targetReplicaSelector, listenerName, retrySettings)
         {
         }

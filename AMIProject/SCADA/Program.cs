@@ -38,17 +38,17 @@ namespace SCADA
             binding.MaxBufferSize = Int32.MaxValue;
             svc.AddServiceEndpoint(typeof(IScadaDuplexSimulator),
                                    binding,
-                                   new Uri("net.tcp://localhost:10200/Scada/Simulator"));
+                                   new Uri("net.tcp://localhost:10000/Scada/Simulator"));
             svc.Open();
 
-            svc2 = new ServiceHost(scada);
-            var binding2 = new NetTcpBinding();
-            binding2.MaxReceivedMessageSize = Int32.MaxValue;
-            binding2.MaxBufferSize = Int32.MaxValue;
-            svc2.AddServiceEndpoint(typeof(IScadaForCECommand),
-                                   binding2,
-                                   new Uri("net.tcp://localhost:10012/Scada/CE"));
-            svc2.Open();
+            //svc2 = new ServiceHost(scada);
+            //var binding2 = new NetTcpBinding();
+            //binding2.MaxReceivedMessageSize = Int32.MaxValue;
+            //binding2.MaxBufferSize = Int32.MaxValue;
+            //svc2.AddServiceEndpoint(typeof(IScadaForCECommand),
+            //                       binding2,
+            //                       new Uri("net.tcp://localhost:10012/Scada/CE"));
+            //svc2.Open();
 
             return 0;
         }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FTN.ServiceContracts
 {
-    [ServiceContract(CallbackContract = typeof(ICalculationEngine))]
+    [ServiceContract]
     public interface ITransactionDuplexCE
     {
         [OperationContract]

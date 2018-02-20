@@ -24,7 +24,7 @@ namespace NMSProxy
     internal sealed class NMSProxy : StatelessService, IModelForDuplex, INetworkModelGDAContractDuplexClient
     {
         private List<IModelForDuplex> clients;
-        private WcfCommunicationClientFactory<INetworkModelGDAContractDuplexClient> wcfClientFactory;
+        private WcfCommunicationClientFactory<INMSMicroService> wcfClientFactory;
         private WcfNMS proxy;
         private StatelessServiceContext context;
 
@@ -40,7 +40,7 @@ namespace NMSProxy
         {
             var clientListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<INetworkModelGDAContractDuplexClient>(context, this,
-            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10110/NMSProxy/Client/")), "ClientListener");
+            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10200/NMSProxy/Client/")), "ClientListener");
 
             var serviceListener = new ServiceInstanceListener((context) => 
                                     new WcfCommunicationListener<IModelForDuplex>
@@ -78,7 +78,7 @@ namespace NMSProxy
             // Create a partition resolver
             IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.
-            wcfClientFactory = new WcfCommunicationClientFactory<INetworkModelGDAContractDuplexClient>
+            wcfClientFactory = new WcfCommunicationClientFactory<INMSMicroService>
                 (clientBinding: binding, servicePartitionResolver: partitionResolver);
 
             //
@@ -187,11 +187,6 @@ namespace NMSProxy
             catch
             {
             }
-        }
-
-        public void Connect(ServiceInfo serviceInfo)
-        {
-            throw new NotImplementedException();
         }
     }
 }
