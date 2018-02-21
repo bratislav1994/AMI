@@ -206,6 +206,16 @@ namespace CEClient
                     }
                     else
                     {
+                        if (meas.MaxV > measurements[meas.TimeStamp].MaxV)
+                        {
+                            measurements[meas.TimeStamp].MaxV = meas.MaxV;
+                        }
+
+                        if (meas.MinV < measurements[meas.TimeStamp].MinV)
+                        {
+                            measurements[meas.TimeStamp].MinV = meas.MinV;
+                        }
+
                         measurements[meas.TimeStamp].AvgP += meas.AvgP;
                         measurements[meas.TimeStamp].AvgQ += meas.AvgQ;
                         measurements[meas.TimeStamp].AvgV += meas.AvgV;
@@ -218,6 +228,7 @@ namespace CEClient
                 foreach (KeyValuePair<DateTime, int> kvp in cntForVoltage)
                 {
                     measurements[kvp.Key].AvgV /= kvp.Value;
+
                 }
 
                 return measurements.Values.ToList();
@@ -243,6 +254,16 @@ namespace CEClient
                     }
                     else
                     {
+                        if (meas.MaxV > measurements[meas.TimeStamp].MaxV)
+                        {
+                            measurements[meas.TimeStamp].MaxV = meas.MaxV;
+                        }
+
+                        if (meas.MinV < measurements[meas.TimeStamp].MinV)
+                        {
+                            measurements[meas.TimeStamp].MinV = meas.MinV;
+                        }
+
                         measurements[meas.TimeStamp].AvgP += meas.AvgP;
                         measurements[meas.TimeStamp].AvgQ += meas.AvgQ;
                         measurements[meas.TimeStamp].AvgV += meas.AvgV;
@@ -280,6 +301,16 @@ namespace CEClient
                     }
                     else
                     {
+                        if (meas.MaxV > measurements[meas.TimeStamp].MaxV)
+                        {
+                            measurements[meas.TimeStamp].MaxV = meas.MaxV;
+                        }
+
+                        if (meas.MinV < measurements[meas.TimeStamp].MinV)
+                        {
+                            measurements[meas.TimeStamp].MinV = meas.MinV;
+                        }
+
                         measurements[meas.TimeStamp].AvgP += meas.AvgP;
                         measurements[meas.TimeStamp].AvgQ += meas.AvgQ;
                         measurements[meas.TimeStamp].AvgV += meas.AvgV;
@@ -419,7 +450,7 @@ namespace CEClient
             statistics.IntegralP = 0;
             statistics.IntegralQ = 0;
 
-            for (int i = 0; i < result.Count - 1; i++)
+            for (int i = 0; i < result.Count; i++)
             {
                 statistics.IntegralP += result[i].IntegralP;
                 statistics.IntegralQ += result[i].IntegralQ;
@@ -443,7 +474,7 @@ namespace CEClient
             statistics.IntegralP = 0;
             statistics.IntegralQ = 0;
 
-            for (int i = 0; i < result.Count - 1; i++)
+            for (int i = 0; i < result.Count; i++)
             {
                 statistics.IntegralP += result[i].IntegralP;
                 statistics.IntegralQ += result[i].IntegralQ;
