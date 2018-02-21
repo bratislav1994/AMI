@@ -105,13 +105,13 @@ namespace SCADA
                                     switch (analog.Index % 3)
                                     {
                                         case 0:
-                                            localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog);
+                                            localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog) / 1000;
                                             break;
                                         case 1:
-                                            localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog);
+                                            localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog) / 1000;
                                             break;
                                         case 2:
-                                            localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog);
+                                            localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog) / 1000;
                                             break;
                                     }
                                 }
@@ -125,13 +125,13 @@ namespace SCADA
                                     switch (analog.Index % 3)
                                     {
                                         case 0:
-                                            localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog);
+                                            localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog) / 1000;
                                             break;
                                         case 1:
-                                            localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog);
+                                            localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog) / 1000;
                                             break;
                                         case 2:
-                                            localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog);
+                                            localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog) / 1000;
                                             break;
                                     }
                                 }

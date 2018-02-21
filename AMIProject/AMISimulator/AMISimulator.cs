@@ -245,7 +245,7 @@ namespace AMISimulator
                             if (type == ConsumerType.HOUSEHOLD)
                             {
 
-                                double valueToSend = DailyConsumption.GetPQHouseHold(now, rnd, consumers[measurements[i].PowerSystemResourceRef].PMax) / 1000;
+                                double valueToSend = DailyConsumption.GetPQHouseHold(now, rnd, consumers[measurements[i].PowerSystemResourceRef].PMax);
 
                                 if (valueToSend < 0)
                                 {
@@ -259,7 +259,7 @@ namespace AMISimulator
                             else if (type == ConsumerType.SHOPPING_CENTER)
                             {
                                 //ChangeSet changeset = new ChangeSet();
-                                double valueToSend = DailyConsumption.GetPQShoppingCenter(now, rnd, consumers[measurements[i].PowerSystemResourceRef].PMax) / 1000;
+                                double valueToSend = DailyConsumption.GetPQShoppingCenter(now, rnd, consumers[measurements[i].PowerSystemResourceRef].PMax);
 
                                 if (valueToSend < 0)
                                 {
@@ -273,7 +273,7 @@ namespace AMISimulator
                             else if (type == ConsumerType.FIRM)
                             {
                                 //ChangeSet changeset = new ChangeSet();
-                                double valueToSend = DailyConsumption.GetPQFirm(now, rnd, consumers[measurements[i].PowerSystemResourceRef].PMax) / 1000;
+                                double valueToSend = DailyConsumption.GetPQFirm(now, rnd, consumers[measurements[i].PowerSystemResourceRef].PMax);
 
                                 if (valueToSend < 0)
                                 {
@@ -290,7 +290,7 @@ namespace AMISimulator
                             if (type == ConsumerType.HOUSEHOLD)
                             {
                                 //ChangeSet changeset = new ChangeSet();
-                                double valueToSend = DailyConsumption.GetPQHouseHold(now, rnd, consumers[measurements[i].PowerSystemResourceRef].QMax) / 1000;
+                                double valueToSend = DailyConsumption.GetPQHouseHold(now, rnd, consumers[measurements[i].PowerSystemResourceRef].QMax);
 
                                 if (valueToSend < 0)
                                 {
@@ -303,7 +303,7 @@ namespace AMISimulator
                             else if (type == ConsumerType.SHOPPING_CENTER)
                             {
                                 //ChangeSet changeset = new ChangeSet();
-                                double valueToSend = DailyConsumption.GetPQShoppingCenter(now, rnd, consumers[measurements[i].PowerSystemResourceRef].QMax) / 1000;
+                                double valueToSend = DailyConsumption.GetPQShoppingCenter(now, rnd, consumers[measurements[i].PowerSystemResourceRef].QMax);
 
                                 if (valueToSend < 0)
                                 {
@@ -316,7 +316,7 @@ namespace AMISimulator
                             else if (type == ConsumerType.FIRM)
                             {
                                 //ChangeSet changeset = new ChangeSet();
-                                double valueToSend = DailyConsumption.GetPQFirm(now, rnd, consumers[measurements[i].PowerSystemResourceRef].QMax) / 1000;
+                                double valueToSend = DailyConsumption.GetPQFirm(now, rnd, consumers[measurements[i].PowerSystemResourceRef].QMax);
 
                                 if (valueToSend < 0)
                                 {
@@ -337,13 +337,13 @@ namespace AMISimulator
                             //ChangeSet changeset = new ChangeSet();
                             double valueToSend = -1;
 
-                            if ((activePowers[measurements[i].PowerSystemResourceRef] / (consumer.PMax / 1000)) < 0.1)
+                            if ((activePowers[measurements[i].PowerSystemResourceRef] / consumer.PMax) < 0.1)
                             {
                                 valueToSend = currentVoltage + currentVoltage * voltageLoss * 100;
                             }
                             else
                             {
-                                valueToSend = currentVoltage - currentVoltage * voltageLoss * ((activePowers[measurements[i].PowerSystemResourceRef] / (consumer.PMax / 1000)) * 100);
+                                valueToSend = currentVoltage - currentVoltage * voltageLoss * ((activePowers[measurements[i].PowerSystemResourceRef] / consumer.PMax) * 100);
                             }
 
                             changeset.Update(new Automatak.DNP3.Interface.Analog(valueToSend, 1, DateTime.Now), (ushort)(config.databaseTemplate.analogs[i].index));
