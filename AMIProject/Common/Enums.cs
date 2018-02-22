@@ -22,10 +22,14 @@ namespace FTN.Common
         WRITE
     }//end Direction
 
+    [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum ConsumerType : int
     {
+        [Description("Firm")]
         FIRM = 0,
+        [Description("Household")]
         HOUSEHOLD,
+        [Description("Shopping center")]
         SHOPPING_CENTER,
     }//end Direction
 
@@ -46,15 +50,21 @@ namespace FTN.Common
         INBOUNDS
     }
 
+    [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum Season : int
     {
+        [Description("Summer")]
         SUMMER = 0,
+        [Description("Winter")]
         WINTER
     }
 
+    [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum TypeOfDay : int
     {
+        [Description("Work day")]
         WORKDAY = 0,
+        [Description("Weekend")]
         WEEKEND
     }
 

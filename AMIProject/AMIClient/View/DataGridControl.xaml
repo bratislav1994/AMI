@@ -7,6 +7,7 @@
              xmlns:vml="clr-namespace:AMIClient.VML"
              vml:ViewModelLocator.AutoHookedUpViewModel="True"
              mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="700"
              >
 
     <UserControl.Resources>
@@ -57,7 +58,7 @@
 
                 <DataGrid.Columns>
 
-                    <DataGridTemplateColumn Header="Status" MinWidth="50" Width="50">
+                    <DataGridTemplateColumn Header="Status" MinWidth="50" MaxWidth="50" Width="50">
 
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -105,8 +106,6 @@
 
                     </DataGridTemplateColumn>
 
-                    <DataGridTextColumn MinWidth="100" Width="100" Header="mRID" Binding="{Binding Io.Mrid}"/>
-
                     <DataGridTemplateColumn Header="Name" CanUserSort="True" 
         SortMemberPath="Io.Name" MinWidth="100" Width="100">
                         <DataGridTemplateColumn.CellTemplate>
@@ -147,7 +146,7 @@
 
                     <DataGridTextColumn MinWidth="100" Width="100" Header="P [kW]" Binding="{Binding CurrentP, StringFormat=F2}"/>
                     <DataGridTextColumn MinWidth="100" Width="100" Header="Q [kVAr]" Binding="{Binding CurrentQ, StringFormat=F2}"/>
-                    <DataGridTextColumn MinWidth="100" Width="*" Header="V [V]" Binding="{Binding CurrentV, StringFormat=F2}"/>
+                    <DataGridTextColumn MinWidth="100" Width="*" Header="V [p.u.]" Binding="{Binding CurrentV, StringFormat=F2}"/>
 
                 </DataGrid.Columns>
             </DataGrid>

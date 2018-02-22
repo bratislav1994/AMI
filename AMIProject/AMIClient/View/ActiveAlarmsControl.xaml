@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AMIClient.View"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="700">
     <UserControl.Resources>
         <Style TargetType="Expander">
 
@@ -16,7 +16,6 @@
         <DataGrid SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.ViewTableItemsForActiveAlarm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
 
             <DataGrid.Columns>
-                <DataGridTextColumn MinWidth="100" Width="100" Header="Id" Binding="{Binding Id}"/>
 
                 <DataGridTemplateColumn Header="Consumer" CanUserSort="True" 
         SortMemberPath="Consumer" MinWidth="100" Width="100">
@@ -58,7 +57,7 @@
                 <DataGridTextColumn MinWidth="100" Width="100" Header="Voltage" Binding="{Binding Voltage}"/>
                 <DataGridTextColumn MinWidth="100" Width="100" Header="From" Binding="{Binding FromPeriod}"/>
 
-                <DataGridTemplateColumn Header="TypeVoltage" CanUserSort="True" 
+                <DataGridTemplateColumn Header="Alarm type" CanUserSort="True" 
         SortMemberPath="TypeVoltage" MinWidth="100" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

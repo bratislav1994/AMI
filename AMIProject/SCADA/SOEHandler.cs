@@ -88,7 +88,6 @@ namespace SCADA
                     List<IndexedValue<Automatak.DNP3.Interface.Analog>> analogs = new List<IndexedValue<Automatak.DNP3.Interface.Analog>>();
                     analogs.AddRange(values.ToList());
                     Dictionary<long, DynamicMeasurement> localDic = new Dictionary<long, DynamicMeasurement>(numberOfConsumers);
-                    DateTime timeStamp = DateTime.Now;
                     Console.WriteLine("Number of points: " + analogs.Count);
                     int cnt = 0;
 
@@ -105,33 +104,33 @@ namespace SCADA
                                     switch (analog.Index % 3)
                                     {
                                         case 0:
-                                            localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog) / 1000;
+                                            localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog);
                                             break;
                                         case 1:
-                                            localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog) / 1000;
+                                            localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog);
                                             break;
                                         case 2:
-                                            localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog) / 1000;
+                                            localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog);
                                             break;
                                     }
                                 }
                                 else
                                 {
-                                    localDic.Add(a.PowerSystemResourceRef, new DynamicMeasurement(a.PowerSystemResourceRef, timeStamp));
+                                    localDic.Add(a.PowerSystemResourceRef, new DynamicMeasurement(a.PowerSystemResourceRef, analog.Value.Timestamp));
                                     localDic[a.PowerSystemResourceRef].Type = ((EnergyConsumerForScada)data[a.PowerSystemResourceRef]).Type;
-                                    localDic[a.PowerSystemResourceRef].Season = DailyConsumption.GetSeason(timeStamp);
+                                    localDic[a.PowerSystemResourceRef].Season = DailyConsumption.GetSeason(analog.Value.Timestamp);
                                     cnt++;
 
                                     switch (analog.Index % 3)
                                     {
                                         case 0:
-                                            localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog) / 1000;
+                                            localDic[a.PowerSystemResourceRef].CurrentP = this.Crunching(analog);
                                             break;
                                         case 1:
-                                            localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog) / 1000;
+                                            localDic[a.PowerSystemResourceRef].CurrentQ = this.Crunching(analog);
                                             break;
                                         case 2:
-                                            localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog) / 1000;
+                                            localDic[a.PowerSystemResourceRef].CurrentV = this.Crunching(analog);
                                             break;
                                     }
                                 }
@@ -143,13 +142,10 @@ namespace SCADA
                         }
                     }
 
-                    foreach (KeyValuePair<long, DynamicMeasurement> kvp in resourcesToSend)
-                    {
-                        kvp.Value.TimeStamp = timeStamp;
-                    }
-
                     foreach (KeyValuePair<long, DynamicMeasurement> kvp in localDic)
                     {
+                        resourcesToSend[kvp.Key].TimeStamp = localDic[kvp.Key].TimeStamp;
+
                         if (resourcesToSend.ContainsKey(kvp.Key))
                         {
                             if (kvp.Value.CurrentP != -1)

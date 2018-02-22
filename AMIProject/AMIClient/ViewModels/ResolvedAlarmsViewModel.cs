@@ -24,7 +24,7 @@ namespace AMIClient.ViewModels
         private Dictionary<string, string> columnFilters;
         private string consumerFilter = string.Empty;
         private string typeVoltageFilter = string.Empty;
-        private int itemPerPage = 10;
+        private int itemPerPage = 25;
         private int enteredPage = 0;
         public ICommand PreviousCommand { get; private set; }
         public ICommand NextCommand { get; private set; }

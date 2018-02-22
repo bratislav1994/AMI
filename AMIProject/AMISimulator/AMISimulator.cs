@@ -112,6 +112,7 @@ namespace AMISimulator
             foreach (var analog in config.databaseTemplate.analogs)
             {
                 analog.clazz = PointClass.Class2;
+                analog.eventVariation = EventAnalogVariation.Group32Var8;
             }
 
             Console.WriteLine("Connecting to scada...");
