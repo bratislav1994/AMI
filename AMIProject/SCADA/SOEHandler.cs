@@ -87,6 +87,7 @@ namespace SCADA
                     Logger.LogMessageToFile(string.Format("SCADA.SOEHandler.Process; line: {0}; Start the Process function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     List<IndexedValue<Automatak.DNP3.Interface.Analog>> analogs = new List<IndexedValue<Automatak.DNP3.Interface.Analog>>();
                     analogs.AddRange(values.ToList());
+                    DateTime timeStamp = DateTime.Now;
                     Dictionary<long, DynamicMeasurement> localDic = new Dictionary<long, DynamicMeasurement>(numberOfConsumers);
                     Console.WriteLine("Number of points: " + analogs.Count);
                     int cnt = 0;
@@ -116,9 +117,9 @@ namespace SCADA
                                 }
                                 else
                                 {
-                                    localDic.Add(a.PowerSystemResourceRef, new DynamicMeasurement(a.PowerSystemResourceRef, analog.Value.Timestamp));
+                                    localDic.Add(a.PowerSystemResourceRef, new DynamicMeasurement(a.PowerSystemResourceRef, timeStamp));
                                     localDic[a.PowerSystemResourceRef].Type = ((EnergyConsumerForScada)data[a.PowerSystemResourceRef]).Type;
-                                    localDic[a.PowerSystemResourceRef].Season = DailyConsumption.GetSeason(analog.Value.Timestamp);
+                                    localDic[a.PowerSystemResourceRef].Season = DailyConsumption.GetSeason(timeStamp);
                                     cnt++;
 
                                     switch (analog.Index % 3)
@@ -142,10 +143,13 @@ namespace SCADA
                         }
                     }
 
+                    foreach (KeyValuePair<long, DynamicMeasurement> kvp in resourcesToSend)
+                    {
+                        kvp.Value.TimeStamp = timeStamp;
+                    }
+
                     foreach (KeyValuePair<long, DynamicMeasurement> kvp in localDic)
                     {
-                        resourcesToSend[kvp.Key].TimeStamp = localDic[kvp.Key].TimeStamp;
-
                         if (resourcesToSend.ContainsKey(kvp.Key))
                         {
                             if (kvp.Value.CurrentP != -1)
@@ -194,7 +198,7 @@ namespace SCADA
                         }
                     }
 
-                    foreach(KeyValuePair<long, DynamicMeasurement> kvp in resourcesToSend)
+                    foreach (KeyValuePair<long, DynamicMeasurement> kvp in resourcesToSend)
                     {
                         this.SetAlarmStateForMeasurement(kvp.Value);
                     }

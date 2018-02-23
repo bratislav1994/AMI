@@ -316,8 +316,8 @@ namespace AMIClient.ViewModels
                     from = RoundDown(DateTime.Parse(FromPeriod, inputCulture), TimeSpan.FromDays(1));
                     break;
                 case ResolutionType.DAY:
-                    DateTime dt = new DateTime(from.Year, 1, 1);
-                    from = dt;
+                    from = DateTime.Parse(FromPeriod, inputCulture);
+                    from = from.AddDays(-from.Day + 1);
                     break;
             }
 

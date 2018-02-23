@@ -18,6 +18,7 @@ using CommonMS;
 using Microsoft.ServiceFabric.Services.Communication.Wcf.Client;
 using System.ServiceModel.Channels;
 using Microsoft.ServiceFabric.Services.Client;
+using FTN.Services.NetworkModelService.DataModel.Dynamic;
 
 namespace CETransactionCoordinator
 {
@@ -31,10 +32,12 @@ namespace CETransactionCoordinator
         private Dictionary<long, SubGeographicalRegionDb> subGeoRegions;
         private Dictionary<long, SubstationDb> substations;
         private Dictionary<long, EnergyConsumerDb> amis;
+        private Dictionary<long, BaseVoltageDb> baseVoltages;
         private Dictionary<long, GeographicalRegionDb> geoRegionsTemp;
         private Dictionary<long, SubGeographicalRegionDb> subGeoRegionsTemp;
         private Dictionary<long, SubstationDb> substationsTemp;
         private Dictionary<long, EnergyConsumerDb> amisTemp;
+        private Dictionary<long, BaseVoltageDb> baseVoltagesTemp;
         private DB dataBaseAdapter;
         private WcfTransactionCoordinatorCE proxy;
         private WcfCommunicationClientFactory<ITransactionDuplexCE> factory;
@@ -48,14 +51,17 @@ namespace CETransactionCoordinator
             subGeoRegions = new Dictionary<long, SubGeographicalRegionDb>();
             substations = new Dictionary<long, SubstationDb>();
             amis = new Dictionary<long, EnergyConsumerDb>();
+            baseVoltages = new Dictionary<long, BaseVoltageDb>();
             geoRegionsTemp = new Dictionary<long, GeographicalRegionDb>();
             subGeoRegionsTemp = new Dictionary<long, SubGeographicalRegionDb>();
             substationsTemp = new Dictionary<long, SubstationDb>();
             amisTemp = new Dictionary<long, EnergyConsumerDb>();
+            baseVoltagesTemp = new Dictionary<long, BaseVoltageDb>();
             geoRegions = dataBaseAdapter.ReadGeoRegions();
             subGeoRegions = dataBaseAdapter.ReadSubGeoRegions();
             substations = dataBaseAdapter.ReadSubstations();
             amis = dataBaseAdapter.ReadConsumers();
+            baseVoltages = dataBaseAdapter.ReadBaseVoltages();
         }
         
         /// <summary>
@@ -117,10 +123,17 @@ namespace CETransactionCoordinator
 
         public void Commit()
         {
+            dataBaseAdapter.AddAddBaseVoltages(baseVoltagesTemp.Values.ToList());
             dataBaseAdapter.AddGeoRegions(geoRegionsTemp.Values.ToList());
             dataBaseAdapter.AddSubGeoRegions(subGeoRegionsTemp.Values.ToList());
             dataBaseAdapter.AddSubstations(substationsTemp.Values.ToList());
             dataBaseAdapter.AddConsumers(amisTemp.Values.ToList());
+
+
+            foreach (KeyValuePair<long, BaseVoltageDb> kvp in baseVoltagesTemp)
+            {
+                baseVoltages.Add(kvp.Key, kvp.Value);
+            }
 
             foreach (KeyValuePair<long, EnergyConsumerDb> kvp in amisTemp)
             {
@@ -142,6 +155,7 @@ namespace CETransactionCoordinator
                 geoRegions.Add(kvp.Key, kvp.Value);
             }
 
+            this.baseVoltagesTemp.Clear();
             this.amisTemp.Clear();
             this.substationsTemp.Clear();
             this.subGeoRegionsTemp.Clear();
@@ -193,6 +207,13 @@ namespace CETransactionCoordinator
                         EnergyConsumerDb ecCE = new EnergyConsumerDb(ec);
                         amisTemp.Add(rd.Id, ecCE);
                         break;
+                    case DMSType.BASEVOLTAGE:
+                        BaseVoltage bv = new BaseVoltage();
+                        bv.RD2Class(rd);
+                        bv.GlobalId = rd.Id;
+                        BaseVoltageDb bvCE = new BaseVoltageDb(bv);
+                        baseVoltagesTemp.Add(rd.Id, bvCE);
+                        break;
                 }
             }
 
@@ -201,6 +222,7 @@ namespace CETransactionCoordinator
 
         public void Rollback()
         {
+            this.baseVoltagesTemp.Clear();
             this.amisTemp.Clear();
             this.substationsTemp.Clear();
             this.subGeoRegionsTemp.Clear();

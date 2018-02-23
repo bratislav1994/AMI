@@ -1,4 +1,5 @@
 ﻿using FTN.Common;
+using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using TC57CIM.IEC61970.Core;
 using TC57CIM.IEC61970.Wires;
 
 namespace FTN.Services.NetworkModelService.DataModel
@@ -21,7 +23,8 @@ namespace FTN.Services.NetworkModelService.DataModel
         private float qMax;
         private float validRangePercent;
         private float invalidRangePercent;
-        private long baseVoltage;
+        private BaseVoltageDb baseVoltage;
+        private long baseVoltageId;
         private long eqContainerId;
         private ConsumerType type;
         private SubstationDb eqContainerCE;
@@ -39,7 +42,7 @@ namespace FTN.Services.NetworkModelService.DataModel
             this.qMax = consumer.QMax;
             this.ValidRangePercent = consumer.ValidRangePercent;
             this.InvalidRangePercent = consumer.InvalidRangePercent;
-            this.baseVoltage = consumer.BaseVoltage;
+            this.baseVoltageId = consumer.BaseVoltage;
             this.eqContainerId = consumer.EqContainer;
             this.type = consumer.Type;
         }
@@ -145,7 +148,21 @@ namespace FTN.Services.NetworkModelService.DataModel
         }
 
         [DataMember]
-        public long BaseVoltage
+        [ForeignKey("BaseVoltage")]
+        public long BaseVoltageID
+        {
+            get
+            {
+                return baseVoltageId;
+            }
+
+            set
+            {
+                baseVoltageId = value;
+            }
+        }
+        
+        public BaseVoltageDb BaseVoltage
         {
             get
             {

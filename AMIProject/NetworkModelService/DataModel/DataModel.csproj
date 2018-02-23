@@ -115,6 +115,7 @@
     <Compile Include="Core\PowerSystemResource.cs" />
     <Compile Include="Core\SubGeographicalRegion.cs" />
     <Compile Include="Core\Substation.cs" />
+    <Compile Include="Dynamic\BaseVoltageDb.cs" />
     <Compile Include="Dynamic\BaseVoltageForScada.cs" />
     <Compile Include="Dynamic\DataForScada.cs" />
     <Compile Include="Dynamic\DayAggregation.cs" />

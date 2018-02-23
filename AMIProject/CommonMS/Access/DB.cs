@@ -1,6 +1,7 @@
 ﻿using CommonMS.Access;
 using FTN.Common.ClassesForAlarmDB;
 using FTN.Services.NetworkModelService.DataModel;
+using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,51 @@ namespace CommonMS.Access
     {
         private static object lockObj = new object();
         private static object lockObjAlarm = new object();
+        private static DateTime lastUpdateGeoregions = DateTime.Now;
+        private static DateTime lastUpdateSubGeoregions = DateTime.Now;
+        private static DateTime lastUpdateSubstations = DateTime.Now;
+        private static DateTime lastUpdateConsumers = DateTime.Now;
+        private static DateTime lastUpdateBaseVoltages = DateTime.Now;
+
+        public static DateTime LastUpdateGeoregions
+        {
+            get
+            {
+                return lastUpdateGeoregions;
+            }
+        }
+
+        public static DateTime LastUpdateSubGeoregions
+        {
+            get
+            {
+                return lastUpdateSubGeoregions;
+            }
+        }
+
+        public static DateTime LastUpdateSubstations
+        {
+            get
+            {
+                return lastUpdateSubstations;
+            }
+        }
+
+        public static DateTime LastUpdateConsumers
+        {
+            get
+            {
+                return lastUpdateConsumers;
+            }
+        }
+
+        public static DateTime LastUpdateBaseVoltages
+        {
+            get
+            {
+                return lastUpdateBaseVoltages;
+            }
+        }
 
         public DB()
         {
@@ -37,6 +83,8 @@ namespace CommonMS.Access
                         return false;
                     }
 
+                    lastUpdateGeoregions = DateTime.Now;
+
                     return true;
                 }
             }
@@ -59,6 +107,8 @@ namespace CommonMS.Access
                     {
                         return false;
                     }
+
+                    lastUpdateSubGeoregions = DateTime.Now;
 
                     return true;
                 }
@@ -83,6 +133,8 @@ namespace CommonMS.Access
                         return false;
                     }
 
+                    lastUpdateSubstations = DateTime.Now;
+
                     return true;
                 }
             }
@@ -106,6 +158,33 @@ namespace CommonMS.Access
                         return false;
                     }
 
+                    lastUpdateConsumers = DateTime.Now;
+
+                    return true;
+                }
+            }
+        }
+
+        public bool AddAddBaseVoltages(List<BaseVoltageDb> baseVoltages)
+        {
+            lock (lockObj)
+            {
+                using (var access = new AccessDB())
+                {
+                    foreach (BaseVoltageDb bv in baseVoltages)
+                    {
+                        access.BaseVoltages.Add(bv);
+                    }
+
+                    int i = access.SaveChanges();
+
+                    if (i == 0)
+                    {
+                        return false;
+                    }
+
+                    lastUpdateBaseVoltages = DateTime.Now;
+
                     return true;
                 }
             }
@@ -120,6 +199,26 @@ namespace CommonMS.Access
                 using (var access = new AccessDB())
                 {
                     var consumers = access.Consumers.ToList();
+
+                    foreach (EnergyConsumerDb ec in consumers)
+                    {
+                        retVal.Add(ec.GlobalId, ec);
+                    }
+                }
+
+                return retVal;
+            }
+        }
+
+        public Dictionary<long, EnergyConsumerDb> ReadConsumersByID(List<long> gids)
+        {
+            Dictionary<long, EnergyConsumerDb> retVal = new Dictionary<long, EnergyConsumerDb>();
+
+            lock (lockObj)
+            {
+                using (var access = new AccessDB())
+                {
+                    var consumers = access.Consumers.Where(x => gids.Any(y => y == x.GlobalId)).ToList();
 
                     foreach (EnergyConsumerDb ec in consumers)
                     {
@@ -189,6 +288,52 @@ namespace CommonMS.Access
 
                 return retVal;
             }
+        }
+
+        public Dictionary<long, BaseVoltageDb> ReadBaseVoltages()
+        {
+            Dictionary<long, BaseVoltageDb> retVal = new Dictionary<long, BaseVoltageDb>();
+
+            lock (lockObj)
+            {
+                using (var access = new AccessDB())
+                {
+                    var baseVoltages = access.BaseVoltages.ToList();
+
+                    foreach (BaseVoltageDb gr in baseVoltages)
+                    {
+                        retVal.Add(gr.GlobalId, gr);
+                    }
+                }
+
+                return retVal;
+            }
+        }
+
+        public bool GeoregionsNeedToRefresh(DateTime lastUpdate)
+        {
+            return lastUpdateGeoregions > lastUpdate;
+        }
+
+        public bool SubgeoregionsNeedToRefresh(DateTime lastUpdate)
+        {
+            return lastUpdateSubGeoregions > lastUpdate;
+        }
+
+        public bool SubstationsNeedToRefresh(DateTime lastUpdate)
+        {
+            return lastUpdateSubstations > lastUpdate;
+        }
+
+
+        public bool ConsumersNeedToRefresh(DateTime lastUpdate)
+        {
+            return lastUpdateConsumers > lastUpdate;
+        }
+
+        public bool BaseVoltagesNeedToRefresh(DateTime lastUpdate)
+        {
+            return lastUpdateBaseVoltages > lastUpdate;
         }
 
         #region alarm

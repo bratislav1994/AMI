@@ -1,5 +1,6 @@
 ﻿using FTN.Common.ClassesForAlarmDB;
 using FTN.Services.NetworkModelService.DataModel;
+using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -19,5 +20,6 @@ namespace CommonMS.Access
         public DbSet<SubGeographicalRegionDb> SubGeoRegions { get; set; }
         public DbSet<SubstationDb> Substations { get; set; }
         public DbSet<EnergyConsumerDb> Consumers { get; set; }
+        public DbSet<BaseVoltageDb> BaseVoltages { get; set; }
     }
 }

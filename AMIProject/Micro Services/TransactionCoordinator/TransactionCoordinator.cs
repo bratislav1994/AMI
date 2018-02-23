@@ -151,7 +151,7 @@ namespace TransactionCoordinator
                         dataForScada.Add(rd);
                     }
                     if (type == DMSType.ENERGYCONS || type == DMSType.GEOREGION || type == DMSType.SUBGEOREGION ||
-                            type == DMSType.SUBSTATION)
+                            type == DMSType.SUBSTATION || type == DMSType.BASEVOLTAGE)
                     {
                         dataForCE.Add(rd);
                     }

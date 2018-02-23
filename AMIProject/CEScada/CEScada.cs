@@ -18,6 +18,7 @@ using CommonMS;
 using FTN.Common.ClassesForAlarmDB;
 using CommonMS.Access;
 using FTN.Common;
+using FTN.Services.NetworkModelService.DataModel.Dynamic;
 
 namespace CEScada
 {
@@ -35,8 +36,15 @@ namespace CEScada
         private Dictionary<long, SubGeographicalRegionDb> subGeoRegions;
         private Dictionary<long, SubstationDb> substations;
         private Dictionary<long, EnergyConsumerDb> amis;
+        private Dictionary<long, BaseVoltageDb> baseVoltages;
         private DB dataBaseAdapter;
         private Dictionary<long, ActiveAlarm> alarmActiveDB;
+        private DateTime lastUpdateGeoRegions = DateTime.Now;
+        private DateTime lastUpdateSubGeoRegions = DateTime.Now;
+        private DateTime lastUpdateSubstations = DateTime.Now;
+        private DateTime lastUpdateConsumers = DateTime.Now;
+        private DateTime lastUpdateBaseVoltages = DateTime.Now;
+
 
         public CEScada(StatefulServiceContext context)
             : base(context)
@@ -113,6 +121,7 @@ namespace CEScada
             subGeoRegions = dataBaseAdapter.ReadSubGeoRegions();
             substations = dataBaseAdapter.ReadSubstations();
             amis = dataBaseAdapter.ReadConsumers();
+            baseVoltages = dataBaseAdapter.ReadBaseVoltages();
             alarmActiveDB = dataBaseAdapter.ReadActiveAlarm();
         }
         public async void Connect(ServiceInfo serviceInfo)
@@ -157,11 +166,51 @@ namespace CEScada
 
         public async void DataFromScada(Dictionary<long, DynamicMeasurement> measurements)
         {
+            if(dataBaseAdapter.GeoregionsNeedToRefresh(lastUpdateGeoRegions))
+            {
+                lastUpdateGeoRegions = DB.LastUpdateGeoregions;
+                geoRegions.Clear();
+                geoRegions = dataBaseAdapter.ReadGeoRegions();
+            }
+
+            if (dataBaseAdapter.SubgeoregionsNeedToRefresh(lastUpdateSubGeoRegions))
+            {
+                lastUpdateSubGeoRegions = DB.LastUpdateSubGeoregions;
+                subGeoRegions.Clear();
+                subGeoRegions = dataBaseAdapter.ReadSubGeoRegions();
+            }
+
+            if (dataBaseAdapter.SubstationsNeedToRefresh(lastUpdateSubstations))
+            {
+                lastUpdateSubstations = DB.LastUpdateSubstations;
+                substations.Clear();
+                substations = dataBaseAdapter.ReadSubstations();
+            }
+
+            if (dataBaseAdapter.ConsumersNeedToRefresh(lastUpdateConsumers))
+            {
+                lastUpdateConsumers = DB.LastUpdateConsumers;
+                amis.Clear();
+                amis = dataBaseAdapter.ReadConsumers();
+            }
+
+            if (dataBaseAdapter.BaseVoltagesNeedToRefresh(lastUpdateBaseVoltages))
+            {
+                lastUpdateBaseVoltages = DB.LastUpdateBaseVoltages;
+                baseVoltages.Clear();
+                baseVoltages = dataBaseAdapter.ReadBaseVoltages();
+            }
+
             int cntForVoltage = 0;
             Dictionary<long, DynamicMeasurement> addSubstations = new Dictionary<long, DynamicMeasurement>();
 
             AddMeasurements(measurements.Values.ToList());
             DeltaForAlarm delta = CheckAlarms(measurements.Values.ToList());
+
+            foreach (KeyValuePair<long, DynamicMeasurement> kvp in measurements)
+            {
+                kvp.Value.CurrentV = kvp.Value.CurrentV / baseVoltages[amis[kvp.Key].BaseVoltageID].NominalVoltage;
+            }
 
             foreach (KeyValuePair<long, SubstationDb> ss in substations)
             {

@@ -14,6 +14,7 @@ using FTN.Common.ClassesForAlarmDB;
 using Microsoft.ServiceFabric.Services.Communication.Wcf;
 using CommonMS.Access;
 using Microsoft.ServiceFabric.Services.Communication.Wcf.Runtime;
+using FTN.Services.NetworkModelService.DataModel;
 
 namespace CEClient
 {
@@ -111,6 +112,10 @@ namespace CEClient
 
         public Tuple<List<HourAggregation>, Statistics> GetMeasurementsForChartViewByFilter(List<long> gids, Filter filter)
         {
+            Dictionary<long, BaseVoltageDb> baseVoltages = new Dictionary<long, BaseVoltageDb>();
+            Dictionary<long, EnergyConsumerDb> amis = new Dictionary<long, EnergyConsumerDb>();
+            baseVoltages = dataBaseAdapter.ReadBaseVoltages();
+            amis = dataBaseAdapter.ReadConsumersByID(gids);
             List<HourAggregation> result = this.ReadHourAggregationTableByFilter(gids, filter);
 
             if (result.Count == 0)
@@ -122,6 +127,8 @@ namespace CEClient
 
             foreach (HourAggregation hourAgg in result)
             {
+                hourAgg.AvgV = hourAgg.AvgV / baseVoltages[amis[hourAgg.PsrRef].BaseVoltageID].NominalVoltage;
+
                 if (!hourAggByResolution.ContainsKey(hourAgg.TimeStamp.Hour))
                 {
                     hourAggByResolution.Add(hourAgg.TimeStamp.Hour, new List<HourAggregation>());
@@ -189,6 +196,10 @@ namespace CEClient
 
         private List<Statistics> ReadMinuteAggregationTable(List<long> gids, DateTime from)
         {
+            Dictionary<long, BaseVoltageDb> baseVoltages = new Dictionary<long, BaseVoltageDb>();
+            Dictionary<long, EnergyConsumerDb> amis = new Dictionary<long, EnergyConsumerDb>();
+            baseVoltages = dataBaseAdapter.ReadBaseVoltages();
+            amis = dataBaseAdapter.ReadConsumersByID(gids);
             Dictionary<DateTime, Statistics> measurements = new Dictionary<DateTime, Statistics>();
             DateTime to = from.AddHours(1);
 
@@ -199,6 +210,8 @@ namespace CEClient
 
                 foreach (var meas in rawMeas)
                 {
+                    meas.AvgV = meas.AvgV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage;
+
                     if (!measurements.ContainsKey(meas.TimeStamp))
                     {
                         measurements.Add(meas.TimeStamp, meas);
@@ -237,6 +250,10 @@ namespace CEClient
 
         private List<Statistics> ReadHourAggregationTable(List<long> gids, DateTime from)
         {
+            Dictionary<long, BaseVoltageDb> baseVoltages = new Dictionary<long, BaseVoltageDb>();
+            Dictionary<long, EnergyConsumerDb> amis = new Dictionary<long, EnergyConsumerDb>();
+            baseVoltages = dataBaseAdapter.ReadBaseVoltages();
+            amis = dataBaseAdapter.ReadConsumersByID(gids);
             Dictionary<DateTime, Statistics> measurements = new Dictionary<DateTime, Statistics>();
             DateTime to = from.AddDays(1);
 
@@ -247,6 +264,8 @@ namespace CEClient
 
                 foreach (var meas in rawMeas)
                 {
+                    meas.AvgV = meas.AvgV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage;
+
                     if (!measurements.ContainsKey(meas.TimeStamp))
                     {
                         measurements.Add(meas.TimeStamp, meas);
@@ -284,6 +303,10 @@ namespace CEClient
 
         private List<Statistics> ReadDayAggregationTable(List<long> gids, DateTime from)
         {
+            Dictionary<long, BaseVoltageDb> baseVoltages = new Dictionary<long, BaseVoltageDb>();
+            Dictionary<long, EnergyConsumerDb> amis = new Dictionary<long, EnergyConsumerDb>();
+            baseVoltages = dataBaseAdapter.ReadBaseVoltages();
+            amis = dataBaseAdapter.ReadConsumersByID(gids);
             Dictionary<DateTime, Statistics> measurements = new Dictionary<DateTime, Statistics>();
             DateTime to = from.AddMonths(1);
 
@@ -294,6 +317,8 @@ namespace CEClient
 
                 foreach (var meas in rawMeas)
                 {
+                    meas.AvgV = meas.AvgV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage;
+
                     if (!measurements.ContainsKey(meas.TimeStamp))
                     {
                         measurements.Add(meas.TimeStamp, meas);
