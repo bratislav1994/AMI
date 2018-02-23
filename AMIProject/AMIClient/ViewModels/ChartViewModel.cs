@@ -25,7 +25,7 @@ namespace AMIClient.ViewModels
         private Model model;
         private List<long> amiGids;
         private Statistics statistics;
-        private Visibility datePick = Visibility.Hidden;
+        private Visibility yearMonthCmbVisibility = Visibility.Hidden;
         private Visibility dateTimePick = Visibility.Hidden;
         private ResolutionType resolution;
         private SeriesCollection dataHistoryPX;
@@ -34,6 +34,12 @@ namespace AMIClient.ViewModels
         private string[] dataHistoryQY;
         private SeriesCollection dataHistoryVX;
         private string[] dataHistoryVY;
+        private List<int> yearCb;
+        private List<string> monthCb;
+        private Dictionary<string, int> months;
+        private int selectedYear = -1;
+        private string selectedMonth = string.Empty;
+        private Visibility datePick = Visibility.Hidden;
 
         public ChartViewModel()
         {
@@ -60,6 +66,25 @@ namespace AMIClient.ViewModels
                 LineSmoothness = 1, //straight lines, 1 really smooth lines
 
             });
+
+            YearCb = new List<int>();
+            months = new Dictionary<string, int>();
+            int year = DateTime.Now.Year;
+
+            for (int i = 0; i < 30; i++)
+            {
+                YearCb.Add(year - i);
+            }
+
+            SelectedYear = this.YearCb.First();
+            MonthCb = DateTimeFormatInfo.CurrentInfo.MonthNames.ToList().GetRange(0, 12);
+
+            int j = 0;
+
+            foreach (string name in MonthCb)
+            {
+                months.Add(name, ++j);
+            }
         }
 
         public static ChartViewModel Instance
@@ -159,6 +184,63 @@ namespace AMIClient.ViewModels
             }
         }
 
+        public List<string> MonthCb
+        {
+            get
+            {
+                return monthCb;
+            }
+
+            set
+            {
+                monthCb = value;
+            }
+        }
+
+        public List<int> YearCb
+        {
+            get
+            {
+                return yearCb;
+            }
+
+            set
+            {
+                yearCb = value;
+            }
+        }
+
+        public int SelectedYear
+        {
+            get
+            {
+                return selectedYear;
+            }
+
+            set
+            {
+                selectedYear = value;
+                RaisePropertyChanged("SelectedYear");
+                this.ShowDataCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public string SelectedMonth
+        {
+            get
+            {
+                return selectedMonth;
+            }
+
+            set
+            {
+                selectedMonth = value;
+                int numberOfDays = DateTime.DaysInMonth(2016, months[value]);
+                RaisePropertyChanged("SelectedMonth");
+                this.ShowDataCommand.RaiseCanExecuteChanged();
+            }
+        }
+
         public string FromPeriod
         {
             get
@@ -187,6 +269,18 @@ namespace AMIClient.ViewModels
             }
         }
 
+        public Visibility DatePick
+        {
+            get
+            {
+                return datePick;
+            }
+            set
+            {
+                datePick = value;
+            }
+        }
+
         public Visibility DateTimePick
         {
             get
@@ -199,15 +293,15 @@ namespace AMIClient.ViewModels
             }
         }
 
-        public Visibility DatePick
+        public Visibility YearMonthCmbVisibility
         {
             get
             {
-                return datePick;
+                return yearMonthCmbVisibility;
             }
             set
             {
-                datePick = value;
+                yearMonthCmbVisibility = value;
             }
         }
 
@@ -225,9 +319,13 @@ namespace AMIClient.ViewModels
                 {
                     DateTimePick = Visibility.Visible;
                 }
-                else
+                else if (resolution == ResolutionType.HOUR)
                 {
                     DatePick = Visibility.Visible;
+                }
+                else if (resolution == ResolutionType.DAY)
+                {
+                    YearMonthCmbVisibility = Visibility.Visible;
                 }
             }
         }
@@ -258,7 +356,7 @@ namespace AMIClient.ViewModels
                 RaisePropertyChanged("Statistics");
             }
         }
-        
+
         public DelegateCommand ShowDataCommand
         {
             get
@@ -271,10 +369,11 @@ namespace AMIClient.ViewModels
                 return this.showDataCommand;
             }
         }
-        
+
         private bool CanShowDataExecute()
         {
-            return DateTimeValidation(FromPeriod);
+            return resolution == ResolutionType.MINUTE || resolution == ResolutionType.HOUR ? 
+                    this.DateTimeValidation(this.FromPeriod) : this.SelectedYear != -1 && !string.IsNullOrEmpty(this.SelectedMonth);
         }
 
         private bool DateTimeValidation(string dt)
@@ -304,20 +403,20 @@ namespace AMIClient.ViewModels
 
         private void ShowCommandAction()
         {
+            DateTime from = DateTime.Now;
             var inputCulture = CultureInfo.CreateSpecificCulture("us-en");
-            DateTime from = DateTime.Parse(FromPeriod, inputCulture);
 
             switch (this.Resolution)
             {
                 case ResolutionType.MINUTE:
-                    from = RoundDown(DateTime.Parse(FromPeriod, inputCulture), TimeSpan.FromHours(1));
+                    from = DateTime.Parse(FromPeriod, inputCulture);
+                    from = RoundDown(from, TimeSpan.FromHours(1));
                     break;
                 case ResolutionType.HOUR:
                     from = RoundDown(DateTime.Parse(FromPeriod, inputCulture), TimeSpan.FromDays(1));
                     break;
                 case ResolutionType.DAY:
-                    from = DateTime.Parse(FromPeriod, inputCulture);
-                    from = from.AddDays(-from.Day + 1);
+                    from = new DateTime(this.SelectedYear, this.months[this.SelectedMonth], 1);
                     break;
             }
 
@@ -326,7 +425,6 @@ namespace AMIClient.ViewModels
             DataHistoryPX[0].Values.Clear();
             DataHistoryQX[0].Values.Clear();
             DataHistoryVX[0].Values.Clear();
-            
 
             if (measForChart == null)
             {
