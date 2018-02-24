@@ -62,6 +62,7 @@ namespace AMISimulator
                             NetTcpBinding binding = new NetTcpBinding();
                             binding.SendTimeout = TimeSpan.FromSeconds(3);
                             binding.MaxReceivedMessageSize = Int32.MaxValue;
+                            binding.ReceiveTimeout = TimeSpan.MaxValue;
                             binding.MaxBufferSize = Int32.MaxValue;
                             factory = new DuplexChannelFactory<IScadaDuplexSimulator>(new InstanceContext(this),
                                                                                     binding,

@@ -60,6 +60,9 @@ namespace CEScada
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
+            Binding listenerBindingScada = WcfUtility.CreateTcpClientBinding();
+            listenerBindingScada.ReceiveTimeout = TimeSpan.MaxValue;
+
             var scadaListener = new ServiceReplicaListener((context) =>
         new WcfCommunicationListener<ICEScada>(
             wcfServiceObject: this,
@@ -73,10 +76,12 @@ namespace CEScada
             //
             // Populate the binding information that you want the service to use.
             //
-            listenerBinding: WcfUtility.CreateTcpListenerBinding()
+            listenerBinding: listenerBindingScada
         ),
         "ScadaListener"
     );
+            Binding listenerBindingSC = WcfUtility.CreateTcpClientBinding();
+            listenerBindingSC.ReceiveTimeout = TimeSpan.MaxValue;
 
             var SCListener = new ServiceReplicaListener((context) =>
         new WcfCommunicationListener<ICalculationEngineDuplexSmartCache>(
@@ -91,7 +96,7 @@ namespace CEScada
             //
             // Populate the binding information that you want the service to use.
             //
-            listenerBinding: WcfUtility.CreateTcpListenerBinding()
+            listenerBinding: listenerBindingSC
         ),
         "SmartCacheListener"
     );
@@ -147,6 +152,7 @@ namespace CEScada
 
             // Create binding
             Binding binding = WcfUtility.CreateTcpClientBinding();
+            binding.ReceiveTimeout = TimeSpan.MaxValue;
             // Create a partition resolver
             IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.
@@ -443,6 +449,7 @@ namespace CEScada
 
             // Create binding
             Binding binding = WcfUtility.CreateTcpClientBinding();
+            binding.ReceiveTimeout = TimeSpan.MaxValue;
             // Create a partition resolver
             IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.

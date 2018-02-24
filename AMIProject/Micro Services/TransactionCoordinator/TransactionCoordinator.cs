@@ -49,6 +49,9 @@ namespace TransactionCoordinator
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
+            Binding listenerBinding = WcfUtility.CreateTcpClientBinding();
+            listenerBinding.ReceiveTimeout = TimeSpan.MaxValue;
+
             //PROXY
             var serviceListener = new ServiceReplicaListener((context) =>
         new WcfCommunicationListener<ITransactionCoordinator>(
@@ -63,10 +66,13 @@ namespace TransactionCoordinator
             //
             // Populate the binding information that you want the service to use.
             //
-            listenerBinding: WcfUtility.CreateTcpListenerBinding()
+            listenerBinding: listenerBinding
         ),
         "TransactionCoordinatorProxyListener"
     );
+
+            Binding listenerBindingNMS = WcfUtility.CreateTcpClientBinding();
+            listenerBindingNMS.ReceiveTimeout = TimeSpan.MaxValue;
             //NMS 
             var NMSListener = new ServiceReplicaListener((context) =>
         new WcfCommunicationListener<ITransactionDuplexNMS>(
@@ -81,10 +87,13 @@ namespace TransactionCoordinator
             //
             // Populate the binding information that you want the service to use.
             //
-            listenerBinding: WcfUtility.CreateTcpListenerBinding()
+            listenerBinding: listenerBindingNMS
         ),
         "NMSListener"
     );
+
+            Binding listenerBindingCE = WcfUtility.CreateTcpClientBinding();
+            listenerBindingCE.ReceiveTimeout = TimeSpan.MaxValue;
             //CE
             var CEListener = new ServiceReplicaListener((context) =>
         new WcfCommunicationListener<ITransactionDuplexCE>(
@@ -99,7 +108,7 @@ namespace TransactionCoordinator
             //
             // Populate the binding information that you want the service to use.
             //
-            listenerBinding: WcfUtility.CreateTcpListenerBinding()
+            listenerBinding: listenerBindingCE
         ),
         "CEListener"
     );
@@ -259,6 +268,7 @@ namespace TransactionCoordinator
 
             // Create binding
             Binding binding = WcfUtility.CreateTcpClientBinding();
+            binding.ReceiveTimeout = TimeSpan.MaxValue;
             // Create a partition resolver
             IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.
@@ -299,6 +309,7 @@ namespace TransactionCoordinator
 
             // Create binding
             Binding binding = WcfUtility.CreateTcpClientBinding();
+            binding.ReceiveTimeout = TimeSpan.MaxValue;
             // Create a partition resolver
             IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.
@@ -339,6 +350,7 @@ namespace TransactionCoordinator
 
             // Create binding
             Binding binding = WcfUtility.CreateTcpClientBinding();
+            binding.ReceiveTimeout = TimeSpan.MaxValue;
             // Create a partition resolver
             IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.

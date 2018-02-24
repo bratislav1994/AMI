@@ -70,6 +70,9 @@ namespace CETransactionCoordinator
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners()
         {
+            Binding listenerBinding = WcfUtility.CreateTcpClientBinding();
+            listenerBinding.ReceiveTimeout = TimeSpan.MaxValue;
+
             var serviceListener = new ServiceInstanceListener((context) =>
         new WcfCommunicationListener<ICalculationEngine>(
             wcfServiceObject: this,
@@ -83,7 +86,7 @@ namespace CETransactionCoordinator
             //
             // Populate the binding information that you want the service to use.
             //
-            listenerBinding: WcfUtility.CreateTcpListenerBinding()
+            listenerBinding: listenerBinding
         ),
         "CETransactionCoordinatorListener"
     );
@@ -102,6 +105,7 @@ namespace CETransactionCoordinator
 
             // Create binding
             Binding binding = WcfUtility.CreateTcpClientBinding();
+            binding.ReceiveTimeout = TimeSpan.MaxValue;
             // Create a partition resolver
             IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.

@@ -43,13 +43,26 @@ namespace CEProxy
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners()
         {
+            NetTcpBinding bindingClient = new NetTcpBinding();
+            bindingClient.ReceiveTimeout = TimeSpan.MaxValue;
+            bindingClient.MaxReceivedMessageSize = Int32.MaxValue;
+            bindingClient.MaxBufferSize = Int32.MaxValue;
+
             var clientListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ICalculationForClient>(context, this,
-            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10100/CEProxy/Client/")), "ClientListener");
+            bindingClient, new EndpointAddress("net.tcp://localhost:10100/CEProxy/Client/")), "ClientListener");
+
+            NetTcpBinding bindingScada = new NetTcpBinding();
+            bindingScada.ReceiveTimeout = TimeSpan.MaxValue;
+            bindingScada.MaxReceivedMessageSize = Int32.MaxValue;
+            bindingScada.MaxBufferSize = Int32.MaxValue;
 
             var scadaListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ICalculationEngineForScada>(context, this,
-            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10101/CEProxy/Scada/")), "ScadaListener");
+            bindingScada, new EndpointAddress("net.tcp://localhost:10101/CEProxy/Scada/")), "ScadaListener");
+
+            Binding listenerBinding = WcfUtility.CreateTcpClientBinding();
+            listenerBinding.ReceiveTimeout = TimeSpan.MaxValue;
 
             var serviceListener = new ServiceInstanceListener((context) =>
         new WcfCommunicationListener<IScadaForCECommand>(
@@ -64,7 +77,7 @@ namespace CEProxy
             //
             // Populate the binding information that you want the service to use.
             //
-            listenerBinding: WcfUtility.CreateTcpListenerBinding()
+            listenerBinding: listenerBinding
         ),
         "CEScadaListener"
     );
@@ -80,6 +93,7 @@ namespace CEProxy
         {
             // Create binding
             Binding bindingClient = WcfUtility.CreateTcpClientBinding();
+            bindingClient.ReceiveTimeout = TimeSpan.MaxValue;
             // Create a partition resolver
             IServicePartitionResolver partitionResolverClient = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.
@@ -97,6 +111,7 @@ namespace CEProxy
                             "CEClientListener");
 
             Binding bindingScada = WcfUtility.CreateTcpClientBinding();
+            bindingScada.ReceiveTimeout = TimeSpan.MaxValue;
             IServicePartitionResolver partitionResolverScada = ServicePartitionResolver.GetDefault();
             wcfScadaFactory = new WcfCommunicationClientFactory<ICEScada>
                 (clientBinding: bindingScada, servicePartitionResolver: partitionResolverScada);
@@ -144,14 +159,27 @@ namespace CEProxy
             proxyScada.InvokeWithRetry(client => client.Channel.DataFromScada(measurements));
         }
 
-        public void Connect()
+        public void Connect(string endpointName)
         {
-            scada = OperationContext.Current.GetCallbackChannel<IScadaForCECommand>();
+            NetTcpBinding binding = new NetTcpBinding();
+            binding.ReceiveTimeout = TimeSpan.MaxValue;
+            binding.MaxReceivedMessageSize = Int32.MaxValue;
+            binding.MaxBufferSize = Int32.MaxValue;
+            ChannelFactory<IScadaForCECommand> factory = new ChannelFactory<IScadaForCECommand>(binding,
+                                                                                new EndpointAddress(endpointName));
+            scada = factory.CreateChannel();
         }
 
         public string Command(Dictionary<long, DynamicMeasurement> measurementsInAlarm)
         {
-            return scada.Command(measurementsInAlarm);
+            try
+            {
+                return scada.Command(measurementsInAlarm);
+            }
+            catch
+            {
+                return "Scada not online";
+            }
         }
     }
 }

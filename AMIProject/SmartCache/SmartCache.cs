@@ -33,6 +33,7 @@ namespace SmartCache
         private WcfCommunicationClientFactory<ICalculationEngineDuplexSmartCache> factoryCE;
 
         private Dictionary<long, DynamicMeasurement> measurements = new Dictionary<long, DynamicMeasurement>();
+        private object lockObjectForClient = new object();
 
         public SmartCache(StatefulServiceContext context)
             : base(context)
@@ -49,6 +50,9 @@ namespace SmartCache
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
+            Binding listenerBinding = WcfUtility.CreateTcpClientBinding();
+            listenerBinding.ReceiveTimeout = TimeSpan.MaxValue;
+
             var serviceListener = new ServiceReplicaListener((context) =>
                 new WcfCommunicationListener<ISmartCacheMS>(
                 wcfServiceObject: this,
@@ -62,10 +66,13 @@ namespace SmartCache
                 //
                 // Populate the binding information that you want the service to use.
                 //
-                listenerBinding: WcfUtility.CreateTcpListenerBinding()
+                listenerBinding: listenerBinding
                 ),
             "SmartCacheProxyListener"
             );
+
+            Binding listenerBindingCE = WcfUtility.CreateTcpClientBinding();
+            listenerBindingCE.ReceiveTimeout = TimeSpan.MaxValue;
 
             var CEListener = new ServiceReplicaListener((context) =>
                 new WcfCommunicationListener<ISmartCacheForCE>(
@@ -80,7 +87,7 @@ namespace SmartCache
                 //
                 // Populate the binding information that you want the service to use.
                 //
-                listenerBinding: WcfUtility.CreateTcpListenerBinding()
+                listenerBinding: listenerBindingCE
                 ),
             "CEListener"
             );
@@ -124,6 +131,7 @@ namespace SmartCache
 
             // Create binding
             Binding binding = WcfUtility.CreateTcpClientBinding();
+            binding.ReceiveTimeout = TimeSpan.MaxValue;
             // Create a partition resolver
             IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.
@@ -145,6 +153,7 @@ namespace SmartCache
         {
             // Create binding
             Binding binding = WcfUtility.CreateTcpClientBinding();
+            binding.ReceiveTimeout = TimeSpan.MaxValue;
             // Create a partition resolver
             IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.
@@ -166,21 +175,27 @@ namespace SmartCache
 
         public List<DynamicMeasurement> GetLastMeas(List<long> gidsInTable)
         {
-            List<DynamicMeasurement> retVal = new List<DynamicMeasurement>();
-            foreach (long gid in gidsInTable)
+            lock (lockObjectForClient)
             {
-                if (measurements.ContainsKey(gid))
+                List<DynamicMeasurement> retVal = new List<DynamicMeasurement>();
+                foreach (long gid in gidsInTable)
                 {
-                    retVal.Add(measurements[gid]);
+                    if (measurements.ContainsKey(gid))
+                    {
+                        retVal.Add(measurements[gid]);
+                    }
                 }
-            }
 
-            return retVal;
+                return retVal;
+            }
         }
 
         public void SendAlarm(FTN.Common.ClassesForAlarmDB.DeltaForAlarm delta)
         {
-            proxy.InvokeWithRetry(client => client.Channel.SendAlarm(delta));
+            lock (lockObjectForClient)
+            {
+                proxy.InvokeWithRetry(client => client.Channel.SendAlarm(delta));
+            }
         }
 
         public void SendMeasurements(Dictionary<long, DynamicMeasurement> measurements)
@@ -197,7 +212,10 @@ namespace SmartCache
                 }
             }
 
-            proxy.InvokeWithRetry(client => client.Channel.SendMeasurements(this.measurements.Values.ToList()));
+            lock (lockObjectForClient)
+            {
+                proxy.InvokeWithRetry(client => client.Channel.SendMeasurements(this.measurements.Values.ToList()));
+            }
         }
     }
 }

@@ -68,6 +68,7 @@ namespace SCADA
                     Logger.LogMessageToFile(string.Format("SCADA.Scada.ProxyCoordinator; line: {0}; Create channel between Scada and Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    binding.ReceiveTimeout = TimeSpan.MaxValue;
                     binding.MaxReceivedMessageSize = Int32.MaxValue;
                     binding.MaxBufferSize = Int32.MaxValue;
                     DuplexChannelFactory<ITransactionDuplexScada> factory = new DuplexChannelFactory<ITransactionDuplexScada>(
@@ -96,9 +97,10 @@ namespace SCADA
                 {
                     Logger.LogMessageToFile(string.Format("SCADA.Scada.ProxyCE; line: {0}; Create channel between Scada and CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
+                    binding.ReceiveTimeout = TimeSpan.MaxValue;
                     binding.MaxReceivedMessageSize = Int32.MaxValue;
                     binding.MaxBufferSize = Int32.MaxValue;
-                    DuplexChannelFactory<ICalculationEngineForScada> factory = new DuplexChannelFactory<ICalculationEngineForScada>(new InstanceContext(this),binding,
+                    ChannelFactory<ICalculationEngineForScada> factory = new ChannelFactory<ICalculationEngineForScada>(binding,
                                                                                         new EndpointAddress("net.tcp://localhost:10101/CEProxy/Scada/"));
                     proxyCE = factory.CreateChannel();
                     firstTimeCE = false;
@@ -165,7 +167,7 @@ namespace SCADA
                 try
                 {
                     Logger.LogMessageToFile(string.Format("SCADA.Scada; line: {0}; Scada try to connect with CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    ProxyCE.Connect();
+                    ProxyCE.Connect("net.tcp://localhost:10001/Scada/CE");
                     Logger.LogMessageToFile(string.Format("SCADA.Scada; line: {0}; Scada is connected to the CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     break;
                 }

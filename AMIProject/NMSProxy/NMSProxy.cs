@@ -27,6 +27,7 @@ namespace NMSProxy
         private WcfCommunicationClientFactory<INMSMicroService> wcfClientFactory;
         private WcfNMS proxy;
         private StatelessServiceContext context;
+        private object lockObjectForClient = new object();
 
         public NMSProxy(StatelessServiceContext context)
             : base(context)
@@ -115,7 +116,10 @@ namespace NMSProxy
 
         public void ConnectClient()
         {
-            this.Clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
+            lock (lockObjectForClient)
+            {
+                this.Clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
+            }
         }
 
         public void Ping()
@@ -180,12 +184,15 @@ namespace NMSProxy
 
         public void NewDeltaApplied()
         {
-            try
+            lock (lockObjectForClient)
             {
-                this.Clients.ForEach(x => x.NewDeltaApplied());
-            }
-            catch
-            {
+                try
+                {
+                    this.Clients.ForEach(x => x.NewDeltaApplied());
+                }
+                catch
+                {
+                }
             }
         }
     }

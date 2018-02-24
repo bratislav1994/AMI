@@ -41,13 +41,26 @@ namespace TransactionCoordinatorProxy
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners()
         {
+            NetTcpBinding bindingClient = new NetTcpBinding();
+            bindingClient.ReceiveTimeout = TimeSpan.MaxValue;
+            bindingClient.MaxReceivedMessageSize = Int32.MaxValue;
+            bindingClient.MaxBufferSize = Int32.MaxValue;
+
             var adapterListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ITransactionCoordinator>(context, this,
-            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10300/TransactionCoordinatorProxy/Adapter/")),"AdapterListener");
-            
+            bindingClient, new EndpointAddress("net.tcp://localhost:10300/TransactionCoordinatorProxy/Adapter/")),"AdapterListener");
+
+            NetTcpBinding bindingScada = new NetTcpBinding();
+            bindingScada.ReceiveTimeout = TimeSpan.MaxValue;
+            bindingScada.MaxReceivedMessageSize = Int32.MaxValue;
+            bindingScada.MaxBufferSize = Int32.MaxValue;
+
             var scadaListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ITransactionDuplexScada>(context, this,
-            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10301/TransactionCoordinatorProxy/Scada/")), "ScadaListener");
+            bindingScada, new EndpointAddress("net.tcp://localhost:10301/TransactionCoordinatorProxy/Scada/")), "ScadaListener");
+
+            Binding listenerBinding = WcfUtility.CreateTcpClientBinding();
+            listenerBinding.ReceiveTimeout = TimeSpan.MaxValue;
 
             var serviceListener = new ServiceInstanceListener((context) =>
         new WcfCommunicationListener<ITransactionCoordinatorProxy>(
@@ -62,7 +75,7 @@ namespace TransactionCoordinatorProxy
             //
             // Populate the binding information that you want the service to use.
             //
-            listenerBinding: WcfUtility.CreateTcpListenerBinding()
+            listenerBinding: listenerBinding
         ),
         "TransactionCoordinatorListener"
     );
