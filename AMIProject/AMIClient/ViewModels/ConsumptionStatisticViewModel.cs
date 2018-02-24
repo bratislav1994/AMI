@@ -604,7 +604,6 @@ namespace AMIClient.ViewModels
                 int numberOfDays = DateTime.DaysInMonth(2016, months[value]);
                 DayCb = days.GetRange(0, numberOfDays);
                 RaisePropertyChanged("SelectedMonth");
-
             }
         }
 
