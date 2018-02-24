@@ -66,7 +66,10 @@ namespace NMS
 
         private void InformClients()
         {
-            proxy.InvokeWithRetry(client => client.Channel.NewDeltaApplied());
+            lock (nm.LockObjectClient)
+            {
+                proxy.InvokeWithRetry(client => client.Channel.NewDeltaApplied());
+            }
         }
 
         #endregion

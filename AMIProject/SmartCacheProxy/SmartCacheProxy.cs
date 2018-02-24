@@ -29,7 +29,7 @@ namespace SmartCacheProxy
         private WcfCommunicationClientFactory<ISmartCacheMS> wcfClientFactory;
         private WcfSmartCache proxy;
         private StatelessServiceContext context;
-        private object lockObjectForClient;
+        private object lockObjectForClient = new object();
 
         public SmartCacheProxy(StatelessServiceContext context)
             : base(context)
@@ -43,9 +43,17 @@ namespace SmartCacheProxy
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners()
         {
+            NetTcpBinding bindingClient = new NetTcpBinding();
+            bindingClient.ReceiveTimeout = TimeSpan.MaxValue;
+            bindingClient.MaxReceivedMessageSize = Int32.MaxValue;
+            bindingClient.MaxBufferSize = Int32.MaxValue;
+
             var clientListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ISmartCacheDuplexForClient>(context, this,
-            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10400/SmartCache/Client/")), "ClientListener");
+            bindingClient, new EndpointAddress("net.tcp://localhost:10400/SmartCache/Client/")), "ClientListener");
+
+            Binding listenerBinding = WcfUtility.CreateTcpClientBinding();
+            listenerBinding.ReceiveTimeout = TimeSpan.MaxValue;
 
             var serviceListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<IModelForDuplex>(
@@ -60,7 +68,7 @@ namespace SmartCacheProxy
                 //
                 // Populate the binding information that you want the service to use.
                 //
-                listenerBinding: WcfUtility.CreateTcpListenerBinding()
+                listenerBinding: listenerBinding
             ),
             "SmartCacheListener"
             );
@@ -79,6 +87,7 @@ namespace SmartCacheProxy
 
             // Create binding
             Binding binding = WcfUtility.CreateTcpClientBinding();
+            binding.ReceiveTimeout = TimeSpan.MaxValue;
             // Create a partition resolver
             IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.

@@ -15,6 +15,7 @@ using Microsoft.ServiceFabric.Services.Communication.Wcf;
 using CommonMS.Access;
 using Microsoft.ServiceFabric.Services.Communication.Wcf.Runtime;
 using FTN.Services.NetworkModelService.DataModel;
+using System.ServiceModel.Channels;
 
 namespace CEClient
 {
@@ -36,6 +37,9 @@ namespace CEClient
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners()
         {
+            Binding listenerBinding = WcfUtility.CreateTcpClientBinding();
+            listenerBinding.ReceiveTimeout = TimeSpan.MaxValue;
+
             var serviceListener = new ServiceInstanceListener((context) =>
         new WcfCommunicationListener<ICalculationForClient>(
             wcfServiceObject: this,
@@ -49,7 +53,7 @@ namespace CEClient
             //
             // Populate the binding information that you want the service to use.
             //
-            listenerBinding: WcfUtility.CreateTcpListenerBinding()
+            listenerBinding: listenerBinding
         ),
         "CEClientListener"
     );
