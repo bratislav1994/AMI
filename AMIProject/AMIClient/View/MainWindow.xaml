@@ -6,36 +6,58 @@
         xmlns:local="clr-namespace:AMIClient"
         xmlns:local2="clr-namespace:AMIClient.View"
         xmlns:local3="clr-namespace:AMIClient.ViewModels"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls" 
         mc:Ignorable="d"
-        Title="AMI" Height="550" Width="715" MinHeight="550" MinWidth="715">
+        xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:cb="http://schemas.ncore.com/wpf/xaml/colorbox"
+        Title="AMI" Height="550" Width="715" MinHeight="550" MinWidth="715"
+        BorderBrush="{DynamicResource AccentColorBrush}"
+        BorderThickness="1"
+        >
 
     <Window.Resources>
-        <DataTemplate DataType="{x:Type local3:NetworkPreviewViewModel }">
-            <local2:NetworkPreviewControl />
-        </DataTemplate>
 
-        <DataTemplate DataType="{x:Type local3:AddCimXmlViewModel}">
-            <local2:AddCimXmlControl />
-        </DataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,
+             /MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,
+             /MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,
+             /MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,
+             /MahApps.Metro;component/Styles/Accents/steel.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/basedark.xaml" />
 
-        <DataTemplate DataType="{x:Type local3:ChartViewModel}">
-            <local2:ChartControl />
-        </DataTemplate>
+            </ResourceDictionary.MergedDictionaries>
 
-        <DataTemplate DataType="{x:Type local3:AlarmSummariesViewModel}">
-            <local2:AlarmSummariesControl />
-        </DataTemplate>
+            <DataTemplate DataType="{x:Type local3:NetworkPreviewViewModel }">
+                <local2:NetworkPreviewControl />
+            </DataTemplate>
 
-        <DataTemplate DataType="{x:Type local3:ConsumptionStatisticViewModel}">
-            <local2:ConsumptionStatisticControl />
-        </DataTemplate>
+            <DataTemplate DataType="{x:Type local3:AddCimXmlViewModel}">
+                <local2:AddCimXmlControl />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type local3:ChartViewModel}">
+                <local2:ChartControl />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type local3:AlarmSummariesViewModel}">
+                <local2:AlarmSummariesControl />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type local3:ConsumptionStatisticViewModel}">
+                <local2:ConsumptionStatisticControl />
+            </DataTemplate>
+
+        </ResourceDictionary>
 
     </Window.Resources>
 
     <Grid Background="#282828">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         
@@ -49,7 +71,8 @@
             </MenuItem>
         </Menu>
 
-        <ContentControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinHeight="515" Height="auto" Width="auto" Grid.Row="1" Content="{Binding Path=CurrentViewModel}"></ContentControl>
+        <ContentControl BorderBrush="{DynamicResource AccentColorBrush}"
+        BorderThickness="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinHeight="515" Height="auto" Width="auto" Grid.Row="1" Content="{Binding Path=CurrentViewModel}"></ContentControl>
 
     </Grid>
 </Window>

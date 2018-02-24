@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AMIClient.View"
              mc:Ignorable="d" 
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls" 
              xmlns:vml="clr-namespace:AMIClient.VML"
              xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" 
              xmlns:visualizationToolkit="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit" 
@@ -15,8 +16,25 @@
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              >
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,
+             /MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,
+             /MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,
+             /MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,
+             /MahApps.Metro;component/Styles/Accents/steel.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/basedark.xaml" />
+
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid Margin="0,0,0,0" Background="#E3E3E3" VerticalAlignment="Stretch" Height="auto">
+        <Grid  Background="#282828" Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="25"></RowDefinition>
@@ -27,7 +45,7 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="90"></ColumnDefinition>
-                <ColumnDefinition Width="170"></ColumnDefinition>
+                <ColumnDefinition Width="190"></ColumnDefinition>
                 <ColumnDefinition Width="170"></ColumnDefinition>
                 <ColumnDefinition Width="7.0*"></ColumnDefinition>
                 <ColumnDefinition Width="120"></ColumnDefinition>
@@ -38,11 +56,11 @@
                                    Text="{Binding FromPeriod, UpdateSourceTrigger=PropertyChanged}"
                                 Format="Custom" FormatString="dd/MMM/yyyy HH:mm:ss.fff"
                                    TimeFormat="Custom" TimeFormatString="HH:mm:ss.fff" 
-                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="170" />
+                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="190" />
 
             <DatePicker Margin="0, 3, 0, 0" Grid.Row="0" Grid.Column="1" Visibility="{Binding DatePick}"
                                    SelectedDate="{Binding FromPeriod, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:dd/MMM/yyyy}}"
-                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="170">
+                                   HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="190">
                 <DatePicker.Resources>
                     <Style TargetType="DatePickerTextBox">
                         <Setter Property="Control.Template">
@@ -58,14 +76,14 @@
             </DatePicker>
 
             <ComboBox Margin="0, 3, 0, 0" Grid.Row="0" Grid.Column="1" Visibility="{Binding YearMonthCmbVisibility}"
-                            Width="160" HorizontalAlignment="Left" ItemsSource="{Binding YearCb, UpdateSourceTrigger=PropertyChanged}" 
+                            Width="180" HorizontalAlignment="Left" ItemsSource="{Binding YearCb, UpdateSourceTrigger=PropertyChanged}" 
                             SelectedItem="{Binding SelectedYear, UpdateSourceTrigger=PropertyChanged}" 
                             Text="Year" Foreground="White" IsEditable="True" IsReadOnly="True"
                             />
 
             <ComboBox Margin="0, 3, 0, 0" Grid.Row="0" Grid.Column="2" Visibility="{Binding YearMonthCmbVisibility}" 
                       HorizontalAlignment="Left" ItemsSource="{Binding MonthCb, UpdateSourceTrigger=PropertyChanged}" 
-                      Width="160" SelectedItem="{Binding SelectedMonth, UpdateSourceTrigger=PropertyChanged}" Text="Month" 
+                      Width="180" SelectedItem="{Binding SelectedMonth, UpdateSourceTrigger=PropertyChanged}" Text="Month" 
                       Foreground="White" IsEditable="True" IsReadOnly="True"/>
             
             <Button Grid.Row="1" Grid.Column="0" Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />

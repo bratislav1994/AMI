@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AMIClient.View"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls" 
              xmlns:vml="clr-namespace:AMIClient.VML"
              xmlns:classes="clr-namespace:AMIClient.Classes"
              xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" 
@@ -15,36 +16,53 @@
              xmlns:wpfToolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf">
     <UserControl.Resources>
-        <Style TargetType="Expander">
 
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,
+             /MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,
+             /MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,
+             /MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,
+             /MahApps.Metro;component/Styles/Accents/steel.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/basedark.xaml" />
 
-        <DataTemplate x:Key="DropDownItemTemplate" DataType="wpfApplication1:ItemSourceModel">
-            <StackPanel Orientation="Horizontal">
-                <CheckBox IsChecked="{Binding IsChecked}"/>
-                <TextBlock Text="{Binding Name}"/>
-            </StackPanel>
-        </DataTemplate>
+            </ResourceDictionary.MergedDictionaries>
 
-        <DataTemplate x:Key="SelectionBoxTemplate">
+            <Style TargetType="Expander">
 
-        </DataTemplate>
+            </Style>
 
-        <DataTemplate x:Key="ComboBoxTemplate">
-            <ContentPresenter x:Name="Presenter"
+            <DataTemplate x:Key="DropDownItemTemplate" DataType="wpfApplication1:ItemSourceModel">
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox IsChecked="{Binding IsChecked}"/>
+                    <TextBlock Text="{Binding Name}"/>
+                </StackPanel>
+            </DataTemplate>
+
+            <DataTemplate x:Key="SelectionBoxTemplate">
+
+            </DataTemplate>
+
+            <DataTemplate x:Key="ComboBoxTemplate">
+                <ContentPresenter x:Name="Presenter"
                Content="{Binding}"
                ContentTemplate="{StaticResource DropDownItemTemplate}" />
-            <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor,ComboBoxItem,1}}" Value="{x:Null}">
-                    <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource SelectionBoxTemplate}" />
-                </DataTrigger>
-            </DataTemplate.Triggers>
-        </DataTemplate>
-        
+                <DataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor,ComboBoxItem,1}}" Value="{x:Null}">
+                        <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource SelectionBoxTemplate}" />
+                    </DataTrigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
+
+        </ResourceDictionary>
+
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid Margin="0,0,0,0" Background="#E3E3E3" VerticalAlignment="Stretch" Height="auto">
+        <Grid Margin="0,0,0,0" Background="#282828" VerticalAlignment="Stretch" Height="auto">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"></RowDefinition>
@@ -64,28 +82,28 @@
                 <StackPanel>
                     <DockPanel>
                         <CheckBox Content="Specific month/day:" Width="130" HorizontalAlignment="Left" IsChecked="{Binding SpecificDayChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsSpecificCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
-                        <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding YearCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SpecificDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedFromYear, UpdateSourceTrigger=PropertyChanged}" Text="From year" Foreground="White" IsEditable="True" IsReadOnly="True"/>
-                        <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding YearCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SpecificDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedToYear, UpdateSourceTrigger=PropertyChanged}" Text="To year" Foreground="White" IsEditable="True" IsReadOnly="True"/>
-                        <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding MonthCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SpecificDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedMonth, UpdateSourceTrigger=PropertyChanged}" Text="Month" Foreground="White" IsEditable="True" IsReadOnly="True"/>
-                        <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding DayCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SpecificDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedDay, UpdateSourceTrigger=PropertyChanged}" Text="Day" Foreground="White" IsEditable="True" IsReadOnly="True"/>
+                        <ComboBox Width="100" HorizontalAlignment="Left" ItemsSource="{Binding YearCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SpecificDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedFromYear, UpdateSourceTrigger=PropertyChanged}" Text="From year" Foreground="White" IsEditable="True" IsReadOnly="True"/>
+                        <ComboBox Width="100" HorizontalAlignment="Left" ItemsSource="{Binding YearCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SpecificDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedToYear, UpdateSourceTrigger=PropertyChanged}" Text="To year" Foreground="White" IsEditable="True" IsReadOnly="True"/>
+                        <ComboBox Width="100" HorizontalAlignment="Left" ItemsSource="{Binding MonthCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SpecificDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedMonth, UpdateSourceTrigger=PropertyChanged}" Text="Month" Foreground="White" IsEditable="True" IsReadOnly="True"/>
+                        <ComboBox Width="100" HorizontalAlignment="Left" ItemsSource="{Binding DayCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SpecificDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedDay, UpdateSourceTrigger=PropertyChanged}" Text="Day" Foreground="White" IsEditable="True" IsReadOnly="True"/>
                     </DockPanel>
                     
                     <DockPanel>
                         <CheckBox Content="Season:" Width="130" HorizontalAlignment="Left" IsChecked="{Binding SeasonChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsSeasonCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
-                        <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding SeasonCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SeasonChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SeasonSelected, UpdateSourceTrigger=PropertyChanged}"/>
+                        <ComboBox Width="100" HorizontalAlignment="Left" ItemsSource="{Binding SeasonCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SeasonChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SeasonSelected, UpdateSourceTrigger=PropertyChanged}"/>
                     </DockPanel>
 
                     <DockPanel>
                         <CheckBox Content="Type of day:" Width="130" HorizontalAlignment="Left" IsChecked="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsTypeOfDayCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
                         <!--<ComboBox HorizontalAlignment="Left" ItemsSource="{Binding TypeOfDayCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding TypeOfDaySelected, UpdateSourceTrigger=PropertyChanged}"/>-->
-                        <ComboBox ItemTemplate="{StaticResource ComboBoxTemplate}" HorizontalAlignment="Left" ItemsSource="{Binding TypeOfDayCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}">
+                        <ComboBox Width="100" ItemTemplate="{StaticResource ComboBoxTemplate}" HorizontalAlignment="Left" ItemsSource="{Binding TypeOfDayCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}">
                             
                         </ComboBox>
                     </DockPanel>
 
                     <DockPanel>
                         <CheckBox Content="Consumer type:" Width="130" HorizontalAlignment="Left" IsChecked="{Binding ConsumerTypeChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsConsumerTypeCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
-                        <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding ConsumerTypeCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ConsumerTypeChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding ConsumerTypeSelected, UpdateSourceTrigger=PropertyChanged}"/>
+                        <ComboBox Width="100" HorizontalAlignment="Left" ItemsSource="{Binding ConsumerTypeCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ConsumerTypeChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding ConsumerTypeSelected, UpdateSourceTrigger=PropertyChanged}"/>
                     </DockPanel>
                     
                     <Button Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />

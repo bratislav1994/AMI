@@ -5,11 +5,52 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AMIClient.View"
              mc:Ignorable="d" 
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls" 
              d:DesignHeight="300" d:DesignWidth="700">
     <UserControl.Resources>
-        <Style TargetType="Expander">
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,
+             /MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,
+             /MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,
+             /MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,
+             /MahApps.Metro;component/Styles/Accents/steel.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/basedark.xaml" />
+
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="Expander">
 
         </Style>
+
+            <Style BasedOn="{StaticResource MetroDataGridRow}" TargetType="DataGridRow">
+                <Style.Triggers>
+                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                        <Setter Property="Background" Value="Red" />
+                    </Trigger>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="ItemsControl.AlternationIndex" Value="1" />
+                            <Condition Property="IsMouseOver" Value="true" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
+                    </MultiTrigger>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="ItemsControl.AlternationIndex" Value="1" />
+                            <Condition Property="IsSelected" Value="true" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
+                    </MultiTrigger>
+                </Style.Triggers>
+            </Style>
+
+        </ResourceDictionary>
+        
     </UserControl.Resources>
 
     <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
