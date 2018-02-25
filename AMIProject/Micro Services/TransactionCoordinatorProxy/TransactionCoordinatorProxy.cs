@@ -119,79 +119,57 @@ namespace TransactionCoordinatorProxy
                 client => client.Channel.ApplyDelta(delta)).Result);
         }
 
-        /*public void ConnectCE()
-        {
-            ce = OperationContext.Current.GetCallbackChannel<ICalculationEngine>();
-        }
-
-        public void ConnectNMS()
-        {
-            nms = OperationContext.Current.GetCallbackChannel<INetworkModel>();
-        }*/
-
         public void ConnectScada()
         {
             scada = OperationContext.Current.GetCallbackChannel<IScada>();
         }
 
-        /*public void EnlistDeltaNMS(Delta delta)
-        {
-            nms.EnlistDelta(delta);
-        }*/
-
         public void EnlistMeasScada(List<ResourceDescription> measurements)
         {
-            scada.EnlistMeas(measurements);
+            try
+            {
+                scada.EnlistMeas(measurements);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
-
-        /*public void EnlistDeltaCE(List<ResourceDescription> data)
-        {
-            ce.EnlistMeas(data);
-        }*/
-
-        /*public Delta PrepareNMS()
-        {
-            return nms.Prepare();
-        }
-
-        public bool PrepareCE()
-        {
-            return ce.Prepare();
-        }*/
 
         public bool PrepareScada()
         {
-            return scada.Prepare();
+            try
+            {
+                return scada.Prepare();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        /*public void CommitNMS()
-        {
-            nms.Commit();
-        }
-
-        public void CommitCE()
-        {
-            ce.Commit();
-        }
-        */
         public void CommitScada()
         {
-            scada.Commit();
+            try
+            {
+                scada.Commit();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
-
-        /*public void RollbackNMS()
-        {
-            nms.Rollback();
-        }
-
-        public void RollbackCE()
-        {
-            ce.Rollback();
-        }*/
 
         public void RollbackScada()
         {
-            scada.Rollback();
+            try
+            {
+                scada.Rollback();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public void Connect(ServiceInfo serviceInfo)
