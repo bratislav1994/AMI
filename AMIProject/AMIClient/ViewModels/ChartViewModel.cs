@@ -40,6 +40,8 @@ namespace AMIClient.ViewModels
         private int selectedYear = -1;
         private string selectedMonth = string.Empty;
         private Visibility datePick = Visibility.Hidden;
+        private string titleX = string.Empty;
+        private string titleY = string.Empty;
 
         public ChartViewModel()
         {
@@ -370,9 +372,37 @@ namespace AMIClient.ViewModels
             }
         }
 
+        public string TitleX
+        {
+            get
+            {
+                return titleX;
+            }
+
+            set
+            {
+                titleX = value;
+                RaisePropertyChanged("TitleX");
+            }
+        }
+
+        public string TitleY
+        {
+            get
+            {
+                return titleY;
+            }
+
+            set
+            {
+                titleY = value;
+                RaisePropertyChanged("TitleY");
+            }
+        }
+
         private bool CanShowDataExecute()
         {
-            return resolution == ResolutionType.MINUTE || resolution == ResolutionType.HOUR ? 
+            return resolution == ResolutionType.MINUTE || resolution == ResolutionType.HOUR ?
                     this.DateTimeValidation(this.FromPeriod) : this.SelectedYear != -1 && !string.IsNullOrEmpty(this.SelectedMonth);
         }
 
@@ -452,6 +482,19 @@ namespace AMIClient.ViewModels
             }
 
             this.Statistics = measForChart.Item2;
+
+            switch (this.Resolution)
+            {
+                case ResolutionType.MINUTE:
+                    TitleX = "Minute";
+                    break;
+                case ResolutionType.HOUR:
+                    TitleX = "Hour";
+                    break;
+                case ResolutionType.DAY:
+                    TitleX = "Day";
+                    break;
+            }
         }
 
         public void SetGids(List<long> amiGids)

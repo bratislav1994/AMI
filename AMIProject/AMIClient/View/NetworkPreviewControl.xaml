@@ -18,7 +18,8 @@
 		xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
         xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
              d:DesignHeight="300" d:DesignWidth="700"
-         >
+
+             >
 
     <UserControl.Resources>
 
@@ -33,7 +34,15 @@
                 <ResourceDictionary Source="pack://application:,,,
              /MahApps.Metro;component/Styles/Accents/steel.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/basedark.xaml" />
+                <!--<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />-->
             </ResourceDictionary.MergedDictionaries>
+
+            <!--<Style x:Key="CustomTreeViewStyle" TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MetroTreeViewItem}">
+                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+            </Style>-->
 
             <Style x:Key="ExpanderRightHeaderStyle" TargetType="{x:Type ToggleButton}">
                 <Setter Property="Template">
@@ -176,7 +185,7 @@
                                     <Setter Property="Margin" TargetName="bdrect" Value="2,10,0,2" />
                                     <Setter Property="Margin" TargetName="dp" Value="0,9,3,0" />
                                 </Trigger>
-                                
+
                                 <Trigger Property="ExpandDirection" Value="Left">
                                     <Setter Property="DockPanel.Dock" TargetName="ExpandSite" Value="Left"/>
                                     <Setter Property="DockPanel.Dock" TargetName="HeaderSite" Value="Right"/>
@@ -201,20 +210,20 @@
             </Style>
 
             <DataTemplate DataType="{x:Type local3:ChartViewModel}">
-            <local2:ChartControl />
-        </DataTemplate>
+                <local2:ChartControl />
+            </DataTemplate>
 
-        <DataTemplate DataType="{x:Type local3:DataGridViewModel}">
-            <local2:DataGridControl />
-        </DataTemplate>
+            <DataTemplate DataType="{x:Type local3:DataGridViewModel}">
+                <local2:DataGridControl />
+            </DataTemplate>
 
-        <DataTemplate DataType="{x:Type local3:AmiDataGridViewModel}">
-            <local2:AmiDataGridControl />
-        </DataTemplate>
+            <DataTemplate DataType="{x:Type local3:AmiDataGridViewModel}">
+                <local2:AmiDataGridControl />
+            </DataTemplate>
 
-        <DataTemplate DataType="{x:Type local3:ConsumptionStatisticViewModel}">
-            <local2:ConsumptionStatisticControl />
-        </DataTemplate>
+            <DataTemplate DataType="{x:Type local3:ConsumptionStatisticViewModel}">
+                <local2:ConsumptionStatisticControl />
+            </DataTemplate>
 
             <Style x:Key="MetroTreeView"
            TargetType="{x:Type TreeView}">
@@ -269,7 +278,7 @@
         <Rectangle HorizontalAlignment="Left" Width="32" Fill="{DynamicResource AccentColorBrush}">
 
         </Rectangle>
-        
+
         <Expander ExpandDirection="Right" Grid.Column="0"
 				  HorizontalAlignment="Right" VerticalAlignment="Stretch">
 
@@ -278,15 +287,9 @@
                 <TreeView BorderBrush="White" Width="200" Grid.Column="0" ItemsSource="{Binding RootElements}" x:Name="tree">
 
                     <TreeView.ItemContainerStyle>
-                        <Style TargetType="{x:Type TreeViewItem}">
+                        <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                             <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
                             <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-                            <Setter Property="FontWeight" Value="Normal" />
-                            <!--<Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="FontWeight" Value="Bold" />
-                                </Trigger>
-                            </Style.Triggers>-->
                         </Style>
                     </TreeView.ItemContainerStyle>
 

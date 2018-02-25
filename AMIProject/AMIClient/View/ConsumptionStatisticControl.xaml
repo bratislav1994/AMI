@@ -87,7 +87,7 @@
                         <ComboBox Width="100" HorizontalAlignment="Left" ItemsSource="{Binding MonthCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SpecificDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedMonth, UpdateSourceTrigger=PropertyChanged}" Text="Month" Foreground="White" IsEditable="True" IsReadOnly="True"/>
                         <ComboBox Width="100" HorizontalAlignment="Left" ItemsSource="{Binding DayCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SpecificDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedDay, UpdateSourceTrigger=PropertyChanged}" Text="Day" Foreground="White" IsEditable="True" IsReadOnly="True"/>
                     </DockPanel>
-                    
+
                     <DockPanel>
                         <CheckBox Content="Season:" Width="130" HorizontalAlignment="Left" IsChecked="{Binding SeasonChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsSeasonCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
                         <ComboBox Width="100" HorizontalAlignment="Left" ItemsSource="{Binding SeasonCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SeasonChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SeasonSelected, UpdateSourceTrigger=PropertyChanged}"/>
@@ -97,7 +97,7 @@
                         <CheckBox Content="Type of day:" Width="130" HorizontalAlignment="Left" IsChecked="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsTypeOfDayCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
                         <!--<ComboBox HorizontalAlignment="Left" ItemsSource="{Binding TypeOfDayCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding TypeOfDaySelected, UpdateSourceTrigger=PropertyChanged}"/>-->
                         <ComboBox Width="100" ItemTemplate="{StaticResource ComboBoxTemplate}" HorizontalAlignment="Left" ItemsSource="{Binding TypeOfDayCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding TypeOfDayChecked, UpdateSourceTrigger=PropertyChanged}">
-                            
+
                         </ComboBox>
                     </DockPanel>
 
@@ -105,14 +105,14 @@
                         <CheckBox Content="Consumer type:" Width="130" HorizontalAlignment="Left" IsChecked="{Binding ConsumerTypeChecked, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsConsumerTypeCheckBoxEnabled, UpdateSourceTrigger=PropertyChanged}"/>
                         <ComboBox Width="100" HorizontalAlignment="Left" ItemsSource="{Binding ConsumerTypeCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ConsumerTypeChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding ConsumerTypeSelected, UpdateSourceTrigger=PropertyChanged}"/>
                     </DockPanel>
-                    
+
                     <Button Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
                 </StackPanel>
             </Expander>
 
             <lvc:CartesianChart Width="auto" Height="auto" Background="#282828" Series="{Binding DataHistoryPX}" DataContext="{Binding}" Name="Chart" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Labels="{Binding DataHistoryPY}" Foreground="White" FontSize="14">
+                    <lvc:Axis Title="Hour" Labels="{Binding DataHistoryPY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
                         </lvc:Axis.Separator>
@@ -133,39 +133,39 @@
 
             <StackPanel Width="150" Grid.Row="1" Grid.Column="3" Background="#282828" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0, 4, 0, 0">
                 <StackPanel Background="#3d3d3d">
-                    <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Maximum</TextBlock>
+                    <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,0,0,0">Maximum</TextBlock>
 
-                    <DockPanel>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.MaxP, StringFormat=F2}"></TextBlock>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kW</TextBlock>
+                    <DockPanel HorizontalAlignment="Center">
+                        <TextBlock Foreground="White" FontSize="18" Text="{Binding Statistics.MaxP, StringFormat=F2}"></TextBlock>
+                        <TextBlock Foreground="White" FontSize="18">&#160;kW</TextBlock>
                     </DockPanel>
 
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Minimum</TextBlock>
 
-                    <DockPanel>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.MinP, StringFormat=F2}" />
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kW</TextBlock>
+                    <DockPanel HorizontalAlignment="Center">
+                        <TextBlock Foreground="White" FontSize="18" Text="{Binding Statistics.MinP, StringFormat=F2}" />
+                        <TextBlock Foreground="White" FontSize="18">&#160;kW</TextBlock>
                     </DockPanel>
 
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Average</TextBlock>
 
-                    <DockPanel>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.AvgP, StringFormat=F2}"></TextBlock>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kW</TextBlock>
+                    <DockPanel HorizontalAlignment="Center">
+                        <TextBlock Foreground="White" FontSize="18" Text="{Binding Statistics.AvgP, StringFormat=F2}"></TextBlock>
+                        <TextBlock Foreground="White" FontSize="18">&#160;kW</TextBlock>
                     </DockPanel>
 
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Energy</TextBlock>
 
-                    <DockPanel>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.IntegralP, StringFormat=F2}"></TextBlock>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kWh</TextBlock>
+                    <DockPanel HorizontalAlignment="Center">
+                        <TextBlock Foreground="White" FontSize="18" Text="{Binding Statistics.IntegralP, StringFormat=F2}"></TextBlock>
+                        <TextBlock Foreground="White" FontSize="18">&#160;kWh</TextBlock>
                     </DockPanel>
                 </StackPanel>
             </StackPanel>
 
             <lvc:CartesianChart Width="auto" Height="auto" Background="#282828" Series="{Binding DataHistoryQX}" DataContext="{Binding}" Name="Chart1" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Labels="{Binding DataHistoryQY}" Foreground="White" FontSize="14">
+                    <lvc:Axis Title="Hour" Labels="{Binding DataHistoryQY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
                         </lvc:Axis.Separator>
@@ -186,39 +186,39 @@
 
             <StackPanel Width="150" Grid.Row="2" Grid.Column="3" Background="#282828" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0, 4, 0, 0">
                 <StackPanel Background="#3d3d3d">
-                    <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Maximum</TextBlock>
+                    <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,0,0,0">Maximum</TextBlock>
 
-                    <DockPanel>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.MaxQ, StringFormat=F2}"></TextBlock>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kVAr</TextBlock>
+                    <DockPanel HorizontalAlignment="Center">
+                        <TextBlock Foreground="White" FontSize="18" Text="{Binding Statistics.MaxQ, StringFormat=F2}"></TextBlock>
+                        <TextBlock Foreground="White" FontSize="18">&#160;kVAr</TextBlock>
                     </DockPanel>
 
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Minimum</TextBlock>
 
-                    <DockPanel>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.MinQ, StringFormat=F2}" />
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kVAr</TextBlock>
+                    <DockPanel HorizontalAlignment="Center">
+                        <TextBlock Foreground="White" FontSize="18" Text="{Binding Statistics.MinQ, StringFormat=F2}" />
+                        <TextBlock Foreground="White" FontSize="18">&#160;kVAr</TextBlock>
                     </DockPanel>
 
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Average</TextBlock>
 
-                    <DockPanel>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.AvgQ, StringFormat=F2}"></TextBlock>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kVAr</TextBlock>
+                    <DockPanel HorizontalAlignment="Center">
+                        <TextBlock Foreground="White" FontSize="18" Text="{Binding Statistics.AvgQ, StringFormat=F2}"></TextBlock>
+                        <TextBlock Foreground="White" FontSize="18">&#160;kVAr</TextBlock>
                     </DockPanel>
 
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Energy</TextBlock>
 
-                    <DockPanel>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.IntegralQ, StringFormat=F2}"></TextBlock>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">kVArh</TextBlock>
+                    <DockPanel HorizontalAlignment="Center">
+                        <TextBlock Foreground="White" FontSize="18" Text="{Binding Statistics.IntegralQ, StringFormat=F2}"></TextBlock>
+                        <TextBlock Foreground="White" FontSize="18">&#160;kVArh</TextBlock>
                     </DockPanel>
                 </StackPanel>
             </StackPanel>
 
             <lvc:CartesianChart Width="auto" Height="auto" Background="#282828" Series="{Binding DataHistoryVX}" DataContext="{Binding}" Name="Chart2" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Labels="{Binding DataHistoryVY}" Foreground="White" FontSize="14">
+                    <lvc:Axis Title="Hour" Labels="{Binding DataHistoryVY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
                         </lvc:Axis.Separator>
@@ -238,26 +238,26 @@
             </StackPanel>
 
             <StackPanel Height="210" Width="150" Grid.Row="3" Grid.Column="3" Background="#282828" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0, 4, 0, 0">
-                <StackPanel Height="210" Background="#3d3d3d">
-                    <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Maximum</TextBlock>
+                <StackPanel Height="200" Background="#3d3d3d">
+                    <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,0,0,0">Maximum</TextBlock>
 
-                    <DockPanel>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.MaxV, StringFormat=F2}"></TextBlock>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">V</TextBlock>
+                    <DockPanel HorizontalAlignment="Center">
+                        <TextBlock Foreground="White" FontSize="18" Text="{Binding Statistics.MaxV, StringFormat=F2}"></TextBlock>
+                        <TextBlock Foreground="White" FontSize="18">&#160;V</TextBlock>
                     </DockPanel>
 
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Minimum</TextBlock>
 
-                    <DockPanel>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.MinV, StringFormat=F2}" />
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">V</TextBlock>
+                    <DockPanel HorizontalAlignment="Center">
+                        <TextBlock Foreground="White" FontSize="18" Text="{Binding Statistics.MinV, StringFormat=F2}" />
+                        <TextBlock Foreground="White" FontSize="18">&#160;V</TextBlock>
                     </DockPanel>
 
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Average</TextBlock>
 
-                    <DockPanel>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center" Text="{Binding Statistics.AvgV, StringFormat=F2}"></TextBlock>
-                        <TextBlock Foreground="White" FontSize="18" HorizontalAlignment="Center">V</TextBlock>
+                    <DockPanel HorizontalAlignment="Center">
+                        <TextBlock Foreground="White" FontSize="18" Text="{Binding Statistics.AvgV, StringFormat=F2}"></TextBlock>
+                        <TextBlock Foreground="White" FontSize="18">&#160;V</TextBlock>
                     </DockPanel>
                 </StackPanel>
             </StackPanel>

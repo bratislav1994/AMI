@@ -185,7 +185,7 @@
                                     <Setter Property="Margin" TargetName="dp" Value="0,3,0,0" />
 
                                 </Trigger>
-                                
+
 
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -202,9 +202,9 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    
-        <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
-           <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+
+    <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <DataGrid CanUserResizeColumns="True" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.ViewTableItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
 
 
@@ -254,7 +254,7 @@
 
                     </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="Type" CanUserSort="True" 
+                    <DataGridTemplateColumn Header="Area" CanUserSort="True" 
         SortMemberPath="Type" MinWidth="100" Width="120">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -338,5 +338,5 @@
             </DataGrid>
         </ScrollViewer>
     </Grid>
-    
+
 </UserControl>
