@@ -340,6 +340,11 @@ namespace SCADA
                 }
             }
 
+            foreach (int address in RTUsThatNeedsToBeStopped)
+            {
+                simulators[address].AddingStarted();
+            }
+
             for (int i = 0; i < Ps.Count; i++)
             {
                 int index = -1;
