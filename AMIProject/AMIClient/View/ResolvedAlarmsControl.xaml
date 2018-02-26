@@ -24,10 +24,6 @@
 
             </ResourceDictionary.MergedDictionaries>
 
-            <Style TargetType="Expander">
-
-            </Style>
-
             <Style BasedOn="{StaticResource MetroDataGridRow}" TargetType="DataGridRow">
                 <Style.Triggers>
                     <Trigger Property="ItemsControl.AlternationIndex" Value="1">
@@ -103,7 +99,8 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.HeaderTemplate>
                 </DataGridTemplateColumn>
-                
+
+                <DataGridTextColumn MinWidth="100" Width="130" Header="Geographical region" Binding="{Binding Georegion}"/>
                 <DataGridTextColumn MinWidth="100" Width="130" Header="From" Binding="{Binding FromPeriod}"/>
                 <DataGridTextColumn MinWidth="100" Width="130" Header="To" Binding="{Binding ToPeriod}"/>
 

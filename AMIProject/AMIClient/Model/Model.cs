@@ -883,7 +883,8 @@ namespace AMIClient
                     Consumer = alarm.Consumer,
                     FromPeriod = alarm.FromPeriod,
                     Voltage = alarm.Voltage,
-                    TypeVoltage = alarm.TypeVoltage
+                    TypeVoltage = alarm.TypeVoltage,
+                    Georegion = alarm.Georegion
                 });
                 positionsAlarm.Add(alarm.Id, TableItemsForActiveAlarm.Count - 1);
             }

@@ -31,6 +31,7 @@ namespace AMIClient.HelperClasses
     {
         Consumer = 1,
         Status,
-        TypeVoltage
+        TypeVoltage,
+        Georegion
     }
 }

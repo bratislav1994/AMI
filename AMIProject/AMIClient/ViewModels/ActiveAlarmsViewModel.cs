@@ -21,6 +21,7 @@ namespace AMIClient.ViewModels
         private Dictionary<string, string> columnFilters;
         private string consumerFilter = string.Empty;
         private string typeVoltageFilter = string.Empty;
+        private string georegionFilter = string.Empty;
         private ObservableCollection<ActiveAlarm> tableItemsForActiveAlarm = new ObservableCollection<ActiveAlarm>();
         private DateTime timeOfLastUpdateAlarm = DateTime.Now;
         private Thread checkIfThereAreNewUpdates;
@@ -37,6 +38,7 @@ namespace AMIClient.ViewModels
             columnFilters = new Dictionary<string, string>();
             columnFilters[DataGridAlarmHeader.Consumer.ToString()] = string.Empty;
             columnFilters[DataGridAlarmHeader.TypeVoltage.ToString()] = string.Empty;
+            columnFilters[DataGridAlarmHeader.Georegion.ToString()] = string.Empty;
             this.Model.ViewTableItemsForActiveAlarm = new CollectionViewSource { Source = this.TableItemsForActiveAlarm }.View;
             this.Model.ViewTableItemsForActiveAlarm = CollectionViewSource.GetDefaultView(this.TableItemsForActiveAlarm);
             List<ActiveAlarm> changes = this.Model.GetChangesAlarm();
@@ -108,6 +110,22 @@ namespace AMIClient.ViewModels
             }
         }
 
+        public string GeoregionFilter
+        {
+            get
+            {
+                return georegionFilter;
+            }
+
+            set
+            {
+                georegionFilter = value;
+                this.RaisePropertyChanged("GeoregionFilter");
+                columnFilters[DataGridAlarmHeader.Georegion.ToString()] = this.georegionFilter;
+                this.OnFilterApply();
+            }
+        }
+
         public ObservableCollection<ActiveAlarm> TableItemsForActiveAlarm
         {
             get
@@ -146,6 +164,10 @@ namespace AMIClient.ViewModels
                         {
                             FTN.Common.TypeVoltage type = ((ActiveAlarm)item).TypeVoltage;
                             containsFilter = EnumDescription.GetEnumDescription(type).IndexOf(TypeVoltageFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
+                        }
+                        else if (filter.Key.Equals(DataGridAlarmHeader.Georegion.ToString()))
+                        {
+                            containsFilter = ((ActiveAlarm)item).Georegion.IndexOf(GeoregionFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
                         }
 
                         if (!containsFilter)
