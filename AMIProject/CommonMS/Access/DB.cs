@@ -310,6 +310,33 @@ namespace CommonMS.Access
             }
         }
 
+        public string ReadGeoregionNameByPSRRef(long psrRef)
+        {
+            string retVal = "";
+
+            lock (lockObj)
+            {
+                using (var access = new AccessDB())
+                {
+                    try
+                    {
+                        EnergyConsumerDb consumer = access.Consumers.Where(x => x.GlobalId == psrRef).FirstOrDefault();
+                        SubstationDb substation = access.Substations.Where(x => x.GlobalId == consumer.EqContainerID).FirstOrDefault();
+                        SubGeographicalRegionDb subgeoregion = access.SubGeoRegions.Where(x => x.GlobalId == substation.SubGeoRegionID).FirstOrDefault();
+                        GeographicalRegionDb georegion = access.GeoRegions.Where(x => x.GlobalId == subgeoregion.GeoRegionID).FirstOrDefault();
+
+                        retVal = georegion.Name;
+                    }
+                    catch
+                    {
+                        return "";
+                    }
+                }
+
+                return retVal;
+            }
+        }
+
         public bool GeoregionsNeedToRefresh(DateTime lastUpdate)
         {
             return lastUpdateGeoregions > lastUpdate;

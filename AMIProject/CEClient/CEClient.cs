@@ -370,8 +370,6 @@ namespace CEClient
                 {
                     ret = access.AggregationForHours.ToList();
                 }
-
-                return ret;
             }
 
             if (filter.SeasonHasValue)
@@ -452,11 +450,10 @@ namespace CEClient
                 {
                     foreach (HourAggregation hAgg in ret.Reverse<HourAggregation>())
                     {
-                        if (!filter.TypeOfDay.Any(x => x == hAgg.TimeStamp.DayOfWeek))
+                        if (!filter.TypeOfDay.Any(x => x == hAgg.TimeStamp.DayOfWeek) || !gids.Any(x => x == hAgg.PsrRef))
                         {
                             ret.Remove(hAgg);
                         }
-
                     }
                 }
             }

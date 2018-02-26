@@ -14,6 +14,9 @@ namespace FTN.ServiceContracts
     public interface IScadaDuplexSimulator
     {
         [OperationContract]
+        bool IsScadaReady();
+
+        [OperationContract]
         int Connect();
 
         [OperationContract]

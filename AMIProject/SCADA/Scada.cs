@@ -58,6 +58,7 @@ namespace SCADA
         private Dictionary<int, List<long>> eqGidsForSimulator;
         private Dictionary<int, List<int>> analogIndexesForSimulator;
         List<int> RTUsThatNeedsToBeStopped = new List<int>();
+        private bool ready = false;
 
         public ITransactionDuplexScada ProxyCoordinator
         {
@@ -113,6 +114,19 @@ namespace SCADA
             set
             {
                 proxyCE = value;
+            }
+        }
+
+        public bool Ready
+        {
+            get
+            {
+                return ready;
+            }
+
+            set
+            {
+                ready = value;
             }
         }
 
@@ -182,6 +196,7 @@ namespace SCADA
             this.ReadDataFromDB();
             sendingThread = new Thread(() => CheckIfThereIsSomethingToSend());
             sendingThread.Start();
+            Ready = true;
         }
 
         public void EnlistMeas(List<ResourceDescription> data)
@@ -980,6 +995,11 @@ namespace SCADA
             }
         }
 
+        public bool IsScadaReady()
+        {
+            return Ready;
+        }
+
         #region command
 
         private ICommandHeaders GetCommandHeader(double delta, short index)
@@ -1102,7 +1122,6 @@ namespace SCADA
 
             return retVal;
         }
-        
         #endregion
     }
 }

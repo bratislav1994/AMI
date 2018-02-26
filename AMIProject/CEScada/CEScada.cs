@@ -355,6 +355,7 @@ namespace CEScada
                         alarmR.FromPeriod = alarmA.FromPeriod;
                         alarmR.Id = alarmA.Id;
                         alarmR.Consumer = alarmA.Consumer;
+                        alarmR.Georegion = alarmA.Georegion;
                         alarmR.ToPeriod = dm.TimeStamp;
                         alarmR.TypeVoltage = alarmA.TypeVoltage;
 
@@ -384,6 +385,7 @@ namespace CEScada
                         }
 
                         alarmActiveDB[dm.PsrRef] = a;
+                        a.Georegion = dataBaseAdapter.ReadGeoregionNameByPSRRef(dm.PsrRef);
                         dataBaseAdapter.AddActiveAlarm(a);
                         delta.InsertOperations.Add(a);
                     }

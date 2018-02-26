@@ -116,6 +116,22 @@ namespace AMISimulator
                 analog.eventVariation = EventAnalogVariation.Group32Var8;
             }
 
+            while (true)
+            {
+                try
+                {
+                    if (ProxyScada.IsScadaReady())
+                    {
+                        break;
+                    }
+                }
+                catch
+                {
+                    firstContact = true;
+                    Thread.Sleep(2000);
+                }
+            }
+
             Console.WriteLine("Connecting to scada...");
 
             while (true)

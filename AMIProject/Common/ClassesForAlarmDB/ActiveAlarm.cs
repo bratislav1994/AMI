@@ -15,6 +15,7 @@ namespace FTN.Common.ClassesForAlarmDB
         private int idDB;
         private long id;
         private string consumer;
+        private string georegion;
         private DateTime fromPeriod;
         private TypeVoltage typeVoltage;
         private float voltage;
@@ -106,6 +107,19 @@ namespace FTN.Common.ClassesForAlarmDB
             set
             {
                 consumer = value;
+            }
+        }
+
+        public string Georegion
+        {
+            get
+            {
+                return georegion;
+            }
+
+            set
+            {
+                georegion = value;
             }
         }
     }
