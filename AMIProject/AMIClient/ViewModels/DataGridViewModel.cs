@@ -124,7 +124,7 @@ namespace AMIClient.ViewModels
 
         public void OnFilterApply()
         {
-            this.Model.ViewTableItems = CollectionViewSource.GetDefaultView(this.Model.TableItems);
+            this.Model.ViewTableItems = CollectionViewSource.GetDefaultView(this.TableItems);
 
             if (this.Model.ViewTableItems != null)
             {

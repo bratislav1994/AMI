@@ -136,7 +136,10 @@ namespace SmartCacheProxy
 
         public List<DynamicMeasurement> GetLastMeas(List<long> gidsInTable)
         {
-            return proxy.InvokeWithRetry(client => client.Channel.GetLastMeas(gidsInTable));
+            lock (lockObjectForClient)
+            {
+                return proxy.InvokeWithRetry(client => client.Channel.GetLastMeas(gidsInTable));
+            }
         }
 
         public void Connect(ServiceInfo serviceInfo)

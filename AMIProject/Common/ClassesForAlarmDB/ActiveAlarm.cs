@@ -110,6 +110,7 @@ namespace FTN.Common.ClassesForAlarmDB
             }
         }
 
+        [DataMember]
         public string Georegion
         {
             get

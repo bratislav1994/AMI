@@ -873,48 +873,51 @@ namespace AMIClient
 
         public void SendAlarm(DeltaForAlarm delta)
         {
-            Logger.LogMessageToFile(string.Format("AMIClient.Model.UpdateAlarms; line: {0}; Update alarms started", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-
-            foreach (ActiveAlarm alarm in delta.InsertOperations)
+            lock (lockForSmartCache)
             {
-                TableItemsForActiveAlarm.Add(new ActiveAlarm()
-                {
-                    Id = alarm.Id,
-                    Consumer = alarm.Consumer,
-                    FromPeriod = alarm.FromPeriod,
-                    Voltage = alarm.Voltage,
-                    TypeVoltage = alarm.TypeVoltage,
-                    Georegion = alarm.Georegion
-                });
-                positionsAlarm.Add(alarm.Id, TableItemsForActiveAlarm.Count - 1);
-            }
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.UpdateAlarms; line: {0}; Update alarms started", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
 
-            foreach (long psrRef in delta.DeleteOperations)
-            {
-                if (positionsAlarm.ContainsKey(psrRef))
+                foreach (ActiveAlarm alarm in delta.InsertOperations)
                 {
-                    int emptyPosition = positionsAlarm[psrRef];
-                    List<long> temp = new List<long>();
-                    TableItemsForActiveAlarm.RemoveAt(emptyPosition);
-                    positionsAlarm.Remove(psrRef);
-
-                    foreach (long key in positionsAlarm.Keys)
+                    TableItemsForActiveAlarm.Add(new ActiveAlarm()
                     {
-                        if (positionsAlarm[key] > emptyPosition)
+                        Id = alarm.Id,
+                        Consumer = alarm.Consumer,
+                        FromPeriod = alarm.FromPeriod,
+                        Voltage = alarm.Voltage,
+                        TypeVoltage = alarm.TypeVoltage,
+                        Georegion = alarm.Georegion
+                    });
+                    positionsAlarm.Add(alarm.Id, TableItemsForActiveAlarm.Count - 1);
+                }
+
+                foreach (long psrRef in delta.DeleteOperations)
+                {
+                    if (positionsAlarm.ContainsKey(psrRef))
+                    {
+                        int emptyPosition = positionsAlarm[psrRef];
+                        List<long> temp = new List<long>();
+                        TableItemsForActiveAlarm.RemoveAt(emptyPosition);
+                        positionsAlarm.Remove(psrRef);
+
+                        foreach (long key in positionsAlarm.Keys)
                         {
-                            temp.Add(key);
+                            if (positionsAlarm[key] > emptyPosition)
+                            {
+                                temp.Add(key);
+                            }
+                        }
+
+                        foreach (long key in temp)
+                        {
+                            positionsAlarm[key] -= 1;
                         }
                     }
-
-                    foreach (long key in temp)
-                    {
-                        positionsAlarm[key] -= 1;
-                    }
                 }
-            }
 
-            Logger.LogMessageToFile(string.Format("AMIClient.Model.UpdateAlarms; line: {0}; Update alarms finished", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-            this.timeOfLastUpdateAlarm = DateTime.Now;
+                Logger.LogMessageToFile(string.Format("AMIClient.Model.UpdateAlarms; line: {0}; Update alarms finished", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+                this.timeOfLastUpdateAlarm = DateTime.Now;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
