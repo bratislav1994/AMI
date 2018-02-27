@@ -67,7 +67,7 @@
                 <MenuItem Header="Alarm summaries" Command="{Binding AlarmSummariesCommand}" />
             </MenuItem>
             <MenuItem Header="Advanced">
-                <MenuItem Header="Delta" Command="{Binding AddCimXmlCommand}"/>
+                <MenuItem Header="Import model" Command="{Binding AddCimXmlCommand}"/>
             </MenuItem>
         </Menu>
 
