@@ -261,20 +261,23 @@ namespace AMIClient.ViewModels
         {
             IdentifiedObject io = ((IdentifiedObject)selected);
 
-            switch (GetDmsTypeFromGid(io.GlobalId))
+            if (io != null)
             {
-                case DMSType.ENERGYCONS:
-                    NetworkPreviewViewModel.Instance.SelectedAMIAction(io, resolution);
-                    break;
-                case DMSType.GEOREGION:
-                    NetworkPreviewViewModel.Instance.ChartViewForGeoRegion(resolution, io.GlobalId, io.Name);
-                    break;
-                case DMSType.SUBGEOREGION:
-                    NetworkPreviewViewModel.Instance.ChartViewForSubGeoRegion(resolution, io.GlobalId, io.Name);
-                    break;
-                case DMSType.SUBSTATION:
-                    NetworkPreviewViewModel.Instance.ChartViewForSubstation(resolution, io.GlobalId, io.Name);
-                    break;
+                switch (GetDmsTypeFromGid(io.GlobalId))
+                {
+                    case DMSType.ENERGYCONS:
+                        NetworkPreviewViewModel.Instance.SelectedAMIAction(io, resolution);
+                        break;
+                    case DMSType.GEOREGION:
+                        NetworkPreviewViewModel.Instance.ChartViewForGeoRegion(resolution, io.GlobalId, io.Name);
+                        break;
+                    case DMSType.SUBGEOREGION:
+                        NetworkPreviewViewModel.Instance.ChartViewForSubGeoRegion(resolution, io.GlobalId, io.Name);
+                        break;
+                    case DMSType.SUBSTATION:
+                        NetworkPreviewViewModel.Instance.ChartViewForSubstation(resolution, io.GlobalId, io.Name);
+                        break;
+                }
             }
         }
 

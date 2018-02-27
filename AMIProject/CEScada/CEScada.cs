@@ -37,14 +37,7 @@ namespace CEScada
         private Dictionary<long, SubstationDb> substations;
         private Dictionary<long, EnergyConsumerDb> amis;
         private Dictionary<long, BaseVoltageDb> baseVoltages;
-        private DB dataBaseAdapter;
         private Dictionary<long, ActiveAlarm> alarmActiveDB;
-        private DateTime lastUpdateGeoRegions = DateTime.Now;
-        private DateTime lastUpdateSubGeoRegions = DateTime.Now;
-        private DateTime lastUpdateSubstations = DateTime.Now;
-        private DateTime lastUpdateConsumers = DateTime.Now;
-        private DateTime lastUpdateBaseVoltages = DateTime.Now;
-
 
         public CEScada(StatefulServiceContext context)
             : base(context)
@@ -116,18 +109,17 @@ namespace CEScada
 
             proxies = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, ServiceInfo>>("ProxiesForCEScada");
             caches = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, ServiceInfo>>("SmartCaches");
-            dataBaseAdapter = new DB();
             geoRegions = new Dictionary<long, GeographicalRegionDb>();
             subGeoRegions = new Dictionary<long, SubGeographicalRegionDb>();
             substations = new Dictionary<long, SubstationDb>();
             amis = new Dictionary<long, EnergyConsumerDb>();
             alarmActiveDB = new Dictionary<long, ActiveAlarm>();
-            geoRegions = dataBaseAdapter.ReadGeoRegions();
-            subGeoRegions = dataBaseAdapter.ReadSubGeoRegions();
-            substations = dataBaseAdapter.ReadSubstations();
-            amis = dataBaseAdapter.ReadConsumers();
-            baseVoltages = dataBaseAdapter.ReadBaseVoltages();
-            alarmActiveDB = dataBaseAdapter.ReadActiveAlarm();
+            geoRegions = DB.Instance.ReadGeoRegions();
+            subGeoRegions = DB.Instance.ReadSubGeoRegions();
+            substations = DB.Instance.ReadSubstations();
+            amis = DB.Instance.ReadConsumers();
+            baseVoltages = DB.Instance.ReadBaseVoltages();
+            alarmActiveDB = DB.Instance.ReadActiveAlarm();
         }
         public async void Connect(ServiceInfo serviceInfo)
         {
@@ -172,39 +164,34 @@ namespace CEScada
 
         public async void DataFromScada(Dictionary<long, DynamicMeasurement> measurements)
         {
-            if(dataBaseAdapter.GeoregionsNeedToRefresh(lastUpdateGeoRegions))
+            if(DB.Instance.GeoregionsNeedToRefresh(geoRegions.Count))
             {
-                lastUpdateGeoRegions = DB.LastUpdateGeoregions;
                 geoRegions.Clear();
-                geoRegions = dataBaseAdapter.ReadGeoRegions();
+                geoRegions = DB.Instance.ReadGeoRegions();
             }
 
-            if (dataBaseAdapter.SubgeoregionsNeedToRefresh(lastUpdateSubGeoRegions))
+            if (DB.Instance.SubgeoregionsNeedToRefresh(subGeoRegions.Count))
             {
-                lastUpdateSubGeoRegions = DB.LastUpdateSubGeoregions;
                 subGeoRegions.Clear();
-                subGeoRegions = dataBaseAdapter.ReadSubGeoRegions();
+                subGeoRegions = DB.Instance.ReadSubGeoRegions();
             }
 
-            if (dataBaseAdapter.SubstationsNeedToRefresh(lastUpdateSubstations))
+            if (DB.Instance.SubstationsNeedToRefresh(substations.Count))
             {
-                lastUpdateSubstations = DB.LastUpdateSubstations;
                 substations.Clear();
-                substations = dataBaseAdapter.ReadSubstations();
+                substations = DB.Instance.ReadSubstations();
             }
 
-            if (dataBaseAdapter.ConsumersNeedToRefresh(lastUpdateConsumers))
+            if (DB.Instance.ConsumersNeedToRefresh(amis.Count))
             {
-                lastUpdateConsumers = DB.LastUpdateConsumers;
                 amis.Clear();
-                amis = dataBaseAdapter.ReadConsumers();
+                amis = DB.Instance.ReadConsumers();
             }
 
-            if (dataBaseAdapter.BaseVoltagesNeedToRefresh(lastUpdateBaseVoltages))
+            if (DB.Instance.BaseVoltagesNeedToRefresh(baseVoltages.Count))
             {
-                lastUpdateBaseVoltages = DB.LastUpdateBaseVoltages;
                 baseVoltages.Clear();
-                baseVoltages = dataBaseAdapter.ReadBaseVoltages();
+                baseVoltages = DB.Instance.ReadBaseVoltages();
             }
 
             int cntForVoltage = 0;
@@ -359,8 +346,8 @@ namespace CEScada
                         alarmR.ToPeriod = dm.TimeStamp;
                         alarmR.TypeVoltage = alarmA.TypeVoltage;
 
-                        dataBaseAdapter.AddResolvedAlarm(alarmR);
-                        dataBaseAdapter.DeleteActiveAlarm(alarmA);
+                        DB.Instance.AddResolvedAlarm(alarmR);
+                        DB.Instance.DeleteActiveAlarm(alarmA);
                         alarmActiveDB.Remove(dm.PsrRef);
                         delta.DeleteOperations.Add(alarmA.Id);
                     }
@@ -385,8 +372,8 @@ namespace CEScada
                         }
 
                         alarmActiveDB[dm.PsrRef] = a;
-                        a.Georegion = dataBaseAdapter.ReadGeoregionNameByPSRRef(dm.PsrRef);
-                        dataBaseAdapter.AddActiveAlarm(a);
+                        a.Georegion = DB.Instance.ReadGeoregionNameByPSRRef(dm.PsrRef);
+                        DB.Instance.AddActiveAlarm(a);
                         delta.InsertOperations.Add(a);
                     }
                 }

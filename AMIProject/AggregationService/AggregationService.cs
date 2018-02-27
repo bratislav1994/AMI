@@ -30,12 +30,10 @@ namespace AggregationService
         private bool isDayDone = false;
         private DateTime lastMeasForHoursBeforeAppStart;
         private DateTime lastMeasForMinutesBeforeAppStart;
-        private DB dbAdapter;
 
         public AggregationService(StatelessServiceContext context)
             : base(context)
         {
-            dbAdapter = new DB();
             //this.DoUndoneByMinute();
             //this.DoUndoneByHour();
             //this.DoUndoneByDay();
@@ -149,7 +147,7 @@ namespace AggregationService
 
                                 if (DateTime.Compare(temp, lastMeasMinute) < 0) // postoje merenja u minutnoj tabeli koje treba upisati u satnu
                                 {
-                                    dbAdapter.ReadConsumers().Values.ToList().ForEach(x => numberOfUniqueConsumers.Add(x.GlobalId));
+                                    DB.Instance.ReadConsumers().Values.ToList().ForEach(x => numberOfUniqueConsumers.Add(x.GlobalId));
                                     DateTime now = RoundDown(DateTime.Now, TimeSpan.FromHours(1));
                                     DateTime roundDownLastMinute = RoundDown(lastMeasForMinutesBeforeAppStart, TimeSpan.FromHours(1));
                                     List<MinuteAggregation> tempList = new List<MinuteAggregation>();
@@ -343,7 +341,7 @@ namespace AggregationService
 
                     if (measurements == null || measurements.Count == 0)
                     {
-                        var totalConsumers = dbAdapter.ReadConsumers().Values.ToList();
+                        var totalConsumers = DB.Instance.ReadConsumers().Values.ToList();
 
                         if (totalConsumers != null || totalConsumers.Count != 0)
                         {
@@ -423,7 +421,7 @@ namespace AggregationService
 
                                 if (DateTime.Compare(temp, lastMeasHour) < 0) // postoje merenja u minutnoj tabeli koje treba upisati u satnu
                                 {
-                                    var consumers = dbAdapter.ReadConsumers().Values.ToList();
+                                    var consumers = DB.Instance.ReadConsumers().Values.ToList();
                                     consumers.ForEach(x => numberOfUniqueConsumers.Add(x.GlobalId));
                                     DateTime now = RoundDown(DateTime.Now, TimeSpan.FromDays(1));
                                     DateTime roundDownLastMeasHour = RoundDown(lastMeasForHoursBeforeAppStart, TimeSpan.FromDays(1));
@@ -615,7 +613,7 @@ namespace AggregationService
 
                     if (measurements == null || measurements.Count == 0)
                     {
-                        var totalConsumers = dbAdapter.ReadConsumers().Values.ToList();
+                        var totalConsumers = DB.Instance.ReadConsumers().Values.ToList();
 
                         if (totalConsumers != null || totalConsumers.Count != 0)
                         {
@@ -868,8 +866,11 @@ namespace AggregationService
 
                 if (toBeWrittenDic.Count != 0)
                 {
-                    ma.IntegralP += (toBeWrittenDic[kvp.Key].CurrentP * (((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[0].CurrentP - toBeWrittenDic[kvp.Key].CurrentP))) / 2;
-                    ma.IntegralQ += (toBeWrittenDic[kvp.Key].CurrentQ * (((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[0].CurrentQ - toBeWrittenDic[kvp.Key].CurrentQ))) / 2;
+                    if (toBeWrittenDic.ContainsKey(kvp.Key))
+                    {
+                        ma.IntegralP += (toBeWrittenDic[kvp.Key].CurrentP * (((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[0].CurrentP - toBeWrittenDic[kvp.Key].CurrentP))) / 2;
+                        ma.IntegralQ += (toBeWrittenDic[kvp.Key].CurrentQ * (((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds)) / 3600) + ((((float)(kvp.Value[0].TimeStamp - toBeWrittenDic[kvp.Key].TimeStamp).TotalSeconds) / 3600) * (Math.Abs(kvp.Value[0].CurrentQ - toBeWrittenDic[kvp.Key].CurrentQ))) / 2;
+                    }
                 }
 
                 for (int i = 1; i < kvp.Value.Count; i++)
@@ -931,7 +932,7 @@ namespace AggregationService
 
                     if (measurements == null || measurements.Count == 0)
                     {
-                        var totalConsumers = dbAdapter.ReadConsumers().Values.ToList();
+                        var totalConsumers = DB.Instance.ReadConsumers().Values.ToList();
 
                         if (totalConsumers != null || totalConsumers.Count != 0)
                         {

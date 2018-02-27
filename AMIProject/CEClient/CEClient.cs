@@ -25,7 +25,6 @@ namespace CEClient
     internal sealed class CEClient : StatelessService, ICalculationForClient
     {
         private List<ResolvedAlarm> listAfterRefresh;
-        private DB dataBaseAdapter;
 
         public CEClient(StatelessServiceContext context)
             : base(context)
@@ -70,7 +69,6 @@ namespace CEClient
             // TODO: Replace the following sample code with your own logic 
             //       or remove this RunAsync override if it's not needed in your service.
             listAfterRefresh = new List<ResolvedAlarm>();
-            dataBaseAdapter = new DB();
             long iterations = 0;
 
             while (true)
@@ -118,8 +116,8 @@ namespace CEClient
         {
             Dictionary<long, BaseVoltageDb> baseVoltages = new Dictionary<long, BaseVoltageDb>();
             Dictionary<long, EnergyConsumerDb> amis = new Dictionary<long, EnergyConsumerDb>();
-            baseVoltages = dataBaseAdapter.ReadBaseVoltages();
-            amis = dataBaseAdapter.ReadConsumersByID(gids);
+            baseVoltages = DB.Instance.ReadBaseVoltages();
+            amis = DB.Instance.ReadConsumersByID(gids);
             List<HourAggregation> result = this.ReadHourAggregationTableByFilter(gids, filter);
 
             if (result.Count == 0)
@@ -193,7 +191,7 @@ namespace CEClient
         public int GetTotalPageCount()
         {
             listAfterRefresh.Clear();
-            listAfterRefresh = dataBaseAdapter.ReadResolvedAlarm();
+            listAfterRefresh = DB.Instance.ReadResolvedAlarm();
 
             return listAfterRefresh.Count();
         }
@@ -202,8 +200,8 @@ namespace CEClient
         {
             Dictionary<long, BaseVoltageDb> baseVoltages = new Dictionary<long, BaseVoltageDb>();
             Dictionary<long, EnergyConsumerDb> amis = new Dictionary<long, EnergyConsumerDb>();
-            baseVoltages = dataBaseAdapter.ReadBaseVoltages();
-            amis = dataBaseAdapter.ReadConsumersByID(gids);
+            baseVoltages = DB.Instance.ReadBaseVoltages();
+            amis = DB.Instance.ReadConsumersByID(gids);
             Dictionary<DateTime, Statistics> measurements = new Dictionary<DateTime, Statistics>();
             DateTime to = from.AddHours(1);
 
@@ -256,8 +254,8 @@ namespace CEClient
         {
             Dictionary<long, BaseVoltageDb> baseVoltages = new Dictionary<long, BaseVoltageDb>();
             Dictionary<long, EnergyConsumerDb> amis = new Dictionary<long, EnergyConsumerDb>();
-            baseVoltages = dataBaseAdapter.ReadBaseVoltages();
-            amis = dataBaseAdapter.ReadConsumersByID(gids);
+            baseVoltages = DB.Instance.ReadBaseVoltages();
+            amis = DB.Instance.ReadConsumersByID(gids);
             Dictionary<DateTime, Statistics> measurements = new Dictionary<DateTime, Statistics>();
             DateTime to = from.AddDays(1);
 
@@ -309,8 +307,8 @@ namespace CEClient
         {
             Dictionary<long, BaseVoltageDb> baseVoltages = new Dictionary<long, BaseVoltageDb>();
             Dictionary<long, EnergyConsumerDb> amis = new Dictionary<long, EnergyConsumerDb>();
-            baseVoltages = dataBaseAdapter.ReadBaseVoltages();
-            amis = dataBaseAdapter.ReadConsumersByID(gids);
+            baseVoltages = DB.Instance.ReadBaseVoltages();
+            amis = DB.Instance.ReadConsumersByID(gids);
             Dictionary<DateTime, Statistics> measurements = new Dictionary<DateTime, Statistics>();
             DateTime to = from.AddMonths(1);
 

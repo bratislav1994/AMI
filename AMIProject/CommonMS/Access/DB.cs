@@ -14,57 +14,29 @@ namespace CommonMS.Access
     {
         private static object lockObj = new object();
         private static object lockObjAlarm = new object();
-        private static DateTime lastUpdateGeoregions = DateTime.Now;
-        private static DateTime lastUpdateSubGeoregions = DateTime.Now;
-        private static DateTime lastUpdateSubstations = DateTime.Now;
-        private static DateTime lastUpdateConsumers = DateTime.Now;
-        private static DateTime lastUpdateBaseVoltages = DateTime.Now;
-
-        public static DateTime LastUpdateGeoregions
-        {
-            get
-            {
-                return lastUpdateGeoregions;
-            }
-        }
-
-        public static DateTime LastUpdateSubGeoregions
-        {
-            get
-            {
-                return lastUpdateSubGeoregions;
-            }
-        }
-
-        public static DateTime LastUpdateSubstations
-        {
-            get
-            {
-                return lastUpdateSubstations;
-            }
-        }
-
-        public static DateTime LastUpdateConsumers
-        {
-            get
-            {
-                return lastUpdateConsumers;
-            }
-        }
-
-        public static DateTime LastUpdateBaseVoltages
-        {
-            get
-            {
-                return lastUpdateBaseVoltages;
-            }
-        }
-
+        private static DB instance;
+        
         public DB()
         {
-
         }
 
+        public static DB Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new DB();
+                }
+                return instance;
+            }
+
+            set
+            {
+                instance = value;
+            }
+        }
+        
         public bool AddGeoRegions(List<GeographicalRegionDb> geoRegions)
         {
             lock (lockObj)
@@ -82,8 +54,6 @@ namespace CommonMS.Access
                     {
                         return false;
                     }
-
-                    lastUpdateGeoregions = DateTime.Now;
 
                     return true;
                 }
@@ -108,8 +78,6 @@ namespace CommonMS.Access
                         return false;
                     }
 
-                    lastUpdateSubGeoregions = DateTime.Now;
-
                     return true;
                 }
             }
@@ -132,8 +100,6 @@ namespace CommonMS.Access
                     {
                         return false;
                     }
-
-                    lastUpdateSubstations = DateTime.Now;
 
                     return true;
                 }
@@ -158,8 +124,6 @@ namespace CommonMS.Access
                         return false;
                     }
 
-                    lastUpdateConsumers = DateTime.Now;
-
                     return true;
                 }
             }
@@ -182,8 +146,6 @@ namespace CommonMS.Access
                     {
                         return false;
                     }
-
-                    lastUpdateBaseVoltages = DateTime.Now;
 
                     return true;
                 }
@@ -337,30 +299,60 @@ namespace CommonMS.Access
             }
         }
 
-        public bool GeoregionsNeedToRefresh(DateTime lastUpdate)
+        public bool GeoregionsNeedToRefresh(int lastUpdate)
         {
-            return lastUpdateGeoregions > lastUpdate;
+            lock (lockObj)
+            {
+                using (var access = new AccessDB())
+                {
+                    return access.GeoRegions.Count() != lastUpdate;
+                }
+            }
         }
 
-        public bool SubgeoregionsNeedToRefresh(DateTime lastUpdate)
+        public bool SubgeoregionsNeedToRefresh(int lastUpdate)
         {
-            return lastUpdateSubGeoregions > lastUpdate;
+            lock (lockObj)
+            {
+                using (var access = new AccessDB())
+                {
+                    return access.SubGeoRegions.Count() != lastUpdate;
+                }
+            }
         }
 
-        public bool SubstationsNeedToRefresh(DateTime lastUpdate)
+        public bool SubstationsNeedToRefresh(int lastUpdate)
         {
-            return lastUpdateSubstations > lastUpdate;
+            lock (lockObj)
+            {
+                using (var access = new AccessDB())
+                {
+                    return access.Substations.Count() != lastUpdate;
+                }
+            }
         }
 
 
-        public bool ConsumersNeedToRefresh(DateTime lastUpdate)
+        public bool ConsumersNeedToRefresh(int lastUpdate)
         {
-            return lastUpdateConsumers > lastUpdate;
+            lock (lockObj)
+            {
+                using (var access = new AccessDB())
+                {
+                    return access.Consumers.Count() != lastUpdate;
+                }
+            }
         }
 
-        public bool BaseVoltagesNeedToRefresh(DateTime lastUpdate)
+        public bool BaseVoltagesNeedToRefresh(int lastUpdate)
         {
-            return lastUpdateBaseVoltages > lastUpdate;
+            lock (lockObj)
+            {
+                using (var access = new AccessDB())
+                {
+                    return access.BaseVoltages.Count() != lastUpdate;
+                }
+            }
         }
 
         #region alarm
