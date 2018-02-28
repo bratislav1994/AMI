@@ -71,6 +71,16 @@ namespace NMSProxy
         /// <param name="cancellationToken">Canceled when Service Fabric needs to shut down this service instance.</param>
         protected override async Task RunAsync(CancellationToken cancellationToken)
         {
+            ConnectToNMS();
+
+            if (Clients == null)
+            {
+                this.Clients = new List<IModelForDuplex>();
+            }
+        }
+
+        private void ConnectToNMS()
+        {
             // TODO: Replace the following sample code with your own logic 
             //       or remove this RunAsync override if it's not needed in your service.
 
@@ -86,12 +96,7 @@ namespace NMSProxy
             // Create a client for communicating with the ICalculator service that has been created with the
             // Singleton partition scheme.
             //
-
-            if (Clients == null)
-            {
-                this.Clients = new List<IModelForDuplex>();
-            }
-
+            
             proxy = new WcfNMS(
                             wcfClientFactory,
                             new Uri("fabric:/TransactionCoordinatorMS/NMS"),
@@ -124,52 +129,153 @@ namespace NMSProxy
 
         public void Ping()
         {
-            proxy.InvokeWithRetry(client => client.Channel.Ping());
+            while (true)
+            {
+                try
+                {
+                    proxy.InvokeWithRetry(client => client.Channel.Ping());
+                    return;
+                }
+                catch
+                {
+                    ConnectToNMS();
+                }
+            }
         }
 
         public ResourceDescription GetValues(long resourceId, List<ModelCode> propIds)
         {
-            return proxy.InvokeWithRetry(client => client.Channel.GetValues(resourceId, propIds));
+            while (true)
+            {
+                try
+                {
+                    return proxy.InvokeWithRetry(client => client.Channel.GetValues(resourceId, propIds));
+                }
+                catch
+                {
+                    ConnectToNMS();
+                }
+            }
         }
 
         public List<long> GetGlobalIds()
         {
-            return proxy.InvokeWithRetry(client => client.Channel.GetGlobalIds());
+            while (true)
+            {
+                try
+                {
+                    return proxy.InvokeWithRetry(client => client.Channel.GetGlobalIds());
+                }
+                catch
+                {
+                    ConnectToNMS();
+                }
+            }
         }
 
         public int GetExtentValues(ModelCode entityType, List<ModelCode> propIds)
         {
-            return proxy.InvokeWithRetry(client => client.Channel.GetExtentValues(entityType, propIds));
+            while (true)
+            {
+                try
+                {
+                    return proxy.InvokeWithRetry(client => client.Channel.GetExtentValues(entityType, propIds));
+                }
+                catch
+                {
+                    ConnectToNMS();
+                }
+            }
         }
 
         public int GetRelatedValues(long source, List<ModelCode> propIds, Association association)
         {
-            return proxy.InvokeWithRetry(client => client.Channel.GetRelatedValues(source, propIds, association));
+            while (true)
+            {
+                try
+                {
+                    return proxy.InvokeWithRetry(client => client.Channel.GetRelatedValues(source, propIds, association));
+                }
+                catch
+                {
+                    ConnectToNMS();
+                }
+            }
         }
 
         public List<ResourceDescription> IteratorNext(int n, int id)
         {
-            return proxy.InvokeWithRetry(client => client.Channel.IteratorNext(n, id));
+            while (true)
+            {
+                try
+                {
+                    return proxy.InvokeWithRetry(client => client.Channel.IteratorNext(n, id));
+                }
+                catch
+                {
+                    ConnectToNMS();
+                }
+            }
         }
 
         public bool IteratorRewind(int id)
         {
-            return proxy.InvokeWithRetry(client => client.Channel.IteratorRewind(id));
+            while (true)
+            {
+                try
+                {
+                    return proxy.InvokeWithRetry(client => client.Channel.IteratorRewind(id));
+                }
+                catch
+                {
+                    ConnectToNMS();
+                }
+            }
         }
 
         public int IteratorResourcesTotal(int id)
         {
-            return proxy.InvokeWithRetry(client => client.Channel.IteratorResourcesTotal(id));
+            while (true)
+            {
+                try
+                {
+                    return proxy.InvokeWithRetry(client => client.Channel.IteratorResourcesTotal(id));
+                }
+                catch
+                {
+                    ConnectToNMS();
+                }
+            }
         }
 
         public int IteratorResourcesLeft(int id)
         {
-            return proxy.InvokeWithRetry(client => client.Channel.IteratorResourcesLeft(id));
+            while (true)
+            {
+                try
+                {
+                    return proxy.InvokeWithRetry(client => client.Channel.IteratorResourcesLeft(id));
+                }
+                catch
+                {
+                    ConnectToNMS();
+                }
+            }
         }
 
         public bool IteratorClose(int id)
         {
-            return proxy.InvokeWithRetry(client => client.Channel.IteratorClose(id));
+            while (true)
+            {
+                try
+                {
+                    return proxy.InvokeWithRetry(client => client.Channel.IteratorClose(id));
+                }
+                catch
+                {
+                    ConnectToNMS();
+                }
+            }
         }
 
         public void SendAlarm(FTN.Common.ClassesForAlarmDB.DeltaForAlarm delta)
@@ -184,15 +290,22 @@ namespace NMSProxy
 
         public void NewDeltaApplied()
         {
+            List<IModelForDuplex> clientsForDeleting = new List<IModelForDuplex>();
             lock (lockObjectForClient)
             {
-                try
+                this.Clients.ForEach(x =>
                 {
-                    this.Clients.ForEach(x => x.NewDeltaApplied());
-                }
-                catch
-                {
-                }
+                    try
+                    {
+                        x.NewDeltaApplied();
+                    }
+                    catch
+                    {
+                        clientsForDeleting.Add(x);
+                    }
+                });
+
+                clientsForDeleting.ForEach(x => Clients.Remove(x));
             }
         }
     }

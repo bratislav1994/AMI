@@ -56,19 +56,49 @@ namespace NMS
         
         private Task<bool> SaveDelta(Delta delta)
         {
-            return Task.FromResult<bool>(proxyNMSDB.InvokeWithRetryAsync(client => client.Channel.SaveDelta(delta)).Result);
+            while (true)
+            {
+                try
+                {
+                    return Task.FromResult<bool>(proxyNMSDB.InvokeWithRetryAsync(client => client.Channel.SaveDelta(delta)).Result);
+                }
+                catch
+                {
+                    ConnectToDb();
+                }
+            }
         }
 
         private List<Delta> ReadAllDeltas()
         {
-            return proxyNMSDB.InvokeWithRetry(client => client.Channel.ReadDelta());
+            while (true)
+            {
+                try
+                {
+                    return proxyNMSDB.InvokeWithRetry(client => client.Channel.ReadDelta());
+                }
+                catch
+                {
+                    ConnectToDb();
+                }
+            }
         }
 
         private void InformClients()
         {
             lock (nm.LockObjectClient)
             {
-                proxy.InvokeWithRetry(client => client.Channel.NewDeltaApplied());
+                try
+                {
+                    if (proxy != null)
+                    {
+                        proxy.InvokeWithRetry(client => client.Channel.NewDeltaApplied());
+                    }
+                }
+                catch
+                {
+                    proxy = null;
+                }
             }
         }
 

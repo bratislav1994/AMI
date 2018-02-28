@@ -181,16 +181,22 @@ namespace AMIClient.ViewModels
                     {
                         this.timeOfLastUpdateAlarm = this.Model.GetTimeOfTheLastUpdateAlarm();
                         List<ActiveAlarm> changes = this.Model.GetChangesAlarm();
-
-                        App.Current.Dispatcher.Invoke((Action)delegate
+                        try
                         {
-                            this.TableItemsForActiveAlarm.Clear();
-
-                            foreach (ActiveAlarm alarm in changes)
+                            App.Current.Dispatcher.Invoke((Action)delegate
                             {
-                                this.TableItemsForActiveAlarm.Add(alarm);
-                            }
-                        });
+                                this.TableItemsForActiveAlarm.Clear();
+
+                                foreach (ActiveAlarm alarm in changes)
+                                {
+                                    this.TableItemsForActiveAlarm.Add(alarm);
+                                }
+                            });
+                        }
+                        catch
+                        {
+                            break;
+                        }
                     }
                 }
 
