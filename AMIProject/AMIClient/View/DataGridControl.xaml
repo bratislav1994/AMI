@@ -244,7 +244,7 @@
 
                 <DataGrid.Columns>
 
-                    <DataGridTemplateColumn Header="Status" MinWidth="70" MaxWidth="70" Width="50">
+                    <DataGridTemplateColumn Header="Status" MinWidth="70" MaxWidth="70" Width="70">
 
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -255,7 +255,7 @@
                     </DataGridTemplateColumn>
 
                     <DataGridTemplateColumn Header="Area" CanUserSort="True" 
-        SortMemberPath="Type" MinWidth="100" Width="120">
+        SortMemberPath="Type" MinWidth="100" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Type}" />
@@ -266,8 +266,8 @@
                             <DataTemplate>
                                 <Grid IsHitTestVisible="True">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition MinWidth="70" Width="70"/>
-                                        <ColumnDefinition MinWidth="30" Width="30"/>
+                                        <ColumnDefinition MinWidth="70" Width="auto"/>
+                                        <ColumnDefinition MinWidth="30" Width="auto"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" Text="{TemplateBinding Content}"/>
                                     <!--FILTER EXPANDER-->
@@ -276,7 +276,7 @@
                                         <Border IsHitTestVisible="True" BorderThickness="1" 
                   Margin="-80 0 0 0" >
                                             <StackPanel Margin="0 4 0 0">
-                                                <TextBox Width="90"
+                                                <TextBox Width="auto"
                                                 
                         Text="{Binding DataContext.TypeFilter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay,
                         RelativeSource={RelativeSource AncestorType=UserControl}}" 
@@ -293,7 +293,7 @@
                     </DataGridTemplateColumn>
 
                     <DataGridTemplateColumn Header="Name" CanUserSort="True" 
-        SortMemberPath="Io.Name" MinWidth="130" Width="130">
+        SortMemberPath="Io.Name" MinWidth="100" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Io.Name}" />
@@ -304,8 +304,8 @@
                             <DataTemplate>
                                 <Grid IsHitTestVisible="True">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition MinWidth="70" Width="70"/>
-                                        <ColumnDefinition MinWidth="30" Width="30"/>
+                                        <ColumnDefinition MinWidth="70" Width="auto"/>
+                                        <ColumnDefinition MinWidth="30" Width="auto"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" Text="{TemplateBinding Content}"/>
                                     <!--FILTER EXPANDER-->
@@ -314,7 +314,7 @@
                                         <Border IsHitTestVisible="True" BorderThickness="1" 
                   Margin="-80 0 0 0" >
                                             <StackPanel Margin="0 4 0 0">
-                                                <TextBox Width="90"
+                                                <TextBox Width="auto"
                                                 
                         Text="{Binding DataContext.NameFilter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay,
                         RelativeSource={RelativeSource AncestorType=UserControl}}" 
@@ -330,8 +330,8 @@
 
                     </DataGridTemplateColumn>
 
-                    <DataGridTextColumn MinWidth="100" Width="100" Header="P [kW]" Binding="{Binding CurrentP, StringFormat=F2}"/>
-                    <DataGridTextColumn MinWidth="100" Width="100" Header="Q [kVAr]" Binding="{Binding CurrentQ, StringFormat=F2}"/>
+                    <DataGridTextColumn MinWidth="100" Width="auto" Header="P [kW]" Binding="{Binding CurrentP, StringFormat=F2}"/>
+                    <DataGridTextColumn MinWidth="100" Width="auto" Header="Q [kVAr]" Binding="{Binding CurrentQ, StringFormat=F2}"/>
                     <DataGridTextColumn MinWidth="100" Width="*" Header="V [p.u.]" Binding="{Binding CurrentV, StringFormat=F2}"/>
 
                 </DataGrid.Columns>

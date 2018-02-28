@@ -216,7 +216,7 @@
             <DataGrid.Columns>
 
                 <DataGridTemplateColumn Header="Consumer" CanUserSort="True" 
-        SortMemberPath="Consumer" MinWidth="100" Width="120">
+        SortMemberPath="Consumer" MinWidth="100" Width="auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Consumer}" />
@@ -227,8 +227,8 @@
                         <DataTemplate>
                             <Grid IsHitTestVisible="True">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition MinWidth="70" Width="70"/>
-                                    <ColumnDefinition MinWidth="30" Width="30"/>
+                                    <ColumnDefinition MinWidth="70" Width="auto"/>
+                                    <ColumnDefinition MinWidth="30" Width="auto"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="{TemplateBinding Content}"/>
                                 <!--FILTER EXPANDER-->
@@ -237,7 +237,7 @@
                                     <Border IsHitTestVisible="True" BorderThickness="1" 
                   Margin="-80 0 0 0" >
                                         <StackPanel Margin="0 4 0 0">
-                                            <TextBox Width="90"
+                                            <TextBox Width="auto"
                                                 
                         Text="{Binding DataContext.ConsumerFilter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay,
                         RelativeSource={RelativeSource AncestorType=UserControl}}" 
@@ -252,9 +252,9 @@
                     </DataGridTemplateColumn.HeaderTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn MinWidth="100" Width="130" Header="Geographical region" Binding="{Binding Georegion}"/>
-                <DataGridTextColumn MinWidth="100" Width="130" Header="From" Binding="{Binding FromPeriod}"/>
-                <DataGridTextColumn MinWidth="100" Width="130" Header="To" Binding="{Binding ToPeriod}"/>
+                <DataGridTextColumn MinWidth="100" Width="auto" Header="Geographical region" Binding="{Binding Georegion}"/>
+                <DataGridTextColumn MinWidth="100" Width="auto" Header="From" Binding="{Binding FromPeriod}"/>
+                <DataGridTextColumn MinWidth="100" Width="auto" Header="To" Binding="{Binding ToPeriod}"/>
 
                 <DataGridTemplateColumn Header="TypeVoltage" CanUserSort="True" 
         SortMemberPath="TypeVoltage" MinWidth="100" Width="*">
@@ -268,8 +268,8 @@
                         <DataTemplate>
                             <Grid IsHitTestVisible="True">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition MinWidth="85" Width="85"/>
-                                    <ColumnDefinition MinWidth="30" Width="30"/>
+                                    <ColumnDefinition MinWidth="70" Width="auto"/>
+                                    <ColumnDefinition MinWidth="30" Width="auto"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="{TemplateBinding Content}"/>
                                 <!--FILTER EXPANDER-->
@@ -278,7 +278,7 @@
                                     <Border IsHitTestVisible="True" BorderThickness="1" 
                   Margin="-80 0 0 0" >
                                         <StackPanel Margin="0 4 0 0">
-                                            <TextBox Width="90"
+                                            <TextBox Width="auto"
                                                 
                         Text="{Binding DataContext.TypeVoltageFilter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay,
                         RelativeSource={RelativeSource AncestorType=UserControl}}" 
@@ -292,16 +292,16 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.HeaderTemplate>
                 </DataGridTemplateColumn>
-                
+
             </DataGrid.Columns>
 
         </DataGrid>
 
         <Grid Grid.Row="2" Background="#4c4c4c" VerticalAlignment="Stretch" Height="auto">
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="First" Width="50" Command="{Binding FirstCommand}"/>
+                <Button Content="First" Width="60" Command="{Binding FirstCommand}"/>
                 <Label Width="5" Background="Transparent" />
-                <Button Content="Previous" Width="50" Command="{Binding PreviousCommand}"/>
+                <Button Content="Previous" Width="60" Command="{Binding PreviousCommand}"/>
                 <Label Width="5" Background="Transparent" />
                 <TextBox Foreground="White" HorizontalContentAlignment="Right" Background="Transparent" BorderBrush="Transparent" MinWidth="30" MaxWidth="200" Width="auto" Text="{Binding EnteredPage, UpdateSourceTrigger=PropertyChanged}">
                     <TextBox.InputBindings>
@@ -310,9 +310,9 @@
                 </TextBox>
                 <TextBox Foreground="White" Background="Transparent" BorderThickness="0" IsReadOnly="True" BorderBrush="Transparent" Text="of"/>
                 <TextBox Foreground="White" Background="Transparent" BorderThickness="0" IsReadOnly="True" BorderBrush="Transparent" MinWidth="30" Width="auto" Text="{Binding TotalPages, Mode=OneWay}"/>
-                <Button Content="Next" Width="50" Command="{Binding NextCommand}"/>
+                <Button Content="Next" Width="60" Command="{Binding NextCommand}"/>
                 <Label Width="5" Background="Transparent" />
-                <Button Content="Last" Width="50" Command="{Binding LastCommand}"/>
+                <Button Content="Last" Width="60" Command="{Binding LastCommand}"/>
             </StackPanel>
         </Grid>
 

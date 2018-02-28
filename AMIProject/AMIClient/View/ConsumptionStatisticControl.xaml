@@ -257,7 +257,7 @@
 
                     <DockPanel HorizontalAlignment="Center">
                         <TextBlock Foreground="White" FontSize="18" Text="{Binding Statistics.AvgV, StringFormat=F2}"></TextBlock>
-                        <TextBlock Foreground="White" FontSize="18">&#160;V</TextBlock>
+                        <TextBlock Foreground="White" FontSize="18">&#160;p.u.</TextBlock>
                     </DockPanel>
                 </StackPanel>
             </StackPanel>
