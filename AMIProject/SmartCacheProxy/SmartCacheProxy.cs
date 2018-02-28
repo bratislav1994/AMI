@@ -82,6 +82,11 @@ namespace SmartCacheProxy
         /// <param name="cancellationToken">Canceled when Service Fabric needs to shut down this service instance.</param>
         protected override async Task RunAsync(CancellationToken cancellationToken)
         {
+            ConnectToSmartCache();
+        }
+
+        private void ConnectToSmartCache()
+        {
             // TODO: Replace the following sample code with your own logic 
             //       or remove this RunAsync override if it's not needed in your service.
 
@@ -138,7 +143,17 @@ namespace SmartCacheProxy
         {
             lock (lockObjectForClient)
             {
-                return proxy.InvokeWithRetry(client => client.Channel.GetLastMeas(gidsInTable));
+                while (true)
+                {
+                    try
+                    {
+                        return proxy.InvokeWithRetry(client => client.Channel.GetLastMeas(gidsInTable));
+                    }
+                    catch
+                    {
+                        ConnectToSmartCache();
+                    }
+                }
             }
         }
 

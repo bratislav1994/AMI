@@ -321,8 +321,18 @@ namespace CEScada
 
         private void SendToClient(Dictionary<long, DynamicMeasurement> measurements, DeltaForAlarm delta)
         {
-            smartCache.InvokeWithRetry(client => client.Channel.SendMeasurements(measurements));
-            smartCache.InvokeWithRetry(client => client.Channel.SendAlarm(delta));
+            try
+            {
+                if (smartCache != null)
+                {
+                    smartCache.InvokeWithRetry(client => client.Channel.SendMeasurements(measurements));
+                    smartCache.InvokeWithRetry(client => client.Channel.SendAlarm(delta));
+                }
+            }
+            catch
+            {
+                smartCache = null;
+            }
         }
 
         private DeltaForAlarm CheckAlarms(List<DynamicMeasurement> measurements)
@@ -388,7 +398,17 @@ namespace CEScada
         {
             if (gidsInAlarm.Count > 0)
             {
-                Console.WriteLine(proxy.InvokeWithRetry(client => client.Channel.Command(gidsInAlarm)));
+                try
+                {
+                    if (proxy != null)
+                    {
+                        Console.WriteLine(proxy.InvokeWithRetry(client => client.Channel.Command(gidsInAlarm)));
+                    }
+                }
+                catch
+                {
+                    proxy = null;
+                }
             }
         }
 

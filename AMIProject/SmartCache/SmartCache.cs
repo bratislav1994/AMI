@@ -194,7 +194,14 @@ namespace SmartCache
         {
             lock (lockObjectForClient)
             {
-                proxy.InvokeWithRetry(client => client.Channel.SendAlarm(delta));
+                try
+                {
+                    proxy.InvokeWithRetry(client => client.Channel.SendAlarm(delta));
+                }
+                catch
+                {
+                    proxy = null;
+                }
             }
         }
 
@@ -214,7 +221,14 @@ namespace SmartCache
 
             lock (lockObjectForClient)
             {
-                proxy.InvokeWithRetry(client => client.Channel.SendMeasurements(this.measurements.Values.ToList()));
+                try
+                {
+                    proxy.InvokeWithRetry(client => client.Channel.SendMeasurements(this.measurements.Values.ToList()));
+                }
+                catch
+                {
+                    proxy = null;
+                }
             }
         }
     }

@@ -91,6 +91,12 @@ namespace CEProxy
         /// <param name="cancellationToken">Canceled when Service Fabric needs to shut down this service instance.</param>
         protected override async Task RunAsync(CancellationToken cancellationToken)
         {
+            ConnectToCEClient();
+            ConnectToCEScada();
+        }
+
+        private void ConnectToCEClient()
+        {
             // Create binding
             Binding bindingClient = WcfUtility.CreateTcpClientBinding();
             bindingClient.ReceiveTimeout = TimeSpan.MaxValue;
@@ -109,7 +115,10 @@ namespace CEProxy
                             new Uri("fabric:/TransactionCoordinatorMS/CEClient"),
                             ServicePartitionKey.Singleton,
                             "CEClientListener");
+        }
 
+        private void ConnectToCEScada()
+        {
             Binding bindingScada = WcfUtility.CreateTcpClientBinding();
             bindingScada.ReceiveTimeout = TimeSpan.MaxValue;
             IServicePartitionResolver partitionResolverScada = ServicePartitionResolver.GetDefault();
@@ -131,17 +140,47 @@ namespace CEProxy
 
         public Tuple<List<Statistics>, Statistics> GetMeasurementsForChartView(List<long> gids, DateTime from, ResolutionType resolution)
         {
-            return proxyClient.InvokeWithRetry(client => client.Channel.GetMeasurementsForChartView(gids, from, resolution));
+            while (true)
+            {
+                try
+                {
+                    return proxyClient.InvokeWithRetry(client => client.Channel.GetMeasurementsForChartView(gids, from, resolution));
+                }
+                catch
+                {
+                    ConnectToCEClient();
+                }
+            }
         }
 
         public Tuple<List<HourAggregation>, Statistics> GetMeasurementsForChartViewByFilter(List<long> gids, Filter filter)
         {
-            return proxyClient.InvokeWithRetry(client => client.Channel.GetMeasurementsForChartViewByFilter(gids, filter));
+            while (true)
+            {
+                try
+                {
+                    return proxyClient.InvokeWithRetry(client => client.Channel.GetMeasurementsForChartViewByFilter(gids, filter));
+                }
+                catch
+                {
+                    ConnectToCEClient();
+                }
+            }
         }
 
         public List<ResolvedAlarm> GetResolvedAlarms(int startIndes, int range)
         {
-            return proxyClient.InvokeWithRetry(client => client.Channel.GetResolvedAlarms(startIndes, range));
+            while (true)
+            {
+                try
+                {
+                    return proxyClient.InvokeWithRetry(client => client.Channel.GetResolvedAlarms(startIndes, range));
+                }
+                catch
+                {
+                    ConnectToCEClient();
+                }
+            }
         }
 
         public int GetTotalPageCount()
@@ -156,7 +195,18 @@ namespace CEProxy
 
         private void ForwardMeasurements(Dictionary<long, DynamicMeasurement> measurements)
         {
-            proxyScada.InvokeWithRetry(client => client.Channel.DataFromScada(measurements));
+            while (true)
+            {
+                try
+                {
+                    proxyScada.InvokeWithRetry(client => client.Channel.DataFromScada(measurements));
+                    return;
+                }
+                catch
+                {
+                    ConnectToCEScada();
+                }
+            }
         }
 
         public void Connect(string endpointName)

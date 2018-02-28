@@ -170,17 +170,23 @@ namespace AMIClient.ViewModels
                     {
                         this.timeOfLastUpdateMeas = this.Model.GetTimeOfTheLastUpdateMeas();
                         List<TableItem> changes = this.Model.GetChangesMeas();
-
-                        App.Current.Dispatcher.Invoke((Action)delegate
+                        try
                         {
-                            this.TableItems.Clear();
-
-                            foreach (TableItem ti in changes)
+                            App.Current.Dispatcher.Invoke((Action)delegate
                             {
-                                ti.Status = ti.IsAlarm ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Green);
-                                this.TableItems.Add(ti);
-                            }
-                        });
+                                this.TableItems.Clear();
+
+                                foreach (TableItem ti in changes)
+                                {
+                                    ti.Status = ti.IsAlarm ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Green);
+                                    this.TableItems.Add(ti);
+                                }
+                            });
+                        }
+                        catch
+                        {
+                            break;
+                        }
                     }
                 }
 
