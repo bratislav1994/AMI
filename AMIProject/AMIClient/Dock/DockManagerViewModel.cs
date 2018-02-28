@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AMIClient.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -34,6 +35,22 @@ namespace AvalonDockMVVM.ViewModel
 
         public void Adding(IEnumerable<DockWindowViewModel> dockWindowViewModels)
         {
+            if (dockWindowViewModels.FirstOrDefault() is ActiveAlarmsViewModel)
+            {
+                if (this.Documents.Where(x => x is ActiveAlarmsViewModel).FirstOrDefault() != null)
+                {
+                    return;
+                }
+            }
+
+            if (dockWindowViewModels.FirstOrDefault() is ResolvedAlarmsViewModel)
+            {
+                if (this.Documents.Where(x => x is ResolvedAlarmsViewModel).FirstOrDefault() != null)
+                {
+                    return;
+                }
+            }
+
             foreach (var document in dockWindowViewModels)
             {
                 document.PropertyChanged += DockWindowViewModel_PropertyChanged;

@@ -198,6 +198,12 @@
                 </Style.Triggers>
             </Style>
 
+            <Style x:Key="MyColumnHeader" 
+               BasedOn="{StaticResource MetroDataGridColumnHeader}" 
+               TargetType="{x:Type DataGridColumnHeader}">
+                <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal"/>
+            </Style>
+
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -209,9 +215,9 @@
             <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Button Content="Refresh" Width="50" Command="{Binding RefreshCommand}" HorizontalAlignment="Left"/>
+        <Button Content="Refresh" Width="60" Command="{Binding RefreshCommand}" HorizontalAlignment="Left"/>
 
-        <DataGrid Grid.Row="1" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.ViewTableItemsForResolvedAlarm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
+        <DataGrid ColumnHeaderStyle="{StaticResource MyColumnHeader}" Grid.Row="1" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.ViewTableItemsForResolvedAlarm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
 
             <DataGrid.Columns>
 
@@ -256,7 +262,7 @@
                 <DataGridTextColumn MinWidth="100" Width="auto" Header="From" Binding="{Binding FromPeriod}"/>
                 <DataGridTextColumn MinWidth="100" Width="auto" Header="To" Binding="{Binding ToPeriod}"/>
 
-                <DataGridTemplateColumn Header="TypeVoltage" CanUserSort="True" 
+                <DataGridTemplateColumn Header="Alarm type" CanUserSort="True" 
         SortMemberPath="TypeVoltage" MinWidth="100" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

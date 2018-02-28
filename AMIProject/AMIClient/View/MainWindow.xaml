@@ -42,10 +42,6 @@
                 <local2:ChartControl />
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type local3:AlarmSummariesViewModel}">
-                <local2:AlarmSummariesControl />
-            </DataTemplate>
-
             <DataTemplate DataType="{x:Type local3:ConsumptionStatisticViewModel}">
                 <local2:ConsumptionStatisticControl />
             </DataTemplate>
@@ -60,11 +56,12 @@
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        
+
         <Menu Grid.Row="0" VerticalAlignment="Top" IsMainMenu="True">
             <MenuItem Header="File">
                 <MenuItem Header="Table view" Command="{Binding NetworkPreviewCommand}" />
-                <MenuItem Header="Alarm summaries" Command="{Binding AlarmSummariesCommand}" />
+                <MenuItem Header="Active alarms" Command="{Binding ActiveAlarmsCommand}" />
+                <MenuItem Header="Resolved alarms" Command="{Binding ResolvedAlarmsCommand}" />
             </MenuItem>
             <MenuItem Header="Advanced">
                 <MenuItem Header="Import model" Command="{Binding AddCimXmlCommand}"/>

@@ -17,7 +17,7 @@ using FTN.Common;
 
 namespace AMIClient.ViewModels
 {
-    public class ResolvedAlarmsViewModel : AlarmViewModel, INotifyPropertyChanged
+    public class ResolvedAlarmsViewModel : AvalonDockMVVM.ViewModel.DockWindowViewModel, INotifyPropertyChanged
     {
         private static ResolvedAlarmsViewModel instance;
         private Model model;
@@ -47,19 +47,6 @@ namespace AMIClient.ViewModels
             columnFilters[DataGridAlarmHeader.TypeVoltage.ToString()] = string.Empty;
             this.Model.ViewTableItemsForResolvedAlarm = new CollectionViewSource { Source = this.Model.TableItemsForResolvedAlarm }.View;
             this.Model.ViewTableItemsForResolvedAlarm = CollectionViewSource.GetDefaultView(this.Model.TableItemsForResolvedAlarm);
-        }
-
-        public static ResolvedAlarmsViewModel Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new ResolvedAlarmsViewModel();
-                }
-
-                return instance;
-            }
         }
 
         public Model Model

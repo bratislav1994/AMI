@@ -16,12 +16,11 @@ namespace AMIClient.ViewModels
         private NetworkPreviewViewModel tvm;
         private AddCimXmlViewModel xmlvm;
         private DataGridViewModel dgVM;
-        private AlarmSummariesViewModel alarmVM;
         private Model model;
 
         public MasterViewModel()
         {
-            
+
         }
 
         public AddCimXmlViewModel Xmlvm
@@ -50,19 +49,6 @@ namespace AMIClient.ViewModels
             }
         }
 
-        public AlarmSummariesViewModel AlarmVM
-        {
-            get
-            {
-                return alarmVM;
-            }
-
-            set
-            {
-                alarmVM = value;
-            }
-        }
-
         public Model Model
         {
             get
@@ -87,8 +73,6 @@ namespace AMIClient.ViewModels
             this.DgVM = DataGridViewModel.Instance;
             this.DgVM.SetModel(Model);
             this.CurrentViewModel = Tvm;
-            alarmVM = AlarmSummariesViewModel.Instance;
-            this.AlarmVM.SetModel(Model);
         }
 
         private object currentViewModel;
@@ -102,7 +86,7 @@ namespace AMIClient.ViewModels
                 this.RaisePropertyChanged("CurrentViewModel");
             }
         }
-        
+
         private DelegateCommand networkPreviewCommand;
         public DelegateCommand NetworkPreviewCommand
         {
@@ -141,23 +125,50 @@ namespace AMIClient.ViewModels
             this.CurrentViewModel = Xmlvm;
         }
 
-        private DelegateCommand alarmSummariesCommand;
-        public DelegateCommand AlarmSummariesCommand
+        private DelegateCommand activeAlarmsCommand;
+        public DelegateCommand ActiveAlarmsCommand
         {
             get
             {
-                if (alarmSummariesCommand == null)
+                if (activeAlarmsCommand == null)
                 {
-                    alarmSummariesCommand = new DelegateCommand(AlarmSummariesAction);
+                    activeAlarmsCommand = new DelegateCommand(ActiveAlarmsAction);
                 }
 
-                return alarmSummariesCommand;
+                return activeAlarmsCommand;
             }
         }
 
-        private void AlarmSummariesAction()
+        private void ActiveAlarmsAction()
         {
-            this.CurrentViewModel = alarmVM;
+            var doc = new List<DockWindowViewModel>();
+            var activeAlarms = new ActiveAlarmsViewModel() { Title = "Active alarms" };
+            activeAlarms.SetModel(Model);
+            doc.Add(activeAlarms);
+            this.Tvm.DockManagerViewModel.Adding(doc);
+        }
+
+        private DelegateCommand resolvedAlarmsCommand;
+        public DelegateCommand ResolvedAlarmsCommand
+        {
+            get
+            {
+                if (resolvedAlarmsCommand == null)
+                {
+                    resolvedAlarmsCommand = new DelegateCommand(ResolvedAlarmsAction);
+                }
+
+                return resolvedAlarmsCommand;
+            }
+        }
+
+        private void ResolvedAlarmsAction()
+        {
+            var doc = new List<DockWindowViewModel>();
+            var resolvedAlarms = new ResolvedAlarmsViewModel() { Title = "Resolved alarms" };
+            resolvedAlarms.SetModel(Model);
+            doc.Add(resolvedAlarms);
+            this.Tvm.DockManagerViewModel.Adding(doc);
         }
 
         public DataGridViewModel DgVM

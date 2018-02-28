@@ -203,9 +203,9 @@
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Title="{Binding TitleY}" MaxValue="{Binding StepV, UpdateSourceTrigger=PropertyChanged}" MinValue="0" Foreground="White" FontSize="14">
+                    <lvc:Axis Title="{Binding TitleY}" MaxValue="1.10" MinValue="0.90" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
-                            <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8"/>
+                            <lvc:Separator Step="0.02" StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8"/>
                         </lvc:Axis.Separator>
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisY>
@@ -221,14 +221,14 @@
 
                     <DockPanel HorizontalAlignment="Center">
                         <TextBlock Foreground="White" FontSize="18" Text="{Binding Statistics.MaxV, StringFormat=F2}"></TextBlock>
-                        <TextBlock Foreground="White" FontSize="18">&#160;V</TextBlock>
+                        <TextBlock Foreground="White" FontSize="18">&#160;p.u.</TextBlock>
                     </DockPanel>
 
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Minimum</TextBlock>
 
                     <DockPanel HorizontalAlignment="Center">
                         <TextBlock Foreground="White" FontSize="18" Text="{Binding Statistics.MinV, StringFormat=F2}" />
-                        <TextBlock Foreground="White" FontSize="18">&#160;V</TextBlock>
+                        <TextBlock Foreground="White" FontSize="18">&#160;p.u.</TextBlock>
                     </DockPanel>
 
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Average</TextBlock>

@@ -359,6 +359,14 @@
                         <local2:ConsumptionStatisticControl />
                     </DataTemplate>
 
+                    <DataTemplate DataType="{x:Type local3:ActiveAlarmsViewModel}">
+                        <local2:ActiveAlarmsControl />
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type local3:ResolvedAlarmsViewModel}">
+                        <local2:ResolvedAlarmsControl />
+                    </DataTemplate>
+
                     <!--<DataTemplate>
                         <ContentControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Content="{Binding Path=CurrentTab}"></ContentControl>
                     </DataTemplate>-->

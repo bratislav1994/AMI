@@ -14,7 +14,7 @@ using System.Windows.Data;
 
 namespace AMIClient.ViewModels
 {
-    public class ActiveAlarmsViewModel : AlarmViewModel, INotifyPropertyChanged
+    public class ActiveAlarmsViewModel : AvalonDockMVVM.ViewModel.DockWindowViewModel, INotifyPropertyChanged
     {
         private static ActiveAlarmsViewModel instance;
         private Model model;
@@ -49,19 +49,6 @@ namespace AMIClient.ViewModels
                 {
                     this.TableItemsForActiveAlarm.Add(alarm);
                 });
-            }
-        }
-
-        public static ActiveAlarmsViewModel Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new ActiveAlarmsViewModel();
-                }
-
-                return instance;
             }
         }
 

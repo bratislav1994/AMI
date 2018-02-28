@@ -224,7 +224,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Classes\AlarmViewModel.cs" />
     <Compile Include="Classes\DayOfWeek.cs" />
     <Compile Include="Classes\TableItem.cs" />
     <Compile Include="Classes\GeoRegionForTree.cs" />
@@ -247,7 +246,6 @@
     <Compile Include="ViewModels\ActiveAlarmsViewModel.cs" />
     <Compile Include="ViewModels\AddCimXmlViewModel.cs" />
     <Compile Include="Model\Model.cs" />
-    <Compile Include="ViewModels\AlarmSummariesViewModel.cs" />
     <Compile Include="ViewModels\AmiDataGridViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModel.cs" />
     <Compile Include="ViewModels\ConsumptionStatisticViewModel.cs" />
@@ -258,9 +256,6 @@
     </Compile>
     <Compile Include="View\AddCimXmlControl.xaml.cs">
       <DependentUpon>AddCimXmlControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\AlarmSummariesControl.xaml.cs">
-      <DependentUpon>AlarmSummariesControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\AmiDataGridControl.xaml.cs">
       <DependentUpon>AmiDataGridControl.xaml</DependentUpon>
@@ -286,10 +281,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AddCimXmlControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\AlarmSummariesControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

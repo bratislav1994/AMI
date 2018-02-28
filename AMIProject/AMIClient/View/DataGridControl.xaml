@@ -199,13 +199,19 @@
                 </Style.Triggers>
             </Style>
 
+            <Style x:Key="MyColumnHeader" 
+               BasedOn="{StaticResource MetroDataGridColumnHeader}" 
+               TargetType="{x:Type DataGridColumnHeader}">
+                <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal"/>
+            </Style>
+
         </ResourceDictionary>
     </UserControl.Resources>
 
 
     <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <DataGrid CanUserResizeColumns="True" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.ViewTableItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
+            <DataGrid ColumnHeaderStyle="{StaticResource MyColumnHeader}" CanUserResizeColumns="True" SelectionMode="Single" GridLinesVisibility="None" ItemsSource="{Binding Model.ViewTableItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserAddRows="false" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeRows="False" >
 
 
                 <DataGrid.Resources>
