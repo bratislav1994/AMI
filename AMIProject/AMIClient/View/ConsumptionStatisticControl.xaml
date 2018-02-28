@@ -243,14 +243,14 @@
 
                     <DockPanel HorizontalAlignment="Center">
                         <TextBlock Foreground="White" FontSize="18" Text="{Binding Statistics.MaxV, StringFormat=F2}"></TextBlock>
-                        <TextBlock Foreground="White" FontSize="18">&#160;V</TextBlock>
+                        <TextBlock Foreground="White" FontSize="18">&#160;p.u.</TextBlock>
                     </DockPanel>
 
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Minimum</TextBlock>
 
                     <DockPanel HorizontalAlignment="Center">
                         <TextBlock Foreground="White" FontSize="18" Text="{Binding Statistics.MinV, StringFormat=F2}" />
-                        <TextBlock Foreground="White" FontSize="18">&#160;V</TextBlock>
+                        <TextBlock Foreground="White" FontSize="18">&#160;p.u.</TextBlock>
                     </DockPanel>
 
                     <TextBlock Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0">Average</TextBlock>
