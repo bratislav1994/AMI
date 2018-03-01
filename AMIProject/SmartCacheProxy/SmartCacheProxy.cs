@@ -136,6 +136,7 @@ namespace SmartCacheProxy
             lock (lockObjectForClient)
             {
                 this.Clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
+                return;
             }
         }
 

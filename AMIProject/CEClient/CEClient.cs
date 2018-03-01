@@ -130,6 +130,8 @@ namespace CEClient
             foreach (HourAggregation hourAgg in result)
             {
                 hourAgg.AvgV = hourAgg.AvgV / baseVoltages[amis[hourAgg.PsrRef].BaseVoltageID].NominalVoltage;
+                hourAgg.MaxV = hourAgg.MaxV / baseVoltages[amis[hourAgg.PsrRef].BaseVoltageID].NominalVoltage;
+                hourAgg.MinV = hourAgg.MinV / baseVoltages[amis[hourAgg.PsrRef].BaseVoltageID].NominalVoltage;
 
                 if (!hourAggByResolution.ContainsKey(hourAgg.TimeStamp.Hour))
                 {
@@ -213,6 +215,8 @@ namespace CEClient
                 foreach (var meas in rawMeas)
                 {
                     meas.AvgV = meas.AvgV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage;
+                    meas.MaxV = meas.MaxV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage;
+                    meas.MinV = meas.MinV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage;
 
                     if (!measurements.ContainsKey(meas.TimeStamp))
                     {
@@ -221,14 +225,14 @@ namespace CEClient
                     }
                     else
                     {
-                        if (meas.MaxV > measurements[meas.TimeStamp].MaxV)
+                        if (meas.MaxV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage > measurements[meas.TimeStamp].MaxV)
                         {
-                            measurements[meas.TimeStamp].MaxV = meas.MaxV;
+                            measurements[meas.TimeStamp].MaxV = meas.MaxV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage;
                         }
 
-                        if (meas.MinV < measurements[meas.TimeStamp].MinV)
+                        if (meas.MinV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage < measurements[meas.TimeStamp].MinV)
                         {
-                            measurements[meas.TimeStamp].MinV = meas.MinV;
+                            measurements[meas.TimeStamp].MinV = meas.MinV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage;
                         }
 
                         measurements[meas.TimeStamp].AvgP += meas.AvgP;
@@ -267,6 +271,8 @@ namespace CEClient
                 foreach (var meas in rawMeas)
                 {
                     meas.AvgV = meas.AvgV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage;
+                    meas.MaxV = meas.MaxV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage;
+                    meas.MinV = meas.MinV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage;
 
                     if (!measurements.ContainsKey(meas.TimeStamp))
                     {
@@ -275,14 +281,14 @@ namespace CEClient
                     }
                     else
                     {
-                        if (meas.MaxV > measurements[meas.TimeStamp].MaxV)
+                        if (meas.MaxV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage > measurements[meas.TimeStamp].MaxV)
                         {
-                            measurements[meas.TimeStamp].MaxV = meas.MaxV;
+                            measurements[meas.TimeStamp].MaxV = meas.MaxV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage;
                         }
 
-                        if (meas.MinV < measurements[meas.TimeStamp].MinV)
+                        if (meas.MinV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage < measurements[meas.TimeStamp].MinV)
                         {
-                            measurements[meas.TimeStamp].MinV = meas.MinV;
+                            measurements[meas.TimeStamp].MinV = meas.MinV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage;
                         }
 
                         measurements[meas.TimeStamp].AvgP += meas.AvgP;
@@ -320,6 +326,8 @@ namespace CEClient
                 foreach (var meas in rawMeas)
                 {
                     meas.AvgV = meas.AvgV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage;
+                    meas.MaxV = meas.MaxV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage;
+                    meas.MinV = meas.MinV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage;
 
                     if (!measurements.ContainsKey(meas.TimeStamp))
                     {
@@ -328,14 +336,14 @@ namespace CEClient
                     }
                     else
                     {
-                        if (meas.MaxV > measurements[meas.TimeStamp].MaxV)
+                        if (meas.MaxV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage > measurements[meas.TimeStamp].MaxV)
                         {
-                            measurements[meas.TimeStamp].MaxV = meas.MaxV;
+                            measurements[meas.TimeStamp].MaxV = meas.MaxV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage;
                         }
 
-                        if (meas.MinV < measurements[meas.TimeStamp].MinV)
+                        if (meas.MinV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage < measurements[meas.TimeStamp].MinV)
                         {
-                            measurements[meas.TimeStamp].MinV = meas.MinV;
+                            measurements[meas.TimeStamp].MinV = meas.MinV / baseVoltages[amis[meas.PsrRef].BaseVoltageID].NominalVoltage;
                         }
 
                         measurements[meas.TimeStamp].AvgP += meas.AvgP;
@@ -346,7 +354,7 @@ namespace CEClient
                         measurements[meas.TimeStamp].IntegralQ += meas.IntegralQ;
                     }
                 }
-
+                
                 foreach (KeyValuePair<DateTime, int> kvp in cntForVoltage)
                 {
                     measurements[kvp.Key].AvgV /= kvp.Value;

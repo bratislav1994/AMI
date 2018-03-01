@@ -402,7 +402,7 @@ namespace CEScada
                 {
                     if (proxy != null)
                     {
-                        Console.WriteLine(proxy.InvokeWithRetry(client => client.Channel.Command(gidsInAlarm)));
+                        ServiceEventSource.Current.ServiceMessage(this.Context, "CEScada - " + proxy.InvokeWithRetry(client => client.Channel.Command(gidsInAlarm)));
                     }
                 }
                 catch
