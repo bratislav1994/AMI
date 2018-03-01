@@ -30,11 +30,12 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/basedark.xaml" />
 
             </ResourceDictionary.MergedDictionaries>
+
         </ResourceDictionary>
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid  Background="#282828" Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
+        <Grid Background="#282828" Margin="0,0,0,0" VerticalAlignment="Stretch" Height="auto">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"></RowDefinition>
@@ -90,14 +91,14 @@
 
             <lvc:CartesianChart Width="auto" Height="auto" Background="#282828" Series="{Binding DataHistoryPX}" DataContext="{Binding}" Name="Chart" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Margin="5">
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title="{Binding TitleX}" Labels="{Binding DataHistoryPY}" Foreground="White" FontSize="14">
+                    <lvc:Axis Labels="{Binding DataHistoryPY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
                         </lvc:Axis.Separator>
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Title="{Binding TitleY}" MaxValue="{Binding StepP, UpdateSourceTrigger=PropertyChanged}" MinValue="0" Foreground="White" FontSize="14">
+                    <lvc:Axis MaxValue="{Binding StepP, UpdateSourceTrigger=PropertyChanged}" MinValue="0" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
                         </lvc:Axis.Separator>
@@ -143,14 +144,14 @@
 
             <lvc:CartesianChart Width="auto" Height="auto" Background="#282828" Series="{Binding DataHistoryQX}" DataContext="{Binding}" Name="Chart1" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Margin="5">
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title="{Binding TitleX}" Labels="{Binding DataHistoryQY}" Foreground="White" FontSize="14">
+                    <lvc:Axis Labels="{Binding DataHistoryQY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
                         </lvc:Axis.Separator>
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Title="{Binding TitleY}" MaxValue="{Binding StepQ, UpdateSourceTrigger=PropertyChanged}" MinValue="0" Foreground="White" FontSize="14">
+                    <lvc:Axis MaxValue="{Binding StepQ, UpdateSourceTrigger=PropertyChanged}" MinValue="0" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8"/>
                         </lvc:Axis.Separator>
@@ -196,16 +197,16 @@
 
             <lvc:CartesianChart Width="auto" Height="auto" Background="#282828" Series="{Binding DataHistoryVX}" DataContext="{Binding}" Name="Chart2" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Margin="5">
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title="{Binding TitleX}" Labels="{Binding DataHistoryVY}" Foreground="White" FontSize="14">
+                    <lvc:Axis Labels="{Binding DataHistoryVY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
                         </lvc:Axis.Separator>
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Title="{Binding TitleY}" MaxValue="1.10" MinValue="0.90" Foreground="White" FontSize="14">
+                    <lvc:Axis MaxValue="1.10" MinValue="0.90" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
-                            <lvc:Separator Step="0.02" StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8"/>
+                            <lvc:Separator Step="0.05" StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8"/>
                         </lvc:Axis.Separator>
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisY>

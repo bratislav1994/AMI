@@ -77,7 +77,7 @@
                 <ColumnDefinition Width="150"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Expander Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0"
+            <Expander Margin="3, 3, 0, 0" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0"
 				  HorizontalAlignment="Stretch">
                 <StackPanel>
                     <DockPanel>
@@ -106,13 +106,13 @@
                         <ComboBox Width="100" HorizontalAlignment="Left" ItemsSource="{Binding ConsumerTypeCb, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ConsumerTypeChecked, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding ConsumerTypeSelected, UpdateSourceTrigger=PropertyChanged}"/>
                     </DockPanel>
 
-                    <Button Margin="5, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
+                    <Button Margin="3, 0, 0, 0" HorizontalAlignment="Left" Content="Show data" Command="{Binding ShowDataCommand}" VerticalAlignment="Center" Width="83" />
                 </StackPanel>
             </Expander>
 
             <lvc:CartesianChart Width="auto" Height="auto" Background="#282828" Series="{Binding DataHistoryPX}" DataContext="{Binding}" Name="Chart" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title="Hour" Labels="{Binding DataHistoryPY}" Foreground="White" FontSize="14">
+                    <lvc:Axis Labels="{Binding DataHistoryPY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
                         </lvc:Axis.Separator>
@@ -165,7 +165,7 @@
 
             <lvc:CartesianChart Width="auto" Height="auto" Background="#282828" Series="{Binding DataHistoryQX}" DataContext="{Binding}" Name="Chart1" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title="Hour" Labels="{Binding DataHistoryQY}" Foreground="White" FontSize="14">
+                    <lvc:Axis Labels="{Binding DataHistoryQY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
                         </lvc:Axis.Separator>
@@ -218,7 +218,7 @@
 
             <lvc:CartesianChart Width="auto" Height="auto" Background="#282828" Series="{Binding DataHistoryVX}" DataContext="{Binding}" Name="Chart2" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title="Hour" Labels="{Binding DataHistoryVY}" Foreground="White" FontSize="14">
+                    <lvc:Axis Labels="{Binding DataHistoryVY}" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
                             <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
                         </lvc:Axis.Separator>
@@ -227,7 +227,7 @@
                 <lvc:CartesianChart.AxisY>
                     <lvc:Axis MaxValue="1.10" MinValue="0.90" Foreground="White" FontSize="14">
                         <lvc:Axis.Separator>
-                            <lvc:Separator Step="0.02" StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
+                            <lvc:Separator Step="0.05" StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="8" />
                         </lvc:Axis.Separator>
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisY>

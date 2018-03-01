@@ -738,9 +738,9 @@ namespace AMIClient.ViewModels
                 DataHistoryPX[0].Values.Add(dm.AvgP);
                 DataHistoryQX[0].Values.Add(dm.AvgQ);
                 DataHistoryVX[0].Values.Add(dm.AvgV);
-                DataHistoryPY[++cnt] = dm.TimeStamp.Hour.ToString();
-                DataHistoryQY[cnt] = dm.TimeStamp.Hour.ToString();
-                DataHistoryVY[cnt] = dm.TimeStamp.Hour.ToString();
+                DataHistoryPY[++cnt] = dm.TimeStamp.ToShortTimeString();
+                DataHistoryQY[cnt] = dm.TimeStamp.ToShortTimeString();
+                DataHistoryVY[cnt] = dm.TimeStamp.ToShortTimeString();
             }
             
             this.Statistics = measForChart.Item2;

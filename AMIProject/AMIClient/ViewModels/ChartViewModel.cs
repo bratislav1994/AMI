@@ -40,8 +40,6 @@ namespace AMIClient.ViewModels
         private int selectedYear = -1;
         private string selectedMonth = string.Empty;
         private Visibility datePick = Visibility.Hidden;
-        private string titleX = string.Empty;
-        private string titleY = string.Empty;
 
         public ChartViewModel()
         {
@@ -372,34 +370,6 @@ namespace AMIClient.ViewModels
             }
         }
 
-        public string TitleX
-        {
-            get
-            {
-                return titleX;
-            }
-
-            set
-            {
-                titleX = value;
-                RaisePropertyChanged("TitleX");
-            }
-        }
-
-        public string TitleY
-        {
-            get
-            {
-                return titleY;
-            }
-
-            set
-            {
-                titleY = value;
-                RaisePropertyChanged("TitleY");
-            }
-        }
-
         private bool CanShowDataExecute()
         {
             return resolution == ResolutionType.MINUTE || resolution == ResolutionType.HOUR ?
@@ -476,25 +446,12 @@ namespace AMIClient.ViewModels
                 DataHistoryPX[0].Values.Add(dm.AvgP);
                 DataHistoryQX[0].Values.Add(dm.AvgQ);
                 DataHistoryVX[0].Values.Add(dm.AvgV);
-                DataHistoryPY[++cnt] = dm.TimeStamp.ToString();
-                DataHistoryQY[cnt] = dm.TimeStamp.ToString();
-                DataHistoryVY[cnt] = dm.TimeStamp.ToString();
+                DataHistoryPY[++cnt] = this.Resolution != ResolutionType.DAY ? dm.TimeStamp.ToShortTimeString() : dm.TimeStamp.ToShortDateString();
+                DataHistoryQY[cnt] = this.Resolution != ResolutionType.DAY ? dm.TimeStamp.ToShortTimeString() : dm.TimeStamp.ToShortDateString();
+                DataHistoryVY[cnt] = this.Resolution != ResolutionType.DAY ? dm.TimeStamp.ToShortTimeString() : dm.TimeStamp.ToShortDateString();
             }
 
             this.Statistics = measForChart.Item2;
-
-            switch (this.Resolution)
-            {
-                case ResolutionType.MINUTE:
-                    TitleX = "Minute";
-                    break;
-                case ResolutionType.HOUR:
-                    TitleX = "Hour";
-                    break;
-                case ResolutionType.DAY:
-                    TitleX = "Day";
-                    break;
-            }
         }
 
         public void SetGids(List<long> amiGids)
