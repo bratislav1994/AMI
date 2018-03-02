@@ -1,4 +1,5 @@
-﻿using FTN.Common;
+﻿using AMIClient.HelperClasses;
+using FTN.Common;
 using FTN.Common.Filter;
 using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using LiveCharts;
@@ -61,9 +62,10 @@ namespace AMIClient.ViewModels
         public ConsumptionStatisticViewModel()
         {
             SeasonCb = new List<Season>() { Season.SUMMER, Season.WINTER };
-            TypeOfDayCb = new List<AMIClient.Classes.DayOfWeek>() { new Classes.DayOfWeek(DayOfWeek.Monday) , new Classes.DayOfWeek(DayOfWeek.Tuesday), new Classes.DayOfWeek(DayOfWeek.Wednesday),
-                                                                    new Classes.DayOfWeek(DayOfWeek.Thursday), new Classes.DayOfWeek(DayOfWeek.Friday), new Classes.DayOfWeek(DayOfWeek.Saturday),
-                                                                    new Classes.DayOfWeek(DayOfWeek.Sunday)};
+            TypeOfDayCb = new List<AMIClient.Classes.DayOfWeek>() { new Classes.DayOfWeek(Days.Monday) , new Classes.DayOfWeek(Days.Tuesday), new Classes.DayOfWeek(Days.Wednesday),
+                                                                    new Classes.DayOfWeek(Days.Thursday), new Classes.DayOfWeek(Days.Friday), new Classes.DayOfWeek(Days.WorkDay), new Classes.DayOfWeek(Days.Saturday),
+                                                                    new Classes.DayOfWeek(Days.Sunday),
+                                                                    new Classes.DayOfWeek(Days.Weekend)};
             ConsumerTypeCb = new List<ConsumerType>() { ConsumerType.HOUSEHOLD, ConsumerType.FIRM, ConsumerType.SHOPPING_CENTER };
             YearCb= new List<int>();
             months = new Dictionary<string, int>();
@@ -704,9 +706,34 @@ namespace AMIClient.ViewModels
 
             foreach (Classes.DayOfWeek day in TypeOfDayCb)
             {
-                if (day.IsChecked)
+                if (day.IsChecked && day.Name != Days.WorkDay && day.Name != Days.Weekend)
                 {
-                    filter.TypeOfDay.Add(day.Name);
+                    if (!filter.TypeOfDay.Contains((DayOfWeek)day.Name))
+                    {
+                        filter.TypeOfDay.Add((DayOfWeek)day.Name);
+                    }
+                }
+
+                if (day.IsChecked && day.Name == Days.WorkDay)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        if (!filter.TypeOfDay.Contains((DayOfWeek)TypeOfDayCb[i].Name))
+                        {
+                            filter.TypeOfDay.Add((DayOfWeek)TypeOfDayCb[i].Name);
+                        }
+                    }
+                }
+
+                if (day.IsChecked && day.Name == Days.Weekend)
+                {
+                    for (int i = 6; i < 8; i++)
+                    {
+                        if (!filter.TypeOfDay.Contains((DayOfWeek)TypeOfDayCb[i].Name))
+                        {
+                            filter.TypeOfDay.Add((DayOfWeek)TypeOfDayCb[i].Name);
+                        }
+                    }
                 }
             }
 

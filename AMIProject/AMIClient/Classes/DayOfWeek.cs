@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AMIClient.HelperClasses;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -9,16 +10,16 @@ namespace AMIClient.Classes
 {
     public class DayOfWeek : INotifyPropertyChanged
     {
-        private System.DayOfWeek name;
+        private Days name;
         private bool isChecked;
 
-        public DayOfWeek(System.DayOfWeek day)
+        public DayOfWeek(Days day)
         {
             this.Name = day;
             IsChecked = false;
         }
 
-        public System.DayOfWeek Name
+        public Days Name
         {
             get
             {

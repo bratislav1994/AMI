@@ -34,4 +34,27 @@ namespace AMIClient.HelperClasses
         TypeVoltage,
         Georegion
     }
+
+    [TypeConverter(typeof(EnumDescriptionTypeConverter))]
+    public enum Days
+    {
+        [Description("Sunday")]
+        Sunday = 0,
+        [Description("Monday")]
+        Monday,
+        [Description("Tuesday")]
+        Tuesday,
+        [Description("Wednesday")]
+        Wednesday,
+        [Description("Thursday")]
+        Thursday,
+        [Description("Friday")]
+        Friday,
+        [Description("Saturday")]
+        Saturday,
+        [Description("Work Day")]
+        WorkDay,
+        [Description("Weekend")]
+        Weekend
+    }
 }
