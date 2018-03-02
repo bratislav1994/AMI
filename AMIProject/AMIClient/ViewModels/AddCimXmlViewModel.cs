@@ -13,6 +13,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using ToastNotifications;
+using ToastNotifications.Lifetime;
+using ToastNotifications.Position;
+using ToastNotifications.Messages;
 
 namespace AMIClient.ViewModels
 {
@@ -27,6 +31,7 @@ namespace AMIClient.ViewModels
         private BindingList<SupportedProfiles> cIMProfiles;
         private static AddCimXmlViewModel instance;
         public bool isTest = false;
+        Notifier notifier;
 
         public AddCimXmlViewModel()
         {
@@ -36,6 +41,20 @@ namespace AMIClient.ViewModels
             CIMProfile = CIMProfiles[0];
             this.ConvertCommand.RaiseCanExecuteChanged();
             this.ApplyDeltaCommand.RaiseCanExecuteChanged();
+            notifier = new Notifier(cfg =>
+            {
+                cfg.PositionProvider = new WindowPositionProvider(
+                    parentWindow: App.Current.MainWindow,
+                    corner: Corner.TopRight,
+                    offsetX: 10,
+                    offsetY: 10);
+
+                cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(
+                    notificationLifetime: TimeSpan.FromSeconds(5),
+                    maximumNotificationCount: MaximumNotificationCount.FromCount(5));
+
+                cfg.Dispatcher = App.Current.Dispatcher;
+            });
         }
 
         public static AddCimXmlViewModel Instance
@@ -221,6 +240,14 @@ namespace AMIClient.ViewModels
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.AddCimXmlViewModel.ApplyDeltaCommandAction; line: {0}; Try apply delta", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     string log = adapter.ApplyUpdates(nmsDelta);
+                    if (log.Equals("true"))
+                    {
+                        notifier.ShowSuccess("Delta succesfully applied.");
+                    }
+                    else 
+                    {
+                        notifier.ShowError(log);
+                    }
                     Report += log;
                     nmsDelta = null;
                     isOk = false;
