@@ -33,7 +33,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter
                     binding.SendTimeout = TimeSpan.FromHours(1);
                     ChannelFactory<ITransactionCoordinator> factory = new ChannelFactory<ITransactionCoordinator>(
                         binding,
-                        new EndpointAddress("net.tcp://localhost:10300/TransactionCoordinatorProxy/Adapter/"));
+                        new EndpointAddress("net.tcp://13.64.116.132:10300/TransactionCoordinatorProxy/Adapter/"));
                     this.proxy = factory.CreateChannel();
                     firstContact = false;
                 }

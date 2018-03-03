@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="TransactionCoordinatorMSType" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
-    <Parameter Name="CETransactionCoordinator_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="CETransactionCoordinator_InstanceCount" DefaultValue="1" />
     <Parameter Name="SmartCache_MinReplicaSetSize" DefaultValue="3" />
     <Parameter Name="SmartCache_PartitionCount" DefaultValue="1" />
     <Parameter Name="SmartCache_TargetReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="SmartCacheProxy_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="SmartCacheProxy_InstanceCount" DefaultValue="1" />
     <Parameter Name="CEScada_MinReplicaSetSize" DefaultValue="3" />
     <Parameter Name="CEScada_PartitionCount" DefaultValue="1" />
     <Parameter Name="CEScada_TargetReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="CEClient_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="CEClient_InstanceCount" DefaultValue="1" />
     <Parameter Name="AggregationService_InstanceCount" DefaultValue="1" />
     <Parameter Name="CEProxy_InstanceCount" DefaultValue="1" />
     <Parameter Name="TransactionCoordinatorProxy_InstanceCount" DefaultValue="1" />

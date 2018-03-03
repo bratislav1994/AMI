@@ -75,7 +75,7 @@ namespace SCADA
                     DuplexChannelFactory<ITransactionDuplexScada> factory = new DuplexChannelFactory<ITransactionDuplexScada>(
                     new InstanceContext(this),
                         binding,
-                        new EndpointAddress("net.tcp://localhost:10301/TransactionCoordinatorProxy/Scada/"));
+                        new EndpointAddress("net.tcp://13.64.116.132:10301/TransactionCoordinatorProxy/Scada/"));
                     proxyCoordinator = factory.CreateChannel();
                     firstTimeCoordinator = false;
                 }
