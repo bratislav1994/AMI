@@ -65,13 +65,14 @@ namespace AMIClient
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.GdaQueryProxy; line: {0}; Create channel between Client and NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
-                    binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    binding.SendTimeout = TimeSpan.FromMinutes(10);
                     binding.ReceiveTimeout = TimeSpan.MaxValue;
                     binding.MaxReceivedMessageSize = Int32.MaxValue;
                     binding.MaxBufferSize = Int32.MaxValue;
                     factory = new DuplexChannelFactory<INetworkModelGDAContractDuplexClient>(
                     new InstanceContext(this),
                         binding,
+                        /*new EndpointAddress("net.tcp://13.64.116.132:10200/NMSProxy/Client/")*/
                         new EndpointAddress("net.tcp://localhost:10200/NMSProxy/Client/"));
                     gdaQueryProxy = factory.CreateChannel();
                     FirstContact = false;
@@ -95,12 +96,13 @@ namespace AMIClient
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.CEQueryProxy; line: {0}; Create channel between Client and CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
-                    binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    binding.SendTimeout = TimeSpan.FromMinutes(10);
                     binding.ReceiveTimeout = TimeSpan.MaxValue;
                     binding.MaxReceivedMessageSize = Int32.MaxValue;
                     binding.MaxBufferSize = Int32.MaxValue;
                     factoryCE = new ChannelFactory<ICalculationForClient>(
                         binding,
+                        /*new EndpointAddress("net.tcp://13.64.116.132:10100/CEProxy/Client/")*/
                         new EndpointAddress("net.tcp://localhost:10100/CEProxy/Client/"));
                     ceQueryProxy = factoryCE.CreateChannel();
                     FirstContactCE = false;
@@ -124,13 +126,14 @@ namespace AMIClient
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.SCProxy; line: {0}; Create channel between Client and SC", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
-                    binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    binding.SendTimeout = TimeSpan.FromMinutes(10);
                     binding.ReceiveTimeout = TimeSpan.MaxValue;
                     binding.MaxReceivedMessageSize = Int32.MaxValue;
                     binding.MaxBufferSize = Int32.MaxValue;
                     factorySC = new DuplexChannelFactory<ISmartCacheDuplexForClient>(
                     new InstanceContext(this),
                         binding,
+                        /*new EndpointAddress("net.tcp://13.64.116.132:10400/SmartCache/Client/")*/
                         new EndpointAddress("net.tcp://localhost:10400/SmartCache/Client/"));
                     scProxy = factorySC.CreateChannel();
                     FirstContactSC = false;
@@ -346,7 +349,7 @@ namespace AMIClient
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client is connected to the CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     break;
                 }
-                catch
+                catch (Exception ex)
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client faild to connect with CE. CATCH", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     FirstContactCE = true;

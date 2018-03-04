@@ -43,6 +43,7 @@ namespace SmartCacheProxy
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners()
         {
+            string host = Context.NodeContext.IPAddressOrFQDN;
             NetTcpBinding bindingClient = new NetTcpBinding();
             bindingClient.ReceiveTimeout = TimeSpan.MaxValue;
             bindingClient.MaxReceivedMessageSize = Int32.MaxValue;
