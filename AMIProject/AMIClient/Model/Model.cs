@@ -21,6 +21,8 @@ using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using System.Windows.Media;
 using FTN.Common.ClassesForAlarmDB;
 using FTN.Common.Filter;
+using AMIClient.HelperClasses;
+using ToastNotifications.Messages;
 
 namespace AMIClient
 {
@@ -891,7 +893,10 @@ namespace AMIClient
                         TypeVoltage = alarm.TypeVoltage,
                         Georegion = alarm.Georegion
                     });
+
                     positionsAlarm.Add(alarm.Id, TableItemsForActiveAlarm.Count - 1);
+                    NotifierClass.Instance.notifier.ShowError(alarm.FromPeriod.ToString() + " - " + EnumDescription.GetEnumDescription(alarm.TypeVoltage) + "\n" +
+                                                        alarm.Consumer + " - " + alarm.Voltage.ToString());
                 }
 
                 foreach (long psrRef in delta.DeleteOperations)
@@ -900,6 +905,9 @@ namespace AMIClient
                     {
                         int emptyPosition = positionsAlarm[psrRef];
                         List<long> temp = new List<long>();
+                        ActiveAlarm alarm = TableItemsForActiveAlarm[emptyPosition];
+                        NotifierClass.Instance.notifier.ShowInformation(alarm.FromPeriod.ToString() + " - " + EnumDescription.GetEnumDescription(alarm.TypeVoltage) + "\n" +
+                                                            alarm.Consumer + " - " + alarm.Voltage.ToString());
                         TableItemsForActiveAlarm.RemoveAt(emptyPosition);
                         positionsAlarm.Remove(psrRef);
 
