@@ -52,7 +52,7 @@ namespace CEProxy
 
             var clientListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ICalculationForClient>(context, this,
-            bindingClient, new EndpointAddress("net.tcp://localhost:10100/CEProxy/Client/")), "ClientListener");
+            bindingClient, new EndpointAddress("net.tcp://" + host + ":10100/CEProxy/Client/")), "ClientListener");
 
             NetTcpBinding bindingScada = new NetTcpBinding();
             bindingScada.ReceiveTimeout = TimeSpan.MaxValue;
@@ -61,7 +61,7 @@ namespace CEProxy
 
             var scadaListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ICalculationEngineForScada>(context, this,
-            bindingScada, new EndpointAddress("net.tcp://localhost:10101/CEProxy/Scada/")), "ScadaListener");
+            bindingScada, new EndpointAddress("net.tcp://" + host + ":10101/CEProxy/Scada/")), "ScadaListener");
 
             Binding listenerBinding = WcfUtility.CreateTcpClientBinding();
             listenerBinding.ReceiveTimeout = TimeSpan.MaxValue;

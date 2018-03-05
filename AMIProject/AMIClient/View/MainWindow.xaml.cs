@@ -1,4 +1,5 @@
-﻿using AMIClient.ViewModels;
+﻿using AMIClient.HelperClasses;
+using AMIClient.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace AMIClient
         public MainWindow()
         {
             InitializeComponent();
+            var notifier = NotifierClass.Instance;
             MasterViewModel m = new MasterViewModel();
             m.Init();
             DataContext = m;

@@ -131,7 +131,7 @@ namespace TransactionCoordinator
             CEs = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, ServiceInfo>>("CEChannels");
         }
 
-        public Task<bool> ApplyDelta(Delta delta)
+        public bool ApplyDelta(Delta delta)
         {
             List<ResourceDescription> dataForScada = new List<ResourceDescription>();
             List<ResourceDescription> dataForCE = new List<ResourceDescription>();
@@ -147,7 +147,7 @@ namespace TransactionCoordinator
             catch
             {
                 ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on NMS failed.");
-                return Task.FromResult<bool>(false);
+                return false;
             }
 
             if (newDelta != null)
@@ -174,7 +174,7 @@ namespace TransactionCoordinator
                 }
                 catch
                 {
-                    return Task.FromResult<bool>(false);
+                    return false;
                 }
                 
 
@@ -194,7 +194,7 @@ namespace TransactionCoordinator
                 catch
                 {
                     ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on CE failed.");
-                    return Task.FromResult<bool>(false);
+                    return false;
                 }
 
                 try
@@ -212,7 +212,7 @@ namespace TransactionCoordinator
                 catch
                 {
                     ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on Scada failed.");
-                    return Task.FromResult<bool>(false);
+                    return false;
                 }
 
                 if (ScadaPrepareSuccess && CalculationEnginePrepareSuccess)
@@ -224,7 +224,7 @@ namespace TransactionCoordinator
                     catch
                     {
                         ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on NMS failed.");
-                        return Task.FromResult<bool>(false);
+                        return false;
                     }
 
                     try
@@ -235,7 +235,7 @@ namespace TransactionCoordinator
                     catch
                     {
                         ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on CE failed.");
-                        return Task.FromResult<bool>(false);
+                        return false;
                     }
 
                     try
@@ -245,10 +245,10 @@ namespace TransactionCoordinator
                     catch
                     {
                         ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on Scada failed.");
-                        return Task.FromResult<bool>(false);
+                        return false;
                     }
 
-                    return Task.FromResult<bool>(true);
+                    return true;
                 }
                 else
                 {
@@ -258,7 +258,7 @@ namespace TransactionCoordinator
 
                     proxy.InvokeWithRetry(client => client.Channel.RollbackScada());
 
-                    return Task.FromResult<bool>(false);
+                    return false;
                 }
             }
             else
@@ -266,7 +266,7 @@ namespace TransactionCoordinator
                 proxyNMS.InvokeWithRetry(client => client.Channel.Rollback());
                 ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on NMS failed.");
                 
-                return Task.FromResult<bool>(false);
+                return false;
             }
         }
 

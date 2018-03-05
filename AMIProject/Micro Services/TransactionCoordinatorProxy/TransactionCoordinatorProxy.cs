@@ -41,6 +41,7 @@ namespace TransactionCoordinatorProxy
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners()
         {
+            string host = Context.NodeContext.IPAddressOrFQDN;
             NetTcpBinding bindingClient = new NetTcpBinding();
             bindingClient.ReceiveTimeout = TimeSpan.MaxValue;
             bindingClient.MaxReceivedMessageSize = Int32.MaxValue;
@@ -48,7 +49,7 @@ namespace TransactionCoordinatorProxy
 
             var adapterListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ITransactionCoordinator>(context, this,
-            bindingClient, new EndpointAddress("net.tcp://localhost:10300/TransactionCoordinatorProxy/Adapter/")),"AdapterListener");
+            bindingClient, new EndpointAddress("net.tcp://" + host + ":10300/TransactionCoordinatorProxy/Adapter/")),"AdapterListener");
 
             NetTcpBinding bindingScada = new NetTcpBinding();
             bindingScada.ReceiveTimeout = TimeSpan.MaxValue;
@@ -57,7 +58,7 @@ namespace TransactionCoordinatorProxy
 
             var scadaListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ITransactionDuplexScada>(context, this,
-            bindingScada, new EndpointAddress("net.tcp://localhost:10301/TransactionCoordinatorProxy/Scada/")), "ScadaListener");
+            bindingScada, new EndpointAddress("net.tcp://" + host + ":10301/TransactionCoordinatorProxy/Scada/")), "ScadaListener");
 
             Binding listenerBinding = WcfUtility.CreateTcpClientBinding();
             listenerBinding.ReceiveTimeout = TimeSpan.MaxValue;
@@ -118,14 +119,13 @@ namespace TransactionCoordinatorProxy
             proxy.InvokeWithRetry(client => client.Channel.Connect(new ServiceInfo(base.Context.PartitionId.ToString() + "-" + base.Context.ReplicaOrInstanceId, base.Context.ServiceName.ToString(), FTN.Common.ServiceType.STATELESS)));
         }
 
-        public Task<bool> ApplyDelta(Delta delta)
+        public bool ApplyDelta(Delta delta)
         {
             while (true)
             {
                 try
                 {
-                    return Task.FromResult<bool>(proxy.InvokeWithRetryAsync(
-                client => client.Channel.ApplyDelta(delta)).Result);
+                    return (proxy.InvokeWithRetry(client => client.Channel.ApplyDelta(delta)));
                 }
                 catch
                 {

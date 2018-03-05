@@ -75,8 +75,8 @@ namespace SCADA
                     DuplexChannelFactory<ITransactionDuplexScada> factory = new DuplexChannelFactory<ITransactionDuplexScada>(
                     new InstanceContext(this),
                         binding,
-                        /*new EndpointAddress("net.tcp://13.64.116.132:10301/TransactionCoordinatorProxy/Scada/")*/
-                        new EndpointAddress("net.tcp://localhost:10301/TransactionCoordinatorProxy/Scada/"));
+                        new EndpointAddress("net.tcp://13.64.116.132:10301/TransactionCoordinatorProxy/Scada/")
+                        /*new EndpointAddress("net.tcp://localhost:10301/TransactionCoordinatorProxy/Scada/")*/);
                     proxyCoordinator = factory.CreateChannel();
                     firstTimeCoordinator = false;
                 }
@@ -103,8 +103,8 @@ namespace SCADA
                     binding.MaxReceivedMessageSize = Int32.MaxValue;
                     binding.MaxBufferSize = Int32.MaxValue;
                     ChannelFactory<ICalculationEngineForScada> factory = new ChannelFactory<ICalculationEngineForScada>(binding,
-                                                                                        /*new EndpointAddress("net.tcp://13.64.116.132:10101/CEProxy/Scada/")*/
-                                                                                        new EndpointAddress("net.tcp://localhost:10101/CEProxy/Scada/"));
+                                                                                        new EndpointAddress("net.tcp://13.64.116.132:10101/CEProxy/Scada/")
+                                                                                        /*new EndpointAddress("net.tcp://localhost:10101/CEProxy/Scada/")*/);
                     proxyCE = factory.CreateChannel();
                     firstTimeCE = false;
                 }

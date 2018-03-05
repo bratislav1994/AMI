@@ -36,7 +36,7 @@ namespace AMIClient.HelperClasses
         {
             get
             {
-                return instance != null ? instance : new NotifierClass();
+                return instance != null ? instance : instance = new NotifierClass();
             }
         }
     }

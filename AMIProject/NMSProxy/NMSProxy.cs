@@ -40,9 +40,10 @@ namespace NMSProxy
         protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners()
         {
             string host = Context.NodeContext.IPAddressOrFQDN;
+            
             var clientListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<INetworkModelGDAContractDuplexClient>(context, this,
-            new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:10200/NMSProxy/Client/")), "ClientListener");
+            new NetTcpBinding(), new EndpointAddress("net.tcp://" + host + ":10200/NMSProxy/Client/")), "ClientListener");
 
             var serviceListener = new ServiceInstanceListener((context) => 
                                     new WcfCommunicationListener<IModelForDuplex>
