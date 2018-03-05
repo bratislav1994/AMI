@@ -16,27 +16,39 @@ namespace AMIClient.HelperClasses
 
         public NotifierClass()
         {
-            notifier = new Notifier(cfg =>
+            if (notifier == null)
             {
-                cfg.PositionProvider = new WindowPositionProvider(
-                    parentWindow: App.Current.MainWindow,
-                    corner: Corner.TopRight,
-                    offsetX: 10,
-                    offsetY: 10);
+                notifier = new Notifier(cfg =>
+                {
+                    cfg.PositionProvider = new WindowPositionProvider(
+                        parentWindow: App.Current.MainWindow,
+                        corner: Corner.TopRight,
+                        offsetX: 10,
+                        offsetY: 10);
 
-                cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(
-                    notificationLifetime: TimeSpan.FromSeconds(5),
-                    maximumNotificationCount: MaximumNotificationCount.FromCount(6));
+                    cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(
+                        notificationLifetime: TimeSpan.FromSeconds(5),
+                        maximumNotificationCount: MaximumNotificationCount.FromCount(10));
 
-                cfg.Dispatcher = App.Current.Dispatcher;
-            });
+                    cfg.Dispatcher = App.Current.Dispatcher;
+                });
+            }
         }
 
         public static NotifierClass Instance
         {
             get
             {
-                return instance != null ? instance : instance = new NotifierClass();
+                if (instance != null)
+                {
+                    return instance;
+                }
+                else
+                { 
+                    instance = new NotifierClass();
+                }
+
+                return instance;
             }
         }
     }

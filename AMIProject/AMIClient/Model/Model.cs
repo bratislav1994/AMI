@@ -74,8 +74,8 @@ namespace AMIClient
                     factory = new DuplexChannelFactory<INetworkModelGDAContractDuplexClient>(
                     new InstanceContext(this),
                         binding,
-                        new EndpointAddress("net.tcp://13.64.116.132:10200/NMSProxy/Client/")
-                        /*new EndpointAddress("net.tcp://localhost:10200/NMSProxy/Client/")*/);
+                        /*new EndpointAddress("net.tcp://13.64.116.132:10200/NMSProxy/Client/")*/
+                        new EndpointAddress("net.tcp://localhost:10200/NMSProxy/Client/"));
                     gdaQueryProxy = factory.CreateChannel();
                     FirstContact = false;
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.GdaQueryProxy; line: {0}; Channel Client-NMS is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -104,8 +104,8 @@ namespace AMIClient
                     binding.MaxBufferSize = Int32.MaxValue;
                     factoryCE = new ChannelFactory<ICalculationForClient>(
                         binding,
-                        new EndpointAddress("net.tcp://13.64.116.132:10100/CEProxy/Client/")
-                        /*new EndpointAddress("net.tcp://localhost:10100/CEProxy/Client/")*/);
+                        /*new EndpointAddress("net.tcp://13.64.116.132:10100/CEProxy/Client/")*/
+                        new EndpointAddress("net.tcp://localhost:10100/CEProxy/Client/"));
                     ceQueryProxy = factoryCE.CreateChannel();
                     FirstContactCE = false;
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.CEQueryProxy; line: {0}; Channel Client-CE is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -135,8 +135,8 @@ namespace AMIClient
                     factorySC = new DuplexChannelFactory<ISmartCacheDuplexForClient>(
                     new InstanceContext(this),
                         binding,
-                        new EndpointAddress("net.tcp://13.64.116.132:10400/SmartCache/Client/")
-                        /*new EndpointAddress("net.tcp://localhost:10400/SmartCache/Client/")*/);
+                        /*new EndpointAddress("net.tcp://13.64.116.132:10400/SmartCache/Client/")*/
+                        new EndpointAddress("net.tcp://localhost:10400/SmartCache/Client/"));
                     scProxy = factorySC.CreateChannel();
                     FirstContactSC = false;
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.SCProxy; line: {0}; Channel Client-SC is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -895,8 +895,11 @@ namespace AMIClient
                     });
 
                     positionsAlarm.Add(alarm.Id, TableItemsForActiveAlarm.Count - 1);
-                    NotifierClass.Instance.notifier.ShowError(alarm.FromPeriod.ToString() + " - " + EnumDescription.GetEnumDescription(alarm.TypeVoltage) + "\n" +
-                                                        alarm.Consumer + " - " + alarm.Voltage.ToString());
+                    App.Current.Dispatcher.Invoke((Action)delegate
+                    {
+                        NotifierClass.Instance.notifier.ShowError(alarm.FromPeriod.ToString() + "\nVoltage type: " + EnumDescription.GetEnumDescription(alarm.TypeVoltage) + "\nConsumer: " +
+                                                            alarm.Consumer + "\nVoltage: " + alarm.Voltage.ToString() + "V");
+                    });
                 }
 
                 foreach (long psrRef in delta.DeleteOperations)
@@ -906,8 +909,11 @@ namespace AMIClient
                         int emptyPosition = positionsAlarm[psrRef];
                         List<long> temp = new List<long>();
                         ActiveAlarm alarm = TableItemsForActiveAlarm[emptyPosition];
-                        NotifierClass.Instance.notifier.ShowInformation(alarm.FromPeriod.ToString() + " - " + EnumDescription.GetEnumDescription(alarm.TypeVoltage) + "\n" +
-                                                            alarm.Consumer + " - " + alarm.Voltage.ToString());
+                        App.Current.Dispatcher.Invoke((Action)delegate
+                        {
+                            NotifierClass.Instance.notifier.ShowInformation("From: " + alarm.FromPeriod.ToString() + "\nConsumer: " + alarm.Consumer + "\nVoltage type: " + 
+                                                         EnumDescription.GetEnumDescription(alarm.TypeVoltage));
+                        });
                         TableItemsForActiveAlarm.RemoveAt(emptyPosition);
                         positionsAlarm.Remove(psrRef);
 

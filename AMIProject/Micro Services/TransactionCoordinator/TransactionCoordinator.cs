@@ -131,13 +131,15 @@ namespace TransactionCoordinator
             CEs = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, ServiceInfo>>("CEChannels");
         }
 
-        public bool ApplyDelta(Delta delta)
+        public string ApplyDelta(Delta delta)
         {
             List<ResourceDescription> dataForScada = new List<ResourceDescription>();
             List<ResourceDescription> dataForCE = new List<ResourceDescription>();
             Delta newDelta = null;
             bool CalculationEnginePrepareSuccess = false;
             bool ScadaPrepareSuccess = false;
+            string retTrue = "SUCCESS: ";
+            string retFalse = "FAIL: "; 
 
             try
             {
@@ -147,7 +149,7 @@ namespace TransactionCoordinator
             catch
             {
                 ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on NMS failed.");
-                return false;
+                return retFalse + "Enlist/prepare failed on NMS";
             }
 
             if (newDelta != null)
@@ -174,7 +176,7 @@ namespace TransactionCoordinator
                 }
                 catch
                 {
-                    return false;
+                    return retFalse + "Enlist failed on Scada";
                 }
                 
 
@@ -194,7 +196,7 @@ namespace TransactionCoordinator
                 catch
                 {
                     ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on CE failed.");
-                    return false;
+                    return retFalse + "Enlist/prepare failed on Calculation engine";
                 }
 
                 try
@@ -212,7 +214,7 @@ namespace TransactionCoordinator
                 catch
                 {
                     ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on Scada failed.");
-                    return false;
+                    return retFalse + "Prepare failed on Scada";
                 }
 
                 if (ScadaPrepareSuccess && CalculationEnginePrepareSuccess)
@@ -224,7 +226,7 @@ namespace TransactionCoordinator
                     catch
                     {
                         ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on NMS failed.");
-                        return false;
+                        return retFalse + "Commit failed on NMS";
                     }
 
                     try
@@ -235,7 +237,7 @@ namespace TransactionCoordinator
                     catch
                     {
                         ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on CE failed.");
-                        return false;
+                        return retFalse + "Commit failed on Calculation engine";
                     }
 
                     try
@@ -245,10 +247,10 @@ namespace TransactionCoordinator
                     catch
                     {
                         ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on Scada failed.");
-                        return false;
+                        return retFalse + "Commit failed on Scada";
                     }
 
-                    return true;
+                    return retTrue + "Delta applied to every service";
                 }
                 else
                 {
@@ -258,15 +260,15 @@ namespace TransactionCoordinator
 
                     proxy.InvokeWithRetry(client => client.Channel.RollbackScada());
 
-                    return false;
+                    return retFalse + "Prepare failed on Calculation engine and/or scada";
                 }
             }
             else
             {
                 proxyNMS.InvokeWithRetry(client => client.Channel.Rollback());
                 ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on NMS failed.");
-                
-                return false;
+
+                return retFalse + "Enlist/prepare failed on NMS";
             }
         }
 

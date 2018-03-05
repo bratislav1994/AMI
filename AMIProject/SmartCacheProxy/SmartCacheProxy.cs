@@ -51,7 +51,7 @@ namespace SmartCacheProxy
 
             var clientListener = new ServiceInstanceListener((context) =>
             new WcfCommunicationListener<ISmartCacheDuplexForClient>(context, this,
-            bindingClient, new EndpointAddress("net.tcp://" + host + ":10400/SmartCache/Client/")), "ClientListener");
+            bindingClient, new EndpointAddress("net.tcp://localhost:10400/SmartCache/Client/")), "ClientListener");
 
             Binding listenerBinding = WcfUtility.CreateTcpClientBinding();
             listenerBinding.ReceiveTimeout = TimeSpan.MaxValue;

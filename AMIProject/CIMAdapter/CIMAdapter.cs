@@ -33,7 +33,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter
                     binding.SendTimeout = TimeSpan.FromHours(1);
                     ChannelFactory<ITransactionCoordinator> factory = new ChannelFactory<ITransactionCoordinator>(
                         binding,
-                        new EndpointAddress("net.tcp://13.64.116.132:10300/TransactionCoordinatorProxy/Adapter/"));
+                        new EndpointAddress("net.tcp://localhost:10300/TransactionCoordinatorProxy/Adapter/"));
                     this.proxy = factory.CreateChannel();
                     firstContact = false;
                 }
@@ -68,7 +68,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter
 			if ((delta != null) && (delta.NumberOfOperations != 0))
 			{
 				//// NetworkModelService->ApplyUpdates
-                updateResult = Proxy.ApplyDelta(delta).ToString();
+                updateResult = Proxy.ApplyDelta(delta);
 			}
 
 			Thread.CurrentThread.CurrentCulture = culture;

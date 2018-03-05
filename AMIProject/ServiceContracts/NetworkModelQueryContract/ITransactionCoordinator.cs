@@ -12,7 +12,7 @@ namespace FTN.ServiceContracts
     public interface ITransactionCoordinator
     {
         [OperationContract]
-        bool ApplyDelta(Delta delta);
+        string ApplyDelta(Delta delta);
 
         [OperationContract]
         void Connect(ServiceInfo serviceInfo);

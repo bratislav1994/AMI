@@ -226,14 +226,14 @@ namespace AMIClient.ViewModels
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.AddCimXmlViewModel.ApplyDeltaCommandAction; line: {0}; Try apply delta", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     string log = adapter.ApplyUpdates(nmsDelta);
-
-                    if (log.Equals("true"))
+                    
+                    if (log.StartsWith("SUCCESS"))
                     {
-                        NotifierClass.Instance.notifier.ShowSuccess("Delta successfully applied.");
+                        NotifierClass.Instance.notifier.ShowSuccess(log);
                     }
-                    else 
+                    else if (log.StartsWith("FAIL"))
                     {
-                        NotifierClass.Instance.notifier.ShowError($"Error: {log}");
+                        NotifierClass.Instance.notifier.ShowError(log);
                     }
 
                     Report += log;
