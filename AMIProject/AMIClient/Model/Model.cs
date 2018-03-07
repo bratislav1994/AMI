@@ -67,15 +67,23 @@ namespace AMIClient
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.GdaQueryProxy; line: {0}; Create channel between Client and NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
-                    binding.SendTimeout = TimeSpan.FromMinutes(10);
+                    binding.Security.Mode = SecurityMode.Transport;
                     binding.ReceiveTimeout = TimeSpan.MaxValue;
                     binding.MaxReceivedMessageSize = Int32.MaxValue;
                     binding.MaxBufferSize = Int32.MaxValue;
+                    binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
+                    
                     factory = new DuplexChannelFactory<INetworkModelGDAContractDuplexClient>(
                     new InstanceContext(this),
                         binding,
-                        /*new EndpointAddress("net.tcp://13.64.116.132:10200/NMSProxy/Client/")*/
-                        new EndpointAddress("net.tcp://localhost:10200/NMSProxy/Client/"));
+                        new EndpointAddress("net.tcp://104.42.135.150:10200/NMSProxy/Client/")
+                        /*new EndpointAddress("net.tcp://localhost:10200/NMSProxy/Client/")*/);
+
+                    factory.Credentials.Windows.ClientCredential.UserName = "amiteam";
+                    factory.Credentials.Windows.ClientCredential.Password = "dr34mt34m4m1@";
+                    factory.Credentials.UserName.UserName = "amiteam";
+                    factory.Credentials.UserName.Password = "dr34mt34m4m1@";
+
                     gdaQueryProxy = factory.CreateChannel();
                     FirstContact = false;
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.GdaQueryProxy; line: {0}; Channel Client-NMS is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -98,14 +106,22 @@ namespace AMIClient
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.CEQueryProxy; line: {0}; Create channel between Client and CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
-                    binding.SendTimeout = TimeSpan.FromMinutes(10);
+                    binding.Security.Mode = SecurityMode.Transport;
                     binding.ReceiveTimeout = TimeSpan.MaxValue;
                     binding.MaxReceivedMessageSize = Int32.MaxValue;
                     binding.MaxBufferSize = Int32.MaxValue;
+                    binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
+
                     factoryCE = new ChannelFactory<ICalculationForClient>(
                         binding,
-                        /*new EndpointAddress("net.tcp://13.64.116.132:10100/CEProxy/Client/")*/
-                        new EndpointAddress("net.tcp://localhost:10100/CEProxy/Client/"));
+                        new EndpointAddress("net.tcp://104.42.135.150:10100/CEProxy/Client/")
+                        /*new EndpointAddress("net.tcp://localhost:10100/CEProxy/Client/")*/);
+
+                    factory.Credentials.Windows.ClientCredential.UserName = "amiteam";
+                    factory.Credentials.Windows.ClientCredential.Password = "dr34mt34m4m1@";
+                    factory.Credentials.UserName.UserName = "amiteam";
+                    factory.Credentials.UserName.Password = "dr34mt34m4m1@";
+
                     ceQueryProxy = factoryCE.CreateChannel();
                     FirstContactCE = false;
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.CEQueryProxy; line: {0}; Channel Client-CE is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -128,15 +144,23 @@ namespace AMIClient
                 {
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.SCProxy; line: {0}; Create channel between Client and SC", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
-                    binding.SendTimeout = TimeSpan.FromMinutes(10);
+                    binding.Security.Mode = SecurityMode.Transport;
                     binding.ReceiveTimeout = TimeSpan.MaxValue;
                     binding.MaxReceivedMessageSize = Int32.MaxValue;
                     binding.MaxBufferSize = Int32.MaxValue;
+                    binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
+
                     factorySC = new DuplexChannelFactory<ISmartCacheDuplexForClient>(
                     new InstanceContext(this),
                         binding,
-                        /*new EndpointAddress("net.tcp://13.64.116.132:10400/SmartCache/Client/")*/
-                        new EndpointAddress("net.tcp://localhost:10400/SmartCache/Client/"));
+                        new EndpointAddress("net.tcp://104.42.135.150:10400/SmartCache/Client/")
+                        /*new EndpointAddress("net.tcp://localhost:10400/SmartCache/Client/")*/);
+
+                    factory.Credentials.Windows.ClientCredential.UserName = "amiteam";
+                    factory.Credentials.Windows.ClientCredential.Password = "dr34mt34m4m1@";
+                    factory.Credentials.UserName.UserName = "amiteam";
+                    factory.Credentials.UserName.Password = "dr34mt34m4m1@";
+
                     scProxy = factorySC.CreateChannel();
                     FirstContactSC = false;
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.SCProxy; line: {0}; Channel Client-SC is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));

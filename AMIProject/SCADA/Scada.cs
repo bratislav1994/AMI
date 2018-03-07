@@ -69,15 +69,23 @@ namespace SCADA
                 {
                     Logger.LogMessageToFile(string.Format("SCADA.Scada.ProxyCoordinator; line: {0}; Create channel between Scada and Coordinator", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
-                    binding.SendTimeout = TimeSpan.FromSeconds(3);
+                    binding.Security.Mode = SecurityMode.Transport;
                     binding.ReceiveTimeout = TimeSpan.MaxValue;
                     binding.MaxReceivedMessageSize = Int32.MaxValue;
                     binding.MaxBufferSize = Int32.MaxValue;
+                    binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
+
                     DuplexChannelFactory<ITransactionDuplexScada> factory = new DuplexChannelFactory<ITransactionDuplexScada>(
                     new InstanceContext(this),
                         binding,
-                        /*new EndpointAddress("net.tcp://104.42.135.150:10301/TransactionCoordinatorProxy/Scada/")*/
-                        new EndpointAddress("net.tcp://localhost:10301/TransactionCoordinatorProxy/Scada/"));
+                        new EndpointAddress("net.tcp://104.42.135.150:10301/TransactionCoordinatorProxy/Scada/")
+                        /*new EndpointAddress("net.tcp://localhost:10301/TransactionCoordinatorProxy/Scada/")*/);
+
+                    factory.Credentials.Windows.ClientCredential.UserName = "amiteam";
+                    factory.Credentials.Windows.ClientCredential.Password = "dr34mt34m4m1@";
+                    factory.Credentials.UserName.UserName = "amiteam";
+                    factory.Credentials.UserName.Password = "dr34mt34m4m1@";
+
                     proxyCoordinator = factory.CreateChannel();
                     firstTimeCoordinator = false;
                 }
@@ -100,12 +108,21 @@ namespace SCADA
                 {
                     Logger.LogMessageToFile(string.Format("SCADA.Scada.ProxyCE; line: {0}; Create channel between Scada and CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     NetTcpBinding binding = new NetTcpBinding();
+                    binding.Security.Mode = SecurityMode.Transport;
                     binding.ReceiveTimeout = TimeSpan.MaxValue;
                     binding.MaxReceivedMessageSize = Int32.MaxValue;
                     binding.MaxBufferSize = Int32.MaxValue;
+                    binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
+
                     ChannelFactory<ICalculationEngineForScada> factory = new ChannelFactory<ICalculationEngineForScada>(binding,
-                                                                                        /*new EndpointAddress("net.tcp://13.64.116.132:10101/CEProxy/Scada/")*/
-                                                                                        new EndpointAddress("net.tcp://localhost:10101/CEProxy/Scada/"));
+                                                                                        new EndpointAddress("net.tcp://104.42.135.150:10101/CEProxy/Scada/")
+                                                                                        /*new EndpointAddress("net.tcp://localhost:10101/CEProxy/Scada/")*/);
+
+                    factory.Credentials.Windows.ClientCredential.UserName = "amiteam";
+                    factory.Credentials.Windows.ClientCredential.Password = "dr34mt34m4m1@";
+                    factory.Credentials.UserName.UserName = "amiteam";
+                    factory.Credentials.UserName.Password = "dr34mt34m4m1@";
+
                     proxyCE = factory.CreateChannel();
                     firstTimeCE = false;
                 }

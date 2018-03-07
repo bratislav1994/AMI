@@ -28,12 +28,21 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter
                 if (firstContact)
                 {
                     NetTcpBinding binding = new NetTcpBinding();
+                    binding.Security.Mode = SecurityMode.Transport;
+                    binding.ReceiveTimeout = TimeSpan.MaxValue;
                     binding.MaxReceivedMessageSize = Int32.MaxValue;
                     binding.MaxBufferSize = Int32.MaxValue;
-                    binding.SendTimeout = TimeSpan.FromHours(1);
+                    binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
+
                     ChannelFactory<ITransactionCoordinator> factory = new ChannelFactory<ITransactionCoordinator>(
                         binding,
-                        new EndpointAddress("net.tcp://localhost:10300/TransactionCoordinatorProxy/Adapter/"));
+                         new EndpointAddress("net.tcp://104.42.135.150:10300/TransactionCoordinatorProxy/Adapter/"));
+
+                    factory.Credentials.Windows.ClientCredential.UserName = "amiteam";
+                    factory.Credentials.Windows.ClientCredential.Password = "dr34mt34m4m1@";
+                    factory.Credentials.UserName.UserName = "amiteam";
+                    factory.Credentials.UserName.Password = "dr34mt34m4m1@";
+
                     this.proxy = factory.CreateChannel();
                     firstContact = false;
                 }
