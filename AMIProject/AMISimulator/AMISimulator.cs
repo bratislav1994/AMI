@@ -122,6 +122,7 @@ namespace AMISimulator
                 {
                     if (ProxyScada.IsScadaReady())
                     {
+                        ((IContextChannel)ProxyScada).OperationTimeout = TimeSpan.FromMinutes(1);
                         break;
                     }
                 }
@@ -142,7 +143,7 @@ namespace AMISimulator
                     ((IContextChannel)ProxyScada).OperationTimeout = TimeSpan.FromMinutes(5);
                     break;
                 }
-                catch
+                catch (Exception ex)
                 {
                     firstContact = true;
                     Thread.Sleep(2000);
@@ -150,6 +151,21 @@ namespace AMISimulator
             }
 
             Console.WriteLine("Connected to scada");
+
+            handler = new CommandHandler(this);
+
+            channel = mgr.AddTCPServer("master" + address, LogLevels.NORMAL, ChannelRetry.Default, ipAddress, (ushort)(basePort + address), ChannelListener.Print());
+            config.outstation.config.allowUnsolicited = true;
+            config.outstation.config.unsolClassMask.Class0 = true;
+            config.outstation.config.unsolClassMask.Class1 = true;
+            config.outstation.config.unsolClassMask.Class2 = true;
+            config.outstation.config.unsolClassMask.Class3 = true;
+            config.link.localAddr = (ushort)address;
+            config.link.remoteAddr = 1;
+
+            var outstation = channel.AddOutstation("outstation" + address, handler, DefaultOutstationApplication.Instance, config);
+            outstation.Enable();
+
             List<MeasurementForScada> measForScada = ProxyScada.GetNumberOfPoints(address);
             List<DataForScada> dataFromScada = ProxyScada.GetDataFromScada(address);
             numberOfInstalledPoints = measForScada.Count;
@@ -194,21 +210,7 @@ namespace AMISimulator
 
                 this.measurements.Add(m.Index, m.Measurement);
             }
-
-            handler = new CommandHandler(this);
-
-            channel = mgr.AddTCPServer("master" + address, LogLevels.NORMAL, ChannelRetry.Default, ipAddress, (ushort)(basePort + address), ChannelListener.Print());
-            config.outstation.config.allowUnsolicited = true;
-            config.outstation.config.unsolClassMask.Class0 = true;
-            config.outstation.config.unsolClassMask.Class1 = true;
-            config.outstation.config.unsolClassMask.Class2 = true;
-            config.outstation.config.unsolClassMask.Class3 = true;
-            config.link.localAddr = (ushort)address;
-            config.link.remoteAddr = 1;
-
-            var outstation = channel.AddOutstation("outstation" + address, handler, DefaultOutstationApplication.Instance, config);
-            outstation.Enable();
-
+            
             return outstation;
         }
 

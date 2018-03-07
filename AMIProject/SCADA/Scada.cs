@@ -59,6 +59,7 @@ namespace SCADA
         private Dictionary<int, List<int>> analogIndexesForSimulator;
         List<int> RTUsThatNeedsToBeStopped = new List<int>();
         private bool ready = false;
+        private object lockForConnecting = new object();
 
         public ITransactionDuplexScada ProxyCoordinator
         {
@@ -944,30 +945,35 @@ namespace SCADA
                     allDataByRtu.Add(ret, new List<DataForScada>());
                 }
 
-                var handler = new SOEHandler(measurements[ret], resourcesToSend[ret], this.lockObjects[ret], allDataByRtu[ret]);
-                var mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
-                var channel = mgr.AddTCPClient("outstation" + ret, LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", (ushort)(20000 + ret), ChannelListener.Print());
-                var config = new MasterStackConfig();
-                config.link.localAddr = 1;
-                config.link.remoteAddr = (ushort)ret;
-
-                var master = channel.AddMaster("master" + ret, handler, DefaultMasterApplication.Instance, config);
-
-                lock (lockObject)
-                {
-                    handlers.Add(ret, handler);
-                    masters.Add(ret, master);
-                    channels.Add(ret, channel);
-                    managers.Add(ret, mgr);
-                }
-
-                config.master.disableUnsolOnStartup = false;
-                var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.MaxValue, TaskConfig.Default);
-                master.Enable();
-                f.AddSimulator(new WrapperDB(ret));
+                new Thread(() => ConnectToSimulator(ret)).Start();
             }
 
             return ret;
+        }
+
+        private void ConnectToSimulator(int ret)
+        {
+            var handler = new SOEHandler(measurements[ret], resourcesToSend[ret], this.lockObjects[ret], allDataByRtu[ret]);
+            var mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
+            var channel = mgr.AddTCPClient("outstation" + ret, LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", (ushort)(20000 + ret), ChannelListener.Print());
+            var config = new MasterStackConfig();
+            config.link.localAddr = 1;
+            config.link.remoteAddr = (ushort)ret;
+
+            var master = channel.AddMaster("master" + ret, handler, DefaultMasterApplication.Instance, config);
+
+            lock (lockObject)
+            {
+                handlers.Add(ret, handler);
+                masters.Add(ret, master);
+                channels.Add(ret, channel);
+                managers.Add(ret, mgr);
+            }
+
+            config.master.disableUnsolOnStartup = false;
+            var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.MaxValue, TaskConfig.Default);
+            master.Enable();
+            f.AddSimulator(new WrapperDB(ret));
         }
 
         public List<MeasurementForScada> GetNumberOfPoints(int rtuAddress)
