@@ -123,8 +123,27 @@ namespace NMSProxy
 
         public void ConnectClient()
         {
+            List<IModelForDuplex> clientsForDeleting = new List<IModelForDuplex>();
+
             lock (lockObjectForClient)
             {
+                foreach (IModelForDuplex client in this.Clients)
+                {
+                    try
+                    {
+                        if(!client.PingClient())
+                        {
+                            clientsForDeleting.Add(client);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        clientsForDeleting.Add(client);
+                    }
+                }
+
+                clientsForDeleting.ForEach(x => Clients.Remove(x));
+
                 this.Clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
             }
         }
@@ -295,20 +314,32 @@ namespace NMSProxy
             List<IModelForDuplex> clientsForDeleting = new List<IModelForDuplex>();
             lock (lockObjectForClient)
             {
-                this.Clients.ForEach(x =>
+                foreach(IModelForDuplex client in this.Clients)
                 {
                     try
                     {
-                        x.NewDeltaApplied();
+                        if (!client.PingClient())
+                        {
+                            clientsForDeleting.Add(client);
+                        }
+                        else
+                        {
+                            client.NewDeltaApplied();
+                        }
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        clientsForDeleting.Add(x);
+                        clientsForDeleting.Add(client);
                     }
-                });
+                }
 
                 clientsForDeleting.ForEach(x => Clients.Remove(x));
             }
+        }
+
+        public bool PingClient()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -218,5 +218,10 @@ namespace SmartCacheProxy
                 clients.Remove(client);
             }
         }
+
+        public bool PingClient()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

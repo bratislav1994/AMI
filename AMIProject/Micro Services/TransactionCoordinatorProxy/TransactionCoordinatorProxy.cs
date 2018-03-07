@@ -139,15 +139,16 @@ namespace TransactionCoordinatorProxy
             scada = OperationContext.Current.GetCallbackChannel<IScada>();
         }
 
-        public void EnlistMeasScada(List<ResourceDescription> measurements)
+        public bool EnlistMeasScada(List<ResourceDescription> measurements)
         {
             try
             {
                 scada.EnlistMeas(measurements);
+                return true; 
             }
             catch(Exception ex)
             {
-                throw ex;
+                return false;
             }
         }
 
@@ -159,7 +160,7 @@ namespace TransactionCoordinatorProxy
             }
             catch (Exception ex)
             {
-                throw ex;
+                return false;
             }
         }
 
@@ -171,7 +172,6 @@ namespace TransactionCoordinatorProxy
             }
             catch (Exception ex)
             {
-                throw ex;
             }
         }
 
@@ -183,7 +183,6 @@ namespace TransactionCoordinatorProxy
             }
             catch (Exception ex)
             {
-                throw ex;
             }
         }
 

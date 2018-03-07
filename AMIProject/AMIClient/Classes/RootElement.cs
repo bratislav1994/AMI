@@ -158,25 +158,32 @@ namespace AMIClient
                 {
                     if (needsUpdate)
                     {
-                        App.Current.Dispatcher.Invoke((Action)(() =>
+                        try
                         {
-                            LoadChildren();
-                            base.Model.ClearTableItems();
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                LoadChildren();
+                                base.Model.ClearTableItems();
 
-                            if (IsSelected)
-                            {
-                                this.Model.GetAllTableItems();
-                            }
-                            else
-                            {
-                                foreach(TreeClasses tc in AllTreeElements.Values)
+                                if (IsSelected)
                                 {
-                                    tc.CheckIfSeleacted();
+                                    this.Model.GetAllTableItems();
                                 }
-                            }
-                        }));
-                        
-                        needsUpdate = false;
+                                else
+                                {
+                                    foreach (TreeClasses tc in AllTreeElements.Values)
+                                    {
+                                        tc.CheckIfSeleacted();
+                                    }
+                                }
+                            }));
+
+                            needsUpdate = false;
+                        }
+                        catch
+                        {
+                            break;
+                        }
                     }
                 }
 

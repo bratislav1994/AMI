@@ -394,6 +394,11 @@ namespace AMIClient
             {
                 try
                 {
+                    if (App.Current == null)
+                    {
+                        break;
+                    }
+
                     lock (lockForNMS)
                     {
                         GdaQueryProxy.Ping();
@@ -895,11 +900,14 @@ namespace AMIClient
                     });
 
                     positionsAlarm.Add(alarm.Id, TableItemsForActiveAlarm.Count - 1);
-                    App.Current.Dispatcher.Invoke((Action)delegate
+                    if (App.Current != null)
                     {
-                        NotifierClass.Instance.notifier.ShowError(alarm.FromPeriod.ToString() + "\nVoltage type: " + EnumDescription.GetEnumDescription(alarm.TypeVoltage) + "\nConsumer: " +
-                                                            alarm.Consumer + "\nVoltage: " + alarm.Voltage.ToString() + "V");
-                    });
+                        App.Current.Dispatcher.Invoke((Action)delegate
+                        {
+                            NotifierClass.Instance.notifier.ShowError(alarm.FromPeriod.ToString() + "\nVoltage type: " + EnumDescription.GetEnumDescription(alarm.TypeVoltage) + "\nConsumer: " +
+                                                                alarm.Consumer + "\nVoltage: " + alarm.Voltage.ToString() + "V");
+                        });
+                    }
                 }
 
                 foreach (long psrRef in delta.DeleteOperations)
@@ -909,11 +917,16 @@ namespace AMIClient
                         int emptyPosition = positionsAlarm[psrRef];
                         List<long> temp = new List<long>();
                         ActiveAlarm alarm = TableItemsForActiveAlarm[emptyPosition];
-                        App.Current.Dispatcher.Invoke((Action)delegate
+
+                        if (App.Current != null)
                         {
-                            NotifierClass.Instance.notifier.ShowInformation("From: " + alarm.FromPeriod.ToString() + "\nConsumer: " + alarm.Consumer + "\nVoltage type: " + 
-                                                         EnumDescription.GetEnumDescription(alarm.TypeVoltage));
-                        });
+                            App.Current.Dispatcher.Invoke((Action)delegate
+                            {
+                                NotifierClass.Instance.notifier.ShowInformation("From: " + alarm.FromPeriod.ToString() + "\nConsumer: " + alarm.Consumer + "\nVoltage type: " +
+                                                             EnumDescription.GetEnumDescription(alarm.TypeVoltage));
+                            });
+                        }
+                        
                         TableItemsForActiveAlarm.RemoveAt(emptyPosition);
                         positionsAlarm.Remove(psrRef);
 
@@ -945,6 +958,15 @@ namespace AMIClient
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propName));
             }
+        }
+
+        public bool PingClient()
+        {
+            if (App.Current == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

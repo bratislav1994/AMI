@@ -17,6 +17,9 @@ namespace FTN.ServiceContracts
         void NewDeltaApplied();
 
         [OperationContract]
+        bool PingClient();
+
+        [OperationContract]
         void SendMeasurements(List<DynamicMeasurement> measurements);
 
         [OperationContract]

@@ -170,16 +170,12 @@ namespace TransactionCoordinator
                         dataForCE.Add(rd);
                     }
                 }
-                try
-                {
-                    proxy.InvokeWithRetry(client => client.Channel.EnlistMeasScada(dataForScada));
-                }
-                catch
+
+                if (!proxy.InvokeWithRetry(client => client.Channel.EnlistMeasScada(dataForScada)))
                 {
                     return retFalse + "Enlist failed on Scada";
                 }
                 
-
                 try
                 {
                     proxyCE.InvokeWithRetry(client => client.Channel.EnlistMeas(dataForCE));
