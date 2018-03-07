@@ -78,7 +78,7 @@ namespace SCADA
                     DuplexChannelFactory<ITransactionDuplexScada> factory = new DuplexChannelFactory<ITransactionDuplexScada>(
                     new InstanceContext(this),
                         binding,
-                        new EndpointAddress("net.tcp://104.42.135.150:10301/TransactionCoordinatorProxy/Scada/")
+                        new EndpointAddress("net.tcp://lastamicluster.westus.cloudapp.azure.com:10301/TransactionCoordinatorProxy/Scada/")
                         /*new EndpointAddress("net.tcp://localhost:10301/TransactionCoordinatorProxy/Scada/")*/);
 
                     factory.Credentials.Windows.ClientCredential.UserName = "amiteam";
@@ -115,7 +115,7 @@ namespace SCADA
                     binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
 
                     ChannelFactory<ICalculationEngineForScada> factory = new ChannelFactory<ICalculationEngineForScada>(binding,
-                                                                                        new EndpointAddress("net.tcp://104.42.135.150:10101/CEProxy/Scada/")
+                                                                                        new EndpointAddress("net.tcp://lastamicluster.westus.cloudapp.azure.com:10101/CEProxy/Scada/")
                                                                                         /*new EndpointAddress("net.tcp://localhost:10101/CEProxy/Scada/")*/);
 
                     factory.Credentials.Windows.ClientCredential.UserName = "amiteam";

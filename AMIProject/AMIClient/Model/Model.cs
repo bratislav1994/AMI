@@ -76,7 +76,7 @@ namespace AMIClient
                     factory = new DuplexChannelFactory<INetworkModelGDAContractDuplexClient>(
                     new InstanceContext(this),
                         binding,
-                        new EndpointAddress("net.tcp://104.42.135.150:10200/NMSProxy/Client/")
+                        new EndpointAddress("net.tcp://lastamicluster.westus.cloudapp.azure.com:10200/NMSProxy/Client/")
                         /*new EndpointAddress("net.tcp://localhost:10200/NMSProxy/Client/")*/);
 
                     factory.Credentials.Windows.ClientCredential.UserName = "amiteam";
@@ -114,13 +114,13 @@ namespace AMIClient
 
                     factoryCE = new ChannelFactory<ICalculationForClient>(
                         binding,
-                        new EndpointAddress("net.tcp://104.42.135.150:10100/CEProxy/Client/")
+                        new EndpointAddress("net.tcp://lastamicluster.westus.cloudapp.azure.com:10100/CEProxy/Client/")
                         /*new EndpointAddress("net.tcp://localhost:10100/CEProxy/Client/")*/);
 
-                    factory.Credentials.Windows.ClientCredential.UserName = "amiteam";
-                    factory.Credentials.Windows.ClientCredential.Password = "dr34mt34m4m1@";
-                    factory.Credentials.UserName.UserName = "amiteam";
-                    factory.Credentials.UserName.Password = "dr34mt34m4m1@";
+                    factoryCE.Credentials.Windows.ClientCredential.UserName = "amiteam";
+                    factoryCE.Credentials.Windows.ClientCredential.Password = "dr34mt34m4m1@";
+                    factoryCE.Credentials.UserName.UserName = "amiteam";
+                    factoryCE.Credentials.UserName.Password = "dr34mt34m4m1@";
 
                     ceQueryProxy = factoryCE.CreateChannel();
                     FirstContactCE = false;
@@ -153,13 +153,13 @@ namespace AMIClient
                     factorySC = new DuplexChannelFactory<ISmartCacheDuplexForClient>(
                     new InstanceContext(this),
                         binding,
-                        new EndpointAddress("net.tcp://104.42.135.150:10400/SmartCache/Client/")
+                        new EndpointAddress("net.tcp://lastamicluster.westus.cloudapp.azure.com:10400/SmartCache/Client/")
                         /*new EndpointAddress("net.tcp://localhost:10400/SmartCache/Client/")*/);
 
-                    factory.Credentials.Windows.ClientCredential.UserName = "amiteam";
-                    factory.Credentials.Windows.ClientCredential.Password = "dr34mt34m4m1@";
-                    factory.Credentials.UserName.UserName = "amiteam";
-                    factory.Credentials.UserName.Password = "dr34mt34m4m1@";
+                    factorySC.Credentials.Windows.ClientCredential.UserName = "amiteam";
+                    factorySC.Credentials.Windows.ClientCredential.Password = "dr34mt34m4m1@";
+                    factorySC.Credentials.UserName.UserName = "amiteam";
+                    factorySC.Credentials.UserName.Password = "dr34mt34m4m1@";
 
                     scProxy = factorySC.CreateChannel();
                     FirstContactSC = false;
