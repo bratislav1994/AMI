@@ -160,7 +160,7 @@ namespace FTN.Services.NetworkModelService
             }
         }
 
-        public int GetRelatedValues(long source, List<ModelCode> propIds, Association association)
+        public int GetRelatedValues(List<long> source, List<ModelCode> propIds, Association association)
         {
             try
             {

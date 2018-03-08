@@ -227,7 +227,7 @@ namespace NMS
             return this.gda.GetGlobalIds();
         }
 
-        public int GetRelatedValues(long source, List<FTN.Common.ModelCode> propIds, FTN.Common.Association association)
+        public int GetRelatedValues(List<long> source, List<FTN.Common.ModelCode> propIds, FTN.Common.Association association)
         {
             return this.gda.GetRelatedValues(source, propIds, association);
         }

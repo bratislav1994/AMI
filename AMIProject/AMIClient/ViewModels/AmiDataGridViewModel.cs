@@ -215,24 +215,31 @@ namespace AMIClient.ViewModels
 
         private void GetAmisForParentType()
         {
+            List<long> subregionsId = new List<long>();
+            List<long> substationsId = new List<long>();
+
             switch (this.ParentType)
             {
                 case DMSType.GEOREGION:
-                    List<IdentifiedObject> subRegionsC = this.Model.GetSomeSubregions(ParentGid);
-                    List<IdentifiedObject> substationsC = new List<IdentifiedObject>();
-
-                    foreach (SubGeographicalRegion sgr in subRegionsC)
+                    List<IdentifiedObject> subRegionsC = this.Model.GetSomeSubregions(new List<long>() { ParentGid });
+                    foreach(IdentifiedObject io in subRegionsC)
                     {
-                        substationsC.AddRange(this.Model.GetSomeSubstations(sgr.GlobalId));
+                        subregionsId.Add(io.GlobalId);
+                    }
+
+                    List<IdentifiedObject> substationsC = new List<IdentifiedObject>();
+                    
+                    substationsC.AddRange(this.Model.GetSomeSubstations(subregionsId));
+
+                    foreach (IdentifiedObject io in substationsC)
+                    {
+                        substationsId.Add(io.GlobalId);
                     }
 
                     this.AmiTableItems.Clear();
                     List<IdentifiedObject> amis = new List<IdentifiedObject>();
-
-                    foreach (Substation ss in substationsC)
-                    {
-                        amis.AddRange(this.Model.GetSomeAmis(ss.GlobalId));
-                    }
+                    
+                    amis.AddRange(this.Model.GetSomeAmis(substationsId));
 
                     foreach (IdentifiedObject io in amis)
                     {
@@ -244,15 +251,17 @@ namespace AMIClient.ViewModels
                 case DMSType.SUBGEOREGION:
                     List<IdentifiedObject> substationsC2 = new List<IdentifiedObject>();
                     
-                    substationsC2.AddRange(this.Model.GetSomeSubstations(ParentGid));
+                    substationsC2.AddRange(this.Model.GetSomeSubstations(new List<long>() { ParentGid }));
+
+                    foreach (IdentifiedObject io in substationsC2)
+                    {
+                        substationsId.Add(io.GlobalId);
+                    }
 
                     this.AmiTableItems.Clear();
                     List<IdentifiedObject> amisC2 = new List<IdentifiedObject>();
-
-                    foreach (Substation ss in substationsC2)
-                    {
-                        amisC2.AddRange(this.Model.GetSomeAmis(ss.GlobalId));
-                    }
+                    
+                    amisC2.AddRange(this.Model.GetSomeAmis(substationsId));
 
                     foreach (IdentifiedObject io in amisC2)
                     {
@@ -266,7 +275,7 @@ namespace AMIClient.ViewModels
                     this.AmiTableItems.Clear();
                     List<IdentifiedObject> amisC3 = new List<IdentifiedObject>();
 
-                    amisC3.AddRange(this.Model.GetSomeAmis(ParentGid));
+                    amisC3.AddRange(this.Model.GetSomeAmis(new List<long>() { ParentGid }));
 
                     foreach (IdentifiedObject io in amisC3)
                     {
