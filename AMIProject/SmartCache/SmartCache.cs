@@ -33,7 +33,6 @@ namespace SmartCache
         private WcfCommunicationClientFactory<ICalculationEngineDuplexSmartCache> factoryCE;
 
         private Dictionary<long, DynamicMeasurement> measurements = new Dictionary<long, DynamicMeasurement>();
-        private object lockObjectForClient = new object();
 
         public SmartCache(StatefulServiceContext context)
             : base(context)
@@ -175,33 +174,27 @@ namespace SmartCache
 
         public List<DynamicMeasurement> GetLastMeas(List<long> gidsInTable)
         {
-            lock (lockObjectForClient)
+            List<DynamicMeasurement> retVal = new List<DynamicMeasurement>();
+            foreach (long gid in gidsInTable)
             {
-                List<DynamicMeasurement> retVal = new List<DynamicMeasurement>();
-                foreach (long gid in gidsInTable)
+                if (measurements.ContainsKey(gid))
                 {
-                    if (measurements.ContainsKey(gid))
-                    {
-                        retVal.Add(measurements[gid]);
-                    }
+                    retVal.Add(measurements[gid]);
                 }
-
-                return retVal;
             }
+
+            return retVal;
         }
 
         public void SendAlarm(FTN.Common.ClassesForAlarmDB.DeltaForAlarm delta)
         {
-            lock (lockObjectForClient)
+            try
             {
-                try
-                {
-                    proxy.InvokeWithRetry(client => client.Channel.SendAlarm(delta));
-                }
-                catch
-                {
-                    proxy = null;
-                }
+                proxy.InvokeWithRetry(client => client.Channel.SendAlarm(delta));
+            }
+            catch
+            {
+                proxy = null;
             }
         }
 
@@ -218,17 +211,13 @@ namespace SmartCache
                     this.measurements.Add(kvp.Key, kvp.Value);
                 }
             }
-
-            lock (lockObjectForClient)
+            try
             {
-                try
-                {
-                    proxy.InvokeWithRetry(client => client.Channel.SendMeasurements(this.measurements.Values.ToList()));
-                }
-                catch
-                {
-                    proxy = null;
-                }
+                proxy.InvokeWithRetry(client => client.Channel.SendMeasurements(this.measurements.Values.ToList()));
+            }
+            catch
+            {
+                proxy = null;
             }
         }
     }

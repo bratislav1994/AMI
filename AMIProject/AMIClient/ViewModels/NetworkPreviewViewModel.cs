@@ -92,7 +92,7 @@ namespace AMIClient.ViewModels
 
         public void ChartViewForSubstation(ResolutionType resolution, long gid, string header)
         {
-            List<IdentifiedObject> amisC4 = this.Model.GetSomeAmis(gid);
+            List<IdentifiedObject> amisC4 = this.Model.GetSomeAmis(new List<long>() { gid });
             List<long> ecsC4 = new List<long>();
 
             foreach (EnergyConsumer ec in amisC4)
@@ -109,14 +109,17 @@ namespace AMIClient.ViewModels
 
         public void ChartViewForSubGeoRegion(ResolutionType resolution, long gid, string header)
         {
-            List<IdentifiedObject> substationsC3 = this.Model.GetSomeSubstations(gid);
+            List<IdentifiedObject> substationsC3 = this.Model.GetSomeSubstations(new List<long>() { gid });
+            List<long> substationsId = new List<long>();
             List<IdentifiedObject> amisC3 = new List<IdentifiedObject>();
             List<long> ecsC3 = new List<long>();
 
             foreach (Substation ss in substationsC3)
             {
-                amisC3.AddRange(this.Model.GetSomeAmis(ss.GlobalId));
+                substationsId.Add(ss.GlobalId);
             }
+
+            amisC3.AddRange(this.Model.GetSomeAmis(substationsId));
 
             foreach (EnergyConsumer ec in amisC3)
             {
@@ -132,20 +135,26 @@ namespace AMIClient.ViewModels
 
         public void ChartViewForGeoRegion(ResolutionType resolution, long gid, string header)
         {
-            List<IdentifiedObject> subRegionsC2 = this.Model.GetSomeSubregions(gid);
+            List<IdentifiedObject> subRegionsC2 = this.Model.GetSomeSubregions(new List<long>() { gid });
             List<IdentifiedObject> substationsC2 = new List<IdentifiedObject>();
+            List<long> subRegionsId = new List<long>();
+            List<long> substationsId = new List<long>();
             List<IdentifiedObject> amisC2 = new List<IdentifiedObject>();
             List<long> ecsC2 = new List<long>();
 
             foreach (SubGeographicalRegion sgr in subRegionsC2)
             {
-                substationsC2.AddRange(this.Model.GetSomeSubstations(sgr.GlobalId));
+                subRegionsId.Add(sgr.GlobalId);
             }
+
+            substationsC2.AddRange(this.Model.GetSomeSubstations(subRegionsId));
 
             foreach (Substation ss in substationsC2)
             {
-                amisC2.AddRange(this.Model.GetSomeAmis(ss.GlobalId));
+                substationsId.Add(ss.GlobalId);
             }
+
+            amisC2.AddRange(this.Model.GetSomeAmis(substationsId));
 
             foreach (EnergyConsumer ec in amisC2)
             {
@@ -179,7 +188,7 @@ namespace AMIClient.ViewModels
 
         public void ConsumptionStatisticForSubstation(long gid, string header)
         {
-            List<IdentifiedObject> amisC4 = this.Model.GetSomeAmis(gid);
+            List<IdentifiedObject> amisC4 = this.Model.GetSomeAmis(new List<long>() { gid });
             List<long> ecsC4 = new List<long>();
             List<ConsumerType> consumerTypes = new List<ConsumerType>();
 
@@ -209,14 +218,17 @@ namespace AMIClient.ViewModels
 
         public void ConsumptionStatisticForSubGeoRegion(long gid, string header)
         {
-            List<IdentifiedObject> substationsC3 = this.Model.GetSomeSubstations(gid);
+            List<IdentifiedObject> substationsC3 = this.Model.GetSomeSubstations(new List<long>() { gid });
+            List<long> substationsId = new List<long>();
             List<IdentifiedObject> amisC3 = new List<IdentifiedObject>();
             List<long> ecsC3 = new List<long>();
 
             foreach (Substation ss in substationsC3)
             {
-                amisC3.AddRange(this.Model.GetSomeAmis(ss.GlobalId));
+                substationsId.Add(ss.GlobalId);
             }
+
+            amisC3.AddRange(this.Model.GetSomeAmis(substationsId));
 
             List<ConsumerType> consumerTypes = new List<ConsumerType>();
 
@@ -246,20 +258,26 @@ namespace AMIClient.ViewModels
 
         public void ConsumptionStatisticForGeoRegion(long gid, string header)
         {
-            List<IdentifiedObject> subRegionsC2 = this.Model.GetSomeSubregions(gid);
+            List<IdentifiedObject> subRegionsC2 = this.Model.GetSomeSubregions(new List<long>() { gid });
+            List<long> subRegionsId = new List<long>();
             List<IdentifiedObject> substationsC2 = new List<IdentifiedObject>();
+            List<long> substationsId = new List<long>();
             List<IdentifiedObject> amisC2 = new List<IdentifiedObject>();
             List<long> ecsC2 = new List<long>();
 
             foreach (SubGeographicalRegion sgr in subRegionsC2)
             {
-                substationsC2.AddRange(this.Model.GetSomeSubstations(sgr.GlobalId));
+                subRegionsId.Add(sgr.GlobalId);
             }
+
+            substationsC2.AddRange(this.Model.GetSomeSubstations(subRegionsId));
 
             foreach (Substation ss in substationsC2)
             {
-                amisC2.AddRange(this.Model.GetSomeAmis(ss.GlobalId));
+                substationsId.Add(ss.GlobalId);
             }
+
+            amisC2.AddRange(this.Model.GetSomeAmis(substationsId));
 
             List<ConsumerType> consumerTypes = new List<ConsumerType>();
 

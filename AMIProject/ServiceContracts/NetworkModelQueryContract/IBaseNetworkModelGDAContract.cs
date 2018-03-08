@@ -40,7 +40,7 @@ namespace FTN.ServiceContracts
         /// <param name="association">Relation between source and entities that should be returned</param>		
         /// <returns>Id of the resource iterator for the requested entities</returns>
         [OperationContract]
-        int GetRelatedValues(long source, List<ModelCode> propIds, Association association);
+        int GetRelatedValues(List<long> source, List<ModelCode> propIds, Association association);
 
         /// <summary>
         /// Gets list of next n resource descriptions from the iterator.

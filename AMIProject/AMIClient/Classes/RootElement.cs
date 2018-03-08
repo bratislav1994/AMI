@@ -82,7 +82,7 @@ namespace AMIClient
                     if (value)
                     {
                         base.Model.ClearPositions();
-                        Model.GetAllTableItems();
+                        Model.GetAllTableItems(false);
                         //this.Model.GetLastMeasurements();
                         this.OnPropertyChanged("IsSelected");
                     }
@@ -167,7 +167,7 @@ namespace AMIClient
 
                                 if (IsSelected)
                                 {
-                                    this.Model.GetAllTableItems();
+                                    this.Model.GetAllTableItems(true);
                                 }
                                 else
                                 {

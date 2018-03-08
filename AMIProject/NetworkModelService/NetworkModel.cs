@@ -256,7 +256,7 @@ namespace FTN.Services.NetworkModelService
         /// <param name="source">Id of entity that is start for association search</param>
         /// <param name="typeOfQuery">Query type choice(global or local)</param>
         /// <returns>Resource iterator for the requested entities</returns>
-        public ResourceIterator GetRelatedValues(long source, List<ModelCode> properties, Association association)
+        public ResourceIterator GetRelatedValues(List<long> source, List<ModelCode> properties, Association association)
         {
             lock (LockObjectClient)
             {
@@ -264,9 +264,13 @@ namespace FTN.Services.NetworkModelService
 
                 try
                 {
-                    List<long> relatedGids = ApplyAssocioationOnSource(source, association);
+                    List<long> relatedGids = new List<long>();
 
-
+                    foreach(long s in source)
+                    {
+                        relatedGids.AddRange(ApplyAssocioationOnSource(s, association));
+                    }
+                    
                     Dictionary<DMSType, List<ModelCode>> class2PropertyIDs = new Dictionary<DMSType, List<ModelCode>>();
 
                     foreach (long relatedGid in relatedGids)
