@@ -32,6 +32,7 @@ namespace CEProxy
         private WcfCommunicationClientFactory<ICEScada> wcfScadaFactory;
         private WcfCEScada proxyScada;
         private IScadaForCECommand scada;
+        private object lockObjectForScada = new object();
 
         public CEProxy(StatelessServiceContext context)
             : base(context)
@@ -192,7 +193,10 @@ namespace CEProxy
 
         public void DataFromScada(Dictionary<long, DynamicMeasurement> measurements)
         {
-            new Thread(() => ForwardMeasurements(measurements)).Start();
+            lock (lockObjectForScada)
+            {
+                new Thread(() => ForwardMeasurements(measurements)).Start();
+            }
         }
 
         private void ForwardMeasurements(Dictionary<long, DynamicMeasurement> measurements)
@@ -211,22 +215,19 @@ namespace CEProxy
             }
         }
 
-        public void Connect(string endpointName)
+        public void Connect()
         {
-            NetTcpBinding binding = new NetTcpBinding();
-            binding.ReceiveTimeout = TimeSpan.MaxValue;
-            binding.MaxReceivedMessageSize = Int32.MaxValue;
-            binding.MaxBufferSize = Int32.MaxValue;
-            ChannelFactory<IScadaForCECommand> factory = new ChannelFactory<IScadaForCECommand>(binding,
-                                                                                new EndpointAddress(endpointName));
-            scada = factory.CreateChannel();
+            scada = OperationContext.Current.GetCallbackChannel<IScadaForCECommand>();
         }
 
         public string Command(Dictionary<long, DynamicMeasurement> measurementsInAlarm)
         {
             try
             {
-                return scada.Command(measurementsInAlarm);
+                lock (lockObjectForScada)
+                {
+                    return scada.Command(measurementsInAlarm);
+                }
             }
             catch
             {

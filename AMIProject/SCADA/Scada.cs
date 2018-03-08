@@ -59,7 +59,7 @@ namespace SCADA
         private Dictionary<int, List<int>> analogIndexesForSimulator;
         List<int> RTUsThatNeedsToBeStopped = new List<int>();
         private bool ready = false;
-        private object lockForConnecting = new object();
+        private object lockForCE = new object();
 
         public ITransactionDuplexScada ProxyCoordinator
         {
@@ -114,7 +114,7 @@ namespace SCADA
                     binding.MaxBufferSize = Int32.MaxValue;
                     binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
 
-                    ChannelFactory<ICalculationEngineForScada> factory = new ChannelFactory<ICalculationEngineForScada>(binding,
+                    DuplexChannelFactory<ICalculationEngineForScada> factory = new DuplexChannelFactory<ICalculationEngineForScada>(new InstanceContext(this), binding,
                                                                                         new EndpointAddress("net.tcp://lastamicluster.westus.cloudapp.azure.com:10101/CEProxy/Scada/")
                                                                                         /*new EndpointAddress("net.tcp://localhost:10101/CEProxy/Scada/")*/);
 
@@ -201,11 +201,11 @@ namespace SCADA
                 try
                 {
                     Logger.LogMessageToFile(string.Format("SCADA.Scada; line: {0}; Scada try to connect with CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                    ProxyCE.Connect("net.tcp://localhost:10001/Scada/CE");
+                    ProxyCE.Connect();
                     Logger.LogMessageToFile(string.Format("SCADA.Scada; line: {0}; Scada is connected to the CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     break;
                 }
-                catch
+                catch (Exception ex)
                 {
                     Logger.LogMessageToFile(string.Format("SCADA.Scada; line: {0}; Scada faild to connect with CE. CATCH", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     firstTimeCE = true;
@@ -789,7 +789,10 @@ namespace SCADA
                             if (handler.Value.HasNewMeas)
                             {
                                 Logger.LogMessageToFile(string.Format("SCADA.Scada.CheckIfThereIsSomethingToSend; line: {0}; Scada sends data to client if it has data to send", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                                ProxyCE.DataFromScada(handler.Value.resourcesToSend);
+                                lock (lockForCE)
+                                {
+                                    ProxyCE.DataFromScada(handler.Value.resourcesToSend);
+                                }
                                 handler.Value.HasNewMeas = false;
                                 handler.Value.IsReceiving = false;
                             }
@@ -1036,116 +1039,119 @@ namespace SCADA
 
         public string Command(Dictionary<long, DynamicMeasurement> measurementsInAlarm)
         {
-            Dictionary<int, Dictionary<long, TypeVoltage>> rtuAddresses = new Dictionary<int, Dictionary<long, TypeVoltage>>();
-            string retVal = "Result for commands:\n";
-            Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; Scada receive command from CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-
-            foreach (KeyValuePair<int, List<DataForScada>> kvp in allDataByRtu)
+            lock (lockForCE)
             {
-                foreach (DataForScada ecfs in kvp.Value)
+                Dictionary<int, Dictionary<long, TypeVoltage>> rtuAddresses = new Dictionary<int, Dictionary<long, TypeVoltage>>();
+                string retVal = "Result for commands:\n";
+                Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; Scada receive command from CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+
+                foreach (KeyValuePair<int, List<DataForScada>> kvp in allDataByRtu)
                 {
-                    if (ecfs is EnergyConsumerForScada)
+                    foreach (DataForScada ecfs in kvp.Value)
                     {
-                        EnergyConsumerForScada energyCon = (EnergyConsumerForScada)ecfs;
-
-                        if (measurementsInAlarm.ContainsKey(energyCon.GlobalId))
+                        if (ecfs is EnergyConsumerForScada)
                         {
-                            PowerTransformerForScada pt = f.GetPowerTransformerForCommanding(energyCon.BaseVoltageId, energyCon.EqContainerID);
-                            TypeVoltage typeVol = measurementsInAlarm[energyCon.GlobalId].TypeVoltage;
-                            bool commandForPtAlreadyExists = false;
-                            bool differentTypeVoltageOnSamePt = false;
+                            EnergyConsumerForScada energyCon = (EnergyConsumerForScada)ecfs;
 
-                            if (rtuAddresses.ContainsKey(kvp.Key))
+                            if (measurementsInAlarm.ContainsKey(energyCon.GlobalId))
                             {
-                                if (rtuAddresses[kvp.Key].ContainsKey(pt.GlobalId))
-                                {
-                                    commandForPtAlreadyExists = true;
+                                PowerTransformerForScada pt = f.GetPowerTransformerForCommanding(energyCon.BaseVoltageId, energyCon.EqContainerID);
+                                TypeVoltage typeVol = measurementsInAlarm[energyCon.GlobalId].TypeVoltage;
+                                bool commandForPtAlreadyExists = false;
+                                bool differentTypeVoltageOnSamePt = false;
 
-                                    if (rtuAddresses[kvp.Key][pt.GlobalId] != typeVol)
+                                if (rtuAddresses.ContainsKey(kvp.Key))
+                                {
+                                    if (rtuAddresses[kvp.Key].ContainsKey(pt.GlobalId))
                                     {
-                                        differentTypeVoltageOnSamePt = true;
+                                        commandForPtAlreadyExists = true;
+
+                                        if (rtuAddresses[kvp.Key][pt.GlobalId] != typeVol)
+                                        {
+                                            differentTypeVoltageOnSamePt = true;
+                                        }
                                     }
-                                }
-                            }
-                            else
-                            {
-                                rtuAddresses.Add(kvp.Key, new Dictionary<long, TypeVoltage>());
-                            }
-
-                            if (differentTypeVoltageOnSamePt)
-                            {
-                                retVal += "Command FAILED! Under and over voltage on the same power transformer[name=" + pt.Name + "], on RTU[address=" + kvp.Key + "].\n";
-                            }
-                            else if (!commandForPtAlreadyExists)
-                            {
-                                rtuAddresses[kvp.Key].Add(pt.GlobalId, typeVol);
-                            }
-                        }
-                    }
-                }
-            }
-
-            Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; First big foreach passed", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-
-            foreach (KeyValuePair<int, Dictionary<long, TypeVoltage>> kvp in rtuAddresses)
-            {
-                foreach (KeyValuePair<long, TypeVoltage> kvp2 in kvp.Value)
-                {
-                    PowerTransformerForScada pt = ((PowerTransformerForScada)allData[kvp2.Key]);
-                    BaseVoltageForScada bv = ((BaseVoltageForScada)allData[pt.BaseVoltageId]);
-                    double delta = bv.NominalVoltage;
-                    short index = -1;
-
-                    foreach (MeasurementForScada meas in measurements[kvp.Key])
-                    {
-                        if (meas.Measurement.PowerSystemResourceRef == kvp2.Key)
-                        {
-                            index = (short)meas.Index;
-                            break;
-                        }
-                    }
-
-                    if (index != -1)
-                    {
-                        retVal += "\n";
-                        retVal += "RTU: " + kvp.Key + ", transformator name: " + pt.Name + ", type voltage: " + EnumDescription.GetEnumDescription(kvp2.Value) + ", ";
-
-                        if (kvp2.Value == TypeVoltage.UNDERVOLTAGE)
-                        {
-                            delta = 0.01 * delta;
-                        }
-                        else if (kvp2.Value == TypeVoltage.OVERVOLTAGE)
-                        {
-                            delta = -0.01 * delta;
-                        }
-
-                        Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; before command to RTU[{1}], PT[{4}], delta[{2}], index[{3}]", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber(), kvp.Key, delta, index, kvp2.Key));
-                        lock (lockObject)
-                        {
-                            lock (lockObjects[kvp.Key])
-                            {
-                                if (!handlers[kvp.Key].IsReceiving)
-                                {
-                                    var task = masters[kvp.Key].DirectOperate(this.GetCommandHeader(delta, index), TaskConfig.Default);
-                                    task.Wait(5000);
-                                    retVal += task.Result.TaskSummary;
                                 }
                                 else
                                 {
-                                    break;
+                                    rtuAddresses.Add(kvp.Key, new Dictionary<long, TypeVoltage>());
+                                }
+
+                                if (differentTypeVoltageOnSamePt)
+                                {
+                                    retVal += "Command FAILED! Under and over voltage on the same power transformer[name=" + pt.Name + "], on RTU[address=" + kvp.Key + "].\n";
+                                }
+                                else if (!commandForPtAlreadyExists)
+                                {
+                                    rtuAddresses[kvp.Key].Add(pt.GlobalId, typeVol);
                                 }
                             }
                         }
                     }
-
-                    Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; Index = {1}", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber(), index));
-
                 }
+
+                Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; First big foreach passed", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+
+                foreach (KeyValuePair<int, Dictionary<long, TypeVoltage>> kvp in rtuAddresses)
+                {
+                    foreach (KeyValuePair<long, TypeVoltage> kvp2 in kvp.Value)
+                    {
+                        PowerTransformerForScada pt = ((PowerTransformerForScada)allData[kvp2.Key]);
+                        BaseVoltageForScada bv = ((BaseVoltageForScada)allData[pt.BaseVoltageId]);
+                        double delta = bv.NominalVoltage;
+                        short index = -1;
+
+                        foreach (MeasurementForScada meas in measurements[kvp.Key])
+                        {
+                            if (meas.Measurement.PowerSystemResourceRef == kvp2.Key)
+                            {
+                                index = (short)meas.Index;
+                                break;
+                            }
+                        }
+
+                        if (index != -1)
+                        {
+                            retVal += "\n";
+                            retVal += "RTU: " + kvp.Key + ", transformator name: " + pt.Name + ", type voltage: " + EnumDescription.GetEnumDescription(kvp2.Value) + ", ";
+
+                            if (kvp2.Value == TypeVoltage.UNDERVOLTAGE)
+                            {
+                                delta = 0.01 * delta;
+                            }
+                            else if (kvp2.Value == TypeVoltage.OVERVOLTAGE)
+                            {
+                                delta = -0.01 * delta;
+                            }
+
+                            Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; before command to RTU[{1}], PT[{4}], delta[{2}], index[{3}]", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber(), kvp.Key, delta, index, kvp2.Key));
+                            lock (lockObject)
+                            {
+                                lock (lockObjects[kvp.Key])
+                                {
+                                    if (!handlers[kvp.Key].IsReceiving)
+                                    {
+                                        var task = masters[kvp.Key].DirectOperate(this.GetCommandHeader(delta, index), TaskConfig.Default);
+                                        task.Wait(5000);
+                                        retVal += task.Result.TaskSummary;
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; Index = {1}", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber(), index));
+
+                    }
+                }
+
+                Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; Second big foreach passed", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+
+                return retVal;
             }
-
-            Logger.LogMessageToFile(string.Format("SCADA.Command; line: {0}; Second big foreach passed", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-
-            return retVal;
         }
         #endregion
     }
