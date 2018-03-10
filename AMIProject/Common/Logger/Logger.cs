@@ -37,12 +37,24 @@ namespace FTN.Common.Logger
                     var file = System.IO.File.Create(path);
                     file.Close();
                 }
-                System.IO.StreamWriter sw = System.IO.File.AppendText(path);
-                string logline = string.Format(
-                    "{0:G}: {1}.", System.DateTime.Now, msg);
-                sw.WriteLine(logline);
-                sw.Flush();
-                sw.Close();
+
+                try
+                {
+                    System.IO.StreamWriter sw = System.IO.File.AppendText(path);
+                    string logline = string.Format(
+                        "{0:G}: {1}.", System.DateTime.Now, msg);
+                    sw.WriteLine(logline);
+                    sw.Flush();
+                    sw.Close();
+                }
+                catch (IOException e)
+                {
+
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
         }
     }
