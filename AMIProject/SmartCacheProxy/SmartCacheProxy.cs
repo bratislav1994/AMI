@@ -94,6 +94,7 @@ namespace SmartCacheProxy
             // Create binding
             Binding binding = WcfUtility.CreateTcpClientBinding();
             binding.ReceiveTimeout = TimeSpan.MaxValue;
+            binding.SendTimeout = TimeSpan.MaxValue;
             // Create a partition resolver
             IServicePartitionResolver partitionResolver = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.

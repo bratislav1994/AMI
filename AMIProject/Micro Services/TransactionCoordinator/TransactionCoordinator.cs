@@ -35,7 +35,7 @@ namespace TransactionCoordinator
         private WcfCEDelta proxyCE;
         private WcfCommunicationClientFactory<ICalculationEngine> factoryCE;
 
-        private object lockFor2PC;
+        private object lockFor2PC = new object();
 
 
         public TransactionCoordinator(StatefulServiceContext context)

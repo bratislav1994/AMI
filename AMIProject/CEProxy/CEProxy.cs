@@ -103,6 +103,7 @@ namespace CEProxy
             // Create binding
             Binding bindingClient = WcfUtility.CreateTcpClientBinding();
             bindingClient.ReceiveTimeout = TimeSpan.MaxValue;
+            bindingClient.SendTimeout = TimeSpan.MaxValue;
             // Create a partition resolver
             IServicePartitionResolver partitionResolverClient = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.
@@ -123,6 +124,7 @@ namespace CEProxy
         private void ConnectToCEScada()
         {
             Binding bindingScada = WcfUtility.CreateTcpClientBinding();
+            bindingScada.SendTimeout = TimeSpan.MaxValue;
             bindingScada.ReceiveTimeout = TimeSpan.MaxValue;
             IServicePartitionResolver partitionResolverScada = ServicePartitionResolver.GetDefault();
             wcfScadaFactory = new WcfCommunicationClientFactory<ICEScada>

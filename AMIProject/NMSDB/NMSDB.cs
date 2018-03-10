@@ -23,7 +23,9 @@ namespace NMSDB
 
         public NMSDB(StatelessServiceContext context)
             : base(context)
-        { }
+        {
+            var delta = dataBaseAdapter.ReadDelta();
+        }
         
         /// <summary>
         /// Optional override to create listeners (e.g., TCP, HTTP) for this service replica to handle client or user requests.

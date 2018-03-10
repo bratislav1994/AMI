@@ -28,7 +28,9 @@ namespace CEClient
 
         public CEClient(StatelessServiceContext context)
             : base(context)
-        { }
+        {
+            var bv = DB.Instance.ReadBaseVoltages();
+        }
         
         /// <summary>
         /// Optional override to create listeners (e.g., TCP, HTTP) for this service replica to handle client or user requests.
