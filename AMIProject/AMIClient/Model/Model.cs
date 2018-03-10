@@ -510,7 +510,7 @@ namespace AMIClient
             }
         }
 
-        public void GetAllTableItems(bool needGDA)
+        public void GetAllTableItems()
         {
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllAmis; line: {0}; Start the GetAllTableItems function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             List<long> gidsInTable = new List<long>();
@@ -521,7 +521,7 @@ namespace AMIClient
                 geoRegions = new List<IdentifiedObject>();
             }
 
-            if (needGDA || geoRegions.Count == 0)
+            if (geoRegions.Count == 0)
             {
                 GetTableItemsWithGDA(gidsInTable);
             }
