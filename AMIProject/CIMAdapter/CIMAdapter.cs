@@ -30,6 +30,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter
                     NetTcpBinding binding = new NetTcpBinding();
                     binding.Security.Mode = SecurityMode.Transport;
                     binding.ReceiveTimeout = TimeSpan.MaxValue;
+                    binding.SendTimeout = TimeSpan.FromHours(1);
                     binding.MaxReceivedMessageSize = Int32.MaxValue;
                     binding.MaxBufferSize = Int32.MaxValue;
                     binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;

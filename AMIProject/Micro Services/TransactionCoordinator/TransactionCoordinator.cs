@@ -35,6 +35,8 @@ namespace TransactionCoordinator
         private WcfCEDelta proxyCE;
         private WcfCommunicationClientFactory<ICalculationEngine> factoryCE;
 
+        private object lockFor2PC;
+
 
         public TransactionCoordinator(StatefulServiceContext context)
             : base(context)
@@ -139,132 +141,136 @@ namespace TransactionCoordinator
             bool CalculationEnginePrepareSuccess = false;
             bool ScadaPrepareSuccess = false;
             string retTrue = "SUCCESS: ";
-            string retFalse = "FAIL: "; 
+            string retFalse = "FAIL: ";
 
-            try
+            lock (lockFor2PC)
             {
-                proxyNMS.InvokeWithRetry(client => client.Channel.EnlistDelta(delta));
-                newDelta = proxyNMS.InvokeWithRetry(client => client.Channel.Prepare());
-            }
-            catch
-            {
-                ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on NMS failed.");
-                return retFalse + "Enlist/prepare failed on NMS";
-            }
-
-            if (newDelta != null)
-            {
-                ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on NMS succeeded.");
-
-                foreach (ResourceDescription rd in newDelta.InsertOperations)
-                {
-                    DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(rd.Id);
-                    if (type == DMSType.ANALOG || type == DMSType.ENERGYCONS || type == DMSType.BASEVOLTAGE ||
-                        type == DMSType.POWERTRANSFORMER || type == DMSType.SUBSTATION)
-                    {
-                        dataForScada.Add(rd);
-                    }
-                    if (type == DMSType.ENERGYCONS || type == DMSType.GEOREGION || type == DMSType.SUBGEOREGION ||
-                            type == DMSType.SUBSTATION || type == DMSType.BASEVOLTAGE)
-                    {
-                        dataForCE.Add(rd);
-                    }
-                }
-
-                if (!proxy.InvokeWithRetry(client => client.Channel.EnlistMeasScada(dataForScada)))
-                {
-                    return retFalse + "Enlist failed on Scada";
-                }
-                
-                try
-                {
-                    proxyCE.InvokeWithRetry(client => client.Channel.EnlistMeas(dataForCE));
-                    CalculationEnginePrepareSuccess = proxyCE.InvokeWithRetry(client => client.Channel.Prepare());
-                    if (CalculationEnginePrepareSuccess)
-                    {
-                        ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on CE succeeded.");
-                    }
-                    else
-                    {
-                        ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on CE failed.");
-                    }
-                }
-                catch
-                {
-                    ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on CE failed.");
-                    return retFalse + "Enlist/prepare failed on Calculation engine";
-                }
 
                 try
                 {
-                    ScadaPrepareSuccess = proxy.InvokeWithRetry(client => client.Channel.PrepareScada());
-                    if (ScadaPrepareSuccess)
-                    {
-                        ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on Scada succeeded.");
-                    }
-                    else
-                    {
-                        ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on Scada failed.");
-                    }
+                    proxyNMS.InvokeWithRetry(client => client.Channel.EnlistDelta(delta));
+                    newDelta = proxyNMS.InvokeWithRetry(client => client.Channel.Prepare());
                 }
                 catch
                 {
-                    ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on Scada failed.");
-                    return retFalse + "Prepare failed on Scada";
+                    ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on NMS failed.");
+                    return retFalse + "Enlist/prepare failed on NMS";
                 }
 
-                if (ScadaPrepareSuccess && CalculationEnginePrepareSuccess)
+                if (newDelta != null)
                 {
-                    try
+                    ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on NMS succeeded.");
+
+                    foreach (ResourceDescription rd in newDelta.InsertOperations)
                     {
-                        proxyNMS.InvokeWithRetry(client => client.Channel.Commit());
+                        DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(rd.Id);
+                        if (type == DMSType.ANALOG || type == DMSType.ENERGYCONS || type == DMSType.BASEVOLTAGE ||
+                            type == DMSType.POWERTRANSFORMER || type == DMSType.SUBSTATION)
+                        {
+                            dataForScada.Add(rd);
+                        }
+                        if (type == DMSType.ENERGYCONS || type == DMSType.GEOREGION || type == DMSType.SUBGEOREGION ||
+                                type == DMSType.SUBSTATION || type == DMSType.BASEVOLTAGE)
+                        {
+                            dataForCE.Add(rd);
+                        }
                     }
-                    catch
+
+                    if (!proxy.InvokeWithRetry(client => client.Channel.EnlistMeasScada(dataForScada)))
                     {
-                        ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on NMS failed.");
-                        return retFalse + "Commit failed on NMS";
+                        return retFalse + "Enlist failed on Scada";
                     }
 
                     try
                     {
-                        proxyCE.InvokeWithRetry(client => client.Channel.Commit());
-
+                        proxyCE.InvokeWithRetry(client => client.Channel.EnlistMeas(dataForCE));
+                        CalculationEnginePrepareSuccess = proxyCE.InvokeWithRetry(client => client.Channel.Prepare());
+                        if (CalculationEnginePrepareSuccess)
+                        {
+                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on CE succeeded.");
+                        }
+                        else
+                        {
+                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on CE failed.");
+                        }
                     }
                     catch
                     {
                         ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on CE failed.");
-                        return retFalse + "Commit failed on Calculation engine";
+                        return retFalse + "Enlist/prepare failed on Calculation engine";
                     }
 
                     try
                     {
-                        proxy.InvokeWithRetry(client => client.Channel.CommitScada());
+                        ScadaPrepareSuccess = proxy.InvokeWithRetry(client => client.Channel.PrepareScada());
+                        if (ScadaPrepareSuccess)
+                        {
+                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on Scada succeeded.");
+                        }
+                        else
+                        {
+                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on Scada failed.");
+                        }
                     }
                     catch
                     {
                         ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on Scada failed.");
-                        return retFalse + "Commit failed on Scada";
+                        return retFalse + "Prepare failed on Scada";
                     }
 
-                    return retTrue + "Delta applied to every service";
+                    if (ScadaPrepareSuccess && CalculationEnginePrepareSuccess)
+                    {
+                        try
+                        {
+                            proxyNMS.InvokeWithRetry(client => client.Channel.Commit());
+                        }
+                        catch
+                        {
+                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on NMS failed.");
+                            return retFalse + "Commit failed on NMS";
+                        }
+
+                        try
+                        {
+                            proxyCE.InvokeWithRetry(client => client.Channel.Commit());
+
+                        }
+                        catch
+                        {
+                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on CE failed.");
+                            return retFalse + "Commit failed on Calculation engine";
+                        }
+
+                        try
+                        {
+                            proxy.InvokeWithRetry(client => client.Channel.CommitScada());
+                        }
+                        catch
+                        {
+                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on Scada failed.");
+                            return retFalse + "Commit failed on Scada";
+                        }
+
+                        return retTrue + "Delta applied to every service";
+                    }
+                    else
+                    {
+                        proxyNMS.InvokeWithRetry(client => client.Channel.Rollback());
+
+                        proxyCE.InvokeWithRetry(client => client.Channel.Rollback());
+
+                        proxy.InvokeWithRetry(client => client.Channel.RollbackScada());
+
+                        return retFalse + "Prepare failed on Calculation engine and/or scada";
+                    }
                 }
                 else
                 {
                     proxyNMS.InvokeWithRetry(client => client.Channel.Rollback());
+                    ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on NMS failed.");
 
-                    proxyCE.InvokeWithRetry(client => client.Channel.Rollback());
-
-                    proxy.InvokeWithRetry(client => client.Channel.RollbackScada());
-
-                    return retFalse + "Prepare failed on Calculation engine and/or scada";
+                    return retFalse + "Enlist/prepare failed on NMS";
                 }
-            }
-            else
-            {
-                proxyNMS.InvokeWithRetry(client => client.Channel.Rollback());
-                ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on NMS failed.");
-
-                return retFalse + "Enlist/prepare failed on NMS";
             }
         }
 

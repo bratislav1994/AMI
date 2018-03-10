@@ -320,6 +320,10 @@ namespace AMIClient
 
         public void Start()
         {
+            geoRegions = new List<IdentifiedObject>();
+            subGeoRegions = new List<IdentifiedObject>();
+            substations = new List<IdentifiedObject>();
+
             checkNMS = new Thread(() => CheckIfNMSIsAlive());
 
             Thread t = new Thread(() => ConnectToNMS());
@@ -398,6 +402,29 @@ namespace AMIClient
                     {
                         ((IContextChannel)GdaQueryProxy).OperationTimeout = TimeSpan.FromMinutes(5);
                     }
+
+                    List<long> grId = new List<long>();
+                    List<long> sgrId = new List<long>();
+
+
+                    lock (lockForNMS)
+                    {
+                        geoRegions = GetExtentValues(ModelCode.GEOREGION);
+                    }
+
+                    foreach (IdentifiedObject io in geoRegions)
+                    {
+                        grId.Add(io.GlobalId);
+                    }
+
+                    subGeoRegions.AddRange(GetSomeSubregions(grId));
+                    
+                    foreach (IdentifiedObject io in subGeoRegions)
+                    {
+                        sgrId.Add(io.GlobalId);
+                    }
+
+                    substations.AddRange(GetSomeSubstations(sgrId));
 
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToNMS; line: {0}; Client is connected to the NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     checkNMS.Start();
