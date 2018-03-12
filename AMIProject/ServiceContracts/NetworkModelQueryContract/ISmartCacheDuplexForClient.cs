@@ -17,5 +17,8 @@ namespace FTN.ServiceContracts
 
         [OperationContract]
         List<DynamicMeasurement> GetLastMeas(List<long> gidsInTable);
+
+        [OperationContract]
+        void Ping();
     }
 }

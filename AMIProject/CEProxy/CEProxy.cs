@@ -25,6 +25,7 @@ namespace CEProxy
     /// <summary>
     /// An instance of this class is created for each service instance by the Service Fabric runtime.
     /// </summary>
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
     internal sealed class CEProxy : StatelessService, ICalculationForClient, ICalculationEngineForScada, IScadaForCECommand
     {
         private WcfCommunicationClientFactory<ICalculationForClient> wcfClientFactory;
@@ -32,7 +33,6 @@ namespace CEProxy
         private WcfCommunicationClientFactory<ICEScada> wcfScadaFactory;
         private WcfCEScada proxyScada;
         private IScadaForCECommand scada;
-        private object lockObjectForScada = new object();
 
         public CEProxy(StatelessServiceContext context)
             : base(context)
@@ -195,10 +195,7 @@ namespace CEProxy
 
         public void DataFromScada(Dictionary<long, DynamicMeasurement> measurements)
         {
-            lock (lockObjectForScada)
-            {
-                new Thread(() => ForwardMeasurements(measurements)).Start();
-            }
+            new Thread(() => ForwardMeasurements(measurements)).Start();
         }
 
         private void ForwardMeasurements(Dictionary<long, DynamicMeasurement> measurements)
@@ -226,14 +223,48 @@ namespace CEProxy
         {
             try
             {
-                lock (lockObjectForScada)
-                {
-                    return scada.Command(measurementsInAlarm);
-                }
+                return scada.Command(measurementsInAlarm);
             }
             catch
             {
                 return "Scada not online";
+            }
+        }
+
+        public void Ping()
+        {
+            while (true)
+            {
+                try
+                {
+                    proxyClient.InvokeWithRetry(client => client.Channel.Ping());
+                    break;
+                }
+                catch
+                {
+                    ConnectToCEClient();
+                }
+            }
+        }
+
+        public void PingFromScada()
+        {
+            new Thread(() => ForwardPing()).Start();
+        }
+
+        private void ForwardPing()
+        {
+            while (true)
+            {
+                try
+                {
+                    proxyScada.InvokeWithRetry(client => client.Channel.Ping());
+                    break;
+                }
+                catch
+                {
+                    ConnectToCEScada();
+                }
             }
         }
     }

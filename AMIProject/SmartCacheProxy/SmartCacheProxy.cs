@@ -23,18 +23,17 @@ namespace SmartCacheProxy
     /// <summary>
     /// An instance of this class is created for each service instance by the Service Fabric runtime.
     /// </summary>
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
     internal sealed class SmartCacheProxy : StatelessService, ISmartCacheDuplexForClient, IModelForDuplex
     {
         private List<IModelForDuplex> clients;
         private WcfCommunicationClientFactory<ISmartCacheMS> wcfClientFactory;
         private WcfSmartCache proxy;
         private StatelessServiceContext context;
-        private object lockObjectForClient = new object();
 
         public SmartCacheProxy(StatelessServiceContext context)
             : base(context)
         {
-            lockObjectForClient = new object();
         }
 
         /// <summary>
@@ -135,29 +134,46 @@ namespace SmartCacheProxy
 
         public void Subscribe()
         {
-            lock (lockObjectForClient)
+            List<IModelForDuplex> clientsForDeleting = new List<IModelForDuplex>();
+
+            foreach (IModelForDuplex client in this.Clients)
             {
-                this.Clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
-                return;
+                try
+                {
+                    if (!client.PingClient())
+                    {
+                        clientsForDeleting.Add(client);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    clientsForDeleting.Add(client);
+                }
             }
+
+            clientsForDeleting.ForEach(x => Clients.Remove(x));
+
+            this.Clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
         }
 
         public List<DynamicMeasurement> GetLastMeas(List<long> gidsInTable)
         {
-            lock (lockObjectForClient)
+            List<DynamicMeasurement> retVal = new List<DynamicMeasurement>();
+
+            while (true)
             {
-                while (true)
+                try
                 {
-                    try
-                    {
-                        return proxy.InvokeWithRetry(client => client.Channel.GetLastMeas(gidsInTable));
-                    }
-                    catch
-                    {
-                        ConnectToSmartCache();
-                    }
+                    retVal = proxy.InvokeWithRetry(client => client.Channel.GetLastMeas(gidsInTable));
+                    break;
+                }
+                catch
+                {
+                    ConnectToSmartCache();
                 }
             }
+
+            return retVal;
         }
 
         public void Connect(ServiceInfo serviceInfo)
@@ -173,15 +189,12 @@ namespace SmartCacheProxy
         public void SendMeasurements(List<DynamicMeasurement> measurements)
         {
             List<IModelForDuplex> clientsForDeleting = new List<IModelForDuplex>();
-            
+
             foreach (IModelForDuplex client in clients)
             {
                 try
                 {
-                    lock (lockObjectForClient)
-                    {
-                        client.SendMeasurements(measurements);
-                    }
+                    client.SendMeasurements(measurements);
                 }
                 catch
                 {
@@ -203,10 +216,7 @@ namespace SmartCacheProxy
             {
                 try
                 {
-                    lock (lockObjectForClient)
-                    {
-                        client.SendAlarm(delta);
-                    }
+                    client.SendAlarm(delta);
                 }
                 catch
                 {
@@ -222,7 +232,28 @@ namespace SmartCacheProxy
 
         public bool PingClient()
         {
-            throw new NotImplementedException();
+            return true;
+        }
+
+        public void Ping()
+        {
+            new Thread(() => PingService()).Start();
+        }
+
+        private void PingService()
+        {
+            while (true)
+            {
+                try
+                {
+                    proxy.InvokeWithRetry(client => client.Channel.Ping());
+                    break;
+                }
+                catch
+                {
+                    ConnectToSmartCache();
+                }
+            }
         }
     }
 }

@@ -16,5 +16,8 @@ namespace FTN.ServiceContracts
 
         [OperationContract]
         void Connect(ServiceInfo serviceInfo);
+
+        [OperationContract]
+        void Ping();
     }
 }

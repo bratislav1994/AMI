@@ -118,7 +118,7 @@ namespace SmartCache
             {
                 var result = await proxies.TryGetValueAsync(tx, serviceInfo.TraceID);
 
-                if (result.HasValue)
+                if (!result.HasValue)
                 {
                     await proxies.AddAsync(tx, serviceInfo.TraceID, serviceInfo.ServiceName);
                 }
@@ -171,7 +171,7 @@ namespace SmartCache
 
             proxyCE.InvokeWithRetry(client => client.Channel.Subscribe(new ServiceInfo(base.Context.PartitionId.ToString() + "-" + base.Context.ReplicaOrInstanceId, base.Context.ServiceName.ToString(), ServiceType.STATEFFUL)));
         }
-
+        
         public List<DynamicMeasurement> GetLastMeas(List<long> gidsInTable)
         {
             List<DynamicMeasurement> retVal = new List<DynamicMeasurement>();
@@ -187,6 +187,11 @@ namespace SmartCache
         }
 
         public void SendAlarm(FTN.Common.ClassesForAlarmDB.DeltaForAlarm delta)
+        {
+            new Thread(() => ForwardAlarms(delta)).Start();
+        }
+
+        private void ForwardAlarms(FTN.Common.ClassesForAlarmDB.DeltaForAlarm delta)
         {
             try
             {
@@ -211,6 +216,12 @@ namespace SmartCache
                     this.measurements.Add(kvp.Key, kvp.Value);
                 }
             }
+
+            new Thread(() => ForwardMeasurements()).Start();
+        }
+
+        private void ForwardMeasurements()
+        {
             try
             {
                 proxy.InvokeWithRetry(client => client.Channel.SendMeasurements(this.measurements.Values.ToList()));
@@ -219,6 +230,11 @@ namespace SmartCache
             {
                 proxy = null;
             }
+        }
+
+        public void Ping()
+        {
+            return;
         }
     }
 }

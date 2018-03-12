@@ -20,10 +20,12 @@ using SCADA.Access;
 using TC57CIM.IEC61970.Wires;
 using FTN.Services.NetworkModelService.DataModel.Dynamic;
 using TC57CIM.IEC61970.Core;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SCADA
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
     public class Scada : IScada, IScadaDuplexSimulator, IScadaForCECommand, IDisposable
     {
         private Dictionary<int, RTUAddress> addressPool;
@@ -60,6 +62,7 @@ namespace SCADA
         List<int> RTUsThatNeedsToBeStopped = new List<int>();
         private bool ready = false;
         private object lockForCE = new object();
+        private object lockForTC = new object();
 
         public ITransactionDuplexScada ProxyCoordinator
         {
@@ -213,12 +216,65 @@ namespace SCADA
                 }
             }
 
+            new Thread(() => Ping()).Start();
+
             this.ReadDataFromDB();
             sendingThread = new Thread(() => CheckIfThereIsSomethingToSend());
             sendingThread.Start();
             Ready = true;
         }
 
+        private void Ping()
+        {
+            while (true)
+            {
+                if (simulators == null || ProxyCE == null || ProxyCoordinator == null)
+                {
+                    break;
+                }
+
+                lock (lockObjectForSimulators)
+                {
+                    foreach (KeyValuePair<int, ISimulator> s in simulators.Reverse())
+                    {
+                        try
+                        {
+                            s.Value.Ping();
+                        }
+                        catch
+                        {
+                            simulators.Remove(s.Key);
+                        }
+                    }
+                }
+
+                lock (lockForCE)
+                {
+                    try
+                    {
+                        ProxyCE.PingFromScada();
+                    }
+                    catch
+                    {
+                        firstTimeCE = true;
+                    }
+                }
+
+                lock (lockForTC)
+                {
+                    try
+                    {
+                        ProxyCoordinator.PingFromScada();
+                    }
+                    catch
+                    {
+                        firstTimeCoordinator = true;
+                    }
+                }
+
+                Thread.Sleep(10000);
+            }
+        }
         public void EnlistMeas(List<ResourceDescription> data)
         {
             Logger.LogMessageToFile(string.Format("SCADA.Scada.EnlistMeas; line: {0}; Start the EnlistMeas function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -1152,6 +1208,11 @@ namespace SCADA
 
                 return retVal;
             }
+        }
+
+        public void PingFromCEScada()
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

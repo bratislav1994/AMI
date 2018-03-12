@@ -12,5 +12,8 @@ namespace FTN.ServiceContracts
     {
         [OperationContract]
         void ConnectScada();
+
+        [OperationContract]
+        void PingFromScada();
     }
 }

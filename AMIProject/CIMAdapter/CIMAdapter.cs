@@ -21,7 +21,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter
 		{
 		}
 
-        private ITransactionCoordinator Proxy
+        public ITransactionCoordinator Proxy
         {
             get
             {
@@ -51,7 +51,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter
                 return proxy;
             }
         }
-
+        
 		public Delta CreateDelta(Stream extract, SupportedProfiles extractType, out string log)
 		{
 			Delta nmsDelta = null;

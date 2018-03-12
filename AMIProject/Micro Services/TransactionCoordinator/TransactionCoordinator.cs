@@ -308,7 +308,7 @@ namespace TransactionCoordinator
             // Create a client for communicating with the ICalculator service that has been created with the
             // Singleton partition scheme.
             //
-            proxy= new WcfTransactionCoordinatorProxy(
+            proxy = new WcfTransactionCoordinatorProxy(
                             factory,
                             new Uri(serviceInfo.ServiceName),
                             ServicePartitionKey.Singleton,
@@ -395,6 +395,11 @@ namespace TransactionCoordinator
                             new Uri(serviceInfo.ServiceName),
                             ServicePartitionKey.Singleton,
                             "CETransactionCoordinatorListener");
+        }
+
+        public void Ping()
+        {
+            return;
         }
     }
 }

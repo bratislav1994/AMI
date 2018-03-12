@@ -26,6 +26,7 @@ using ToastNotifications.Messages;
 
 namespace AMIClient
 {
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
     public class Model : IDisposable, IModelForDuplex, INotifyPropertyChanged
     {
         private ModelResourcesDesc modelResourcesDesc = new ModelResourcesDesc();
@@ -48,6 +49,8 @@ namespace AMIClient
         private DuplexChannelFactory<INetworkModelGDAContractDuplexClient> factory;
         private ChannelFactory<ICalculationForClient> factoryCE;
         private Thread checkNMS;
+        private Thread checkCE;
+        private Thread checkSC;
         private ICollectionView viewTableItems;
         private ICollectionView viewTableItemsForActiveAlarm;
         private ICollectionView viewTableItemsForResolvedAlarm;
@@ -56,8 +59,6 @@ namespace AMIClient
         private DateTime timeOfLastUpdateAlarm = DateTime.Now;
         private DateTime timeOfLastMeas = DateTime.Now;
         private bool isTest = false;
-        private object lockForSmartCache = new object();
-        private object lockForNMS = new object();
         private List<IdentifiedObject> geoRegions;
         private List<IdentifiedObject> subGeoRegions;
         private List<IdentifiedObject> substations;
@@ -328,6 +329,8 @@ namespace AMIClient
             substations = new List<IdentifiedObject>();
 
             checkNMS = new Thread(() => CheckIfNMSIsAlive());
+            checkCE = new Thread(() => CheckIfCEIsAlive());
+            checkSC = new Thread(() => CheckIfSCIsAlive());
 
             Thread t = new Thread(() => ConnectToNMS());
             t.Start();
@@ -355,6 +358,7 @@ namespace AMIClient
                     {
                         ((IContextChannel)ScProxy).OperationTimeout = TimeSpan.FromHours(1);
                     }
+                    checkSC.Start();
 
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToSC; line: {0}; Client is connected to the SC", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     break;
@@ -380,6 +384,7 @@ namespace AMIClient
                     {
                         ((IContextChannel)CEQueryProxy).OperationTimeout = TimeSpan.FromHours(1);
                     }
+                    checkCE.Start();
 
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client is connected to the CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     break;
@@ -408,12 +413,12 @@ namespace AMIClient
 
                     List<long> grId = new List<long>();
                     List<long> sgrId = new List<long>();
+                    List<long> ssId = new List<long>();
+                    List<long> amiId = new List<long>();
+                    List<IdentifiedObject> amis = new List<IdentifiedObject>();
 
+                    geoRegions = GetExtentValues(ModelCode.GEOREGION);
 
-                    lock (lockForNMS)
-                    {
-                        geoRegions = GetExtentValues(ModelCode.GEOREGION);
-                    }
 
                     foreach (IdentifiedObject io in geoRegions)
                     {
@@ -421,13 +426,34 @@ namespace AMIClient
                     }
 
                     subGeoRegions.AddRange(GetSomeSubregions(grId));
-                    
+
                     foreach (IdentifiedObject io in subGeoRegions)
                     {
                         sgrId.Add(io.GlobalId);
                     }
 
                     substations.AddRange(GetSomeSubstations(sgrId));
+
+                    foreach (IdentifiedObject io in substations)
+                    {
+                        ssId.Add(io.GlobalId);
+                    }
+
+                    amis.AddRange(GetSomeAmis(ssId));
+
+                    foreach (IdentifiedObject io in amis)
+                    {
+                        amiId.Add(io.GlobalId);
+                    }
+
+                    changesForAmis.Clear();
+
+                    List<DynamicMeasurement> meas = ScProxy.GetLastMeas(amiId);
+
+                    foreach (DynamicMeasurement dm in meas)
+                    {
+                        changesForAmis.Add(dm.PsrRef, dm);
+                    }
 
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToNMS; line: {0}; Client is connected to the NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     checkNMS.Start();
@@ -454,10 +480,7 @@ namespace AMIClient
                         break;
                     }
 
-                    lock (lockForNMS)
-                    {
-                        GdaQueryProxy.Ping();
-                    }
+                    GdaQueryProxy.Ping();
                 }
                 catch
                 {
@@ -476,6 +499,66 @@ namespace AMIClient
             }
         }
 
+        private void CheckIfCEIsAlive()
+        {
+            while (true)
+            {
+                try
+                {
+                    if (App.Current == null)
+                    {
+                        break;
+                    }
+
+                    CEQueryProxy.Ping();
+                }
+                catch
+                {
+                    FirstContact = true;
+
+                    if (IsTest)
+                    {
+                        break;
+                    }
+
+                    new Thread(() => ConnectToCE()).Start();
+                    break;
+                }
+
+                Thread.Sleep(10000);
+            }
+        }
+
+        private void CheckIfSCIsAlive()
+        {
+            while (true)
+            {
+                try
+                {
+                    if (App.Current == null)
+                    {
+                        break;
+                    }
+
+                     ScProxy.Ping();
+                    }
+                catch
+                {
+                    FirstContact = true;
+
+                    if (IsTest)
+                    {
+                        break;
+                    }
+
+                    new Thread(() => ConnectToSC()).Start();
+                    break;
+                }
+
+                Thread.Sleep(10000);
+            }
+        }
+
         public void SetRoot(RootElement root)
         {
             this.root = root;
@@ -488,14 +571,11 @@ namespace AMIClient
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllRegions; line: {0}; Start the GetAllRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
             List<GeographicalRegion> retVal = new List<GeographicalRegion>();
 
-            lock (lockForNMS)
+            List<IdentifiedObject> results = GetExtentValues(ModelCode.GEOREGION);
+
+            foreach (GeographicalRegion gr in results)
             {
-                List<IdentifiedObject> results = GetExtentValues(ModelCode.GEOREGION);
-                
-                foreach (GeographicalRegion gr in results)
-                {
-                    retVal.Add(gr);
-                }
+                retVal.Add(gr);
             }
 
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetAllRegions; line: {0}; Finish the GetAllRegions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -504,10 +584,7 @@ namespace AMIClient
 
         public List<IdentifiedObject> GetAllAmis()
         {
-            lock (lockForNMS)
-            {
-                return GetExtentValues(ModelCode.ENERGYCONS);
-            }
+            return GetExtentValues(ModelCode.ENERGYCONS);
         }
 
         public void GetAllTableItems()
@@ -584,11 +661,8 @@ namespace AMIClient
             substations = new List<IdentifiedObject>();
             List<IdentifiedObject> subGeoRegionsLocal = new List<IdentifiedObject>();
             List<IdentifiedObject> substationsLocal = new List<IdentifiedObject>();
-
-            lock (lockForNMS)
-            {
-                geoRegions = GetExtentValues(ModelCode.GEOREGION);
-            }
+            
+            geoRegions = GetExtentValues(ModelCode.GEOREGION);
 
             foreach (IdentifiedObject io in geoRegions)
             {
@@ -693,10 +767,7 @@ namespace AMIClient
             associtaion.Type = ModelCode.SUBGEOREGION;
             List<IdentifiedObject> results = new List<IdentifiedObject>();
 
-            lock (lockForNMS)
-            {
-                results = GetRelatedValues(regionId, properties, associtaion, ModelCode.SUBGEOREGION);
-            }
+            results = GetRelatedValues(regionId, properties, associtaion, ModelCode.SUBGEOREGION);
 
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubregions; line: {0}; Finish the GetSomeSubregions function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
 
@@ -712,10 +783,7 @@ namespace AMIClient
             associtaion.Type = ModelCode.SUBSTATION;
             List<IdentifiedObject> results = new List<IdentifiedObject>();
 
-            lock (lockForNMS)
-            {
-                results = GetRelatedValues(subRegionId, properties, associtaion, ModelCode.SUBSTATION);
-            }
+            results = GetRelatedValues(subRegionId, properties, associtaion, ModelCode.SUBSTATION);
             Logger.LogMessageToFile(string.Format("AMIClient.Model.GetSomeSubstation; line: {0}; Finish the GetSomeSubstation function", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
 
             return results;
@@ -729,11 +797,8 @@ namespace AMIClient
             associtaion.Type = ModelCode.ENERGYCONS;
             List<IdentifiedObject> results = new List<IdentifiedObject>();
 
-            lock (lockForNMS)
-            {
-                results = GetRelatedValues(substationId, properties, associtaion, ModelCode.ENERGYCONS);
-            }
-
+            results = GetRelatedValues(substationId, properties, associtaion, ModelCode.ENERGYCONS);
+            
             return results;
         }
 
@@ -878,10 +943,7 @@ namespace AMIClient
 
         public void NewDeltaApplied()
         {
-            lock (lockForNMS)
-            {
-                new Thread(() => ModelUpdate()).Start();
-            }
+            new Thread(() => ModelUpdate()).Start();
         }
 
         private void ModelUpdate()
@@ -891,11 +953,8 @@ namespace AMIClient
             substations = new List<IdentifiedObject>();
             List<IdentifiedObject> subGeoRegionsLocal = new List<IdentifiedObject>();
             List<IdentifiedObject> substationsLocal = new List<IdentifiedObject>();
-
-            lock (lockForNMS)
-            {
-                geoRegions = GetExtentValues(ModelCode.GEOREGION);
-            }
+            
+            geoRegions = GetExtentValues(ModelCode.GEOREGION);
 
             foreach (IdentifiedObject io in geoRegions)
             {
@@ -917,10 +976,7 @@ namespace AMIClient
 
         public void SendMeasurements(List<DynamicMeasurement> measurements)
         {
-            lock (lockForSmartCache)
-            {
-                new Thread(() => ReceiveMeasurements(measurements)).Start();
-            }
+            new Thread(() => ReceiveMeasurements(measurements)).Start();
         }
 
         private void ReceiveMeasurements(List<DynamicMeasurement> measurements)
@@ -940,8 +996,6 @@ namespace AMIClient
                     positions.Clear();
                 }
 
-                changesForAmis.Clear();
-
                 foreach (DynamicMeasurement dm in measurements)
                 {
                     if (positions.ContainsKey(dm.PsrRef))
@@ -954,7 +1008,14 @@ namespace AMIClient
 
                     if ((DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(dm.PsrRef) == DMSType.ENERGYCONS)
                     {
-                        changesForAmis.Add(dm.PsrRef, dm);
+                        if (changesForAmis.ContainsKey(dm.PsrRef))
+                        {
+                            changesForAmis[dm.PsrRef] = dm;
+                        }
+                        else
+                        {
+                            changesForAmis.Add(dm.PsrRef, dm);
+                        }
                     }
                 }
 
@@ -965,10 +1026,7 @@ namespace AMIClient
 
         public void GetLastMeasurements(List<long> gidsInTable)
         {
-            lock (lockForSmartCache)
-            {
-                this.UpdateTables(this.ScProxy.GetLastMeas(gidsInTable));
-            }
+            this.UpdateTables(this.ScProxy.GetLastMeas(gidsInTable));
         }
 
         public bool NewChangesAvailable(DateTime lastUpdate)
@@ -1057,39 +1115,42 @@ namespace AMIClient
 
         public void SendAlarm(DeltaForAlarm delta)
         {
-            lock (lockForSmartCache)
-            {
                 Logger.LogMessageToFile(string.Format("AMIClient.Model.UpdateAlarms; line: {0}; Update alarms started", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
 
                 new Thread(() => ReceiveAlarm(delta)).Start();
 
                 Logger.LogMessageToFile(string.Format("AMIClient.Model.UpdateAlarms; line: {0}; Update alarms finished", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                 this.timeOfLastUpdateAlarm = DateTime.Now;
-            }
         }
 
         private void ReceiveAlarm(DeltaForAlarm delta)
         {
+
             foreach (ActiveAlarm alarm in delta.InsertOperations)
             {
-                TableItemsForActiveAlarm.Add(new ActiveAlarm()
+                if (!positionsAlarm.ContainsKey(alarm.Id))
                 {
-                    Id = alarm.Id,
-                    Consumer = alarm.Consumer,
-                    FromPeriod = alarm.FromPeriod,
-                    Voltage = alarm.Voltage,
-                    TypeVoltage = alarm.TypeVoltage,
-                    Georegion = alarm.Georegion
-                });
 
-                positionsAlarm.Add(alarm.Id, TableItemsForActiveAlarm.Count - 1);
-                if (App.Current != null)
-                {
-                    App.Current.Dispatcher.Invoke((Action)delegate
+                    TableItemsForActiveAlarm.Add(new ActiveAlarm()
                     {
-                        NotifierClass.Instance.notifier.ShowError(alarm.FromPeriod.ToString() + "\nVoltage type: " + EnumDescription.GetEnumDescription(alarm.TypeVoltage) + "\nConsumer: " +
-                                                            alarm.Consumer + "\nVoltage: " + alarm.Voltage.ToString() + "V");
+                        Id = alarm.Id,
+                        Consumer = alarm.Consumer,
+                        FromPeriod = alarm.FromPeriod,
+                        Voltage = alarm.Voltage,
+                        TypeVoltage = alarm.TypeVoltage,
+                        Georegion = alarm.Georegion
                     });
+
+
+                    positionsAlarm.Add(alarm.Id, TableItemsForActiveAlarm.Count - 1);
+                    if (App.Current != null)
+                    {
+                        App.Current.Dispatcher.Invoke((Action)delegate
+                        {
+                            NotifierClass.Instance.notifier.ShowError(alarm.FromPeriod.ToString() + "\nVoltage type: " + EnumDescription.GetEnumDescription(alarm.TypeVoltage) + "\nConsumer: " +
+                                                                alarm.Consumer + "\nVoltage: " + alarm.Voltage.ToString() + "V");
+                        });
+                    }
                 }
             }
 

@@ -18,6 +18,7 @@ using ToastNotifications.Lifetime;
 using ToastNotifications.Position;
 using ToastNotifications.Messages;
 using AMIClient.HelperClasses;
+using System.Threading;
 
 namespace AMIClient.ViewModels
 {
@@ -32,6 +33,7 @@ namespace AMIClient.ViewModels
         private BindingList<SupportedProfiles> cIMProfiles;
         private static AddCimXmlViewModel instance;
         public bool isTest = false;
+        private Thread PingingThread;
 
         public AddCimXmlViewModel()
         {
@@ -41,6 +43,7 @@ namespace AMIClient.ViewModels
             CIMProfile = CIMProfiles[0];
             this.ConvertCommand.RaiseCanExecuteChanged();
             this.ApplyDeltaCommand.RaiseCanExecuteChanged();
+            PingingThread = new Thread(() => PingTC());
         }
 
         public static AddCimXmlViewModel Instance
@@ -261,6 +264,24 @@ namespace AMIClient.ViewModels
         {
             return isOk;
         }
+
+        private void PingTC()
+        {
+            while (true)
+            {
+                if (App.Current != null)
+                {
+                    adapter.Proxy.Ping();
+                }
+                else
+                {
+                    break;
+                }
+
+                Thread.Sleep(10000);
+            }
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

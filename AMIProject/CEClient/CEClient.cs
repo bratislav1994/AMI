@@ -30,6 +30,10 @@ namespace CEClient
             : base(context)
         {
             var bv = DB.Instance.ReadBaseVoltages();
+            using (var access = new AccessTSDB())
+            {
+                var ret = access.AggregationForHours.FirstOrDefault();
+            }
         }
         
         /// <summary>
@@ -515,6 +519,11 @@ namespace CEClient
             }
 
             return statistics;
+        }
+
+        public void Ping()
+        {
+            return;
         }
     }
 }

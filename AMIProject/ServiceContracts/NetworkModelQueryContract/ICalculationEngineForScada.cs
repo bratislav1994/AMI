@@ -17,5 +17,8 @@ namespace FTN.ServiceContracts
 
         [OperationContract]
         void DataFromScada(Dictionary<long, DynamicMeasurement> measurements);
+
+        [OperationContract]
+        void PingFromScada();
     }
 }

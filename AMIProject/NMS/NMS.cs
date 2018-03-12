@@ -113,6 +113,9 @@ namespace NMS
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
+            Binding listenerBinding = WcfUtility.CreateTcpClientBinding();
+            listenerBinding.ReceiveTimeout = TimeSpan.MaxValue;
+
             var serviceListener = new ServiceReplicaListener((context) =>
                                   new WcfCommunicationListener<INMSMicroService>
                                   (
@@ -127,10 +130,13 @@ namespace NMS
                                     //
                                     // Populate the binding information that you want the service to use.
                                     //
-                                    listenerBinding: WcfUtility.CreateTcpListenerBinding()
+                                    listenerBinding: listenerBinding
                                   ),
                                     "NMSProxyListener"
                                 );
+
+            Binding listenerBindingTC = WcfUtility.CreateTcpClientBinding();
+            listenerBindingTC.ReceiveTimeout = TimeSpan.MaxValue;
 
             var transactionCoordinatorListener = new ServiceReplicaListener((context) =>
                                   new WcfCommunicationListener<INetworkModel>
@@ -146,7 +152,7 @@ namespace NMS
                                     //
                                     // Populate the binding information that you want the service to use.
                                     //
-                                    listenerBinding: WcfUtility.CreateTcpListenerBinding()
+                                    listenerBinding: listenerBindingTC
                                   ),
                                     "TransactionCoordinatorListener"
                                 );
@@ -278,7 +284,7 @@ namespace NMS
             {
                 var result = await proxies.TryGetValueAsync(tx, serviceInfo.TraceID);
 
-                if (result.HasValue)
+                if (!result.HasValue)
                 {
                     await proxies.AddAsync(tx, serviceInfo.TraceID, serviceInfo);
                 }
@@ -340,7 +346,6 @@ namespace NMS
         {
             this.gda.Rollback();
         }
-
         #endregion
     }
 }

@@ -192,5 +192,37 @@ namespace TransactionCoordinatorProxy
         {
             throw new NotImplementedException();
         }
+
+        public void Ping()
+        {
+            while (true)
+            {
+                try
+                {
+                    proxy.InvokeWithRetry(client => client.Channel.Ping());
+                    break;
+                }
+                catch
+                {
+                    ConnectToTC();
+                }
+            }
+        }
+
+        public void PingFromScada()
+        {
+            while (true)
+            {
+                try
+                {
+                    proxy.InvokeWithRetry(client => client.Channel.Ping());
+                    break;
+                }
+                catch
+                {
+                    ConnectToTC();
+                }
+            }
+        }
     }
 }

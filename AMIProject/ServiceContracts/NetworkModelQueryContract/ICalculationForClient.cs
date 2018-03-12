@@ -29,5 +29,8 @@ namespace FTN.ServiceContracts
 
         [OperationContract]
         Tuple<List<HourAggregation>, Statistics> GetMeasurementsForChartViewByFilter(List<long> gids, Filter filter);
+
+        [OperationContract]
+        void Ping();
     }
 }

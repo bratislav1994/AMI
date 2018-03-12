@@ -38,7 +38,7 @@ namespace CEScada
         private Dictionary<long, EnergyConsumerDb> amis;
         private Dictionary<long, BaseVoltageDb> baseVoltages;
         private Dictionary<long, ActiveAlarm> alarmActiveDB;
-        private object lockObjectForCommand = new object();
+        private object lockObjectForSC = new object();
 
         public CEScada(StatefulServiceContext context)
             : base(context)
@@ -121,7 +121,9 @@ namespace CEScada
             amis = DB.Instance.ReadConsumers();
             baseVoltages = DB.Instance.ReadBaseVoltages();
             alarmActiveDB = DB.Instance.ReadActiveAlarm();
+
         }
+
         public async void Connect(ServiceInfo serviceInfo)
         {
             while (proxies == null)
@@ -163,166 +165,162 @@ namespace CEScada
                             "CEScadaListener");
         }
 
-        public async void DataFromScada(Dictionary<long, DynamicMeasurement> measurements)
+        public void DataFromScada(Dictionary<long, DynamicMeasurement> measurements)
         {
-            lock (lockObjectForCommand)
+            if (DB.Instance.GeoregionsNeedToRefresh(geoRegions.Count))
             {
-                if (DB.Instance.GeoregionsNeedToRefresh(geoRegions.Count))
-                {
-                    geoRegions.Clear();
-                    geoRegions = DB.Instance.ReadGeoRegions();
-                }
-
-                if (DB.Instance.SubgeoregionsNeedToRefresh(subGeoRegions.Count))
-                {
-                    subGeoRegions.Clear();
-                    subGeoRegions = DB.Instance.ReadSubGeoRegions();
-                }
-
-                if (DB.Instance.SubstationsNeedToRefresh(substations.Count))
-                {
-                    substations.Clear();
-                    substations = DB.Instance.ReadSubstations();
-                }
-
-                if (DB.Instance.ConsumersNeedToRefresh(amis.Count))
-                {
-                    amis.Clear();
-                    amis = DB.Instance.ReadConsumers();
-                }
-
-                if (DB.Instance.BaseVoltagesNeedToRefresh(baseVoltages.Count))
-                {
-                    baseVoltages.Clear();
-                    baseVoltages = DB.Instance.ReadBaseVoltages();
-                }
-
-                int cntForVoltage = 0;
-                Dictionary<long, DynamicMeasurement> addSubstations = new Dictionary<long, DynamicMeasurement>();
-
-                AddMeasurements(measurements.Values.ToList());
-                DeltaForAlarm delta = CheckAlarms(measurements.Values.ToList());
-
-                foreach (KeyValuePair<long, DynamicMeasurement> kvp in measurements)
-                {
-                    kvp.Value.CurrentV = kvp.Value.CurrentV / baseVoltages[amis[kvp.Key].BaseVoltageID].NominalVoltage;
-                }
-
-                foreach (KeyValuePair<long, SubstationDb> ss in substations)
-                {
-                    bool toBeAdded = false;
-                    DynamicMeasurement m = new DynamicMeasurement(ss.Key);
-
-                    foreach (KeyValuePair<long, DynamicMeasurement> meas in measurements)
-                    {
-                        if (amis[meas.Key].EqContainerID == m.PsrRef)
-                        {
-                            toBeAdded = true;
-                            m.CurrentP += meas.Value.CurrentP;
-                            m.CurrentQ += meas.Value.CurrentQ;
-                            m.CurrentV += meas.Value.CurrentV;
-                            ++cntForVoltage;
-
-                            if (meas.Value.IsAlarm)
-                            {
-                                m.IsAlarm = true;
-                            }
-                        }
-                    }
-
-                    if (m.CurrentV > 0)
-                    {
-                        m.CurrentV /= cntForVoltage;
-                    }
-                    cntForVoltage = 0;
-
-                    if (toBeAdded)
-                    {
-                        addSubstations.Add(m.PsrRef, m);
-                    }
-                }
-
-                foreach (KeyValuePair<long, DynamicMeasurement> kvp in addSubstations)
-                {
-                    measurements.Add(kvp.Key, kvp.Value);
-                }
-
-                Dictionary<long, DynamicMeasurement> addSubGeoRegions = new Dictionary<long, DynamicMeasurement>();
-
-                foreach (KeyValuePair<long, SubGeographicalRegionDb> sgr in subGeoRegions)
-                {
-                    bool toBeAdded = false;
-                    DynamicMeasurement m = new DynamicMeasurement(sgr.Key);
-
-                    foreach (KeyValuePair<long, DynamicMeasurement> meas in addSubstations)
-                    {
-                        if (substations[meas.Key].SubGeoRegionID == m.PsrRef)
-                        {
-                            toBeAdded = true;
-                            m.CurrentP += meas.Value.CurrentP;
-                            m.CurrentQ += meas.Value.CurrentQ;
-                            m.CurrentV += meas.Value.CurrentV;
-                            ++cntForVoltage;
-
-                            if (meas.Value.IsAlarm)
-                            {
-                                m.IsAlarm = true;
-                            }
-                        }
-                    }
-
-                    if (m.CurrentV > 0)
-                    {
-                        m.CurrentV /= cntForVoltage;
-                    }
-                    cntForVoltage = 0;
-
-                    if (toBeAdded)
-                    {
-                        addSubGeoRegions.Add(m.PsrRef, m);
-                        measurements.Add(m.PsrRef, m);
-                    }
-                }
-
-                foreach (KeyValuePair<long, GeographicalRegionDb> gr in geoRegions)
-                {
-                    bool toBeAdded = false;
-                    DynamicMeasurement m = new DynamicMeasurement(gr.Key);
-
-                    foreach (KeyValuePair<long, DynamicMeasurement> meas in addSubGeoRegions)
-                    {
-                        if (subGeoRegions[meas.Key].GeoRegionID == m.PsrRef)
-                        {
-                            toBeAdded = true;
-                            m.CurrentP += meas.Value.CurrentP;
-                            m.CurrentQ += meas.Value.CurrentQ;
-                            m.CurrentV += meas.Value.CurrentV;
-                            ++cntForVoltage;
-
-                            if (meas.Value.IsAlarm)
-                            {
-                                m.IsAlarm = true;
-                            }
-                        }
-                    }
-
-                    if (m.CurrentV > 0)
-                    {
-                        m.CurrentV /= cntForVoltage;
-                    }
-
-                    cntForVoltage = 0;
-
-                    if (toBeAdded)
-                    {
-                        measurements.Add(m.PsrRef, m);
-                    }
-                }
-
-                Thread sendThread = new Thread(() => SendToClient(measurements, delta));
-                sendThread.Start();
-                sendThread.Join();
+                geoRegions.Clear();
+                geoRegions = DB.Instance.ReadGeoRegions();
             }
+
+            if (DB.Instance.SubgeoregionsNeedToRefresh(subGeoRegions.Count))
+            {
+                subGeoRegions.Clear();
+                subGeoRegions = DB.Instance.ReadSubGeoRegions();
+            }
+
+            if (DB.Instance.SubstationsNeedToRefresh(substations.Count))
+            {
+                substations.Clear();
+                substations = DB.Instance.ReadSubstations();
+            }
+
+            if (DB.Instance.ConsumersNeedToRefresh(amis.Count))
+            {
+                amis.Clear();
+                amis = DB.Instance.ReadConsumers();
+            }
+
+            if (DB.Instance.BaseVoltagesNeedToRefresh(baseVoltages.Count))
+            {
+                baseVoltages.Clear();
+                baseVoltages = DB.Instance.ReadBaseVoltages();
+            }
+
+            int cntForVoltage = 0;
+            Dictionary<long, DynamicMeasurement> addSubstations = new Dictionary<long, DynamicMeasurement>();
+
+            AddMeasurements(measurements.Values.ToList());
+            DeltaForAlarm delta = CheckAlarms(measurements.Values.ToList());
+
+            foreach (KeyValuePair<long, DynamicMeasurement> kvp in measurements)
+            {
+                kvp.Value.CurrentV = kvp.Value.CurrentV / baseVoltages[amis[kvp.Key].BaseVoltageID].NominalVoltage;
+            }
+
+            foreach (KeyValuePair<long, SubstationDb> ss in substations)
+            {
+                bool toBeAdded = false;
+                DynamicMeasurement m = new DynamicMeasurement(ss.Key);
+
+                foreach (KeyValuePair<long, DynamicMeasurement> meas in measurements)
+                {
+                    if (amis[meas.Key].EqContainerID == m.PsrRef)
+                    {
+                        toBeAdded = true;
+                        m.CurrentP += meas.Value.CurrentP;
+                        m.CurrentQ += meas.Value.CurrentQ;
+                        m.CurrentV += meas.Value.CurrentV;
+                        ++cntForVoltage;
+
+                        if (meas.Value.IsAlarm)
+                        {
+                            m.IsAlarm = true;
+                        }
+                    }
+                }
+
+                if (m.CurrentV > 0)
+                {
+                    m.CurrentV /= cntForVoltage;
+                }
+                cntForVoltage = 0;
+
+                if (toBeAdded)
+                {
+                    addSubstations.Add(m.PsrRef, m);
+                }
+            }
+
+            foreach (KeyValuePair<long, DynamicMeasurement> kvp in addSubstations)
+            {
+                measurements.Add(kvp.Key, kvp.Value);
+            }
+
+            Dictionary<long, DynamicMeasurement> addSubGeoRegions = new Dictionary<long, DynamicMeasurement>();
+
+            foreach (KeyValuePair<long, SubGeographicalRegionDb> sgr in subGeoRegions)
+            {
+                bool toBeAdded = false;
+                DynamicMeasurement m = new DynamicMeasurement(sgr.Key);
+
+                foreach (KeyValuePair<long, DynamicMeasurement> meas in addSubstations)
+                {
+                    if (substations[meas.Key].SubGeoRegionID == m.PsrRef)
+                    {
+                        toBeAdded = true;
+                        m.CurrentP += meas.Value.CurrentP;
+                        m.CurrentQ += meas.Value.CurrentQ;
+                        m.CurrentV += meas.Value.CurrentV;
+                        ++cntForVoltage;
+
+                        if (meas.Value.IsAlarm)
+                        {
+                            m.IsAlarm = true;
+                        }
+                    }
+                }
+
+                if (m.CurrentV > 0)
+                {
+                    m.CurrentV /= cntForVoltage;
+                }
+                cntForVoltage = 0;
+
+                if (toBeAdded)
+                {
+                    addSubGeoRegions.Add(m.PsrRef, m);
+                    measurements.Add(m.PsrRef, m);
+                }
+            }
+
+            foreach (KeyValuePair<long, GeographicalRegionDb> gr in geoRegions)
+            {
+                bool toBeAdded = false;
+                DynamicMeasurement m = new DynamicMeasurement(gr.Key);
+
+                foreach (KeyValuePair<long, DynamicMeasurement> meas in addSubGeoRegions)
+                {
+                    if (subGeoRegions[meas.Key].GeoRegionID == m.PsrRef)
+                    {
+                        toBeAdded = true;
+                        m.CurrentP += meas.Value.CurrentP;
+                        m.CurrentQ += meas.Value.CurrentQ;
+                        m.CurrentV += meas.Value.CurrentV;
+                        ++cntForVoltage;
+
+                        if (meas.Value.IsAlarm)
+                        {
+                            m.IsAlarm = true;
+                        }
+                    }
+                }
+
+                if (m.CurrentV > 0)
+                {
+                    m.CurrentV /= cntForVoltage;
+                }
+
+                cntForVoltage = 0;
+
+                if (toBeAdded)
+                {
+                    measurements.Add(m.PsrRef, m);
+                }
+            }
+
+            Thread sendThread = new Thread(() => SendToClient(measurements, delta));
+            sendThread.Start();
         }
 
         private void SendToClient(Dictionary<long, DynamicMeasurement> measurements, DeltaForAlarm delta)
@@ -402,21 +400,18 @@ namespace CEScada
 
         private void SendCommand(Dictionary<long, DynamicMeasurement> gidsInAlarm)
         {
-            lock (lockObjectForCommand)
+            if (gidsInAlarm.Count > 0)
             {
-                if (gidsInAlarm.Count > 0)
+                try
                 {
-                    try
+                    if (proxy != null)
                     {
-                        if (proxy != null)
-                        {
-                            ServiceEventSource.Current.ServiceMessage(this.Context, "CEScada - " + proxy.InvokeWithRetry(client => client.Channel.Command(gidsInAlarm)));
-                        }
+                        ServiceEventSource.Current.ServiceMessage(this.Context, "CEScada - " + proxy.InvokeWithRetry(client => client.Channel.Command(gidsInAlarm)));
                     }
-                    catch
-                    {
-                        proxy = null;
-                    }
+                }
+                catch
+                {
+                    proxy = null;
                 }
             }
         }
@@ -483,6 +478,11 @@ namespace CEScada
                             new Uri(serviceInfo.ServiceName),
                             new ServicePartitionKey(1),
                             "CEListener");
+        }
+
+        public void Ping()
+        {
+            return;
         }
     }
 }

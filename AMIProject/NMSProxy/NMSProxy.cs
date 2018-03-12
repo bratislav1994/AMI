@@ -21,13 +21,13 @@ namespace NMSProxy
     /// <summary>
     /// An instance of this class is created for each service instance by the Service Fabric runtime.
     /// </summary>
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
     internal sealed class NMSProxy : StatelessService, IModelForDuplex, INetworkModelGDAContractDuplexClient
     {
         private List<IModelForDuplex> clients;
         private WcfCommunicationClientFactory<INMSMicroService> wcfClientFactory;
         private WcfNMS proxy;
         private StatelessServiceContext context;
-        private object lockObjectForClient = new object();
 
         public NMSProxy(StatelessServiceContext context)
             : base(context)
@@ -127,27 +127,25 @@ namespace NMSProxy
         {
             List<IModelForDuplex> clientsForDeleting = new List<IModelForDuplex>();
 
-            lock (lockObjectForClient)
+            foreach (IModelForDuplex client in this.Clients)
             {
-                foreach (IModelForDuplex client in this.Clients)
+                try
                 {
-                    try
-                    {
-                        if(!client.PingClient())
-                        {
-                            clientsForDeleting.Add(client);
-                        }
-                    }
-                    catch (Exception ex)
+                    if (!client.PingClient())
                     {
                         clientsForDeleting.Add(client);
                     }
                 }
-
-                clientsForDeleting.ForEach(x => Clients.Remove(x));
-
-                this.Clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
+                catch (Exception ex)
+                {
+                    clientsForDeleting.Add(client);
+                }
             }
+
+            clientsForDeleting.ForEach(x => Clients.Remove(x));
+
+            this.Clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
+
         }
 
         public void Ping()
@@ -194,6 +192,7 @@ namespace NMSProxy
                     ConnectToNMS();
                 }
             }
+            
         }
 
         public int GetExtentValues(ModelCode entityType, List<ModelCode> propIds)
@@ -314,29 +313,27 @@ namespace NMSProxy
         public void NewDeltaApplied()
         {
             List<IModelForDuplex> clientsForDeleting = new List<IModelForDuplex>();
-            lock (lockObjectForClient)
+
+            foreach (IModelForDuplex client in this.Clients)
             {
-                foreach(IModelForDuplex client in this.Clients)
+                try
                 {
-                    try
-                    {
-                        if (!client.PingClient())
-                        {
-                            clientsForDeleting.Add(client);
-                        }
-                        else
-                        {
-                            client.NewDeltaApplied();
-                        }
-                    }
-                    catch (Exception ex)
+                    if (!client.PingClient())
                     {
                         clientsForDeleting.Add(client);
                     }
+                    else
+                    {
+                        client.NewDeltaApplied();
+                    }
                 }
-
-                clientsForDeleting.ForEach(x => Clients.Remove(x));
+                catch (Exception ex)
+                {
+                    clientsForDeleting.Add(client);
+                }
             }
+
+            clientsForDeleting.ForEach(x => Clients.Remove(x));
         }
 
         public bool PingClient()
