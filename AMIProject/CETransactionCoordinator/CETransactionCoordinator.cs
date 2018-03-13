@@ -127,6 +127,8 @@ namespace CETransactionCoordinator
 
         public void Commit()
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "Commit(CE) on " + this.Context.NodeContext.NodeName.ToString());
+
             dataBaseAdapter.AddAddBaseVoltages(baseVoltagesTemp.Values.ToList());
             dataBaseAdapter.AddGeoRegions(geoRegionsTemp.Values.ToList());
             dataBaseAdapter.AddSubGeoRegions(subGeoRegionsTemp.Values.ToList());
@@ -169,6 +171,8 @@ namespace CETransactionCoordinator
 
         public void EnlistMeas(List<ResourceDescription> measurements)
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "EnlistMeas(CE) on " + this.Context.NodeContext.NodeName.ToString());
+
             foreach (ResourceDescription rd in measurements)
             {
                 meas.Add(rd);
@@ -177,6 +181,8 @@ namespace CETransactionCoordinator
 
         public bool Prepare()
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "Prepare(CE) on " + this.Context.NodeContext.NodeName.ToString());
+
             foreach (ResourceDescription rd in meas)
             {
                 DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(rd.Id);
@@ -226,6 +232,8 @@ namespace CETransactionCoordinator
 
         public void Rollback()
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "Rollback(CE) on " + this.Context.NodeContext.NodeName.ToString());
+
             this.baseVoltagesTemp.Clear();
             this.amisTemp.Clear();
             this.substationsTemp.Clear();

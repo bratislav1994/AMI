@@ -29,7 +29,7 @@ namespace CEProxy
     internal sealed class CEProxy : StatelessService, ICalculationForClient, ICalculationEngineForScada, IScadaForCECommand
     {
         private WcfCommunicationClientFactory<ICalculationForClient> wcfClientFactory;
-        private WcfCE proxyClient;
+        //private WcfCE proxyClient;
         private WcfCommunicationClientFactory<ICEScada> wcfScadaFactory;
         private WcfCEScada proxyScada;
         private IScadaForCECommand scada;
@@ -94,11 +94,11 @@ namespace CEProxy
         /// <param name="cancellationToken">Canceled when Service Fabric needs to shut down this service instance.</param>
         protected override async Task RunAsync(CancellationToken cancellationToken)
         {
-            ConnectToCEClient();
+            //ConnectToCEClient();
             ConnectToCEScada();
         }
 
-        private void ConnectToCEClient()
+        private WcfCE ConnectToCEClient()
         {
             // Create binding
             Binding bindingClient = WcfUtility.CreateTcpClientBinding();
@@ -107,18 +107,20 @@ namespace CEProxy
             // Create a partition resolver
             IServicePartitionResolver partitionResolverClient = ServicePartitionResolver.GetDefault();
             // create a  WcfCommunicationClientFactory object.
-            wcfClientFactory = new WcfCommunicationClientFactory<ICalculationForClient>
+            var wcfClientFactory = new WcfCommunicationClientFactory<ICalculationForClient>
                 (clientBinding: bindingClient, servicePartitionResolver: partitionResolverClient);
 
             //
             // Create a client for communicating with the ICalculator service that has been created with the
             // Singleton partition scheme.
             //
-            proxyClient = new WcfCE(
+            var proxyClient = new WcfCE(
                             wcfClientFactory,
                             new Uri("fabric:/TransactionCoordinatorMS/CEClient"),
                             ServicePartitionKey.Singleton,
                             "CEClientListener");
+
+            return proxyClient;
         }
 
         private void ConnectToCEScada()
@@ -149,7 +151,7 @@ namespace CEProxy
             {
                 try
                 {
-                    return proxyClient.InvokeWithRetry(client => client.Channel.GetMeasurementsForChartView(gids, from, resolution));
+                    return ConnectToCEClient().InvokeWithRetry(client => client.Channel.GetMeasurementsForChartView(gids, from, resolution));
                 }
                 catch
                 {
@@ -164,7 +166,7 @@ namespace CEProxy
             {
                 try
                 {
-                    return proxyClient.InvokeWithRetry(client => client.Channel.GetMeasurementsForChartViewByFilter(gids, filter));
+                    return ConnectToCEClient().InvokeWithRetry(client => client.Channel.GetMeasurementsForChartViewByFilter(gids, filter));
                 }
                 catch
                 {
@@ -179,7 +181,7 @@ namespace CEProxy
             {
                 try
                 {
-                    return proxyClient.InvokeWithRetry(client => client.Channel.GetResolvedAlarms(startIndes, range));
+                    return ConnectToCEClient().InvokeWithRetry(client => client.Channel.GetResolvedAlarms(startIndes, range));
                 }
                 catch
                 {
@@ -190,7 +192,7 @@ namespace CEProxy
 
         public int GetTotalPageCount()
         {
-            return proxyClient.InvokeWithRetry(client => client.Channel.GetTotalPageCount());
+            return ConnectToCEClient().InvokeWithRetry(client => client.Channel.GetTotalPageCount());
         }
 
         public void DataFromScada(Dictionary<long, DynamicMeasurement> measurements)
@@ -237,7 +239,7 @@ namespace CEProxy
             {
                 try
                 {
-                    proxyClient.InvokeWithRetry(client => client.Channel.Ping());
+                    ConnectToCEClient().InvokeWithRetry(client => client.Channel.Ping());
                     break;
                 }
                 catch

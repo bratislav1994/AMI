@@ -167,6 +167,8 @@ namespace CEScada
 
         public void DataFromScada(Dictionary<long, DynamicMeasurement> measurements)
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "DataFromScada on " + this.Context.NodeContext.NodeName.ToString());
+            
             if (DB.Instance.GeoregionsNeedToRefresh(geoRegions.Count))
             {
                 geoRegions.Clear();

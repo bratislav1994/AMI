@@ -225,46 +225,64 @@ namespace NMS
 
         public int GetExtentValues(FTN.Common.ModelCode entityType, List<FTN.Common.ModelCode> propIds)
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "GetExtentValues on " + this.Context.NodeContext.NodeName.ToString());
+
             return this.gda.GetExtentValues(entityType, propIds);
         }
 
         public List<long> GetGlobalIds()
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "GetGlobalIds on " + this.Context.NodeContext.NodeName.ToString());
+
             return this.gda.GetGlobalIds();
         }
 
         public int GetRelatedValues(List<long> source, List<FTN.Common.ModelCode> propIds, FTN.Common.Association association)
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "GetRelatedValues on " + this.Context.NodeContext.NodeName.ToString());
+
             return this.gda.GetRelatedValues(source, propIds, association);
         }
 
         public FTN.Common.ResourceDescription GetValues(long resourceId, List<FTN.Common.ModelCode> propIds)
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "GetValues on " + this.Context.NodeContext.NodeName.ToString());
+
             return this.gda.GetValues(resourceId, propIds);
         }
 
         public bool IteratorClose(int id)
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "IteratorClose on " + this.Context.NodeContext.NodeName.ToString());
+
             return this.gda.IteratorClose(id);
         }
 
         public List<FTN.Common.ResourceDescription> IteratorNext(int n, int id)
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "IteratorNext on " + this.Context.NodeContext.NodeName.ToString());
+
             return this.gda.IteratorNext(n, id);
         }
 
         public int IteratorResourcesLeft(int id)
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "IteratorResourcesLeft on " + this.Context.NodeContext.NodeName.ToString());
+
             return this.gda.IteratorResourcesLeft(id);
         }
 
         public int IteratorResourcesTotal(int id)
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "IteratorResourcesTotal on " + this.Context.NodeContext.NodeName.ToString());
+
             return this.gda.IteratorResourcesTotal(id);
         }
 
         public bool IteratorRewind(int id)
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "IteratorRewind on " + this.Context.NodeContext.NodeName.ToString());
+
             return this.gda.IteratorRewind(id);
         }
 
@@ -327,16 +345,22 @@ namespace NMS
 
         public void EnlistDelta(Delta delta)
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "EnlistDelta on " + this.Context.NodeContext.NodeName.ToString());
+
             this.gda.EnlistDelta(delta);
         }
 
         public Delta Prepare()
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "Prepare on " + this.Context.NodeContext.NodeName.ToString());
+
             return this.gda.Prepare();
         }
 
         public void Commit()
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "Commit on " + this.Context.NodeContext.NodeName.ToString());
+
             this.gda.Commit();
             this.SaveDelta(this.gda.delta);
             new Thread(() => this.InformClients()).Start();
@@ -344,6 +368,8 @@ namespace NMS
 
         public void Rollback()
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "Rollback on " + this.Context.NodeContext.NodeName.ToString());
+
             this.gda.Rollback();
         }
         #endregion

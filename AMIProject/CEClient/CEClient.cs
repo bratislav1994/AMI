@@ -77,14 +77,14 @@ namespace CEClient
             listAfterRefresh = new List<ResolvedAlarm>();
             long iterations = 0;
 
-            while (true)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
+            //while (true)
+            //{
+            //    cancellationToken.ThrowIfCancellationRequested();
 
-                ServiceEventSource.Current.ServiceMessage(this.Context, "Working-{0}", ++iterations);
+            //    ServiceEventSource.Current.ServiceMessage(this.Context, "Working-{0}", ++iterations);
 
-                await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
-            }
+            //    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+            //}
         }
 
         public void ConnectClient()
@@ -95,23 +95,20 @@ namespace CEClient
         public Tuple<List<Statistics>, Statistics> GetMeasurementsForChartView(List<long> gids, DateTime from, ResolutionType resolution)
         {
             List<Statistics> result = new List<Statistics>();
-            ServiceEventSource.Current.ServiceMessage(this.Context, this.Context.InstanceId.ToString());
-            ServiceEventSource.Current.ServiceMessage(this.Context, this.Context.TraceId.ToString());
-            ServiceEventSource.Current.ServiceMessage(this.Context, this.Context.NodeContext.NodeId.ToString());
-            ServiceEventSource.Current.ServiceMessage(this.Context, this.Context.NodeContext.NodeInstanceId.ToString());
-            ServiceEventSource.Current.ServiceMessage(this.Context, this.Context.NodeContext.NodeName.ToString());
-            ServiceEventSource.Current.ServiceMessage(this.Context, this.Context.NodeContext.IPAddressOrFQDN.ToString());
-
+            
             switch (resolution)
             {
                 case ResolutionType.MINUTE:
                     result = this.ReadMinuteAggregationTable(gids, from);
+                    ServiceEventSource.Current.ServiceMessage(this.Context, "Minute chart on " + this.Context.NodeContext.NodeName.ToString());
                     break;
                 case ResolutionType.HOUR:
                     result = this.ReadHourAggregationTable(gids, from);
+                    ServiceEventSource.Current.ServiceMessage(this.Context, "Hour chart on " + this.Context.NodeContext.NodeName.ToString());
                     break;
                 case ResolutionType.DAY:
                     result = this.ReadDayAggregationTable(gids, from);
+                    ServiceEventSource.Current.ServiceMessage(this.Context, "Day chart on " + this.Context.NodeContext.NodeName.ToString());
                     break;
             }
 
@@ -126,6 +123,8 @@ namespace CEClient
 
         public Tuple<List<HourAggregation>, Statistics> GetMeasurementsForChartViewByFilter(List<long> gids, Filter filter)
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "Consumption statistics on  " + this.Context.NodeContext.NodeName.ToString());
+
             Dictionary<long, BaseVoltageDb> baseVoltages = new Dictionary<long, BaseVoltageDb>();
             Dictionary<long, EnergyConsumerDb> amis = new Dictionary<long, EnergyConsumerDb>();
             baseVoltages = DB.Instance.ReadBaseVoltages();
@@ -192,6 +191,8 @@ namespace CEClient
 
         public List<ResolvedAlarm> GetResolvedAlarms(int startIndex, int range)
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "Get resolved alarm on " + this.Context.NodeContext.NodeName.ToString());
+
             if (startIndex + range > listAfterRefresh.Count - 1)
             {
                 return listAfterRefresh.GetRange(startIndex, listAfterRefresh.Count - startIndex);
@@ -204,6 +205,8 @@ namespace CEClient
 
         public int GetTotalPageCount()
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "Get total pages on " + this.Context.NodeContext.NodeName.ToString());
+
             listAfterRefresh.Clear();
             listAfterRefresh = DB.Instance.ReadResolvedAlarm();
 

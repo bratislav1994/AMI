@@ -174,6 +174,8 @@ namespace SmartCache
         
         public List<DynamicMeasurement> GetLastMeas(List<long> gidsInTable)
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "GetLastMeas on " + this.Context.NodeContext.NodeName.ToString());
+
             List<DynamicMeasurement> retVal = new List<DynamicMeasurement>();
             foreach (long gid in gidsInTable)
             {
@@ -205,6 +207,8 @@ namespace SmartCache
 
         public void SendMeasurements(Dictionary<long, DynamicMeasurement> measurements)
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "SendMeasurements on " + this.Context.NodeContext.NodeName.ToString());
+
             foreach (KeyValuePair<long, DynamicMeasurement> kvp in measurements)
             {
                 if (this.measurements.ContainsKey(kvp.Key))

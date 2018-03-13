@@ -83,11 +83,15 @@ namespace NMSDB
 
         public List<Delta> ReadDelta()
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "Read delta on " + this.Context.NodeContext.NodeName.ToString());
+
             return dataBaseAdapter.ReadDelta();
         }
 
         public Task<bool> SaveDelta(Delta delta)
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "Save delta on " + this.Context.NodeContext.NodeName.ToString());
+
             return Task.FromResult<bool>(dataBaseAdapter.AddDelta(delta));
         }
     }
