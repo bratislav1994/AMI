@@ -148,6 +148,7 @@ namespace TransactionCoordinator
 
                 try
                 {
+                    ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on NMS started.");
                     proxyNMS.InvokeWithRetry(client => client.Channel.EnlistDelta(delta));
                     newDelta = proxyNMS.InvokeWithRetry(client => client.Channel.Prepare());
                 }
@@ -183,6 +184,7 @@ namespace TransactionCoordinator
 
                     try
                     {
+                        ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on CE started.");
                         proxyCE.InvokeWithRetry(client => client.Channel.EnlistMeas(dataForCE));
                         CalculationEnginePrepareSuccess = proxyCE.InvokeWithRetry(client => client.Channel.Prepare());
                         if (CalculationEnginePrepareSuccess)
@@ -202,6 +204,7 @@ namespace TransactionCoordinator
 
                     try
                     {
+                        ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on Scada started.");
                         ScadaPrepareSuccess = proxy.InvokeWithRetry(client => client.Channel.PrepareScada());
                         if (ScadaPrepareSuccess)
                         {
@@ -222,32 +225,39 @@ namespace TransactionCoordinator
                     {
                         try
                         {
+                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - commit on NMS started.");
                             proxyNMS.InvokeWithRetry(client => client.Channel.Commit());
+                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - commit on NMS succeeded.");
+
                         }
                         catch
                         {
-                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on NMS failed.");
+                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - commit on NMS failed.");
                             return retFalse + "Commit failed on NMS";
                         }
 
                         try
                         {
+                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - commit on CE started.");
                             proxyCE.InvokeWithRetry(client => client.Channel.Commit());
+                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - commit on CE succeeded.");
 
                         }
                         catch
                         {
-                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on CE failed.");
+                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - commit on CE failed.");
                             return retFalse + "Commit failed on Calculation engine";
                         }
 
                         try
                         {
+                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - commit on Scada started.");
                             proxy.InvokeWithRetry(client => client.Channel.CommitScada());
+                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - commit on Scada succeeded.");
                         }
                         catch
                         {
-                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - prepare on Scada failed.");
+                            ServiceEventSource.Current.ServiceMessage(this.Context, "TransactionCoordinator - commit on Scada failed.");
                             return retFalse + "Commit failed on Scada";
                         }
 
