@@ -95,6 +95,12 @@ namespace CEClient
         public Tuple<List<Statistics>, Statistics> GetMeasurementsForChartView(List<long> gids, DateTime from, ResolutionType resolution)
         {
             List<Statistics> result = new List<Statistics>();
+            ServiceEventSource.Current.ServiceMessage(this.Context, this.Context.InstanceId.ToString());
+            ServiceEventSource.Current.ServiceMessage(this.Context, this.Context.TraceId.ToString());
+            ServiceEventSource.Current.ServiceMessage(this.Context, this.Context.NodeContext.NodeId.ToString());
+            ServiceEventSource.Current.ServiceMessage(this.Context, this.Context.NodeContext.NodeInstanceId.ToString());
+            ServiceEventSource.Current.ServiceMessage(this.Context, this.Context.NodeContext.NodeName.ToString());
+            ServiceEventSource.Current.ServiceMessage(this.Context, this.Context.NodeContext.IPAddressOrFQDN.ToString());
 
             switch (resolution)
             {
