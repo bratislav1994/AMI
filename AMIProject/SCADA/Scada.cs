@@ -84,6 +84,11 @@ namespace SCADA
                         new EndpointAddress("net.tcp://lastamicluster.westus.cloudapp.azure.com:10301/TransactionCoordinatorProxy/Scada/")
                         /*new EndpointAddress("net.tcp://localhost:10301/TransactionCoordinatorProxy/Scada/")*/);
 
+                    factory.Credentials.Windows.ClientCredential.UserName = "amiteam";
+                    factory.Credentials.Windows.ClientCredential.Password = "dr34mt34m4m1@";
+                    factory.Credentials.UserName.UserName = "amiteam";
+                    factory.Credentials.UserName.Password = "dr34mt34m4m1@";
+
                     proxyCoordinator = factory.CreateChannel();
                     firstTimeCoordinator = false;
                 }
@@ -115,6 +120,11 @@ namespace SCADA
                     DuplexChannelFactory<ICalculationEngineForScada> factory = new DuplexChannelFactory<ICalculationEngineForScada>(new InstanceContext(this), binding,
                                                                                         new EndpointAddress("net.tcp://lastamicluster.westus.cloudapp.azure.com:10101/CEProxy/Scada/")
                                                                                         /*new EndpointAddress("net.tcp://localhost:10101/CEProxy/Scada/")*/);
+
+                    factory.Credentials.Windows.ClientCredential.UserName = "amiteam";
+                    factory.Credentials.Windows.ClientCredential.Password = "dr34mt34m4m1@";
+                    factory.Credentials.UserName.UserName = "amiteam";
+                    factory.Credentials.UserName.Password = "dr34mt34m4m1@";
 
                     proxyCE = factory.CreateChannel();
                     firstTimeCE = false;

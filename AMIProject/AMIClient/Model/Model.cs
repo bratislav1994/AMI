@@ -85,6 +85,11 @@ namespace AMIClient
                         new EndpointAddress("net.tcp://lastamicluster.westus.cloudapp.azure.com:10200/NMSProxy/Client/")
                         /*new EndpointAddress("net.tcp://localhost:10200/NMSProxy/Client/")*/);
 
+                    factory.Credentials.Windows.ClientCredential.UserName = "amiteam";
+                    factory.Credentials.Windows.ClientCredential.Password = "dr34mt34m4m1@";
+                    factory.Credentials.UserName.UserName = "amiteam";
+                    factory.Credentials.UserName.Password = "dr34mt34m4m1@";
+
                     gdaQueryProxy = factory.CreateChannel();
                     FirstContact = false;
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.GdaQueryProxy; line: {0}; Channel Client-NMS is created", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
@@ -118,6 +123,11 @@ namespace AMIClient
                         binding,
                         new EndpointAddress("net.tcp://lastamicluster.westus.cloudapp.azure.com:10100/CEProxy/Client/")
                         /*new EndpointAddress("net.tcp://localhost:10100/CEProxy/Client/")*/);
+
+                    factoryCE.Credentials.Windows.ClientCredential.UserName = "amiteam";
+                    factoryCE.Credentials.Windows.ClientCredential.Password = "dr34mt34m4m1@";
+                    factoryCE.Credentials.UserName.UserName = "amiteam";
+                    factoryCE.Credentials.UserName.Password = "dr34mt34m4m1@";
 
                     ceQueryProxy = factoryCE.CreateChannel();
                     FirstContactCE = false;
@@ -153,6 +163,11 @@ namespace AMIClient
                         binding,
                         new EndpointAddress("net.tcp://lastamicluster.westus.cloudapp.azure.com:10400/SmartCache/Client/")
                         /*new EndpointAddress("net.tcp://localhost:10400/SmartCache/Client/")*/);
+
+                    factorySC.Credentials.Windows.ClientCredential.UserName = "amiteam";
+                    factorySC.Credentials.Windows.ClientCredential.Password = "dr34mt34m4m1@";
+                    factorySC.Credentials.UserName.UserName = "amiteam";
+                    factorySC.Credentials.UserName.Password = "dr34mt34m4m1@";
 
                     scProxy = factorySC.CreateChannel();
                     FirstContactSC = false;

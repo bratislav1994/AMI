@@ -39,6 +39,11 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter
                         binding,
                          new EndpointAddress("net.tcp://lastamicluster.westus.cloudapp.azure.com:10300/TransactionCoordinatorProxy/Adapter/"));
 
+                    factory.Credentials.Windows.ClientCredential.UserName = "amiteam";
+                    factory.Credentials.Windows.ClientCredential.Password = "dr34mt34m4m1@";
+                    factory.Credentials.UserName.UserName = "amiteam";
+                    factory.Credentials.UserName.Password = "dr34mt34m4m1@";
+
                     this.proxy = factory.CreateChannel();
                     firstContact = false;
                 }
