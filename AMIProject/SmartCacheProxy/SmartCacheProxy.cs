@@ -136,6 +136,8 @@ namespace SmartCacheProxy
         {
             List<IModelForDuplex> clientsForDeleting = new List<IModelForDuplex>();
 
+            ServiceEventSource.Current.ServiceMessage(this.Context, "Subscribe(SCProxy) on " + this.Context.NodeContext.NodeName.ToString() + ", no. of clients = " + Clients.Count);
+
             foreach (IModelForDuplex client in this.Clients)
             {
                 try
@@ -154,6 +156,9 @@ namespace SmartCacheProxy
             clientsForDeleting.ForEach(x => Clients.Remove(x));
 
             this.Clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
+
+            ServiceEventSource.Current.ServiceMessage(this.Context, "Subscribe(SCProxy) done on " + this.Context.NodeContext.NodeName.ToString() + ", no. of clients = " + Clients.Count);
+
         }
 
         public List<DynamicMeasurement> GetLastMeas(List<long> gidsInTable)
@@ -189,6 +194,7 @@ namespace SmartCacheProxy
         public void SendMeasurements(List<DynamicMeasurement> measurements)
         {
             List<IModelForDuplex> clientsForDeleting = new List<IModelForDuplex>();
+            ServiceEventSource.Current.ServiceMessage(this.Context, "SendMeasurement(SCProxy) on " + this.Context.NodeContext.NodeName.ToString() + ", no. of clients = " + Clients.Count);
 
             foreach (IModelForDuplex client in clients)
             {
@@ -206,11 +212,14 @@ namespace SmartCacheProxy
             {
                 clients.Remove(client);
             }
+
+            ServiceEventSource.Current.ServiceMessage(this.Context, "SendMeasurement(SCProxy) done on " + this.Context.NodeContext.NodeName.ToString() + ", no. of clients = " + Clients.Count);
         }
 
         public void SendAlarm(DeltaForAlarm delta)
         {
             List<IModelForDuplex> clientsForDeleting = new List<IModelForDuplex>();
+            ServiceEventSource.Current.ServiceMessage(this.Context, "SendAlarm(SCProxy) on " + this.Context.NodeContext.NodeName.ToString() + ", no. of clients = " + Clients.Count);
 
             foreach (IModelForDuplex client in clients)
             {
@@ -228,6 +237,7 @@ namespace SmartCacheProxy
             {
                 clients.Remove(client);
             }
+            ServiceEventSource.Current.ServiceMessage(this.Context, "SendAlarm(SCProxy) done on " + this.Context.NodeContext.NodeName.ToString() + ", no. of clients = " + Clients.Count);
         }
 
         public bool PingClient()
@@ -242,6 +252,8 @@ namespace SmartCacheProxy
 
         private void PingService()
         {
+            ServiceEventSource.Current.ServiceMessage(this.Context, "PingService(SCProxy) on " + this.Context.NodeContext.NodeName.ToString());
+
             while (true)
             {
                 try
@@ -254,6 +266,7 @@ namespace SmartCacheProxy
                     ConnectToSmartCache();
                 }
             }
+            ServiceEventSource.Current.ServiceMessage(this.Context, "PingService(SCProxy) done on " + this.Context.NodeContext.NodeName.ToString());
         }
     }
 }

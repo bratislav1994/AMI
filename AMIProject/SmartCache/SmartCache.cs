@@ -197,18 +197,19 @@ namespace SmartCache
         {
             try
             {
+                ServiceEventSource.Current.ServiceMessage(this.Context, "SendAlarms on " + this.Context.NodeContext.NodeName.ToString());
                 proxy.InvokeWithRetry(client => client.Channel.SendAlarm(delta));
+                ServiceEventSource.Current.ServiceMessage(this.Context, "SendAlarms succeeded on " + this.Context.NodeContext.NodeName.ToString());
             }
-            catch
+            catch (Exception ex)
             {
+                ServiceEventSource.Current.ServiceMessage(this.Context, "SendAlarms failed on " + this.Context.NodeContext.NodeName.ToString() + ", exception: " + ex.Message);
                 proxy = null;
             }
         }
 
         public void SendMeasurements(Dictionary<long, DynamicMeasurement> measurements)
         {
-            ServiceEventSource.Current.ServiceMessage(this.Context, "SendMeasurements on " + this.Context.NodeContext.NodeName.ToString());
-
             foreach (KeyValuePair<long, DynamicMeasurement> kvp in measurements)
             {
                 if (this.measurements.ContainsKey(kvp.Key))
@@ -228,10 +229,14 @@ namespace SmartCache
         {
             try
             {
+                ServiceEventSource.Current.ServiceMessage(this.Context, "SendMeasurements on " + this.Context.NodeContext.NodeName.ToString());
+
                 proxy.InvokeWithRetry(client => client.Channel.SendMeasurements(this.measurements.Values.ToList()));
+                ServiceEventSource.Current.ServiceMessage(this.Context, "SendMeasurements succeeded on " + this.Context.NodeContext.NodeName.ToString());
             }
-            catch
+            catch (Exception ex)
             {
+                ServiceEventSource.Current.ServiceMessage(this.Context, "SendMeasurements failed on " + this.Context.NodeContext.NodeName.ToString() + ", exception: " + ex.Message);
                 proxy = null;
             }
         }

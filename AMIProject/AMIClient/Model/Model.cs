@@ -352,6 +352,10 @@ namespace AMIClient
             {
                 try
                 {
+                    if (App.Current == null)
+                    {
+                        break;
+                    }
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToSC; line: {0}; Client try to connect to SC", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     ScProxy.Subscribe();
                     if (!isTest)
@@ -378,6 +382,10 @@ namespace AMIClient
             {
                 try
                 {
+                    if (App.Current == null)
+                    {
+                        break;
+                    }
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToCE; line: {0}; Client try to connect with CE", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     CEQueryProxy.ConnectClient();
                     if (!isTest)
@@ -404,6 +412,10 @@ namespace AMIClient
             {
                 try
                 {
+                    if (App.Current == null)
+                    {
+                        break;
+                    }
                     Logger.LogMessageToFile(string.Format("AMIClient.Model.ConnectToNMS; line: {0}; Client try to connect with NMS", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
                     GdaQueryProxy.ConnectClient();
                     if (!isTest)
