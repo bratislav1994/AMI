@@ -30,6 +30,7 @@ namespace SmartCacheProxy
         private WcfCommunicationClientFactory<ISmartCacheMS> wcfClientFactory;
         private WcfSmartCache proxy;
         private StatelessServiceContext context;
+        private object lockObjectForClients = new object();
 
         public SmartCacheProxy(StatelessServiceContext context)
             : base(context)
@@ -138,27 +139,29 @@ namespace SmartCacheProxy
 
             ServiceEventSource.Current.ServiceMessage(this.Context, "Subscribe(SCProxy) on " + this.Context.NodeContext.NodeName.ToString() + ", no. of clients = " + Clients.Count);
 
-            foreach (IModelForDuplex client in this.Clients)
+            lock (lockObjectForClients)
             {
-                try
+                foreach (IModelForDuplex client in this.Clients)
                 {
-                    if (!client.PingClient())
+                    try
+                    {
+                        if (!client.PingClient())
+                        {
+                            clientsForDeleting.Add(client);
+                        }
+                    }
+                    catch (Exception ex)
                     {
                         clientsForDeleting.Add(client);
                     }
                 }
-                catch (Exception ex)
-                {
-                    clientsForDeleting.Add(client);
-                }
+
+                clientsForDeleting.ForEach(x => Clients.Remove(x));
+
+                this.Clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
             }
 
-            clientsForDeleting.ForEach(x => Clients.Remove(x));
-
-            this.Clients.Add(OperationContext.Current.GetCallbackChannel<IModelForDuplex>());
-
             ServiceEventSource.Current.ServiceMessage(this.Context, "Subscribe(SCProxy) done on " + this.Context.NodeContext.NodeName.ToString() + ", no. of clients = " + Clients.Count);
-
         }
 
         public List<DynamicMeasurement> GetLastMeas(List<long> gidsInTable)
@@ -196,23 +199,25 @@ namespace SmartCacheProxy
             List<IModelForDuplex> clientsForDeleting = new List<IModelForDuplex>();
             ServiceEventSource.Current.ServiceMessage(this.Context, "SendMeasurement(SCProxy) on " + this.Context.NodeContext.NodeName.ToString() + ", no. of clients = " + Clients.Count);
 
-            foreach (IModelForDuplex client in clients)
+            lock (lockObjectForClients)
             {
-                try
+                foreach (IModelForDuplex client in clients)
                 {
-                    client.SendMeasurements(measurements);
+                    try
+                    {
+                        client.SendMeasurements(measurements);
+                    }
+                    catch
+                    {
+                        clientsForDeleting.Add(client);
+                    }
                 }
-                catch
+
+                foreach (IModelForDuplex client in clientsForDeleting)
                 {
-                    clientsForDeleting.Add(client);
+                    clients.Remove(client);
                 }
             }
-
-            foreach (IModelForDuplex client in clientsForDeleting)
-            {
-                clients.Remove(client);
-            }
-
             ServiceEventSource.Current.ServiceMessage(this.Context, "SendMeasurement(SCProxy) done on " + this.Context.NodeContext.NodeName.ToString() + ", no. of clients = " + Clients.Count);
         }
 
@@ -221,21 +226,24 @@ namespace SmartCacheProxy
             List<IModelForDuplex> clientsForDeleting = new List<IModelForDuplex>();
             ServiceEventSource.Current.ServiceMessage(this.Context, "SendAlarm(SCProxy) on " + this.Context.NodeContext.NodeName.ToString() + ", no. of clients = " + Clients.Count);
 
-            foreach (IModelForDuplex client in clients)
+            lock (lockObjectForClients)
             {
-                try
+                foreach (IModelForDuplex client in clients)
                 {
-                    client.SendAlarm(delta);
+                    try
+                    {
+                        client.SendAlarm(delta);
+                    }
+                    catch
+                    {
+                        clientsForDeleting.Add(client);
+                    }
                 }
-                catch
-                {
-                    clientsForDeleting.Add(client);
-                }
-            }
 
-            foreach (IModelForDuplex client in clientsForDeleting)
-            {
-                clients.Remove(client);
+                foreach (IModelForDuplex client in clientsForDeleting)
+                {
+                    clients.Remove(client);
+                }
             }
             ServiceEventSource.Current.ServiceMessage(this.Context, "SendAlarm(SCProxy) done on " + this.Context.NodeContext.NodeName.ToString() + ", no. of clients = " + Clients.Count);
         }

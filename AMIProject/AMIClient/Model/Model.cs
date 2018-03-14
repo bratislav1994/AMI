@@ -62,6 +62,7 @@ namespace AMIClient
         private List<IdentifiedObject> geoRegions;
         private List<IdentifiedObject> subGeoRegions;
         private List<IdentifiedObject> substations;
+        private object lockForAlarms = new object();
 
         public INetworkModelGDAContractDuplexClient GdaQueryProxy
         {
@@ -988,7 +989,9 @@ namespace AMIClient
 
         public void SendMeasurements(List<DynamicMeasurement> measurements)
         {
-            new Thread(() => ReceiveMeasurements(measurements)).Start();
+            Thread worker = new Thread(() => ReceiveMeasurements(measurements));
+            worker.IsBackground = true;
+            worker.Start();
         }
 
         private void ReceiveMeasurements(List<DynamicMeasurement> measurements)
@@ -1127,78 +1130,99 @@ namespace AMIClient
 
         public void SendAlarm(DeltaForAlarm delta)
         {
-                Logger.LogMessageToFile(string.Format("AMIClient.Model.UpdateAlarms; line: {0}; Update alarms started", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            Logger.LogMessageToFile(string.Format("AMIClient.Model.UpdateAlarms; line: {0}; Update alarms started", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
 
-                new Thread(() => ReceiveAlarm(delta)).Start();
+            Thread worker = new Thread(() => ReceiveAlarm(delta));
+            worker.IsBackground = true;
+            worker.Start();
 
-                Logger.LogMessageToFile(string.Format("AMIClient.Model.UpdateAlarms; line: {0}; Update alarms finished", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
-                this.timeOfLastUpdateAlarm = DateTime.Now;
+            Logger.LogMessageToFile(string.Format("AMIClient.Model.UpdateAlarms; line: {0}; Update alarms finished", (new System.Diagnostics.StackFrame(0, true)).GetFileLineNumber()));
+            this.timeOfLastUpdateAlarm = DateTime.Now;
         }
 
         private void ReceiveAlarm(DeltaForAlarm delta)
         {
-
-            foreach (ActiveAlarm alarm in delta.InsertOperations)
+            lock (lockForAlarms)
             {
-                if (!positionsAlarm.ContainsKey(alarm.Id))
+                foreach (ActiveAlarm alarm in delta.InsertOperations)
                 {
-
-                    TableItemsForActiveAlarm.Add(new ActiveAlarm()
+                    if (!positionsAlarm.ContainsKey(alarm.Id))
                     {
-                        Id = alarm.Id,
-                        Consumer = alarm.Consumer,
-                        FromPeriod = alarm.FromPeriod,
-                        Voltage = alarm.Voltage,
-                        TypeVoltage = alarm.TypeVoltage,
-                        Georegion = alarm.Georegion
-                    });
 
-
-                    positionsAlarm.Add(alarm.Id, TableItemsForActiveAlarm.Count - 1);
-                    if (App.Current != null)
-                    {
-                        App.Current.Dispatcher.Invoke((Action)delegate
+                        TableItemsForActiveAlarm.Add(new ActiveAlarm()
                         {
-                            NotifierClass.Instance.notifier.ShowError(alarm.FromPeriod.ToString() + "\nVoltage type: " + EnumDescription.GetEnumDescription(alarm.TypeVoltage) + "\nConsumer: " +
-                                                                alarm.Consumer + "\nVoltage: " + alarm.Voltage.ToString() + "V");
+                            Id = alarm.Id,
+                            Consumer = alarm.Consumer,
+                            FromPeriod = alarm.FromPeriod,
+                            Voltage = alarm.Voltage,
+                            TypeVoltage = alarm.TypeVoltage,
+                            Georegion = alarm.Georegion
                         });
+
+
+                        positionsAlarm.Add(alarm.Id, TableItemsForActiveAlarm.Count - 1);
+                        Thread worker = new Thread(() => ShowError(alarm));
+                        worker.IsBackground = true;
+                        worker.Start();
                     }
                 }
             }
 
-            foreach (long psrRef in delta.DeleteOperations)
-            {
-                if (positionsAlarm.ContainsKey(psrRef))
+            lock (lockForAlarms)
+            { 
+                foreach (long psrRef in delta.DeleteOperations)
                 {
-                    int emptyPosition = positionsAlarm[psrRef];
-                    List<long> temp = new List<long>();
-                    ActiveAlarm alarm = TableItemsForActiveAlarm[emptyPosition];
-
-                    if (App.Current != null)
+                    if (positionsAlarm.ContainsKey(psrRef))
                     {
-                        App.Current.Dispatcher.Invoke((Action)delegate
-                        {
-                            NotifierClass.Instance.notifier.ShowInformation("From: " + alarm.FromPeriod.ToString() + "\nConsumer: " + alarm.Consumer + "\nVoltage type: " +
-                                                         EnumDescription.GetEnumDescription(alarm.TypeVoltage));
-                        });
-                    }
+                        int emptyPosition = positionsAlarm[psrRef];
+                        List<long> temp = new List<long>();
+                        ActiveAlarm alarm = TableItemsForActiveAlarm[emptyPosition];
 
-                    TableItemsForActiveAlarm.RemoveAt(emptyPosition);
-                    positionsAlarm.Remove(psrRef);
+                        Thread worker = new Thread(() => ShowInfo(alarm));
+                        worker.IsBackground = true;
+                        worker.Start();
 
-                    foreach (long key in positionsAlarm.Keys)
-                    {
-                        if (positionsAlarm[key] > emptyPosition)
+                        TableItemsForActiveAlarm.RemoveAt(emptyPosition);
+                        positionsAlarm.Remove(psrRef);
+
+                        foreach (long key in positionsAlarm.Keys)
                         {
-                            temp.Add(key);
+                            if (positionsAlarm[key] > emptyPosition)
+                            {
+                                temp.Add(key);
+                            }
+                        }
+
+                        foreach (long key in temp)
+                        {
+                            positionsAlarm[key] -= 1;
                         }
                     }
-
-                    foreach (long key in temp)
-                    {
-                        positionsAlarm[key] -= 1;
-                    }
                 }
+            }
+        }
+
+        private static void ShowInfo(ActiveAlarm alarm)
+        {
+            if (App.Current != null)
+            {
+                App.Current.Dispatcher.Invoke((Action)delegate
+                {
+                    NotifierClass.Instance.notifier.ShowInformation("From: " + alarm.FromPeriod.ToString() + "\nConsumer: " + alarm.Consumer + "\nVoltage type: " +
+                                                 EnumDescription.GetEnumDescription(alarm.TypeVoltage));
+                });
+            }
+        }
+
+        private static void ShowError(ActiveAlarm alarm)
+        {
+            if (App.Current != null)
+            {
+                App.Current.Dispatcher.Invoke((Action)delegate
+                {
+                    NotifierClass.Instance.notifier.ShowError(alarm.FromPeriod.ToString() + "\nVoltage type: " + EnumDescription.GetEnumDescription(alarm.TypeVoltage) + "\nConsumer: " +
+                                                        alarm.Consumer + "\nVoltage: " + alarm.Voltage.ToString() + "V");
+                });
             }
         }
 
