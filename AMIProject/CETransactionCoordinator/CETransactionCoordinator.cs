@@ -185,45 +185,52 @@ namespace CETransactionCoordinator
 
             foreach (ResourceDescription rd in meas)
             {
-                DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(rd.Id);
-
-                switch (type)
+                try
                 {
-                    case DMSType.GEOREGION:
-                        GeographicalRegion gr = new GeographicalRegion();
-                        gr.RD2Class(rd);
-                        gr.GlobalId = rd.Id;
-                        GeographicalRegionDb grCE = new GeographicalRegionDb(gr);
-                        geoRegionsTemp.Add(rd.Id, grCE);
-                        break;
-                    case DMSType.SUBGEOREGION:
-                        SubGeographicalRegion sgr = new SubGeographicalRegion();
-                        sgr.RD2Class(rd);
-                        sgr.GlobalId = rd.Id;
-                        SubGeographicalRegionDb sgrCE = new SubGeographicalRegionDb(sgr);
-                        subGeoRegionsTemp.Add(rd.Id, sgrCE);
-                        break;
-                    case DMSType.SUBSTATION:
-                        Substation s = new Substation();
-                        s.RD2Class(rd);
-                        s.GlobalId = rd.Id;
-                        SubstationDb sCE = new SubstationDb(s);
-                        substationsTemp.Add(rd.Id, sCE);
-                        break;
-                    case DMSType.ENERGYCONS:
-                        EnergyConsumer ec = new EnergyConsumer();
-                        ec.RD2Class(rd);
-                        ec.GlobalId = rd.Id;
-                        EnergyConsumerDb ecCE = new EnergyConsumerDb(ec);
-                        amisTemp.Add(rd.Id, ecCE);
-                        break;
-                    case DMSType.BASEVOLTAGE:
-                        BaseVoltage bv = new BaseVoltage();
-                        bv.RD2Class(rd);
-                        bv.GlobalId = rd.Id;
-                        BaseVoltageDb bvCE = new BaseVoltageDb(bv);
-                        baseVoltagesTemp.Add(rd.Id, bvCE);
-                        break;
+                    DMSType type = (DMSType)ModelCodeHelper.ExtractTypeFromGlobalId(rd.Id);
+
+                    switch (type)
+                    {
+                        case DMSType.GEOREGION:
+                            GeographicalRegion gr = new GeographicalRegion();
+                            gr.RD2Class(rd);
+                            gr.GlobalId = rd.Id;
+                            GeographicalRegionDb grCE = new GeographicalRegionDb(gr);
+                            geoRegionsTemp.Add(rd.Id, grCE);
+                            break;
+                        case DMSType.SUBGEOREGION:
+                            SubGeographicalRegion sgr = new SubGeographicalRegion();
+                            sgr.RD2Class(rd);
+                            sgr.GlobalId = rd.Id;
+                            SubGeographicalRegionDb sgrCE = new SubGeographicalRegionDb(sgr);
+                            subGeoRegionsTemp.Add(rd.Id, sgrCE);
+                            break;
+                        case DMSType.SUBSTATION:
+                            Substation s = new Substation();
+                            s.RD2Class(rd);
+                            s.GlobalId = rd.Id;
+                            SubstationDb sCE = new SubstationDb(s);
+                            substationsTemp.Add(rd.Id, sCE);
+                            break;
+                        case DMSType.ENERGYCONS:
+                            EnergyConsumer ec = new EnergyConsumer();
+                            ec.RD2Class(rd);
+                            ec.GlobalId = rd.Id;
+                            EnergyConsumerDb ecCE = new EnergyConsumerDb(ec);
+                            amisTemp.Add(rd.Id, ecCE);
+                            break;
+                        case DMSType.BASEVOLTAGE:
+                            BaseVoltage bv = new BaseVoltage();
+                            bv.RD2Class(rd);
+                            bv.GlobalId = rd.Id;
+                            BaseVoltageDb bvCE = new BaseVoltageDb(bv);
+                            baseVoltagesTemp.Add(rd.Id, bvCE);
+                            break;
+                    }
+                }
+                catch
+                {
+                    return false;
                 }
             }
 
