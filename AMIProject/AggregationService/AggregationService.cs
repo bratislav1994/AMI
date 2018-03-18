@@ -34,9 +34,9 @@ namespace AggregationService
         public AggregationService(StatelessServiceContext context)
             : base(context)
         {
-            //this.DoUndoneByMinute();
-            //this.DoUndoneByHour();
-            //this.DoUndoneByDay();
+            this.DoUndoneByMinute();
+            this.DoUndoneByHour();
+            this.DoUndoneByDay();
             StartThreads();
         }
 
@@ -150,32 +150,39 @@ namespace AggregationService
                                     DB.Instance.ReadConsumers().Values.ToList().ForEach(x => numberOfUniqueConsumers.Add(x.GlobalId));
                                     DateTime now = RoundDown(DateTime.Now, TimeSpan.FromHours(1));
                                     DateTime roundDownLastMinute = RoundDown(lastMeasForMinutesBeforeAppStart, TimeSpan.FromHours(1));
+                                    DateTime roundUpLastMinute = RoundUp(lastMeasMinute, TimeSpan.FromHours(1));
                                     List<MinuteAggregation> tempList = new List<MinuteAggregation>();
 
-                                    if (DateTime.Compare(now, roundDownLastMinute) != 0) // Ukoliko je app pokrenuta u razlicitom satu u odnosu kad je ugasena, samo tada treba da se obradi sat za koji postoje minutna merenja, u suprotnom nista
+                                    while (DateTime.Compare(temp, roundUpLastMinute) < 0)
                                     {
-                                        DateTime roundDownLastMinutePlusOneHour = roundDownLastMinute.AddHours(1);
-                                        tempList = access.AggregationForMinutes.Where(x => DateTime.Compare(roundDownLastMinute, x.TimeStamp) < 0 && DateTime.Compare(roundDownLastMinutePlusOneHour, x.TimeStamp) > 0).ToList(); // merenja koja treba da se upisu u bazu (minutna tabela)
-                                        Dictionary<long, List<MinuteAggregation>> measurementsFromCollect = CreateDictionaryForHour(tempList);
-                                        List<HourAggregation> aggregations = CreateHourAggregations(temp, measurementsFromCollect);
-
-                                        foreach (HourAggregation ma in aggregations)
+                                        if (DateTime.Compare(now, roundDownLastMinute) != 0) // Ukoliko je app pokrenuta u razlicitom satu u odnosu kad je ugasena, samo tada treba da se obradi sat za koji postoje minutna merenja, u suprotnom nista
                                         {
-                                            access.AggregationForHours.Add(ma);
+                                            DateTime roundDownLastMinutePlusOneHour = roundDownLastMinute.AddHours(1);
+                                            tempList = access.AggregationForMinutes.Where(x => DateTime.Compare(temp, x.TimeStamp) < 0 && DateTime.Compare(temp.AddHours(1), x.TimeStamp) > 0).ToList(); // merenja koja treba da se upisu u bazu (minutna tabela)
+                                            Dictionary<long, List<MinuteAggregation>> measurementsFromCollect = CreateDictionaryForHour(tempList);
+                                            List<HourAggregation> aggregations = CreateHourAggregations(temp, measurementsFromCollect);
+
+                                            foreach (HourAggregation ma in aggregations)
+                                            {
+                                                access.AggregationForHours.Add(ma);
+                                            }
+
+                                            access.SaveChanges();
+                                            temp = temp.AddHours(1);
                                         }
                                     }
 
-                                    while (DateTime.Compare(roundDownLastMinute, now.AddHours(-1)) < 0) // Popunjavanje tabele sa nulama za sate u kojima se nije merilo nista
+                                    while (DateTime.Compare(temp, now) < 0) // Popunjavanje tabele sa nulama za sate u kojima se nije merilo nista
                                     {
                                         for (int i = 0; i < numberOfUniqueConsumers.Count; i++)
                                         {
                                             HourAggregation ha = new HourAggregation();
                                             ha.PsrRef = numberOfUniqueConsumers[i];
-                                            ha.TimeStamp = roundDownLastMinute.AddHours(1);
+                                            ha.TimeStamp = temp;
                                             access.AggregationForHours.Add(ha);
                                         }
 
-                                        roundDownLastMinute = roundDownLastMinute.AddHours(1);
+                                        temp = temp.AddHours(1);
                                     }
 
                                     access.SaveChanges();
@@ -223,37 +230,44 @@ namespace AggregationService
                             catch (InvalidOperationException) // ako je tabela prazna
                             {
                                 DateTime now = RoundDown(DateTime.Now, TimeSpan.FromHours(1));
-                                DateTime roundDownLastMinute = RoundDown(lastMeasForMinutesBeforeAppStart, TimeSpan.FromHours(1));
+                                DateTime roundDownLastMinute = RoundDown(access.AggregationForMinutes.Max(x => x.TimeStamp), TimeSpan.FromHours(1));
                                 Dictionary<long, List<MinuteAggregation>> measurementsFromMinute1 = new Dictionary<long, List<MinuteAggregation>>();
                                 List<MinuteAggregation> toBeWritten1 = new List<MinuteAggregation>();
+                                DateTime roundDownFirstMinute = RoundDown(access.AggregationForMinutes.Min(x => x.TimeStamp), TimeSpan.FromHours(1));
+                                DateTime roundDownLastMinutePlusOneHour = roundDownLastMinute.AddHours(1); // pravi se interval za merenja iz minutne tabele
 
-                                if (DateTime.Compare(now, roundDownLastMinute) != 0) // app se pokrenula istog sata kad imamo i poslednje merenje, ne radi nista, u suprotnom aggregiraj merenja koja su ostala u minutnoj tabeli
+                                while (DateTime.Compare(roundDownFirstMinute, roundDownLastMinutePlusOneHour) < 0)
                                 {
-                                    DateTime roundDownLastMinutePlusOneHour = roundDownLastMinute.AddHours(1); // pravi se interval za merenja iz minutne tabele
-                                    toBeWritten1 = access.AggregationForMinutes.Where(x => DateTime.Compare(roundDownLastMinute, x.TimeStamp) < 0 && DateTime.Compare(x.TimeStamp, roundDownLastMinutePlusOneHour) < 0).ToList();
-                                    measurementsFromMinute1 = CreateDictionaryForHour(toBeWritten1);
-                                    lastMeasForHoursBeforeAppStart = measurementsFromMinute1.Values.First().First().TimeStamp; //
-                                    numberOfUniqueConsumers = measurementsFromMinute1.Keys.ToList();
-                                    List<HourAggregation> aggregations = CreateHourAggregations(RoundDown(measurementsFromMinute1.Values.ToList().First().First().TimeStamp, TimeSpan.FromHours(1)), measurementsFromMinute1);
-
-                                    foreach (HourAggregation ma in aggregations)
+                                    if (DateTime.Compare(now, roundDownFirstMinute) != 0)
                                     {
-                                        access.AggregationForHours.Add(ma);
+                                        toBeWritten1 = access.AggregationForMinutes.Where(x => DateTime.Compare(roundDownFirstMinute, x.TimeStamp) < 0 && DateTime.Compare(x.TimeStamp, roundDownFirstMinute.AddHours(1)) < 0).ToList();
+                                        measurementsFromMinute1 = CreateDictionaryForHour(toBeWritten1);
+                                        lastMeasForHoursBeforeAppStart = measurementsFromMinute1.Values.First().First().TimeStamp; //
+                                        numberOfUniqueConsumers = measurementsFromMinute1.Keys.ToList();
+                                        List<HourAggregation> aggregations = CreateHourAggregations(RoundDown(measurementsFromMinute1.Values.ToList().First().First().TimeStamp, TimeSpan.FromHours(1)), measurementsFromMinute1);
+
+                                        foreach (HourAggregation ma in aggregations)
+                                        {
+                                            access.AggregationForHours.Add(ma);
+                                        }
+
+                                        access.SaveChanges();
                                     }
+
+                                    roundDownFirstMinute = roundDownFirstMinute.AddHours(1);
                                 }
 
-
-                                while (DateTime.Compare(roundDownLastMinute, now.AddHours(-1)) < 0)
+                                while (DateTime.Compare(roundDownFirstMinute, now) < 0)
                                 {
                                     for (int i = 0; i < numberOfUniqueConsumers.Count; i++)
                                     {
                                         HourAggregation ha = new HourAggregation();
                                         ha.PsrRef = numberOfUniqueConsumers[i];
-                                        ha.TimeStamp = roundDownLastMinute.AddHours(1);
+                                        ha.TimeStamp = roundDownFirstMinute;
                                         access.AggregationForHours.Add(ha);
                                     }
 
-                                    roundDownLastMinute = roundDownLastMinute.AddHours(1);
+                                    roundDownFirstMinute = roundDownFirstMinute.AddHours(1);
                                 }
 
                                 access.SaveChanges();
@@ -419,39 +433,45 @@ namespace AggregationService
 
                                 DateTime temp = lastMeasDays.AddDays(1);
 
-                                if (DateTime.Compare(temp, lastMeasHour) < 0) // postoje merenja u minutnoj tabeli koje treba upisati u satnu
+                                if (DateTime.Compare(temp, lastMeasHour) < 0) // postoje merenja u satnoj tabeli koje treba upisati u dnevnu
                                 {
                                     var consumers = DB.Instance.ReadConsumers().Values.ToList();
                                     consumers.ForEach(x => numberOfUniqueConsumers.Add(x.GlobalId));
                                     DateTime now = RoundDown(DateTime.Now, TimeSpan.FromDays(1));
                                     DateTime roundDownLastMeasHour = RoundDown(lastMeasForHoursBeforeAppStart, TimeSpan.FromDays(1));
+                                    DateTime roundUpLastHour = RoundUp(lastMeasHour, TimeSpan.FromDays(1));
                                     List<HourAggregation> tempList = new List<HourAggregation>();
                                     Dictionary<long, List<HourAggregation>> measurementsFromHour;
 
-                                    if (DateTime.Compare(now, roundDownLastMeasHour) != 0)
+                                    while (DateTime.Compare(temp, roundUpLastHour) < 0)
                                     {
-                                        tempList = access.AggregationForHours.Where(x => DateTime.Compare(temp, x.TimeStamp) < 0).ToList(); // merenja koja treba da se upisu u bazu (minutna tabela)
-                                        measurementsFromHour = CreateDictionaryForDay(tempList);
-                                        List<DayAggregation> aggregations = CreateDayAggregations(temp, measurementsFromHour);
-
-                                        foreach (DayAggregation ma in aggregations)
+                                        if (DateTime.Compare(now, temp) != 0)
                                         {
-                                            access.AggregationForDays.Add(ma);
+                                            tempList = access.AggregationForHours.Where(x => DateTime.Compare(temp, x.TimeStamp) < 0 && DateTime.Compare(temp.AddDays(1), x.TimeStamp) > 0).ToList(); // merenja koja treba da se upisu u bazu (minutna tabela)
+                                            measurementsFromHour = CreateDictionaryForDay(tempList);
+                                            List<DayAggregation> aggregations = CreateDayAggregations(temp, measurementsFromHour);
+
+                                            foreach (DayAggregation ma in aggregations)
+                                            {
+                                                access.AggregationForDays.Add(ma);
+                                            }
+
+                                            access.SaveChanges();
+                                            temp = temp.AddDays(1);
                                         }
-
                                     }
-
-                                    while (DateTime.Compare(roundDownLastMeasHour, now.AddDays(-1)) < 0)
+                                    
+                                    while (DateTime.Compare(temp, now) < 0)
                                     {
                                         for (int i = 0; i < numberOfUniqueConsumers.Count; i++)
                                         {
                                             DayAggregation da = new DayAggregation();
                                             da.PsrRef = numberOfUniqueConsumers[i];
-                                            da.TimeStamp = roundDownLastMeasHour.AddDays(1);
+                                            da.TimeStamp = temp;
                                             access.AggregationForDays.Add(da);
                                         }
 
-                                        roundDownLastMeasHour = roundDownLastMeasHour.AddDays(1);
+                                        temp = temp.AddDays(1);
                                     }
 
                                     access.SaveChanges();
@@ -497,34 +517,42 @@ namespace AggregationService
                             catch (InvalidOperationException)
                             {
                                 DateTime now = RoundDown(DateTime.Now, TimeSpan.FromDays(1));
-                                DateTime roundDownLastMeasHour = RoundDown(lastMeasForHoursBeforeAppStart, TimeSpan.FromDays(1));
+                                DateTime roundDownLastMeasHour = RoundDown(access.AggregationForHours.Max(x => x.TimeStamp), TimeSpan.FromDays(1));
+                                DateTime roundDownFirstMeasHour = RoundDown(access.AggregationForHours.Min(x => x.TimeStamp), TimeSpan.FromDays(1));
                                 List<HourAggregation> toBeWritten1 = new List<HourAggregation>();
                                 Dictionary<long, List<HourAggregation>> measurementsFromDay1;
 
-                                if (DateTime.Compare(roundDownLastMeasHour, now) != 0)
+                                while (DateTime.Compare(roundDownFirstMeasHour, roundDownLastMeasHour.AddDays(1)) < 0)
                                 {
-                                    toBeWritten1 = access.AggregationForHours.ToList();
-                                    measurementsFromDay1 = CreateDictionaryForDay(toBeWritten1);
-                                    numberOfUniqueConsumers = measurementsFromDay1.Keys.ToList();
-                                    List<DayAggregation> aggregations = CreateDayAggregations(this.RoundDown(measurementsFromDay1.Values.ToList().First().First().TimeStamp, TimeSpan.FromDays(1)), measurementsFromDay1);
-
-                                    foreach (DayAggregation ma in aggregations)
+                                    if (DateTime.Compare(roundDownFirstMeasHour, now) != 0)
                                     {
-                                        access.AggregationForDays.Add(ma);
-                                    }
-                                }
+                                        toBeWritten1 = access.AggregationForHours.Where(x => DateTime.Compare(x.TimeStamp, roundDownFirstMeasHour) > 0 && DateTime.Compare(x.TimeStamp, roundDownFirstMeasHour.AddDays(1)) < 0).ToList();
+                                        measurementsFromDay1 = CreateDictionaryForDay(toBeWritten1);
+                                        numberOfUniqueConsumers = measurementsFromDay1.Keys.ToList();
+                                        List<DayAggregation> aggregations = CreateDayAggregations(this.RoundDown(measurementsFromDay1.Values.ToList().First().First().TimeStamp, TimeSpan.FromDays(1)), measurementsFromDay1);
 
-                                while (DateTime.Compare(roundDownLastMeasHour, now.AddDays(-1)) < 0)
+                                        foreach (DayAggregation ma in aggregations)
+                                        {
+                                            access.AggregationForDays.Add(ma);
+                                        }
+
+                                        access.SaveChanges();
+                                    }
+
+                                    roundDownFirstMeasHour = roundDownFirstMeasHour.AddDays(1);
+                                }
+                                
+                                while (DateTime.Compare(roundDownFirstMeasHour, now) < 0)
                                 {
                                     for (int i = 0; i < numberOfUniqueConsumers.Count; i++)
                                     {
                                         DayAggregation da = new DayAggregation();
                                         da.PsrRef = numberOfUniqueConsumers[i];
-                                        da.TimeStamp = roundDownLastMeasHour.AddDays(1);
+                                        da.TimeStamp = roundDownFirstMeasHour;
                                         access.AggregationForDays.Add(da);
                                     }
 
-                                    roundDownLastMeasHour = roundDownLastMeasHour.AddDays(1);
+                                    roundDownFirstMeasHour = roundDownFirstMeasHour.AddDays(1);
                                 }
 
                                 access.SaveChanges();
@@ -709,27 +737,34 @@ namespace AggregationService
                                     numberOfUniqueConsumers = toBeWrittenDic.Keys.ToList();
                                     DateTime now = RoundDown(DateTime.Now, TimeSpan.FromMinutes(15));
                                     DateTime roundDownLastMeasCollect = RoundDown(lastMeasCollect, TimeSpan.FromMinutes(15));
+                                    DateTime roundUpLastMeasCollect = RoundUp(lastMeasCollect, TimeSpan.FromMinutes(15));
                                     List<DynamicMeasurement> tempList = new List<DynamicMeasurement>();
                                     Dictionary<long, List<DynamicMeasurement>> measurementsFromCollect;
 
                                     if (DateTime.Compare(now, roundDownLastMeasCollect) != 0)
                                     {
-                                        tempList = access.Collect.Where(x => DateTime.Compare(temp, x.TimeStamp) < 0).ToList(); // merenja koja treba da se upisu u bazu (minutna tabela)
-                                        measurementsFromCollect = CreateDictionary(tempList);
-                                        List<MinuteAggregation> aggregations = CreateMinuteAggregationsWhenMinuteTableIsNotEmpty(temp, toBeWrittenDic, measurementsFromCollect);
-
-                                        foreach (MinuteAggregation maa in aggregations)
+                                        while (DateTime.Compare(temp, roundUpLastMeasCollect) < 0)
                                         {
-                                            access.AggregationForMinutes.Add(maa);
-                                        }
+                                            tempList = access.Collect.Where(x => DateTime.Compare(temp, x.TimeStamp) < 0 && DateTime.Compare(temp.AddMinutes(15), x.TimeStamp) > 0).ToList(); // merenja koja treba da se upisu u bazu (minutna tabela)
+                                            measurementsFromCollect = CreateDictionary(tempList);
+                                            List<MinuteAggregation> aggregations = CreateMinuteAggregationsWhenMinuteTableIsNotEmpty(temp, toBeWrittenDic, measurementsFromCollect);
 
-                                        while (DateTime.Compare(roundDownLastMeasCollect, now.AddMinutes(-15)) < 0)
+                                            foreach (MinuteAggregation maa in aggregations)
+                                            {
+                                                access.AggregationForMinutes.Add(maa);
+                                            }
+
+                                            access.SaveChanges();
+                                            temp = temp.AddMinutes(15);
+                                        }
+                                        
+                                        while (DateTime.Compare(temp, now) < 0)
                                         {
                                             for (int i = 0; i < numberOfUniqueConsumers.Count; i++)
                                             {
                                                 MinuteAggregation ma = new MinuteAggregation();
                                                 ma.PsrRef = numberOfUniqueConsumers[i];
-                                                ma.TimeStamp = roundDownLastMeasCollect.AddMinutes(1);
+                                                ma.TimeStamp = roundDownLastMeasCollect;
                                                 access.AggregationForMinutes.Add(ma);
                                             }
 
@@ -783,33 +818,42 @@ namespace AggregationService
                             {
                                 DateTime now = RoundDown(DateTime.Now, TimeSpan.FromMinutes(15));
                                 DateTime roundDownLastMeasCollect = RoundDown(lastMeasCollect, TimeSpan.FromMinutes(15));
+                                DateTime roundDownFirstMeasCollect = RoundDown(access.Collect.Min(x => x.TimeStamp), TimeSpan.FromMinutes(15));
                                 List<DynamicMeasurement> toBeWritten1 = new List<DynamicMeasurement>();
                                 Dictionary<long, List<DynamicMeasurement>> measurementsFromCollect1 = new Dictionary<long, List<DynamicMeasurement>>();
 
-                                if (DateTime.Compare(now, roundDownLastMeasCollect) != 0)
-                                {
-                                    toBeWritten1 = access.Collect.ToList();
-                                    measurementsFromCollect1 = CreateDictionary(toBeWritten1);
-                                    lastMeasForMinutesBeforeAppStart = measurementsFromCollect1.Values.First().First().TimeStamp; //
-                                    numberOfUniqueConsumers = measurementsFromCollect1.Keys.ToList();
-                                    List<MinuteAggregation> aggregations = CreateMinuteAggregationsWhenMinuteTableIsEmpty(measurementsFromCollect1);
 
-                                    foreach (MinuteAggregation maa in aggregations)
+                                while (DateTime.Compare(roundDownFirstMeasCollect, roundDownLastMeasCollect.AddMinutes(15)) < 0)
+                                {
+                                    if (DateTime.Compare(now, roundDownFirstMeasCollect) != 0)
                                     {
-                                        access.AggregationForMinutes.Add(maa);
+                                        toBeWritten1 = access.Collect.Where(x => DateTime.Compare(x.TimeStamp, roundDownFirstMeasCollect) > 0 && DateTime.Compare(x.TimeStamp, roundDownFirstMeasCollect.AddMinutes(15)) < 0).ToList();
+                                        measurementsFromCollect1 = CreateDictionary(toBeWritten1);
+                                        lastMeasForMinutesBeforeAppStart = measurementsFromCollect1.Values.First().First().TimeStamp;
+                                        numberOfUniqueConsumers = measurementsFromCollect1.Keys.ToList();
+                                        List<MinuteAggregation> aggregations = CreateMinuteAggregationsWhenMinuteTableIsEmpty(measurementsFromCollect1);
+
+                                        foreach (MinuteAggregation maa in aggregations)
+                                        {
+                                            access.AggregationForMinutes.Add(maa);
+                                        }
+
+                                        access.SaveChanges();
+                                        roundDownFirstMeasCollect = roundDownFirstMeasCollect.AddMinutes(15);
                                     }
                                 }
-                                while (DateTime.Compare(roundDownLastMeasCollect, now.AddMinutes(-15)) < 0)
+
+                                while (DateTime.Compare(roundDownFirstMeasCollect, now) < 0)
                                 {
                                     for (int i = 0; i < numberOfUniqueConsumers.Count; i++)
                                     {
                                         MinuteAggregation ma = new MinuteAggregation();
                                         ma.PsrRef = numberOfUniqueConsumers[i];
-                                        ma.TimeStamp = roundDownLastMeasCollect.AddMinutes(15);
+                                        ma.TimeStamp = roundDownFirstMeasCollect;
                                         access.AggregationForMinutes.Add(ma);
                                     }
 
-                                    roundDownLastMeasCollect = roundDownLastMeasCollect.AddMinutes(15);
+                                    roundDownFirstMeasCollect = roundDownFirstMeasCollect.AddMinutes(15);
                                 }
 
                                 access.SaveChanges();
@@ -902,7 +946,7 @@ namespace AggregationService
                 ma.AvgP = kvp.Value.Average(x => x.CurrentP);
                 ma.AvgQ = kvp.Value.Average(x => x.CurrentQ);
                 ma.AvgV = kvp.Value.Average(x => x.CurrentV);
-                ma.TimeStamp = RoundDown(kvp.Value[0].TimeStamp, TimeSpan.FromMinutes(1));
+                ma.TimeStamp = RoundDown(kvp.Value[0].TimeStamp, TimeSpan.FromMinutes(15));
                 ma.Season = kvp.Value[0].Season;
                 ma.Type = kvp.Value[0].Type;
 
