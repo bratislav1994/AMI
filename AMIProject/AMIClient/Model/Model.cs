@@ -82,7 +82,7 @@ namespace AMIClient
                     factory = new DuplexChannelFactory<INetworkModelGDAContractDuplexClient>(
                     new InstanceContext(this),
                         binding,
-                        new EndpointAddress("net.tcp://lastamicluster.westus.cloudapp.azure.com:10200/NMSProxy/Client/")
+                        new EndpointAddress("net.tcp://finalamicluster.westus.cloudapp.azure.com:10200/NMSProxy/Client/")
                         /*new EndpointAddress("net.tcp://localhost:10200/NMSProxy/Client/")*/);
 
                     factory.Credentials.Windows.ClientCredential.UserName = "amiteam";
@@ -121,7 +121,7 @@ namespace AMIClient
 
                     factoryCE = new ChannelFactory<ICalculationForClient>(
                         binding,
-                        new EndpointAddress("net.tcp://lastamicluster.westus.cloudapp.azure.com:10100/CEProxy/Client/")
+                        new EndpointAddress("net.tcp://finalamicluster.westus.cloudapp.azure.com:10100/CEProxy/Client/")
                         /*new EndpointAddress("net.tcp://localhost:10100/CEProxy/Client/")*/);
 
                     factoryCE.Credentials.Windows.ClientCredential.UserName = "amiteam";
@@ -161,7 +161,7 @@ namespace AMIClient
                     factorySC = new DuplexChannelFactory<ISmartCacheDuplexForClient>(
                     new InstanceContext(this),
                         binding,
-                        new EndpointAddress("net.tcp://lastamicluster.westus.cloudapp.azure.com:10400/SmartCache/Client/")
+                        new EndpointAddress("net.tcp://finalamicluster.westus.cloudapp.azure.com:10400/SmartCache/Client/")
                         /*new EndpointAddress("net.tcp://localhost:10400/SmartCache/Client/")*/);
 
                     factorySC.Credentials.Windows.ClientCredential.UserName = "amiteam";

@@ -37,7 +37,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter
 
                     ChannelFactory<ITransactionCoordinator> factory = new ChannelFactory<ITransactionCoordinator>(
                         binding,
-                         new EndpointAddress("net.tcp://lastamicluster.westus.cloudapp.azure.com:10300/TransactionCoordinatorProxy/Adapter/"));
+                         new EndpointAddress("net.tcp://finalamicluster.westus.cloudapp.azure.com:10300/TransactionCoordinatorProxy/Adapter/"));
 
                     factory.Credentials.Windows.ClientCredential.UserName = "amiteam";
                     factory.Credentials.Windows.ClientCredential.Password = "dr34mt34m4m1@";

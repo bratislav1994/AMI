@@ -721,29 +721,31 @@ namespace AggregationService
 
                                 if (DateTime.Compare(temp, lastMeasCollect) < 0) // postoje merenja u collect tabeli koje treba upisati u minutnu
                                 {
-                                    List<DynamicMeasurement> toBeWritten = access.Collect.Where(x => DateTime.Compare(temp, x.TimeStamp) > 0 && DateTime.Compare(lastMeasMinutes, x.TimeStamp) < 0).OrderByDescending(x => x.TimeStamp).ToList();
-                                    Dictionary<long, DynamicMeasurement> toBeWrittenDic = new Dictionary<long, DynamicMeasurement>();
-
-                                    foreach (DynamicMeasurement dm in toBeWritten) // poslednja merenja koja su vec obradjena da bi se racunao integral
-                                    {
-                                        DynamicMeasurement value = null;
-
-                                        if (!toBeWrittenDic.TryGetValue(dm.PsrRef, out value))
-                                        {
-                                            toBeWrittenDic[dm.PsrRef] = dm;
-                                        }
-                                    }
-
-                                    numberOfUniqueConsumers = toBeWrittenDic.Keys.ToList();
                                     DateTime now = RoundDown(DateTime.Now, TimeSpan.FromMinutes(15));
                                     DateTime roundDownLastMeasCollect = RoundDown(lastMeasCollect, TimeSpan.FromMinutes(15));
                                     DateTime roundUpLastMeasCollect = RoundUp(lastMeasCollect, TimeSpan.FromMinutes(15));
                                     List<DynamicMeasurement> tempList = new List<DynamicMeasurement>();
                                     Dictionary<long, List<DynamicMeasurement>> measurementsFromCollect;
 
-                                    if (DateTime.Compare(now, roundDownLastMeasCollect) != 0)
+
+                                    while (DateTime.Compare(temp, roundUpLastMeasCollect) < 0)
                                     {
-                                        while (DateTime.Compare(temp, roundUpLastMeasCollect) < 0)
+                                        List<DynamicMeasurement> toBeWritten = access.Collect.Where(x => DateTime.Compare(temp, x.TimeStamp) > 0 && DateTime.Compare(temp.AddMinutes(-15), x.TimeStamp) < 0).OrderByDescending(x => x.TimeStamp).ToList();
+                                        Dictionary<long, DynamicMeasurement> toBeWrittenDic = new Dictionary<long, DynamicMeasurement>();
+
+                                        foreach (DynamicMeasurement dm in toBeWritten) // poslednja merenja koja su vec obradjena da bi se racunao integral
+                                        {
+                                            DynamicMeasurement value = null;
+
+                                            if (!toBeWrittenDic.TryGetValue(dm.PsrRef, out value))
+                                            {
+                                                toBeWrittenDic[dm.PsrRef] = dm;
+                                            }
+                                        }
+
+                                        numberOfUniqueConsumers = toBeWrittenDic.Keys.ToList();
+
+                                        if (DateTime.Compare(now, temp) != 0)
                                         {
                                             tempList = access.Collect.Where(x => DateTime.Compare(temp, x.TimeStamp) < 0 && DateTime.Compare(temp.AddMinutes(15), x.TimeStamp) > 0).ToList(); // merenja koja treba da se upisu u bazu (minutna tabela)
                                             measurementsFromCollect = CreateDictionary(tempList);
@@ -757,22 +759,21 @@ namespace AggregationService
                                             access.SaveChanges();
                                             temp = temp.AddMinutes(15);
                                         }
-                                        
-                                        while (DateTime.Compare(temp, now) < 0)
+                                    }
+                                    while (DateTime.Compare(temp, now) < 0)
+                                    {
+                                        for (int i = 0; i < numberOfUniqueConsumers.Count; i++)
                                         {
-                                            for (int i = 0; i < numberOfUniqueConsumers.Count; i++)
-                                            {
-                                                MinuteAggregation ma = new MinuteAggregation();
-                                                ma.PsrRef = numberOfUniqueConsumers[i];
-                                                ma.TimeStamp = roundDownLastMeasCollect;
-                                                access.AggregationForMinutes.Add(ma);
-                                            }
-
-                                            roundDownLastMeasCollect = roundDownLastMeasCollect.AddMinutes(15);
+                                            MinuteAggregation ma = new MinuteAggregation();
+                                            ma.PsrRef = numberOfUniqueConsumers[i];
+                                            ma.TimeStamp = roundDownLastMeasCollect;
+                                            access.AggregationForMinutes.Add(ma);
                                         }
 
-                                        access.SaveChanges();
+                                        roundDownLastMeasCollect = roundDownLastMeasCollect.AddMinutes(15);
                                     }
+
+                                    access.SaveChanges();
                                 }
                                 else
                                 {
